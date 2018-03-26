@@ -1,61 +1,6 @@
-import json
-from xml.etree import ElementTree
-gml_namespace = "http://www.opengis.net/gml/3.2"
-gmlcov_namespace ="http://www.opengis.net/gmlcov/1.0"
-from datetime import datetime
-from datetime import timedelta
-import time
-from requests.exceptions import ReadTimeout
-try: # python3
-    from urllib.request import urlopen
-except ImportError: # python2
-    from urllib import urlopen
+from fmi_getter import *
 
-# read settings in
-settings = json.load(open('settings.json'))
-fmi_api_key = settings["settings"]["fmi_api_key"]
-
-request_templates = {
-    "dose_rate": ("http://data.stuk.fi/fmi-apikey/{}/wfs/eng?"
-    "request=GetFeature&storedquery_id=stuk::observations::"
-    "external-radiation::multipointcoverage&starttime={}&endtime={}&"),
-    "samplers": ("http://data.stuk.fi/fmi-apikey/{}/wfs/eng?" 
-                 "request=GetFeature&storedquery_id=stuk::observations"
-                 "::air::radionuclide-activity-concentration::"
-                 "multipointcoverage&starttime={}&endtime={}&")
-}
-
-geojson_template = {
-    "type": "FeatureCollection",
-    "name": "stuk_open_data_dose_rates",
-    "crs": { "type": "name", "properties": 
-            { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
-    "features": []
-}
-
-# TODO: add latest results request
-# WFS request from FMI
-def wfs_request(start_time,end_time,results_type="dose_rate"):
-    """
-    WFS request to FMI Open Data Portal
-    :start_time datetime object
-    :end_time datetime object
-    :results_type 'dose_rates' or 'samplers'
-    """
-    if (end_time-start_time).total_seconds()>559:
-        if results_type=="dose_rate":
-            raise Exception ( "Max timespan is 559. Generate multiple requests"
-                              "to avoid this")
-    t1 = end_time.strftime( "%Y-%m-%dT%H:%M:00Z" )
-    t0 = start_time.strftime( "%Y-%m-%dT%H:%M:00Z" )
-    doserates = request_templates[results_type].format(fmi_api_key,t0,t1)
-    response = urlopen( doserates )
-    return response
-
-def write_geojson(response,directory=".",geojson_file="auto"):
-    """
-    Write GeoJSON files of dose rate measurements.
-    """
+def write_sampler_geojson(response,directory=".",geojson_file="auto"):
     wfs_response = ElementTree.fromstring(response.read())
     gml_points = wfs_response.findall('.//{%s}Point' % gml_namespace)
     # read location names 
@@ -72,6 +17,7 @@ def write_geojson(response,directory=".",geojson_file="auto"):
                                   "latitude": latitude,
                                   "id": point_id
                                   }
+    print ( locations )
     # store values 
     values = []
     try:
@@ -121,15 +67,15 @@ def write_geojson(response,directory=".",geojson_file="auto"):
 
 if __name__=="__main__":
     # TODO: read from command line
-    end_time = datetime.utcnow() - timedelta (seconds=1800)
-    start_time = end_time - timedelta(seconds=559)
-    result_dir = "results"
+    end_time = datetime.utcnow()
+    start_time = end_time - timedelta(days=15)
+    result_dir = "samplers"
     tries = 3
     while tries!=0:
         try:
-            wfs_response = wfs_request( start_time, end_time )
+            wfs_response = wfs_request( start_time, end_time, "samplers" )
             tries = 0
         except ReadTimeout:
             tries +- 1
             time.sleep ( 10 )
-    geojson = write_geojson ( wfs_response, result_dir )
+    geojson = write_sampler_geojson ( wfs_response, result_dir )
