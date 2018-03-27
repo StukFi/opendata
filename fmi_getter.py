@@ -48,8 +48,8 @@ def wfs_request(start_time,end_time,results_type="dose_rate"):
                               "to avoid this")
     t1 = end_time.strftime( "%Y-%m-%dT%H:%M:00Z" )
     t0 = start_time.strftime( "%Y-%m-%dT%H:%M:00Z" )
-    doserates = request_templates[results_type].format(fmi_api_key,t0,t1)
-    response = urlopen( doserates )
+    url = request_templates[results_type].format(fmi_api_key,t0,t1)
+    response = urlopen( url )
     return response
 
 def write_geojson(response,directory=".",geojson_file="auto"):
@@ -75,11 +75,11 @@ def write_geojson(response,directory=".",geojson_file="auto"):
     # store values 
     values = []
     try:
-        values_el = wfs_response.findall('.//{%s}doubleOrNilReasonTupleList'\
-                                         % gml_namespace)[0].text.split("\n")[1:-1]
+        values_lines = wfs_response.findall('.//{%s}doubleOrNilReasonTupleList'\
+                                            % gml_namespace)[0].text.split("\n")[1:-1]
     except IndexError:
         raise Exception ( "No features" )
-    for line in values_el:
+    for line in values_lines:
         l = line.strip()
         l = l.split()
         values.append( float(l[0]) )
@@ -116,7 +116,11 @@ def write_geojson(response,directory=".",geojson_file="auto"):
         outfile = result_dir + "/stuk_open_data_doserates.json"
     # write output
     with open(outfile, 'w') as fp:
-        json.dump(geojson_str, fp)
+        json.dump(geojson_str, 
+                  fp, 
+                  ensure_ascii=False,
+                  indent=4,
+                  sort_keys=True)
     return outfile
 
 if __name__=="__main__":

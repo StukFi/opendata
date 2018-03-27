@@ -1,74 +1,81 @@
 from fmi_getter import *
 
+sampler_geojson_template = geojson_template
+sampler_geojson_template["name"] = "stuk_open_data_air_concentrations"
+
+wfs_ns = "http://www.opengis.net/wfs/2.0"
+swe_ns = "http://www.opengis.net/swe/2.0"
+
 def write_sampler_geojson(response,directory=".",geojson_file="auto"):
     wfs_response = ElementTree.fromstring(response.read())
-    gml_points = wfs_response.findall('.//{%s}Point' % gml_namespace)
-    # read location names 
-    locations = {}
-    geojson_str = geojson_template
-    for n, point in enumerate(gml_points):
+    wfs_members = wfs_response.findall('.//{%s}member' % wfs_ns)
+    geojson_str = sampler_geojson_template
+    for member in wfs_members:
+        point = member.findall('.//{%s}Point' % gml_namespace)[0]
         point_id = point.attrib['{%s}id' % gml_namespace].split("-")[-1]
         name = point.findall('{%s}name' % gml_namespace)[0].text
         pos = point.findall('{%s}pos' % gml_namespace)[0].text
         longitude = float(pos.split()[1])
         latitude = float(pos.split()[0])
-        locations[pos.strip()] = {"site": name,
-                                  "longitude": longitude,
-                                  "latitude": latitude,
-                                  "id": point_id
-                                  }
-    print ( locations )
-    # store values 
-    values = []
-    try:
-        values_el = wfs_response.findall('.//{%s}doubleOrNilReasonTupleList'\
-                                         % gml_namespace)[0].text.split("\n")[1:-1]
-    except IndexError:
-        raise Exception ( "No features" )
-    for line in values_el:
-        l = line.strip()
-        l = l.split()
-        values.append( float(l[0]) )
-    # iterate over the measurements
-    N = 0
-    for line in wfs_response.findall('.//{%s}positions'\
-                                     % gmlcov_namespace)[0].text.split("\n")[1:-1]:
-        l = line.strip()
-        l = l.split()
-        coords = line.split("  ")[-2]
-        timestamp = datetime.utcfromtimestamp(int(l[-1]))
+        values = member.findall('.//{%s}doubleOrNilReasonTupleList'\
+                                % gml_namespace)[0].text.split()
+        values = list(map(float,values))
+        from_time = member.findall('.//{%s}beginPosition' % gml_namespace)[0].text
+        to_time = member.findall('.//{%s}endPosition' % gml_namespace)[0].text
         feature = {
             "type": "Feature", 
             "properties": {},
             "geometry": {"type": "Point"}
         }
         feature["properties"] = {
-            "doseRate": values[N],
-            "id": locations[coords]["id"],
-            "site": locations[coords]["site"],
-            "timestamp": datetime.strftime(timestamp,
-                                           "%Y-%m-%dT%H:%M:%SZ")
+            "site_id": point_id,
+            "site_name": name,
+            "timestamp_begin": from_time,
+            "timestamp_end": to_time,
         }
         feature["geometry"]["coordinates"] = [
-            locations[coords]["longitude"],
-            locations[coords]["latitude"]
+            longitude,
+            latitude
         ]
+        fields = member.findall( './/{%s}field' % swe_ns)
+        meas = {}
+        for N,f in enumerate(fields):
+            name = f.attrib["name"]
+            label = f.findall( './/{%s}label' % swe_ns)[0].text
+            unit = f.findall( './/{%s}uom' % swe_ns)[0].attrib["code"]
+            if "uBq" in unit:
+                unit = unit.replace("u",u"\u00B5")
+            if "m3" in unit:
+                unit = unit.replace("3",u"\u00B3")
+            if (name=="air-volume" or "uncert" in name):
+                value = int(values[N])
+            else:
+                value = values[N]
+            if ("uncertainty") in name:
+                # append existing feature
+                n = name.split("-unc")[0]
+                feature["properties"][n] += u" (" + u"\u00B1 " + \
+                    str(value) + u" " + str(unit) + u")"
+            else:
+                feature["properties"][name] = str(value) + \
+                    u" " + str(unit)
         geojson_str["features"].append(feature)
-        N += 1
-    if geojson_file=="auto":
-        outfile = directory + "/" + datetime.strftime(
-            timestamp,"%Y-%m-%dT%H:%M:%S") + ".json"
-    else:
-        outfile = result_dir + "/stuk_open_data_doserates.json"
+    # refactor values
+
+    outfile = result_dir + "/stuk_open_data_samplers.json"
     # write output
     with open(outfile, 'w') as fp:
-        json.dump(geojson_str, fp)
+        json.dump(geojson_str, 
+                  fp, 
+                  ensure_ascii=False, 
+                  indent=4,
+                  sort_keys=True)
     return outfile
 
 if __name__=="__main__":
     # TODO: read from command line
     end_time = datetime.utcnow()
-    start_time = end_time - timedelta(days=15)
+    start_time = end_time - timedelta(days=10)
     result_dir = "samplers"
     tries = 3
     while tries!=0:
