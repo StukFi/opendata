@@ -1,17 +1,20 @@
 import json
-from xml.etree import ElementTree
-gml_namespace = "http://www.opengis.net/gml/3.2"
-gmlcov_namespace ="http://www.opengis.net/gmlcov/1.0"
-from datetime import datetime
-from datetime import timedelta
 import time
+from datetime import datetime, timedelta
 from requests.exceptions import ReadTimeout
-try: # python3
+from xml.etree import ElementTree
+
+# Python 3.
+try:
     from urllib.request import urlopen
-except ImportError: # python2
+# Python 2.
+except ImportError:
     from urllib import urlopen
 
-# read settings in
+gml_namespace = "http://www.opengis.net/gml/3.2"
+gmlcov_namespace ="http://www.opengis.net/gmlcov/1.0"
+
+# Read settings in.
 settings = json.load(open('settings.json'))
 fmi_api_key = settings["settings"]["fmi_api_key"]
 
@@ -33,32 +36,39 @@ geojson_template = {
     "features": []
 }
 
-# TODO: add latest results request
-# WFS request from FMI
-def wfs_request(start_time,end_time,results_type="dose_rate"):
+# TODO: Add latest results request.
+def wfs_request(start_time, end_time, results_type="dose_rate"):
     """
-    WFS request to FMI Open Data Portal
-    :start_time datetime object
-    :end_time datetime object
-    :results_type 'dose_rates' or 'samplers'
+    Performs a WFS request to FMI Open Data Portal.
+
+    :param start_time: datetime object
+    :param end_time: datetime object
+    :param results_type: 'dose_rates' or 'samplers'
+    :return: HTTPResponse object
     """
-    if (end_time-start_time).total_seconds()>559:
-        if results_type=="dose_rate":
-            raise Exception ( "Max timespan is 559. Generate multiple requests"
-                              "to avoid this")
-    t1 = end_time.strftime( "%Y-%m-%dT%H:%M:00Z" )
-    t0 = start_time.strftime( "%Y-%m-%dT%H:%M:00Z" )
-    url = request_templates[results_type].format(fmi_api_key,t0,t1)
-    response = urlopen( url )
+    if (end_time - start_time).total_seconds() > 559:
+        if results_type == "dose_rate":
+            raise Exception("Max timespan is 559. Generate multiple requests to avoid this.")
+
+    timeFormat = "%Y-%m-%dT%H:%M:00Z"
+    t0 = start_time.strftime(timeFormat)
+    t1 = end_time.strftime(timeFormat)
+    url = request_templates[results_type].format(fmi_api_key, t0, t1)
+    response = urlopen(url)
     return response
 
-def write_geojson(response,directory=".",geojson_file="auto"):
+def write_geojson(response, directory=".", geojson_file="auto"):
     """
-    Write GeoJSON files of dose rate measurements.
+    Writes GeoJSON files of dose rate measurements.
+
+    :param response: HTTPResponse object
+    :param directory: Directory to which files are written
+    :param geojson_file: Indicates whether the filename should be generated
+    :return: Path of the file that was written
     """
     wfs_response = ElementTree.fromstring(response.read())
     gml_points = wfs_response.findall('.//{%s}Point' % gml_namespace)
-    # read location names
+    # Read location names.
     locations = {}
     geojson_str = geojson_template
     for n, point in enumerate(gml_points):
@@ -72,18 +82,18 @@ def write_geojson(response,directory=".",geojson_file="auto"):
                                   "latitude": latitude,
                                   "id": point_id
                                   }
-    # store values
+    # Store values.
     values = []
     try:
         values_lines = wfs_response.findall('.//{%s}doubleOrNilReasonTupleList'\
                                             % gml_namespace)[0].text.split("\n")[1:-1]
     except IndexError:
-        raise Exception ( "No features" )
+        raise Exception("No features.")
     for line in values_lines:
         l = line.strip()
         l = l.split()
-        values.append( float(l[0]) )
-    # iterate over the measurements
+        values.append(float(l[0]))
+    # Iterate over the measurements.
     N = 0
     for line in wfs_response.findall('.//{%s}positions'\
                                      % gmlcov_namespace)[0].text.split("\n")[1:-1]:
@@ -114,7 +124,7 @@ def write_geojson(response,directory=".",geojson_file="auto"):
             timestamp,"%Y-%m-%dT%H%M%S") + ".json"
     else:
         outfile = result_dir + "/stuk_open_data_doserates.json"
-    # write output
+    # Write output.
     with open(outfile, 'w') as fp:
         json.dump(geojson_str,
                   fp,
@@ -123,17 +133,18 @@ def write_geojson(response,directory=".",geojson_file="auto"):
                   sort_keys=True)
     return outfile
 
-if __name__=="__main__":
-    # TODO: read from command line
-    end_time = datetime.utcnow() - timedelta (seconds=1800)
+if __name__ == "__main__":
+    # TODO: Read from command line.
+    end_time = datetime.utcnow() - timedelta(seconds=1800)
     start_time = end_time - timedelta(seconds=559)
     result_dir = "results"
     tries = 3
-    while tries!=0:
+    while tries != 0:
         try:
-            wfs_response = wfs_request( start_time, end_time )
+            wfs_response = wfs_request(start_time, end_time)
             tries = 0
         except ReadTimeout:
-            tries +- 1
-            time.sleep ( 10 )
-    geojson = write_geojson ( wfs_response, result_dir )
+            tries -= 1
+            time.sleep(10)
+
+    geojson = write_geojson(wfs_response, result_dir)
