@@ -111,7 +111,7 @@ def write_geojson(response,directory=".",geojson_file="auto"):
         N += 1
     if geojson_file=="auto":
         outfile = directory + "/" + datetime.strftime(
-            timestamp,"%Y-%m-%dT%H:%M:%S") + ".json"
+            timestamp,"%Y-%m-%dT%H%M%S") + ".json"
     else:
         outfile = result_dir + "/stuk_open_data_doserates.json"
     # write output
