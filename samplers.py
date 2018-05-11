@@ -75,7 +75,7 @@ def write_sampler_geojson(response,directory=".",geojson_file="auto"):
 if __name__=="__main__":
     # TODO: read from command line
     end_time = datetime.utcnow()
-    start_time = end_time - timedelta(days=10)
+    start_time = end_time - timedelta(days=365)
     result_dir = "samplers"
     tries = 3
     while tries!=0:
