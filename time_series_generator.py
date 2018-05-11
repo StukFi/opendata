@@ -24,12 +24,12 @@ def output_results(directory):
                                                            "%Y-%m-%dT%H:%M:%SZ")
             if feature_timestamp!=timestamp:
                 continue
-            s = int( (timestamp-datetime.timedelta(seconds=600)).strftime("%s")) * 1000 
-            e = int( timestamp.strftime("%s") ) * 1000 
-            meas.append( {"s": s, 
-                          "e": e, 
+            s = int( (timestamp-datetime.timedelta(seconds=600)).strftime("%s")) * 1000
+            e = int( timestamp.strftime("%s") ) * 1000
+            meas.append( {"s": s,
+                          "e": e,
                           "timestamp": timestamp,
-                          "station": f["properties"]["id"], 
+                          "station": f["properties"]["id"],
                            "r": f["properties"]["doseRate"] })
     # reformat measurements to match json structure
     dr = {}

@@ -19,7 +19,7 @@ request_templates = {
     "dose_rate": ("http://data.stuk.fi/fmi-apikey/{}/wfs/eng?"
     "request=GetFeature&storedquery_id=stuk::observations::"
     "external-radiation::multipointcoverage&starttime={}&endtime={}&"),
-    "samplers": ("http://data.stuk.fi/fmi-apikey/{}/wfs/eng?" 
+    "samplers": ("http://data.stuk.fi/fmi-apikey/{}/wfs/eng?"
                  "request=GetFeature&storedquery_id=stuk::observations"
                  "::air::radionuclide-activity-concentration::"
                  "multipointcoverage&starttime={}&endtime={}&")
@@ -28,7 +28,7 @@ request_templates = {
 geojson_template = {
     "type": "FeatureCollection",
     "name": "stuk_open_data_dose_rates",
-    "crs": { "type": "name", "properties": 
+    "crs": { "type": "name", "properties":
             { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
     "features": []
 }
@@ -58,7 +58,7 @@ def write_geojson(response,directory=".",geojson_file="auto"):
     """
     wfs_response = ElementTree.fromstring(response.read())
     gml_points = wfs_response.findall('.//{%s}Point' % gml_namespace)
-    # read location names 
+    # read location names
     locations = {}
     geojson_str = geojson_template
     for n, point in enumerate(gml_points):
@@ -72,7 +72,7 @@ def write_geojson(response,directory=".",geojson_file="auto"):
                                   "latitude": latitude,
                                   "id": point_id
                                   }
-    # store values 
+    # store values
     values = []
     try:
         values_lines = wfs_response.findall('.//{%s}doubleOrNilReasonTupleList'\
@@ -92,7 +92,7 @@ def write_geojson(response,directory=".",geojson_file="auto"):
         coords = line.split("  ")[-2]
         timestamp = datetime.utcfromtimestamp(int(l[-1]))
         feature = {
-            "type": "Feature", 
+            "type": "Feature",
             "properties": {},
             "geometry": {"type": "Point"}
         }
@@ -116,8 +116,8 @@ def write_geojson(response,directory=".",geojson_file="auto"):
         outfile = result_dir + "/stuk_open_data_doserates.json"
     # write output
     with open(outfile, 'w') as fp:
-        json.dump(geojson_str, 
-                  fp, 
+        json.dump(geojson_str,
+                  fp,
                   ensure_ascii=False,
                   indent=4,
                   sort_keys=True)

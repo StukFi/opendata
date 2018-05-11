@@ -23,7 +23,7 @@ def write_sampler_geojson(response,directory=".",geojson_file="auto"):
         from_time = member.findall('.//{%s}beginPosition' % gml_namespace)[0].text
         to_time = member.findall('.//{%s}endPosition' % gml_namespace)[0].text
         feature = {
-            "type": "Feature", 
+            "type": "Feature",
             "properties": {},
             "geometry": {"type": "Point"}
         }
@@ -65,9 +65,9 @@ def write_sampler_geojson(response,directory=".",geojson_file="auto"):
     outfile = result_dir + "/stuk_open_data_samplers.json"
     # write output
     with open(outfile, 'w') as fp:
-        json.dump(geojson_str, 
-                  fp, 
-                  ensure_ascii=False, 
+        json.dump(geojson_str,
+                  fp,
+                  ensure_ascii=False,
                   indent=4,
                   sort_keys=True)
     return outfile
