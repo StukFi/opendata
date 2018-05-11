@@ -17,15 +17,15 @@ def output_results(directory):
         # parse time
         timestamp = datetime.datetime.strptime(
             json_file.split(".")[0],
-            "%Y-%m-%dT%H:%M:%S" )
+            "%Y-%m-%dT%H%M%S" )
         for f in features:
             # do not write old results
             feature_timestamp = datetime.datetime.strptime(f["properties"]["timestamp"],
                                                            "%Y-%m-%dT%H:%M:%SZ")
             if feature_timestamp!=timestamp:
                 continue
-            s = int( (timestamp-datetime.timedelta(seconds=600)).strftime("%s")) * 1000
-            e = int( timestamp.strftime("%s") ) * 1000
+            s = int((timestamp-datetime.timedelta(seconds=600)).timestamp()) * 1000
+            e = int(timestamp.timestamp()) * 1000
             meas.append( {"s": s,
                           "e": e,
                           "timestamp": timestamp,
