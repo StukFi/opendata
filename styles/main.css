@@ -1,0 +1,9 @@
+html, body, #app {
+    height: 100%;
+}
+
+.map-container {
+    margin-top: 10%;
+    height: 100%;
+    width: 100%;
+}
