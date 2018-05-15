@@ -31,8 +31,11 @@ function createMap() {
             new ol.control.Zoom(),
             new ol.control.Rotate(),
             new ol.control.ZoomSlider(),
-            new ol.control.MousePosition(),
             new ol.control.ScaleLine(),
+            new ol.control.MousePosition({
+                coordinateFormat: ol.coordinate.createStringXY(2),
+                projection: "EPSG:4326"
+            })
         ],
         interactions: ol.interaction.defaults().extend([
             new ol.interaction.Select({
