@@ -6,10 +6,11 @@ var app = new Vue({
 });
 
 function initialize() {
-    createMap();
+    initializeMap();
+    initializeDatepicker();
 }
 
-function createMap() {
+function initializeMap() {
     var vectorLayer = new ol.layer.Vector({
         source: new ol.source.Vector({
             format: new ol.format.GeoJSON({
@@ -20,7 +21,7 @@ function createMap() {
     });
 
     var map = new ol.Map({
-        target: 'map-container',
+        target: 'map',
         layers: [
             new ol.layer.Tile({
                 source: new ol.source.OSM()
@@ -76,4 +77,15 @@ function createMap() {
         });
         $(element).popover('show');
     });
+}
+
+function initializeDatepicker() {
+    var $datepicker = $("#datepicker");
+
+    $datepicker.datepicker({
+        defaultDate: null,
+        dateFormat: "yy-mm-dd"
+    });
+
+    $datepicker.datepicker("setDate", new Date());
 }
