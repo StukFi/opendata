@@ -34,3 +34,9 @@ html, body, #app {
     margin: 0px auto;
     border: 1px solid #000;
 }
+
+.ol-mouse-position {
+    top: auto;
+    bottom: 8px;
+    right: 8px;
+}
