@@ -1,12 +1,11 @@
-from fmi_getter import *
+from datetime import datetime, timedelta
+from fmi_utils import *
+from xml.etree import ElementTree
 
 sampler_geojson_template = geojson_template
 sampler_geojson_template["name"] = "stuk_open_data_air_concentrations"
 
-wfs_ns = "http://www.opengis.net/wfs/2.0"
-swe_ns = "http://www.opengis.net/swe/2.0"
-
-def write_sampler_geojson(response,directory=".",geojson_file="auto"):
+def write_samplers(response,directory=".",geojson_file="auto"):
     wfs_response = ElementTree.fromstring(response.read())
     wfs_members = wfs_response.findall('.//{%s}member' % wfs_ns)
     geojson_str = sampler_geojson_template
@@ -73,10 +72,9 @@ def write_sampler_geojson(response,directory=".",geojson_file="auto"):
     return outfile
 
 if __name__=="__main__":
-    # TODO: read from command line
     end_time = datetime.utcnow()
     start_time = end_time - timedelta(days=10)
-    result_dir = "samplers"
+    result_dir = "../data/samplers"
     tries = 3
     while tries!=0:
         try:
@@ -85,4 +83,4 @@ if __name__=="__main__":
         except ReadTimeout:
             tries +- 1
             time.sleep ( 10 )
-    geojson = write_sampler_geojson ( wfs_response, result_dir )
+    geojson = write_samplers(wfs_response, result_dir)

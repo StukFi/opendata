@@ -30,7 +30,7 @@ def generate_metadata(list_of_filenames):
     Creates a JSON string from the argument list of filenames. The JSON
     string lists the available dates and times for which a data file exists.
 
-    :param list_of_files: filenames from which to parse available data
+    :param list_of_filenames: filenames from which to parse available data
     :return JSON string
     """
     base_key = "available_data"
@@ -39,6 +39,9 @@ def generate_metadata(list_of_filenames):
     for filename in list_of_filenames:
         filename = os.path.splitext(filename)[0]
         date, time = filename.split("T")
+        if not date or not time:
+            continue
+
         entry = next((entry for entry in result[base_key] if entry["date"] == date), None)
         if entry == None:
             entry = {"date": date, "times": [time]}
@@ -65,6 +68,7 @@ def writeFile(filename, data):
     file.close()
 
 if __name__ == "__main__":
-    list_of_filenames = list_directory("results", ".json")
+    directory = "../data/dose_rates/"
+    list_of_filenames = list_directory(directory, ".json")
     metadata = generate_metadata(list_of_filenames)
-    writeFile("metadata.json", metadata)
+    writeFile(directory + "metadata.json", metadata)
