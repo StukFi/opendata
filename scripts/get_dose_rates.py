@@ -73,7 +73,7 @@ def write_dose_rates(response, directory=".", geojson_file="auto"):
     else:
         outfile = result_dir + "/stuk_open_data_doserates.json"
     # Write output.
-    with open(outfile, 'w') as fp:
+    with open(outfile, 'w', encoding="utf-8") as fp:
         json.dump(geojson_str,
                   fp,
                   ensure_ascii=False,
