@@ -36,11 +36,12 @@ def generate_metadata(list_of_filenames):
     base_key = "available_data"
     result = { base_key: [] }
 
+    if "metadata.json" in list_of_filenames:
+        list_of_filenames.remove("metadata.json")
+
     for filename in list_of_filenames:
         filename = os.path.splitext(filename)[0]
         date, time = filename.split("T")
-        if not date or not time:
-            continue
 
         entry = next((entry for entry in result[base_key] if entry["date"] == date), None)
         if entry == None:
@@ -48,6 +49,11 @@ def generate_metadata(list_of_filenames):
             result[base_key].append(entry)
         else:
             entry["times"].append(time)
+
+    result["files"] = [];
+    for filename in list_of_filenames:
+        result["files"].append(filename)
+
     result = json.dumps(result, indent=4)
     return result
 
