@@ -1,19 +1,36 @@
 Vue.component('map-widget', {
     template: '<div></div>',
-    data() {
+    data: function() {
         return {
-            map: {}
+            map: {},
+            vectorLayer: {},
+            url: "",
+            file: "",
+            geoJsonFormat: {}
         };
+    },
+    methods: {
+        onDatasetChanged(dataset) {
+            dataset = "data/dose_rates/" + dataset;
+            var source = new ol.source.Vector({
+                format: this.geoJsonFormat,
+                url: dataset
+            });
+            this.vectorLayer.setSource(source);
+        }
     },
     mounted: function() {
         var that = this;
 
-        var vectorLayer = new ol.layer.Vector({
+        this.$root.$on('datasetChanged', this.onDatasetChanged);
+
+        this.geoJsonFormat = new ol.format.GeoJSON({
+            defaultDataProjection: 'EPSG:4326'
+        });
+
+        this.vectorLayer = new ol.layer.Vector({
             source: new ol.source.Vector({
-                format: new ol.format.GeoJSON({
-                    defaultDataProjection: 'EPSG:4326'
-                }),
-                url: '../results/2018-05-11T110000.json'
+                format: this.geoJsonFormat
             })
         });
 
@@ -23,7 +40,7 @@ Vue.component('map-widget', {
                 new ol.layer.Tile({
                     source: new ol.source.OSM()
                 }),
-                vectorLayer
+                this.vectorLayer
             ],
             controls: [
                 new ol.control.Zoom(),
@@ -37,7 +54,7 @@ Vue.component('map-widget', {
             ],
             interactions: ol.interaction.defaults().extend([
                 new ol.interaction.Select({
-                    layers: [vectorLayer]
+                    layers: [this.vectorLayer]
                 })
             ]),
             view: new ol.View({
@@ -61,6 +78,7 @@ Vue.component('map-widget', {
                 return;
             }
 
+            var station = features[0];
             var coordinate = features[0].getGeometry().getCoordinates();
             var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
                 coordinate, 'EPSG:3857', 'EPSG:4326'));
@@ -69,8 +87,9 @@ Vue.component('map-widget', {
             $(element).popover({
                 'placement': 'top',
                 'animation': false,
-                'html': true,
-                'content': '<p>Position:</p><code>' + hdms + '</code>'
+                'html': false,
+                'title': station.get("site"),
+                'content': 'Dose rate: ' + station.get("doseRate")
             });
             $(element).popover('show');
         });
