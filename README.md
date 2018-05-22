@@ -1,8 +1,10 @@
-STUK Open Data Web Site
-=======================
+# STUK Open Data Website
 
-Tämän pohjalle rakennetaan itsenäinen Web-sivusto jolla voi katsella avoimen datan tuloksia.
+A web application for viewing open data results.
 
-Käyttö:
-* Kopioi settings.example.json settings.json ja korvaa FMI api key omalla.
+## Usage
 
+1. Create a copy of settings.example.json and name it settings.json.
+   In the settings file, replace the FMI API key with your own.
+
+2. Run the scripts in the scripts directory to get data.
