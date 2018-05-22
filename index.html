@@ -9,18 +9,17 @@
     <meta charset="utf-8">
 
     <link rel="stylesheet" href="assets/libs/bootstrap/v4.1.1-dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/libs/jquery-ui/v1.12.1/jquery-ui.min.css">
     <link rel="stylesheet" href="assets/libs/openlayers/v4.6.5-dist/ol.css">
     <link rel="stylesheet" href="styles/main.css">
 </head>
 
 <body>
     <div id="app">
-
         <div id="toolbar" class="toolbar">
+            <dataset-picker></dataset-picker>
         </div>
         <map-widget id="map" class="map"></map-widget>
-        <div id="map-feature-popup" title="Station"></div>
+        <div id="map-feature-popup"></div>
     </div>
 
     <script src="assets/libs/vue.js/v2.5.16/vue.js"></script>
@@ -29,6 +28,7 @@
     <script src="assets/libs/bootstrap/v4.1.1-dist/js/bootstrap.min.js"></script>
     <script src="assets/libs/openlayers/v4.6.5-dist/ol-debug.js"></script>
     <script src="src/components/MapWidget.js"></script>
+    <script src="src/components/DatasetPicker.js"></script>
     <script src="src/app.js"></script>
 </body>
 
