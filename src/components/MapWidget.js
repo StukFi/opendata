@@ -89,7 +89,7 @@ Vue.component('map-widget', {
                 'animation': false,
                 'html': false,
                 'title': station.get("site"),
-                'content': 'Dose rate: ' + station.get("doseRate")
+                'content': 'Dose rate: ' + station.get("doseRate") + " \u03bcSv/h"
             });
             $(element).popover('show');
         });
