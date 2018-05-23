@@ -1,6 +1,6 @@
 *.swp
 *.pyc
-results
+data
 samplers
 settings.json
 metadata.json
