@@ -13,14 +13,15 @@ html, body, #app {
     line-height: 3em;
     display: table;
     padding-left: 0.2em;
+    text-align: center;
 }
 
-.datepicker {
-    display: block;
-    margin: 0px auto;
-    text-align: center;
-    font-size: 1.5em;
+.dataset-picker {
+    font-size: 1.25em;
     border: none;
+    outline: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
 }
 
 #app {
