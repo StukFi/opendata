@@ -1,5 +1,5 @@
 Vue.component('dataset-picker', {
-    template: '<select v-model="dataset" @change="onChanged"><option :value="dataset" v-for="dataset in datasets">{{dataset | formatDataset}}</option></select>',
+    template: '<select v-model="dataset" @change="onDatasetChanged"><option :value="dataset" v-for="dataset in datasets">{{dataset | formatDataset}}</option></select>',
     data: function() {
         return {
             datasets: [],
@@ -11,10 +11,12 @@ Vue.component('dataset-picker', {
         $.get("data/dose_rates/metadata.json", function(response) {
             that.datasets = response["files"];
             that.datasets.reverse();
+            that.dataset = that.datasets[0];
+            that.onDatasetChanged();
         });
     },
     methods: {
-        onChanged: function(e) {
+        onDatasetChanged: function() {
             this.$root.$emit('datasetChanged', this.dataset);
         }
     },
