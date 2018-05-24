@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 import datetime
 import json
 import os
@@ -9,7 +8,7 @@ def output_results(directory):
     files.sort()
     meas = []
     for json_file in files:
-        if not ".json" in json_file:
+        if not ".json" in json_file or json_file == "metadata.json":
             continue
         # read json data to dict
         results = json.loads( open( directory + "/" + json_file).read() )
@@ -50,4 +49,4 @@ def output_results(directory):
             f.close()
 
 if __name__=="__main__":
-    results = output_results("results")
+    results = output_results("../data/dose_rates")

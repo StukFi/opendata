@@ -1,63 +1,11 @@
 import json
 import time
 from datetime import datetime, timedelta
+from fmi_utils import *
 from requests.exceptions import ReadTimeout
 from xml.etree import ElementTree
 
-# Python 3.
-try:
-    from urllib.request import urlopen
-# Python 2.
-except ImportError:
-    from urllib import urlopen
-
-gml_namespace = "http://www.opengis.net/gml/3.2"
-gmlcov_namespace ="http://www.opengis.net/gmlcov/1.0"
-
-# Read settings in.
-settings = json.load(open('settings.json'))
-fmi_api_key = settings["settings"]["fmi_api_key"]
-
-request_templates = {
-    "dose_rate": ("http://data.stuk.fi/fmi-apikey/{}/wfs/eng?"
-    "request=GetFeature&storedquery_id=stuk::observations::"
-    "external-radiation::multipointcoverage&starttime={}&endtime={}&"),
-    "samplers": ("http://data.stuk.fi/fmi-apikey/{}/wfs/eng?"
-                 "request=GetFeature&storedquery_id=stuk::observations"
-                 "::air::radionuclide-activity-concentration::"
-                 "multipointcoverage&starttime={}&endtime={}&")
-}
-
-geojson_template = {
-    "type": "FeatureCollection",
-    "name": "stuk_open_data_dose_rates",
-    "crs": { "type": "name", "properties":
-            { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
-    "features": []
-}
-
-# TODO: Add latest results request.
-def wfs_request(start_time, end_time, results_type="dose_rate"):
-    """
-    Performs a WFS request to FMI Open Data Portal.
-
-    :param start_time: datetime object
-    :param end_time: datetime object
-    :param results_type: 'dose_rates' or 'samplers'
-    :return: HTTPResponse object
-    """
-    if (end_time - start_time).total_seconds() > 559:
-        if results_type == "dose_rate":
-            raise Exception("Max timespan is 559. Generate multiple requests to avoid this.")
-
-    timeFormat = "%Y-%m-%dT%H:%M:00Z"
-    t0 = start_time.strftime(timeFormat)
-    t1 = end_time.strftime(timeFormat)
-    url = request_templates[results_type].format(fmi_api_key, t0, t1)
-    response = urlopen(url)
-    return response
-
-def write_geojson(response, directory=".", geojson_file="auto"):
+def write_dose_rates(response, directory=".", geojson_file="auto"):
     """
     Writes GeoJSON files of dose rate measurements.
 
@@ -125,7 +73,7 @@ def write_geojson(response, directory=".", geojson_file="auto"):
     else:
         outfile = result_dir + "/stuk_open_data_doserates.json"
     # Write output.
-    with open(outfile, 'w') as fp:
+    with open(outfile, 'w', encoding="utf-8") as fp:
         json.dump(geojson_str,
                   fp,
                   ensure_ascii=False,
@@ -134,10 +82,9 @@ def write_geojson(response, directory=".", geojson_file="auto"):
     return outfile
 
 if __name__ == "__main__":
-    # TODO: Read from command line.
     end_time = datetime.utcnow() - timedelta(seconds=1800)
     start_time = end_time - timedelta(seconds=559)
-    result_dir = "results"
+    result_dir = "../data/dose_rates"
     tries = 3
     while tries != 0:
         try:
@@ -147,4 +94,4 @@ if __name__ == "__main__":
             tries -= 1
             time.sleep(10)
 
-    geojson = write_geojson(wfs_response, result_dir)
+    geojson = write_dose_rates(wfs_response, result_dir)
