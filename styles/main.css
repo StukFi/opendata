@@ -31,6 +31,7 @@ html, body, #app {
 }
 
 .map {
+    position: relative;
     width: 98%;
     height: calc(98% - 3em);
     margin: 0px auto;
@@ -89,4 +90,26 @@ html, body, #app {
 
 .ol-popup-closer:after {
     content: "✖";
+}
+
+#map-legend {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 10000;
+    width: 200px;
+    height: auto;
+    background-color: rgba(204, 229, 236, 0.4);
+    border-radius: 4px;
+    padding: 10px 10px;
+    text-align: center;
+}
+
+.map-legend-bar {
+    width: 90%;
+    height: 25px;
+    line-height: 25px;
+    margin: 0px auto;
+    color: white;
+    font-size: 0.8em;
 }

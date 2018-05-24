@@ -1,5 +1,5 @@
 Vue.component('map-widget', {
-    template: '<div></div>',
+    template: '<div><map-legend></map-legend></div>',
     data: function() {
         return {
             map: {},
