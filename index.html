@@ -19,14 +19,17 @@
             <dataset-picker></dataset-picker>
         </div>
         <map-widget id="map" class="map"></map-widget>
-        <div id="map-feature-popup"></div>
+        <div id="popup" class="ol-popup">
+            <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+            <div id="popup-content"></div>
+        </div>
     </div>
 
     <script src="assets/libs/vue.js/v2.5.16/vue.js"></script>
     <script src="assets/libs/jquery/v3.3.1/jquery-3.3.1.js"></script>
-    <script src="assets/libs/popper.js/v1.14.3-dist/popper.js"></script>
     <script src="assets/libs/bootstrap/v4.1.1-dist/js/bootstrap.min.js"></script>
     <script src="assets/libs/openlayers/v4.6.5-dist/ol-debug.js"></script>
+    <script src="assets/libs/plotly.js/v1.37.1/plotly.min.js"></script>
     <script src="src/components/MapWidget.js"></script>
     <script src="src/components/DatasetPicker.js"></script>
     <script src="src/app.js"></script>

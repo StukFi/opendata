@@ -63,35 +63,42 @@ Vue.component('map-widget', {
             })
         });
 
-        var popup = new ol.Overlay({
-            element: document.getElementById('map-feature-popup')
+        var popupContainer = document.getElementById("popup");
+        var popupContent = document.getElementById("popup-content");
+        var popupCloser = document.getElementById("popup-closer");
+
+        var overlay = new ol.Overlay({
+            element: popupContainer,
+            autoPan: true,
+            autoPanAnimation: {
+                duration: 250
+            }
         });
-        this.map.addOverlay(popup);
+        this.map.addOverlay(overlay);
+
+        popupCloser.onclick = function() {
+            overlay.setPosition(undefined);
+            popupCloser.blur();
+            return false;
+        };
 
         this.map.on('click', function(e) {
-            var element = popup.getElement();
-            $(element).popover('dispose');
-
             var pixel = that.map.getEventPixel(e.originalEvent);
             var features = that.map.getFeaturesAtPixel(pixel);
             if (!features) {
+                overlay.setPosition(undefined);
                 return;
             }
 
             var station = features[0];
             var coordinate = features[0].getGeometry().getCoordinates();
             var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
-                coordinate, 'EPSG:3857', 'EPSG:4326'));
-
-            popup.setPosition(coordinate);
-            $(element).popover({
-                'placement': 'top',
-                'animation': false,
-                'html': false,
-                'title': station.get("site"),
-                'content': 'Dose rate: ' + station.get("doseRate") + " \u03bcSv/h"
-            });
-            $(element).popover('show');
+                        coordinate, 'EPSG:3857', 'EPSG:4326'));
+            popupContent.innerHTML = '<p><b>' + station.get("site") + "</b></p><hr/>" +
+                "<p>Dose rate: " + station.get("doseRate") + " \u03bcSv/h</p>"
+            overlay.setPosition(coordinate);
         });
+
+        this.map.updateSize();
     }
 });
