@@ -82,7 +82,7 @@ Vue.component('map-widget', {
             return false;
         };
 
-        this.map.on('click', function(e) {
+        this.map.on('pointermove', function(e) {
             var pixel = that.map.getEventPixel(e.originalEvent);
             var features = that.map.getFeaturesAtPixel(pixel);
             if (!features) {
@@ -94,8 +94,7 @@ Vue.component('map-widget', {
             var coordinate = features[0].getGeometry().getCoordinates();
             var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
                         coordinate, 'EPSG:3857', 'EPSG:4326'));
-            popupContent.innerHTML = '<p><b>' + station.get("site") + "</b></p><hr/>" +
-                "<p>Dose rate: " + station.get("doseRate") + " \u03bcSv/h</p>"
+            popupContent.innerHTML = "<p style='text-align:center;'><b>" + station.get("site") + "</b></p>" + "<p style='text-align:center;font-size:2em;'>" + station.get("doseRate") + "</p>";
             overlay.setPosition(coordinate);
         });
 

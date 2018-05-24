@@ -53,8 +53,8 @@ html, body, #app {
     border-radius: 10px;
     border: 1px solid #cccccc;
     bottom: 12px;
-    left: -50px;
-    min-width: 280px;
+    left: -140px;
+    width: 280px;
 }
 
 .ol-popup:after, .ol-popup:before {
@@ -70,14 +70,14 @@ html, body, #app {
 .ol-popup:after {
     border-top-color: white;
     border-width: 10px;
-    left: 48px;
+    left: 139px;
     margin-left: -10px;
 }
 
 .ol-popup:before {
     border-top-color: #cccccc;
     border-width: 11px;
-    left: 48px;
+    left: 139px;
     margin-left: -11px;
 }
 
