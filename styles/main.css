@@ -92,9 +92,14 @@ html, body, #app {
     content: "✖";
 }
 
+.ol-zoom, .ol-zoomslider {
+    left: initial;
+    right: 0.5em;
+}
+
 #map-legend {
     position: absolute;
-    right: 10px;
+    left: 10px;
     top: 10px;
     z-index: 10000;
     width: 200px;
