@@ -1,4 +1,5 @@
 Vue.component('map-widget', {
+    mixins: [settings],
     template: '<div><map-legend></map-legend></div>',
     data: function() {
         return {
@@ -28,10 +29,33 @@ Vue.component('map-widget', {
             defaultDataProjection: 'EPSG:4326'
         });
 
+        var styleFunction = function(feature) {
+            var doseRate = feature.get("doseRate");
+            var color;
+            for (var i = 0; i < that.settings.doseRates.length; ++i) {
+                if (doseRate < that.settings.doseRates[i].maxValue) {
+                    color = that.settings.doseRates[i].color;
+                    break;
+                }
+            }
+
+            var style = new ol.style.Style({
+                image: new ol.style.Circle({
+                    radius: 10,
+                    fill: new ol.style.Fill({
+                        color: color
+                    })
+                })
+            });
+
+            return [style];
+        };
+
         this.vectorLayer = new ol.layer.Vector({
             source: new ol.source.Vector({
                 format: this.geoJsonFormat
-            })
+            }),
+            style: styleFunction
         });
 
         this.map = new ol.Map({

@@ -1,12 +1,15 @@
 Vue.component('map-legend', {
+    mixins: [settings],
+    filters: {
+        formatNumber: function(value) {
+            return value.toFixed(2);
+        }
+    },
     template: `
     <div id="map-legend">
         <p>Dose rate [\u03bcSv/h]</p>
-        <div class="map-legend-bar" style="background-color:#411daf;">&gt 0,40</div>
-        <div class="map-legend-bar" style="background-color:#1d41af;">0,30 - 0,40</div>
-        <div class="map-legend-bar" style="background-color:#1d66af;">0,20 - 0,30</div>
-        <div class="map-legend-bar" style="background-color:#1d8baf;">0,10 - 0,20</div>
-        <div class="map-legend-bar" style="background-color:#1dafaf;">0,00 - 0,10</div>
+        <div class="map-legend-bar" v-bind:style="{backgroundColor: settings.doseRates.slice(-1)[0].color}">&gt; {{settings.doseRates.slice(-1)[0].minValue}}</div>
+        <div class="map-legend-bar" v-for="item in settings.doseRates.slice(0, -1).reverse()" v-bind:style="{backgroundColor: item.color}">{{item.minValue | formatNumber}} - {{item.maxValue | formatNumber}}</div>
     </div>
     `
 });
