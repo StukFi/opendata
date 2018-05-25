@@ -10,6 +10,7 @@ Vue.component('dataset-picker', {
         var that = this;
         $.get("data/dose_rates/metadata.json", function(response) {
             that.datasets = response["files"];
+            that.datasets.sort();
             that.datasets.reverse();
             that.dataset = that.datasets[0];
             that.onDatasetChanged();
