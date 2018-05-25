@@ -1,0 +1,45 @@
+@import "ol-popup.less";
+@import "ol-zoom.less";
+@import "ol-mouse-position.less";
+
+@import "map-legend.less";
+
+* {
+    box-sizing: border-box;
+}
+
+html, body, #app {
+    height: 100%;
+    margin: 0;
+}
+
+.toolbar {
+    width: 100%;
+    height: 3em;
+    line-height: 3em;
+    display: table;
+    padding-left: 0.2em;
+    text-align: center;
+}
+
+.dataset-picker {
+    font-size: 1.25em;
+    font-weight: bold;
+    border: none;
+    outline: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+#app {
+    height: 100%;
+    width: 100%;
+}
+
+.map {
+    position: relative;
+    width: 98%;
+    height: calc(98% - 3em);
+    margin: 0px auto;
+    border: 1px solid #000;
+}
