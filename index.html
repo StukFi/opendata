@@ -20,21 +20,23 @@
         <div id="toolbar" class="toolbar">
             <dataset-picker></dataset-picker>
         </div>
-        <map-widget id="map" class="map"></map-widget>
-        <div id="popup" class="ol-popup">
-            <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-            <div id="popup-content"></div>
-        </div>
+        <map-widget></map-widget>
     </div>
 
     <script src="assets/libs/vue.js/v2.5.16/vue.js"></script>
+    <script src="assets/libs/vue-resource/v1.5.1/vue-resource.js"></script>
     <script src="assets/libs/jquery/v3.3.1/jquery-3.3.1.js"></script>
     <script src="assets/libs/bootstrap/v4.1.1-dist/js/bootstrap.min.js"></script>
     <script src="assets/libs/openlayers/v4.6.5-dist/ol-debug.js"></script>
+    <script src="assets/libs/plotly.js/v1.37.1/plotly.min.js"></script>
     <script src="src/mixins/Settings.js"></script>
+    <script src="src/mixins/Popup.js"></script>
     <script src="src/components/MapWidget.js"></script>
     <script src="src/components/MapLegend.js"></script>
+    <script src="src/components/PopupBasic.js"></script>
+    <script src="src/components/PopupDetailed.js"></script>
     <script src="src/components/DatasetPicker.js"></script>
+    <script src="src/components/TimeSeriesGraph.js"></script>
     <script src="src/app.js"></script>
 </body>
 

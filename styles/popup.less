@@ -1,4 +1,4 @@
-.ol-popup {
+.popup {
     position: absolute;
     background-color: white;
     -webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
@@ -7,11 +7,14 @@
     border-radius: 10px;
     border: 1px solid #cccccc;
     bottom: 12px;
-    left: -140px;
-    width: 280px;
+    left: -225px;
+    width: 450px;
 }
 
-.ol-popup:after, .ol-popup:before {
+#popup-detailed {
+}
+
+.popup:after, .popup:before {
     top: 100%;
     border: solid transparent;
     content: " ";
@@ -21,27 +24,36 @@
     pointer-events: none;
 }
 
-.ol-popup:after {
+.popup:after {
     border-top-color: white;
     border-width: 10px;
-    left: 139px;
+    left: 224px;
     margin-left: -10px;
 }
 
-.ol-popup:before {
+.popup:before {
     border-top-color: #cccccc;
     border-width: 11px;
-    left: 139px;
+    left: 224px;
     margin-left: -11px;
 }
 
-.ol-popup-closer {
+.popup-closer {
     text-decoration: none;
     position: absolute;
     top: 2px;
     right: 8px;
 }
 
-.ol-popup-closer:after {
-    content: "✖";
+.popup-closer:after {
+    content: "\00274C";
+}
+
+#popup-basic {
+    width: 280px;
+    left: -140px;
+
+    &:after, &:before {
+        left: 139px;
+    }
 }

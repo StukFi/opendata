@@ -1,6 +1,12 @@
-Vue.component('map-widget', {
+Vue.component("map-widget", {
     mixins: [settings],
-    template: '<div><map-legend></map-legend></div>',
+    template: `
+        <div id="map" class="map">
+            <map-legend></map-legend>
+            <popup-basic></popup-basic>
+            <popup-detailed></popup-detailed>
+        </div>
+    `,
     data: function() {
         return {
             map: {},
@@ -23,10 +29,10 @@ Vue.component('map-widget', {
     mounted: function() {
         var that = this;
 
-        this.$root.$on('datasetChanged', this.onDatasetChanged);
+        this.$root.$on("datasetChanged", this.onDatasetChanged);
 
         this.geoJsonFormat = new ol.format.GeoJSON({
-            defaultDataProjection: 'EPSG:4326'
+            defaultDataProjection: "EPSG:4326"
         });
 
         var styleFunction = function(feature) {
@@ -59,7 +65,7 @@ Vue.component('map-widget', {
         });
 
         this.map = new ol.Map({
-            target: 'map',
+            target: "map",
             layers: [
                 new ol.layer.Tile({
                     source: new ol.source.OSM()
@@ -87,40 +93,94 @@ Vue.component('map-widget', {
             })
         });
 
-        var popupContainer = document.getElementById("popup");
-        var popupContent = document.getElementById("popup-content");
-        var popupCloser = document.getElementById("popup-closer");
+        var popupBasic = document.getElementById("popup-basic");
+        var popupDetailed = document.getElementById("popup-detailed");
 
-        var overlay = new ol.Overlay({
-            element: popupContainer,
+        var overlayPopupBasic = new ol.Overlay({
+            element: popupBasic,
+            position: undefined,
             autoPan: true,
             autoPanAnimation: {
                 duration: 250
             }
         });
-        this.map.addOverlay(overlay);
 
+        var overlayPopupDetailed = new ol.Overlay({
+            element: popupDetailed,
+            position: undefined,
+            autoPan: true,
+            autoPanAnimation: {
+                duration: 250
+            }
+        });
+
+        this.map.addOverlay(overlayPopupBasic);
+        this.map.addOverlay(overlayPopupDetailed);
+
+        var popupCloser = document.getElementById("popup-closer");
         popupCloser.onclick = function() {
-            overlay.setPosition(undefined);
+            overlayPopupDetailed.setPosition(undefined);
             popupCloser.blur();
             return false;
         };
 
-        this.map.on('pointermove', function(e) {
-            var pixel = that.map.getEventPixel(e.originalEvent);
-            var features = that.map.getFeaturesAtPixel(pixel);
-            if (!features) {
-                overlay.setPosition(undefined);
+        this.map.on("pointermove", controlBasicPopup);
+        this.map.on("click", controlDetailedPopup);
+
+        function controlBasicPopup(evt) {
+            if (overlayPopupDetailed.getPosition()) {
                 return;
             }
 
-            var station = features[0];
-            var coordinate = features[0].getGeometry().getCoordinates();
+            var pixel = that.map.getEventPixel(evt.originalEvent);
+            var features = that.map.getFeaturesAtPixel(pixel);
+            if (!features) {
+                overlayPopupBasic.setPosition(undefined);
+                return;
+            }
+
+            var feature = features[0];
+            var coordinate = feature.getGeometry().getCoordinates();
             var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
-                        coordinate, 'EPSG:3857', 'EPSG:4326'));
-            popupContent.innerHTML = "<p style='text-align:center;'><b>" + station.get("site") + "</b></p>" + "<p style='text-align:center;font-size:2em;'>" + station.get("doseRate") + "</p>";
-            overlay.setPosition(coordinate);
-        });
+                        coordinate, "EPSG:3857", "EPSG:4326"));
+            overlayPopupBasic.setPosition(coordinate);
+
+            var data = {
+                site: feature.get("site"),
+                siteId: feature.get("id"),
+                doseRate: feature.get("doseRate")
+            };
+
+            that.$root.$emit("mapFeatureFocused", data);
+        }
+
+        function controlDetailedPopup(evt) {
+            var pixel = that.map.getEventPixel(evt.originalEvent);
+            var features = that.map.getFeaturesAtPixel(pixel);
+            if (!features) {
+                overlayPopupDetailed.setPosition(undefined);
+                return;
+            }
+
+            if (overlayPopupBasic.getPosition()) {
+                overlayPopupBasic.setPosition(undefined);
+            }
+
+            var feature = features[0];
+            var coordinate = feature.getGeometry().getCoordinates();
+            var hdms = ol.coordinate.toStringHDMS(ol.proj.transform(
+                        coordinate, "EPSG:3857", "EPSG:4326"));
+            overlayPopupDetailed.setPosition(coordinate);
+
+            var data = {
+                site: feature.get("site"),
+                siteId: feature.get("id"),
+                doseRate: feature.get("doseRate")
+            };
+
+            that.$root.$emit("mapFeatureFocused", data);
+            that.$root.$emit("mapFeatureClicked", data);
+        };
 
         this.map.updateSize();
     }
