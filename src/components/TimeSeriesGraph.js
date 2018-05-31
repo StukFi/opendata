@@ -58,7 +58,7 @@ Vue.component('time-series-graph', {
                 // reset when the popup is reopened.
                 var layout = $.extend(true, {}, that.layout);
 
-                Plotly.newPlot('graph-container', data, layout, that.config);
+                Plotly.react('graph-container', data, layout, that.config);
             });
         }
     },
