@@ -13,22 +13,27 @@ html, body, #app {
     margin: 0;
 }
 
-.toolbar {
-    width: 100%;
-    height: 3em;
-    line-height: 3em;
-    display: table;
-    padding-left: 0.2em;
+.dataset-picker-container {
+    width: 400px;
+    height: 60px;
+    line-height: 60px;
+    position: absolute;
+    left: 50%;
+    top: 10px;
+    transform: translateX(-50%);
     text-align: center;
+    background-color: rgba(204, 229, 236, 1);
+    z-index: 10000;
+    border: 1px solid rgba(0, 0, 0, 0.4);
 }
 
 .dataset-picker {
-    font-size: 1.25em;
-    font-weight: bold;
+    font-size: 1.75em;
     border: none;
     outline: none;
     -webkit-appearance: none;
     -moz-appearance: none;
+    background-color: transparent;
 }
 
 #app {
@@ -38,8 +43,8 @@ html, body, #app {
 
 .map {
     position: relative;
-    width: 98%;
-    height: calc(98% - 3em);
+    width: 100%;
+    height: 100%;
     margin: 0px auto;
     border: 1px solid #000;
 }

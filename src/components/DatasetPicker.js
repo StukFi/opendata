@@ -1,5 +1,9 @@
 Vue.component('dataset-picker', {
-    template: '<select class="dataset-picker" v-model="dataset" @change="onDatasetChanged"><option :value="dataset" v-for="dataset in datasets">{{dataset | formatDataset}}</option></select>',
+    template: `
+    <div class="dataset-picker-container">
+        <select class="dataset-picker" v-model="dataset" @change="onDatasetChanged"><option :value="dataset" v-for="dataset in datasets">{{dataset | formatDataset}}</option></select>
+    </div>
+    `,
     data: function() {
         return {
             datasets: [],

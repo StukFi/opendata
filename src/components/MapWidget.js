@@ -2,6 +2,7 @@ Vue.component("map-widget", {
     mixins: [settings],
     template: `
         <div id="map" class="map">
+            <dataset-picker></dataset-picker>
             <map-legend></map-legend>
             <popup-basic></popup-basic>
             <popup-detailed></popup-detailed>
