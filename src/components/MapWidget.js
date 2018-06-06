@@ -2,7 +2,7 @@ Vue.component("map-widget", {
     mixins: [settings],
     template: `
         <div id="map" class="map">
-            <dataset-picker></dataset-picker>
+            <datetime-picker></datetime-picker>
             <map-legend></map-legend>
             <popup-basic></popup-basic>
             <popup-detailed></popup-detailed>
@@ -18,11 +18,11 @@ Vue.component("map-widget", {
         };
     },
     methods: {
-        onDatasetChanged(dataset) {
-            dataset = "data/dose_rates/" + dataset;
+        onDatetimeChanged(datetime) {
+            var filePath = "data/dose_rates/" + datetime + ".json";
             var source = new ol.source.Vector({
                 format: this.geoJsonFormat,
-                url: dataset
+                url: filePath
             });
             this.vectorLayer.setSource(source);
         }
@@ -30,7 +30,7 @@ Vue.component("map-widget", {
     mounted: function() {
         var that = this;
 
-        this.$root.$on("datasetChanged", this.onDatasetChanged);
+        this.$root.$on("datetimeChanged", this.onDatetimeChanged);
 
         this.geoJsonFormat = new ol.format.GeoJSON({
             defaultDataProjection: "EPSG:4326"
