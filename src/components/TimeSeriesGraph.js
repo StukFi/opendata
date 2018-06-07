@@ -8,8 +8,8 @@ Vue.component('time-series-graph', {
             siteId: "",
             datasets: [],
             defaultDataset: {},
-            startDate: undefined,
-            endDate: undefined,
+            startDate: undefined, endDate: undefined,
+            defaultStartDate: undefined, defaultEndDate: undefined,
             baseFilePath: "data/dose_rates/stations/",
             graphEventsRegistered: false,
             graphData: [],
@@ -33,28 +33,48 @@ Vue.component('time-series-graph', {
         this.$root.$on('mapFeatureClicked', this.onSiteClicked);
     },
     methods: {
-        onDatetimeChanged(datetime) {
+        resetGraphData() {
             this.datasets = [];
             this.graphData = [];
+        },
+        onDatetimeChanged(datetime) {
+            this.resetGraphData();
 
-            var date = datetime.split("T")[0];
-            this.startDate = new Date(date);
-            this.endDate = new Date(this.startDate);
-            this.endDate = this.endDate.setDate(this.endDate.getDate() + 1);
+            var dateString = datetime.split("T")[0];
+            this.defaultStartDate = new Date(dateString);
+            this.defaultEndDate = new Date(this.defaultStartDate);
+            this.startDate = new Date(this.defaultStartDate);
+            this.endDate = new Date(this.defaultEndDate);
 
             this.defaultDataset = {
-                filename: date + ".json",
-                date: new Date(date)
+                filePath: this.getDatasetFilePath(dateString + ".json"),
+                filename: dateString + ".json",
+                date: new Date(dateString)
             };
+
+            if (!this.siteId) {
+                return;
+            }
+
+            var that = this;
+            this.loadDataset(this.defaultDataset).then(function() {
+                that.createGraphData();
+                that.drawGraph(true);
+            });
         },
         onSiteClicked(data) {
-            var that = this;
+            this.resetGraphData();
 
-            this.datasets = [];
-            this.graphData = [];
             this.siteId = data.siteId;
+
+            // Reset the graph to show data for the currently
+            // selected date when a site is clicked.
+            this.startDate = new Date(this.defaultStartDate);
+            this.endDate = new Date(this.defaultEndDate);
+
             this.defaultDataset.filePath = this.getDatasetFilePath(this.defaultDataset.filename);
 
+            var that = this;
             this.loadDataset(this.defaultDataset).then(function() {
                 that.createGraphData();
                 that.drawGraph(true);
@@ -134,11 +154,14 @@ Vue.component('time-series-graph', {
                 var startDate = new Date(evt["xaxis.range[0]"].split(" ")[0]);
                 var endDate = new Date(evt["xaxis.range[1]"].split(" ")[0]);
 
-                pastDates = that.getDatesBetween(startDate, that.startDate);
-                futureDates = that.getDatesBetween(that.endDate, endDate);
-
-                that.startDate = startDate;
-                that.endDate = endDate;
+                if (startDate < that.startDate) {
+                    pastDates = that.getDatesBetween(startDate, that.startDate);
+                    that.startDate = startDate;
+                }
+                if (endDate > that.endDate) {
+                    futureDates = that.getDatesBetween(that.endDate, endDate);
+                    that.endDate = endDate;
+                }
 
                 // Reverse the past dates to get more recent datasets first.
                 pastDates.reverse();
