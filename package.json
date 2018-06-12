@@ -1,0 +1,36 @@
+{
+  "name": "STUK_OpenDataWebSite",
+  "version": "1.0.0",
+  "description": "A web application for viewing open data results.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack --mode development --watch",
+    "build": "webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gogs.stuk.fi:STUK/STUK_OpenDataWebSite.git"
+  },
+  "keywords": [],
+  "author": "The Finnish Radiation and Nuclear Safety Authority",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "css-loader": "^0.28.11",
+    "less": "^3.0.4",
+    "less-loader": "^4.1.0",
+    "style-loader": "^0.21.0",
+    "vue-loader": "^15.2.4",
+    "vue-template-compiler": "^2.5.16",
+    "webpack": "^4.12.0",
+    "webpack-cli": "^3.0.3"
+  },
+  "dependencies": {
+    "bootstrap": "^4.1.1",
+    "jquery": "^3.3.1",
+    "ol": "^4.6.5",
+    "plotly.js": "^1.38.3",
+    "vue": "^2.5.16",
+    "vue-resource": "^1.5.1"
+  }
+}

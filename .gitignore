@@ -4,3 +4,4 @@ data
 samplers
 settings.json
 metadata.json
+node_modules/
