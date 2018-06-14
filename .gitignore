@@ -1,5 +1,6 @@
 *.swp
 *.pyc
+bundle.js
 data
 samplers
 settings.json
