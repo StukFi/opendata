@@ -1,6 +1,6 @@
 import Vue from "vue"
 import VueResource from "vue-resource"
-import App from "./app.vue"
+import App from "./app"
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/css/bootstrap-reboot.min.css";

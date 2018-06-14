@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import MapWidget from "./components/map-widget.vue"
+import MapWidget from "./components/map-widget"
 
 export default {
     name: "App",
