@@ -2,37 +2,34 @@
     <div id="map" class="map">
         <datetime-picker></datetime-picker>
         <map-legend></map-legend>
-        <popup-basic></popup-basic>
-        <popup-detailed></popup-detailed>
+        <feature-popup ref="featurePopup"></feature-popup>
     </div>
 </template>
 
 <script>
 import DatetimePicker from "./datetime-picker"
 import MapLegend from "./map-legend"
-import PopupBasic from "./popup-basic"
-import PopupDetailed from "./popup-detailed"
+import FeaturePopup from "./feature-popup"
 import Settings from "../mixins/settings"
 
+import CircleStyle from "ol/style/circle"
 import ControlZoom from "ol/control/zoom"
 import ControlZoomSlider from "ol/control/zoomslider"
 import ControlRotate from "ol/control/rotate"
 import ControlScaleLine from "ol/control/scaleline"
 import ControlMousePosition from "ol/control/mouseposition"
 import coordinate from "ol/coordinate"
+import FillStyle from "ol/style/fill"
 import GeoJSON from "ol/format/geojson"
 import interaction from "ol/interaction"
 import InteractionSelect from "ol/interaction/select"
-import LayerVector from "ol/layer/vector"
 import Map from "ol/map"
-import Overlay from "ol/overlay"
+import OSMSource from "ol/source/osm"
 import proj from "ol/proj"
-import SourceVector from "ol/source/vector"
-import SourceOSM from "ol/source/osm"
 import Style from "ol/style/style"
-import StyleCircle from "ol/style/circle"
-import StyleFill from "ol/style/fill"
 import TileLayer from "ol/layer/tile"
+import VectorLayer from "ol/layer/vector"
+import VectorSource from "ol/source/vector"
 import View from "ol/view"
 
 export default {
@@ -41,26 +38,56 @@ export default {
     components: {
         DatetimePicker,
         MapLegend,
-        PopupBasic,
-        PopupDetailed
+        FeaturePopup
     },
     data: function() {
         return {
             map: {},
-            vectorLayer: {},
             url: "",
             file: "",
-            geoJsonFormat: {}
+            geoJsonFormat: new GeoJSON({
+                defaultDataProjection: "EPSG:4326"
+            }),
+            vectorLayer: new VectorLayer({
+                source: new VectorSource({
+                    format: this.geoJsonFormat
+                }),
+                style: this.styleFeature
+            })
         };
     },
     methods: {
         onDatetimeChanged(datetime) {
-            var filePath = "data/dose_rates/" + datetime + ".json";
-            var source = new SourceVector({
+            var datasetFilePath = "data/dose_rates/" + datetime + ".json";
+
+            var source = new VectorSource({
                 format: this.geoJsonFormat,
-                url: filePath
+                url: datasetFilePath
             });
+
             this.vectorLayer.setSource(source);
+        },
+        styleFeature(feature) {
+            var featureColor = "#000";
+            var doseRate = feature.get("doseRate");
+
+            for (var i = 0; i < this.settings.doseRates.length; ++i) {
+                if (doseRate < this.settings.doseRates[i].maxValue) {
+                    featureColor = this.settings.doseRates[i].color;
+                    break;
+                }
+            }
+
+            var featureStyle = new Style({
+                image: new CircleStyle({
+                    radius: 10,
+                    fill: new FillStyle({
+                        color: featureColor
+                    })
+                })
+            });
+
+            return [featureStyle];
         }
     },
     mounted: function() {
@@ -68,44 +95,11 @@ export default {
 
         this.$root.$on("datetimeChanged", this.onDatetimeChanged);
 
-        this.geoJsonFormat = new GeoJSON({
-            defaultDataProjection: "EPSG:4326"
-        });
-
-        var styleFunction = function(feature) {
-            var doseRate = feature.get("doseRate");
-            var color;
-            for (var i = 0; i < that.settings.doseRates.length; ++i) {
-                if (doseRate < that.settings.doseRates[i].maxValue) {
-                    color = that.settings.doseRates[i].color;
-                    break;
-                }
-            }
-
-            var style = new Style({
-                image: new StyleCircle({
-                    radius: 10,
-                    fill: new StyleFill({
-                        color: color
-                    })
-                })
-            });
-
-            return [style];
-        };
-
-        this.vectorLayer = new LayerVector({
-            source: new SourceVector({
-                format: this.geoJsonFormat
-            }),
-            style: styleFunction
-        });
-
         this.map = new Map({
             target: "map",
             layers: [
                 new TileLayer({
-                    source: new SourceOSM()
+                    source: new OSMSource()
                 }),
                 this.vectorLayer
             ],
@@ -130,90 +124,17 @@ export default {
             })
         });
 
-        var popupBasic = document.getElementById("popup-basic");
-        var popupDetailed = document.getElementById("popup-detailed");
+        this.map.addOverlay(this.$refs.featurePopup.overlay);
 
-        var overlayPopupBasic = new Overlay({
-            element: popupBasic,
-            position: undefined,
-            autoPan: true,
-            autoPanAnimation: {
-                duration: 250
-            }
+        this.map.on("pointermove", function(evt) {
+            evt["map"] = that.map;
+            that.$root.$emit("mapHovered", evt);
         });
 
-        var overlayPopupDetailed = new Overlay({
-            element: popupDetailed,
-            position: undefined,
-            autoPan: true,
-            autoPanAnimation: {
-                duration: 250
-            }
+        this.map.on("click", function(evt) {
+            evt["map"] = that.map;
+            that.$root.$emit("mapClicked", evt);
         });
-
-        this.map.addOverlay(overlayPopupBasic);
-        this.map.addOverlay(overlayPopupDetailed);
-
-        var popupCloser = document.getElementById("popup-closer");
-        popupCloser.onclick = function() {
-            overlayPopupDetailed.setPosition(undefined);
-            popupCloser.blur();
-            return false;
-        };
-
-        this.map.on("pointermove", controlBasicPopup);
-        this.map.on("click", controlDetailedPopup);
-
-        function controlBasicPopup(evt) {
-            if (overlayPopupDetailed.getPosition()) {
-                return;
-            }
-
-            var pixel = that.map.getEventPixel(evt.originalEvent);
-            var features = that.map.getFeaturesAtPixel(pixel);
-            if (!features) {
-                overlayPopupBasic.setPosition(undefined);
-                return;
-            }
-
-            var feature = features[0];
-            var featureCoordinate = feature.getGeometry().getCoordinates();
-            overlayPopupBasic.setPosition(featureCoordinate);
-
-            var data = {
-                site: feature.get("site"),
-                siteId: feature.get("id"),
-                doseRate: feature.get("doseRate")
-            };
-
-            that.$root.$emit("mapFeatureFocused", data);
-        }
-
-        function controlDetailedPopup(evt) {
-            var pixel = that.map.getEventPixel(evt.originalEvent);
-            var features = that.map.getFeaturesAtPixel(pixel);
-            if (!features) {
-                overlayPopupDetailed.setPosition(undefined);
-                return;
-            }
-
-            if (overlayPopupBasic.getPosition()) {
-                overlayPopupBasic.setPosition(undefined);
-            }
-
-            var feature = features[0];
-            var featureCoordinate = feature.getGeometry().getCoordinates();
-            overlayPopupDetailed.setPosition(featureCoordinate);
-
-            var data = {
-                site: feature.get("site"),
-                siteId: feature.get("id"),
-                doseRate: feature.get("doseRate")
-            };
-
-            that.$root.$emit("mapFeatureFocused", data);
-            that.$root.$emit("mapFeatureClicked", data);
-        };
 
         this.map.updateSize();
     }
