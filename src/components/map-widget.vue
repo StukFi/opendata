@@ -124,17 +124,16 @@ export default {
             })
         });
 
+        this.map.on("pointermove", onMapInteraction);
+        this.map.on("click", onMapInteraction);
+        function onMapInteraction(evt) {
+            var pixel = that.map.getEventPixel(evt.originalEvent);
+            evt["features"] = that.map.getFeaturesAtPixel(pixel);
+
+            that.$root.$emit("mapInteraction", evt);
+        }
+
         this.map.addOverlay(this.$refs.featurePopup.overlay);
-
-        this.map.on("pointermove", function(evt) {
-            evt["map"] = that.map;
-            that.$root.$emit("mapHovered", evt);
-        });
-
-        this.map.on("click", function(evt) {
-            evt["map"] = that.map;
-            that.$root.$emit("mapClicked", evt);
-        });
 
         this.map.updateSize();
     }

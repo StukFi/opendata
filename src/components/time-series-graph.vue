@@ -9,9 +9,11 @@ import Utils from "../mixins/utils"
 export default {
     name: "TimeSeriesGraph",
     mixins: [Utils],
+    props: {
+        siteId: String
+    },
     data: function() {
         return {
-            siteId: "",
             datasets: [],
             defaultDataset: {},
             startDate: undefined, endDate: undefined,
@@ -70,8 +72,6 @@ export default {
         },
         onSiteClicked(data) {
             this.resetGraphData();
-
-            this.siteId = data.siteId;
 
             // Reset the graph to show data for the currently
             // selected date when a site is clicked.
