@@ -1,6 +1,6 @@
 <template>
-    <div id="feature-popup" class="feature-popup" v-bind:class="{'feature-popup--large': isGraphVisible}">
-        <a href="#" id="feature-popup__closer" class="feature-popup__closer"></a>
+    <div ref="featurePopup" class="feature-popup" v-bind:class="{'feature-popup--large': isGraphVisible}" >
+        <a href="#" ref="featurePopupCloser" class="feature-popup__closer" v-on:click="disable"></a>
         <div class="feature-popup__content">
             <p class="feature-popup__site">{{site}}</p>
             <p class="feature-popup__dose-rate">{{doseRate}}</p>
@@ -56,7 +56,7 @@ export default {
 
             if (evt.type == "click") {
                 this.isGraphVisible = true;
-                this.$refs.graph.onSiteClicked();
+                this.$refs.graph.initialize();
             }
 
             this.enable();
@@ -65,23 +65,14 @@ export default {
     mounted: function() {
         this.$root.$on("mapInteraction", this.onMapInteraction);
 
-        var element = document.getElementById("feature-popup");
         this.overlay = new Overlay({
-            element: element,
+            element: this.$refs.featurePopup,
             position: undefined,
             autoPan: true,
             autoPanAnimation: {
                 duration: 250
             }
         });
-
-        var popupCloser = document.getElementById("popup-closer");
-        if (!popupCloser) return;
-        popupCloser.onclick = function() {
-            overlayPopupDetailed.setPosition(undefined);
-            popupCloser.blur();
-            return false;
-        };
     }
 }
 </script>
@@ -98,9 +89,14 @@ export default {
     border: 1px solid #cccccc;
     -webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
     filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+
+    /* A CSS variable for dynamically positioning the popup's
+       pseudo-elements based on the popup's size. */
+    --pseudo-left: 139px;
 }
 
 .feature-popup:after, .feature-popup:before {
+    left: var(--pseudo-left);
     top: 100%;
     border: solid transparent;
     content: " ";
@@ -108,11 +104,6 @@ export default {
     width: 0;
     position: absolute;
     pointer-events: none;
-}
-
-.feature-popup:after,
-.feature-popup:before {
-    left: 139px;
 }
 
 .feature-popup:after {
@@ -130,12 +121,7 @@ export default {
 .feature-popup--large {
     left: -225px;
     width: 450px;
-}
-
-.feature-popup--large:after,
-.feature-popup--large:before, {
-    left: 224px;
-    border-top-color: red;
+    --pseudo-left: 224px;
 }
 
 .feature-popup__site {

@@ -3,8 +3,9 @@
 </template>
 
 <script>
-var Plotly = require("plotly.js");
 import Utils from "../mixins/utils"
+
+var Plotly = require("plotly.js");
 
 export default {
     name: "TimeSeriesGraph",
@@ -38,7 +39,6 @@ export default {
     },
     mounted: function() {
         this.$root.$on('datetimeChanged', this.onDatetimeChanged);
-        this.$root.$on('mapFeatureClicked', this.onSiteClicked);
     },
     methods: {
         resetGraphData() {
@@ -70,7 +70,7 @@ export default {
                 that.drawGraph(true);
             });
         },
-        onSiteClicked(data) {
+        initialize() {
             this.resetGraphData();
 
             // Reset the graph to show data for the currently
