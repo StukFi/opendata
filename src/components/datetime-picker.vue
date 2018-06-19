@@ -16,9 +16,7 @@ export default {
     mounted: function() {
         var that = this;
         this.$http.get("data/dose_rates/metadata.json").then(function(response) {
-            that.datetimes = response.body["files"];
-            that.datetimes.sort();
-            that.datetimes.reverse();
+            that.datetimes = response.body["files"].sort().reverse();
             that.datetime = that.datetimes[0];
             that.onDatetimeChanged();
         });

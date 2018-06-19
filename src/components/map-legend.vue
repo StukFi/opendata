@@ -1,8 +1,8 @@
 <template>
-    <div id="map-legend">
+    <div class="map-legend">
         <p>Dose rate [&#181;Sv/h]</p>
-        <div class="map-legend-bar" v-bind:style="{backgroundColor: settings.doseRates.slice(-1)[0].color}">&gt; {{settings.doseRates.slice(-1)[0].minValue}}</div>
-        <div class="map-legend-bar" v-for="item in settings.doseRates.slice(0, -1).reverse()" v-bind:style="{backgroundColor: item.color}">{{item.minValue | formatNumber}} - {{item.maxValue | formatNumber}}</div>
+        <div class="map-legend__bar" v-bind:style="{backgroundColor: settings.doseRates.slice(-1)[0].color}">&gt; {{settings.doseRates.slice(-1)[0].minValue}}</div>
+        <div class="map-legend__bar" v-for="item in settings.doseRates.slice(0, -1).reverse()" v-bind:style="{backgroundColor: item.color}">{{item.minValue | formatNumber}} - {{item.maxValue | formatNumber}}</div>
     </div>
 </template>
 
@@ -21,7 +21,7 @@ export default {
 </script>
 
 <style>
-#map-legend {
+.map-legend {
     position: absolute;
     left: 10px;
     top: 10px;
@@ -35,7 +35,7 @@ export default {
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
 }
 
-.map-legend-bar {
+.map-legend__bar {
     width: 90%;
     height: 25px;
     line-height: 25px;
