@@ -55,8 +55,14 @@ export default {
             this.getFeatureInformation(evt.features[0]);
 
             if (evt.type == "click") {
-                this.isGraphVisible = true;
-                this.$refs.graph.initialize();
+                // If the graph is drawn immediately, it will sometimes incorrectly
+                // fetch data for the previously viewed site. This happens because
+                // the siteId prop's value has not had time to propagate to the graph.
+                // This problem is fixed by using vue.js' nextTick() function.
+                this.$nextTick(() => {
+                    this.$refs.graph.drawDefaultGraph();
+                    this.isGraphVisible = true;
+                });
             }
 
             this.enable();
