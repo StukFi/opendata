@@ -42,18 +42,13 @@ export default {
     },
     methods: {
         reset() {
-            this.resetDatasets();
-            this.resetGraphData();
-            this.resetLayout();
+            this.datasets = [];
+            this.graphData = [];
 
             this.startDate = new Date(this.selectedDate);
             this.endDate = new Date(this.selectedDate);
-        },
-        resetDatasets() {
-            this.datasets = [];
-        },
-        resetGraphData() {
-            this.graphData = [];
+
+            this.resetLayout();
         },
         resetLayout() {
             this.layout = $.extend(true, {}, this.defaultLayout);
