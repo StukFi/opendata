@@ -68,21 +68,30 @@ export default {
             this.vectorLayer.setSource(source);
         },
         onMapInteraction(evt) {
+            var that = this;
+
             var pixel = this.map.getEventPixel(evt.originalEvent);
             evt["features"] = this.map.getFeaturesAtPixel(pixel);
 
             this.$root.$emit("mapInteraction", evt);
 
             if (evt.features && evt.type == "click") {
-                var position = evt.features[0].getGeometry().getCoordinates();
-                var offsetToAccommodatePopup = 800000;
-                position[1] += offsetToAccommodatePopup;
-                this.centerMapOnPosition(position);
+                // The timeout ensures that the popup's size has had time to change
+                // from the smaller mouseover-version to the one with the graph.
+                // The map's view is centered on the popup based on the popup's size.
+                // Without the timeout, the calculations sometimes end up using
+                // the popup's smaller on-mouseover dimensions.
+                setTimeout(function() {
+                    pixel[1] -= (that.$refs.featurePopup.$el.clientHeight / 2);
+                    var position = that.map.getCoordinateFromPixel(pixel);
+                    that.centerViewOnPosition(position);
+                }, 20);
             }
         },
-        centerMapOnPosition(position) {
+        centerViewOnPosition(position) {
             this.map.getView().animate({
-                center: position
+                center: position,
+                duration: 750
             });
         },
         styleFeature(feature) {
@@ -132,9 +141,6 @@ export default {
                 })
             ],
             interactions: interaction.defaults().extend([
-                new InteractionSelect({
-                    layers: [this.vectorLayer]
-                })
             ]),
             view: new View({
                 center: proj.fromLonLat([25, 63]),
