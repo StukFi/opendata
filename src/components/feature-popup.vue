@@ -73,11 +73,7 @@ export default {
 
         this.overlay = new Overlay({
             element: this.$refs.featurePopup,
-            position: undefined,
-            autoPan: true,
-            autoPanAnimation: {
-                duration: 250
-            }
+            position: undefined
         });
     }
 }
