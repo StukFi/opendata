@@ -67,6 +67,24 @@ export default {
 
             this.vectorLayer.setSource(source);
         },
+        onMapInteraction(evt) {
+            var pixel = this.map.getEventPixel(evt.originalEvent);
+            evt["features"] = this.map.getFeaturesAtPixel(pixel);
+
+            this.$root.$emit("mapInteraction", evt);
+
+            if (evt.features && evt.type == "click") {
+                var position = evt.features[0].getGeometry().getCoordinates();
+                var offsetToAccommodatePopup = 800000;
+                position[1] += offsetToAccommodatePopup;
+                this.centerMapOnPosition(position);
+            }
+        },
+        centerMapOnPosition(position) {
+            this.map.getView().animate({
+                center: position
+            });
+        },
         styleFeature(feature) {
             var featureColor = "#000";
             var doseRate = feature.get("doseRate");
@@ -124,14 +142,8 @@ export default {
             })
         });
 
-        this.map.on("pointermove", onMapInteraction);
-        this.map.on("click", onMapInteraction);
-        function onMapInteraction(evt) {
-            var pixel = that.map.getEventPixel(evt.originalEvent);
-            evt["features"] = that.map.getFeaturesAtPixel(pixel);
-
-            that.$root.$emit("mapInteraction", evt);
-        }
+        this.map.on("pointermove", this.onMapInteraction);
+        this.map.on("click", this.onMapInteraction);
 
         this.map.addOverlay(this.$refs.featurePopup.overlay);
 
