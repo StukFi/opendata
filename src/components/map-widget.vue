@@ -1,6 +1,8 @@
 <template>
     <div id="map" class="map">
         <datetime-picker></datetime-picker>
+        <datepicker-widget></datepicker-widget>
+        <timepicker-widget></timepicker-widget>
         <map-legend></map-legend>
         <feature-popup ref="featurePopup"></feature-popup>
     </div>
@@ -8,6 +10,8 @@
 
 <script>
 import DatetimePicker from "./datetime-picker"
+import DatepickerWidget from "./datepicker-widget"
+import TimepickerWidget from "./timepicker-widget"
 import MapLegend from "./map-legend"
 import FeaturePopup from "./feature-popup"
 import Settings from "../mixins/settings"
@@ -37,6 +41,8 @@ export default {
     mixins: [Settings],
     components: {
         DatetimePicker,
+        DatepickerWidget,
+        TimepickerWidget,
         MapLegend,
         FeaturePopup
     },
@@ -126,7 +132,7 @@ export default {
             target: "map",
             layers: [
                 new TileLayer({
-                    source: new OSMSource()
+                    //source: new OSMSource()
                 }),
                 this.vectorLayer
             ],

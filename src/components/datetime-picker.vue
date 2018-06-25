@@ -45,7 +45,7 @@ export default {
     line-height: 60px;
     position: absolute;
     left: 50%;
-    top: 10px;
+    top: 300px;
     transform: translateX(-50%);
     text-align: center;
     background-color: rgba(204, 229, 236, 1);
