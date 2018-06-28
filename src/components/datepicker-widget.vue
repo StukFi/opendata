@@ -1,5 +1,5 @@
 <template>
-    <datepicker v-model="selectedDate" @selected="onDateChanged" :monday-first="true" :disabledDates="disabledDates" :highlighted="highlightedDates"></datepicker>
+    <datepicker v-model="date" :monday-first="true" :disabledDates="disabledDates"></datepicker>
 </template>
 
 <script>
@@ -10,66 +10,51 @@ export default {
     components: {
         Datepicker
     },
-    data: function() {
-        return {
-            selectedDate: new Date(),
-            validDatetimes: [],
-            disabledDates: {
-                ranges: [],
-                dates: []
+    computed: {
+        date: {
+            get() {
+                return this.$store.state.date;
             },
-            highlightedDates: {
-                dates: []
+            set(newValue) {
+                this.$store.dispatch("setDate", newValue);
             }
-        };
-    },
-    mounted() {
-        var that = this;
-        this.$http.get("data/dose_rates/metadata.json").then(function(response) {
-            that.parseValidDatetimes(response.body.available_data);
-            that.parseDisabledDates();
-            that.parseHighlightedDates();
-
-            that.setDate(that.validDatetimes.slice(-1)[0].date);
-        });
+        },
+        disabledDates() {
+            return this.parseDisabledDates();
+        }
     },
     methods: {
-        parseValidDatetimes(data) {
-            for (var i = 0; i < data.length; ++i) {
-                data[i].date = new Date(data[i].date);
+        parseDisabledDates() {
+            var validDatetimes = this.$store.state.validDatetimes;
+            var disabledDates = {
+                ranges: [],
+                dates: []
+            };
+
+            if (validDatetimes.length == 0) {
+                return disabledDates;
             }
 
-            data.sort(function(datetimeA, datetimeB) {
-                if (datetimeA.date < datetimeB.date) {
-                    return -1;
-                }
+            for (var i = 0; i < validDatetimes.length; ++i) {
+                validDatetimes[i].date = new Date(validDatetimes[i].date);
+            }
 
-                if (datetimeA.date > datetimeB.date) {
-                    return 1;
-                }
-
-                return 0;
-            });
-
-            this.validDatetimes = data;
-        },
-        parseDisabledDates() {
             // Disable dates from the start of Unix time to the first valid date.
-            var firstValidDate = this.validDatetimes[0].date;
+            var firstValidDate = validDatetimes[0].date;
             var datesBeforeFirstValidDate = {
                 from: new Date(0),
                 to: new Date(firstValidDate)
             };
-            this.disabledDates.ranges.push(datesBeforeFirstValidDate);
+            disabledDates.ranges.push(datesBeforeFirstValidDate);
 
             // Disable dates from the next ten years after the last valid date.
-            var lastValidDate = this.validDatetimes.slice(-1)[0].date;
+            var lastValidDate = validDatetimes.slice(-1)[0].date;
             var datesAfterLastValidDate = {
                 from: lastValidDate,
                 to: new Date(lastValidDate.getFullYear() + 10, lastValidDate.getMonth(),
                     lastValidDate.getDate())
             }
-            this.disabledDates.ranges.push(datesAfterLastValidDate);
+            disabledDates.ranges.push(datesAfterLastValidDate);
 
             // Disable dates in between the valid dates.
             var currentDate = new Date(firstValidDate);
@@ -77,31 +62,14 @@ export default {
                 return datetime.date.getTime() == currentDate.getTime();
             }
             while (currentDate < lastValidDate) {
-                if (!this.validDatetimes.some(dateExists)) {
-                    this.disabledDates.dates.push(new Date(currentDate));
+                if (!validDatetimes.some(dateExists)) {
+                    disabledDates.dates.push(new Date(currentDate));
                 }
 
                 currentDate.setDate(currentDate.getDate() + 1);
             }
-        },
-        parseHighlightedDates() {
-            var firstValidDate = this.validDatetimes[0].date;
-            var lastValidDate = this.validDatetimes.slice(-1)[0].date;
-            this.highlightedDates.dates.push(firstValidDate, lastValidDate);
-        },
-        setDate(date) {
-            this.selectedDate = date;
-            this.onDateChanged();
-        },
-        onDateChanged() {
-            this.$root.$emit("dateChanged", this.selectedDate);
 
-            for (var i = 0; i < this.validDatetimes.length; ++i) {
-                if (this.validDatetimes[i].date.getTime() == this.selectedDate.getTime()) {
-                    this.$root.$emit("validTimesChanged", this.validDatetimes[i].times);
-                    break;
-                }
-            }
+            return disabledDates;
         }
     }
 }

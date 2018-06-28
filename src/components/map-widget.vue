@@ -1,6 +1,5 @@
 <template>
     <div id="map" class="map">
-        <datetime-picker></datetime-picker>
         <datepicker-widget></datepicker-widget>
         <timepicker-widget></timepicker-widget>
         <map-legend></map-legend>
@@ -9,12 +8,11 @@
 </template>
 
 <script>
-import DatetimePicker from "./datetime-picker"
 import DatepickerWidget from "./datepicker-widget"
-import TimepickerWidget from "./timepicker-widget"
-import MapLegend from "./map-legend"
 import FeaturePopup from "./feature-popup"
+import MapLegend from "./map-legend"
 import Settings from "../mixins/settings"
+import TimepickerWidget from "./timepicker-widget"
 
 import CircleStyle from "ol/style/circle"
 import ControlZoom from "ol/control/zoom"
@@ -40,7 +38,6 @@ export default {
     name: "MapWidget",
     mixins: [Settings],
     components: {
-        DatetimePicker,
         DatepickerWidget,
         TimepickerWidget,
         MapLegend,
@@ -50,7 +47,6 @@ export default {
         return {
             map: {},
             url: "",
-            file: "",
             geoJsonFormat: new GeoJSON({
                 defaultDataProjection: "EPSG:4326"
             }),
@@ -62,17 +58,28 @@ export default {
             })
         };
     },
-    methods: {
-        onDatetimeChanged(datetime) {
-            var datasetFilePath = "data/dose_rates/" + datetime + ".json";
+    computed: {
+        datasetFilePath() {
+            if (!this.$store.state.date) {
+                return "";
+            }
 
-            var source = new VectorSource({
+            return "data/dose_rates/" +
+                this.$store.state.date.toISOString().split("T")[0] + "T" +
+                this.$store.state.time + ".json";
+        }
+    },
+    watch: {
+        datasetFilePath: function() {
+            var vectorSource = new VectorSource({
                 format: this.geoJsonFormat,
-                url: datasetFilePath
+                url: this.datasetFilePath
             });
 
-            this.vectorLayer.setSource(source);
-        },
+            this.vectorLayer.setSource(vectorSource);
+        }
+    },
+    methods: {
         onMapInteraction(evt) {
             var that = this;
 
@@ -125,8 +132,6 @@ export default {
     },
     mounted: function() {
         var that = this;
-
-        this.$root.$on("datetimeChanged", this.onDatetimeChanged);
 
         this.map = new Map({
             target: "map",

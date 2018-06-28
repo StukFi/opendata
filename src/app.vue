@@ -9,6 +9,9 @@ export default {
     name: "App",
     components: {
         MapWidget
+    },
+    mounted() {
+        this.$store.dispatch("initialize");
     }
 }
 </script>

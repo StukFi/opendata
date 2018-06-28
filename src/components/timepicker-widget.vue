@@ -1,7 +1,7 @@
 <template>
     <div class="timepicker-container">
-        <select class="timepicker" v-model="time" @change="onTimeChanged">
-            <option :value="time" v-for="time in validTimes">{{time | formatTime}}</option>
+        <select class="timepicker" v-model="time">
+            <option :value="time" v-for="time in validTimesForCurrentDate">{{time | formatTime}}</option>
         </select>
     </div>
 </template>
@@ -9,25 +9,17 @@
 <script>
 export default {
     name: "TimepickerWidget",
-    data: function() {
-        return {
-            time: undefined,
-            validTimes: [],
-        };
-    },
-    mounted() {
-        this.$root.$on("validTimesChanged", this.onValidTimesChanged);
-    },
-    methods: {
-        onValidTimesChanged(times) {
-            this.validTimes = times.sort().reverse();
-
-            if (!this.validTimes.includes(this.time)) {
-                this.time = this.validTimes[0];
+    computed: {
+        time: {
+            get() {
+                return this.$store.state.time;
+            },
+            set(newValue) {
+                this.$store.commit("setTime", newValue);
             }
         },
-        onTimeChanged() {
-            this.$root.$emit("timeChanged", this.time);
+        validTimesForCurrentDate() {
+            return this.$store.getters.validTimesForCurrentDate.sort().reverse();
         }
     },
     filters: {
@@ -55,6 +47,11 @@ export default {
     border: 1px solid black;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
     background-color: rgba(204, 229, 236, 1);
+}
+
+.timepicker-container:hover,
+.timepicker:hover {
+    cursor: pointer;
 }
 
 .timepicker {
