@@ -94,7 +94,7 @@ export default {
     border: 1px solid black;
     outline: none;
     cursor: pointer;
-    background-color: rgba(204, 229, 236, 1);
+    background-color: white;
 
     /* Hide the input's caret. */
     color: transparent;

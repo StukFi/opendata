@@ -46,7 +46,7 @@ export default {
     text-align: center;
     border: 1px solid black;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
-    background-color: rgba(204, 229, 236, 1);
+    background-color: white;
 }
 
 .timepicker-container:hover,
