@@ -137,7 +137,7 @@ export default {
             target: "map",
             layers: [
                 new TileLayer({
-                    //source: new OSMSource()
+                    source: new OSMSource()
                 }),
                 this.vectorLayer
             ],
