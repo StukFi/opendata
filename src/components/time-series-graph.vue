@@ -37,8 +37,23 @@ export default {
             }
         };
     },
-    mounted: function() {
-        this.$root.$on('datetimeChanged', this.onDatetimeChanged);
+    computed: {
+        date() {
+            return this.$store.state.date;
+        }
+    },
+    watch: {
+        date: function(newDate) {
+            this.reset();
+
+            this.selectedDate = new Date(newDate.toISOString().split("T")[0]);
+            this.startDate = new Date(this.selectedDate);
+            this.endDate = new Date(this.selectedDate);
+
+            if (this.siteId) {
+                this.drawDefaultGraph();
+            }
+        }
     },
     methods: {
         reset() {
@@ -139,17 +154,6 @@ export default {
 
             this.$refs.graphContainer.on('plotly_relayout', this.onPlotlyRelayout);
             this.eventsRegistered = true;
-        },
-        onDatetimeChanged(datetime) {
-            this.reset();
-
-            this.selectedDate = new Date(datetime.split("T")[0]);
-            this.startDate = new Date(this.selectedDate);
-            this.endDate = new Date(this.selectedDate);
-
-            if (this.siteId) {
-                this.drawDefaultGraph();
-            }
         },
         onPlotlyRelayout(evt) {
             var that = this;

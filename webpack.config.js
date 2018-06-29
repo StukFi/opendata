@@ -9,7 +9,8 @@ module.exports = {
         path: path.resolve(__dirname, "dist")
     },
     resolve: {
-        extensions: [".js", ".vue"]
+        extensions: [".js", ".vue", ".json"]
+
     },
     module: {
         rules: [
