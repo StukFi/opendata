@@ -5,7 +5,7 @@
 <script>
 import Utils from "../mixins/utils"
 
-var Plotly = require("plotly.js");
+var Plotly = require("plotly.js/lib/core");
 
 export default {
     name: "TimeSeriesGraph",
