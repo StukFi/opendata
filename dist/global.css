@@ -6,14 +6,3 @@ html, body, #app {
     height: 100%;
     margin: 0;
 }
-
-.ol-zoom, .ol-zoomslider {
-    left: unset;
-    right: 0.5em;
-}
-
-.ol-mouse-position {
-    top: unset;
-    bottom: 8px;
-    right: 8px;
-}

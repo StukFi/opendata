@@ -87,10 +87,7 @@ export default {
     bottom: 12px;
     padding: 15px;
     background-color: white;
-    border-radius: 10px;
     border: 1px solid #cccccc;
-    -webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
-    filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
 
     /* A CSS variable for dynamically positioning the popup's
        pseudo-elements based on the popup's size. */
@@ -121,9 +118,13 @@ export default {
 }
 
 .feature-popup--large {
-    left: -225px;
-    width: 450px;
-    --pseudo-left: 224px;
+    left: -175px;
+    width: 350px;
+    --pseudo-left: 174px;
+}
+
+.feature-popup--large .feature-popup__dose-rate {
+    margin-bottom: 0;
 }
 
 .feature-popup__site {
@@ -139,8 +140,8 @@ export default {
 .feature-popup__closer {
     text-decoration: none;
     position: absolute;
-    top: 2px;
-    right: 8px;
+    top: 10px;
+    right: 12px;
 }
 
 .feature-popup__closer:after {

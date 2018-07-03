@@ -24,8 +24,8 @@ export default {
             eventsRegistered: false,
             layout: {},
             defaultLayout: {
-                width: 400,
-                height: 250,
+                width: 300,
+                height: 200,
                 dragmode: 'pan',
                 margin: { t: 20, r: 0, b: 50, l: 50, pad: 15 },
                 yaxis: { range: [0, 0.4] }

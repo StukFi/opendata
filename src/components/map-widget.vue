@@ -98,7 +98,7 @@ export default {
                     pixel[1] -= (that.$refs.featurePopup.$el.clientHeight / 2);
                     var position = that.map.getCoordinateFromPixel(pixel);
                     that.centerViewOnPosition(position);
-                }, 20);
+                }, 25);
             }
         },
         centerViewOnPosition(position) {
@@ -142,17 +142,7 @@ export default {
                 this.vectorLayer
             ],
             controls: [
-                new ControlZoom(),
-                new ControlRotate(),
-                new ControlZoomSlider(),
-                new ControlScaleLine(),
-                new ControlMousePosition({
-                    coordinateFormat: coordinate.createStringXY(2),
-                    projection: "EPSG:4326",
-                })
             ],
-            interactions: interaction.defaults().extend([
-            ]),
             view: new View({
                 center: proj.fromLonLat([25, 63]),
                 zoom: 5
