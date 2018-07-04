@@ -1,6 +1,6 @@
 <template>
     <div ref="featurePopup" class="feature-popup" v-bind:class="{'feature-popup--large': isGraphVisible}" >
-        <a href="#" ref="featurePopupCloser" class="feature-popup__closer" v-on:click="disable"></a>
+        <a href="#" ref="featurePopupCloser" class="feature-popup__closer" v-if="isGraphVisible" v-on:click="disable"></a>
         <div class="feature-popup__content">
             <p class="feature-popup__site">{{site}}</p>
             <p class="feature-popup__dose-rate">{{doseRate}}</p>
