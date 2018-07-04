@@ -1,6 +1,6 @@
 <template>
     <div ref="featurePopup" class="feature-popup" v-bind:class="{'feature-popup--large': isGraphVisible}" >
-        <a href="#" ref="featurePopupCloser" class="feature-popup__closer" v-on:click="disable"></a>
+        <a href="#" ref="featurePopupCloser" class="feature-popup__closer" v-if="isGraphVisible" v-on:click="disable"></a>
         <div class="feature-popup__content">
             <p class="feature-popup__site">{{site}}</p>
             <p class="feature-popup__dose-rate">{{doseRate}}</p>
@@ -87,10 +87,7 @@ export default {
     bottom: 12px;
     padding: 15px;
     background-color: white;
-    border-radius: 10px;
     border: 1px solid #cccccc;
-    -webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
-    filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
 
     /* A CSS variable for dynamically positioning the popup's
        pseudo-elements based on the popup's size. */
@@ -121,29 +118,43 @@ export default {
 }
 
 .feature-popup--large {
-    left: -225px;
-    width: 450px;
-    --pseudo-left: 224px;
+    left: -175px;
+    width: 350px;
+    --pseudo-left: 174px;
+}
+
+.feature-popup--large .feature-popup__dose-rate {
+    margin-bottom: 0;
 }
 
 .feature-popup__site {
     text-align: center;
     font-weight: bold;
+    font-size: 1.15em;
 }
 
 .feature-popup__dose-rate {
     text-align: center;
-    font-size: 2em;
+    font-size: 2.15em;
 }
 
 .feature-popup__closer {
     text-decoration: none;
     position: absolute;
-    top: 2px;
-    right: 8px;
+    top: 10px;
+    right: 12px;
 }
 
 .feature-popup__closer:after {
     content: "\00274C";
+}
+
+@media only screen and (min-width: 768px) {
+    .feature-popup--large {
+        width: 450px;
+        height: 370px;
+        left: -225px;
+        --pseudo-left: 224px;
+    }
 }
 </style>

@@ -1,8 +1,7 @@
 <template>
     <div class="map-legend">
-        <p>Dose rate [&#181;Sv/h]</p>
-        <div class="map-legend__bar" v-bind:style="{backgroundColor: settings.doseRates.slice(-1)[0].color}">&gt; {{settings.doseRates.slice(-1)[0].minValue}}</div>
-        <div class="map-legend__bar" v-for="item in settings.doseRates.slice(0, -1).reverse()" v-bind:style="{backgroundColor: item.color}">{{item.minValue | formatNumber}} - {{item.maxValue | formatNumber}}</div>
+        <div class="map-legend__bar" v-for="item in settings.doseRates.slice(0, -1)" v-bind:style="{backgroundColor: item.color}">{{item.minValue | formatNumber}} - {{item.maxValue | formatNumber}}</div>
+        <div class="map-legend__bar" v-bind:style="{backgroundColor: settings.doseRates.slice(-1)[0].color}">&gt; {{settings.doseRates.slice(-1)[0].minValue}} &#181;Sv</div>
     </div>
 </template>
 
@@ -23,24 +22,31 @@ export default {
 <style>
 .map-legend {
     position: absolute;
-    left: 10px;
-    top: 10px;
+    bottom: 0;
     z-index: 10000;
-    width: 200px;
-    height: auto;
+    width: 100%;
+    height: 25px;
+    line-height: 25px;
     background-color: rgba(204, 229, 236, 1);
-    border: 1px solid rgba(0, 0, 0, 0.4);
-    padding: 10px 10px 15px 10px;
     text-align: center;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
+    font-size: 0.65em;
+    user-select: none;
 }
 
 .map-legend__bar {
-    width: 90%;
-    height: 25px;
-    line-height: 25px;
+    display: inline-block;
+    float: left;
+    width: 20%;
+    height: 100%;
     margin: 0px auto;
     color: white;
-    font-size: 0.8em;
+}
+
+@media only screen and (min-width: 768px) {
+    .map-legend {
+        height: 30px;
+        line-height: 30px;
+        font-size: 0.9em;
+    }
 }
 </style>

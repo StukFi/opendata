@@ -35,18 +35,16 @@ export default {
 <style>
 .timepicker-container {
     position: absolute;
-    top: 75px;
-    left: 50%;
-    width: 150px;
-    height: 50px;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 60px;
+    line-height: 60px;
     z-index: 1000;
-    transform: translateX(-50%);
-    line-height: 50px;
-    font-size: 1.5em;
+    font-size: 1.7em;
     text-align: center;
-    border: 1px solid black;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
-    background-color: white;
+    border: none;
+    background-color: #AADDD5;
 }
 
 .timepicker-container:hover,
@@ -60,5 +58,13 @@ export default {
     -webkit-appearance: none;
     -moz-appearance: none;
     background-color: transparent;
+}
+
+@media only screen and (min-width: 768px) {
+    .timepicker-container {
+        height: 75px;
+        line-height: 75px;
+        font-size: 2.3em;
+    }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <datepicker v-model="date" :monday-first="true" :disabledDates="disabledDates"></datepicker>
+    <datepicker v-model="date" :monday-first="true" :disabledDates="disabledDates" :format="dateFormatter"></datepicker>
 </template>
 
 <script>
@@ -24,6 +24,9 @@ export default {
         }
     },
     methods: {
+        dateFormatter(date) {
+            return date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
+        },
         parseDisabledDates() {
             var validDatetimes = this.$store.state.validDatetimes;
             var disabledDates = {
@@ -78,23 +81,23 @@ export default {
 <style>
 .vdp-datepicker {
     position: absolute;
-    top: 10px;
-    left: 50%;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 50px;
     z-index: 10000;
-    transform: translateX(-50%);
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
 }
 
 .vdp-datepicker input {
-    width: 300px;
+    width: 100%;
     height: 60px;
     line-height: 60px;
-    font-size: 1.75em;
+    font-size: 1.7em;
     text-align: center;
-    border: 1px solid black;
+    border: none;
     outline: none;
     cursor: pointer;
-    background-color: white;
+    background-color: #C7EAE4;
 
     /* Hide the input's caret. */
     color: transparent;
@@ -102,8 +105,22 @@ export default {
 }
 
 .vdp-datepicker__calendar {
-    width: 300px;
+    position: fixed;
+    top: 70px;
     left: 50%;
     transform: translateX(-50%);
+    width: 300px;
+}
+
+@media only screen and (min-width: 768px) {
+    .vdp-datepicker input {
+        height: 75px;
+        line-height: 75px;
+        font-size: 2.3em;
+    }
+
+    .vdp-datepicker__calendar {
+        top: 85px;
+    }
 }
 </style>

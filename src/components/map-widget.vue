@@ -17,7 +17,6 @@ import TimepickerWidget from "./timepicker-widget"
 import CircleStyle from "ol/style/circle"
 import ControlZoom from "ol/control/zoom"
 import ControlZoomSlider from "ol/control/zoomslider"
-import ControlRotate from "ol/control/rotate"
 import ControlScaleLine from "ol/control/scaleline"
 import ControlMousePosition from "ol/control/mouseposition"
 import coordinate from "ol/coordinate"
@@ -98,7 +97,7 @@ export default {
                     pixel[1] -= (that.$refs.featurePopup.$el.clientHeight / 2);
                     var position = that.map.getCoordinateFromPixel(pixel);
                     that.centerViewOnPosition(position);
-                }, 20);
+                }, 25);
             }
         },
         centerViewOnPosition(position) {
@@ -143,16 +142,13 @@ export default {
             ],
             controls: [
                 new ControlZoom(),
-                new ControlRotate(),
                 new ControlZoomSlider(),
                 new ControlScaleLine(),
                 new ControlMousePosition({
                     coordinateFormat: coordinate.createStringXY(2),
-                    projection: "EPSG:4326",
+                    projection: "EPSG:4326"
                 })
             ],
-            interactions: interaction.defaults().extend([
-            ]),
             view: new View({
                 center: proj.fromLonLat([25, 63]),
                 zoom: 5

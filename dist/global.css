@@ -7,13 +7,34 @@ html, body, #app {
     margin: 0;
 }
 
-.ol-zoom, .ol-zoomslider {
+.ol-zoom {
     left: unset;
-    right: 0.5em;
+    top: 100px;
+    right: 15px;
+}
+
+.ol-zoomslider {
+    left: unset;
+    top: 170px !important;
+    right: 15px;
+}
+
+.ol-scale-line {
+    left: 15px;
+    bottom: 40px;
 }
 
 .ol-mouse-position {
     top: unset;
-    bottom: 8px;
-    right: 8px;
+    bottom: 40px;
+    right: 15px;
+}
+
+@media only screen and (max-width: 767px) {
+    .ol-zoom,
+    .ol-zoomslider,
+    .ol-mouse-position,
+    .ol-scale-line {
+        display: none;
+    }
 }
