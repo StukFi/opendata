@@ -30,6 +30,7 @@ export default {
     background-color: rgba(204, 229, 236, 1);
     text-align: center;
     font-size: 0.65em;
+    user-select: none;
 }
 
 .map-legend__bar {
