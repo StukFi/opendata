@@ -94,8 +94,14 @@ export default {
                 // Without the timeout, the calculations sometimes end up using
                 // the popup's smaller on-mouseover dimensions.
                 setTimeout(function() {
-                    pixel[1] -= (that.$refs.featurePopup.$el.clientHeight / 2);
-                    var position = that.map.getCoordinateFromPixel(pixel);
+                    var featureCoordinates = evt.features[0].getGeometry().getCoordinates();
+                    var featurePixel = that.map.getPixelFromCoordinate(featureCoordinates);
+
+                    // Adjust the y-axis so that the view is centered on the middle
+                    // of the popup and not on the clicked feature itself.
+                    featurePixel[1] -= (that.$refs.featurePopup.$el.clientHeight / 2);
+
+                    var position = that.map.getCoordinateFromPixel(featurePixel);
                     that.centerViewOnPosition(position);
                 }, 25);
             }
