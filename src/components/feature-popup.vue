@@ -130,11 +130,12 @@ export default {
 .feature-popup__site {
     text-align: center;
     font-weight: bold;
+    font-size: 1.15em;
 }
 
 .feature-popup__dose-rate {
     text-align: center;
-    font-size: 2em;
+    font-size: 2.15em;
 }
 
 .feature-popup__closer {
@@ -146,5 +147,14 @@ export default {
 
 .feature-popup__closer:after {
     content: "\00274C";
+}
+
+@media only screen and (min-width: 768px) {
+    .feature-popup--large {
+        width: 450px;
+        height: 370px;
+        left: -225px;
+        --pseudo-left: 224px;
+    }
 }
 </style>

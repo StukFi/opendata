@@ -24,8 +24,9 @@ export default {
             eventsRegistered: false,
             layout: {},
             defaultLayout: {
-                width: 300,
-                height: 200,
+                // Dimensions are set in created() based on window size.
+                width: 0,
+                height: 0,
                 dragmode: 'pan',
                 margin: { t: 20, r: 0, b: 50, l: 50, pad: 15 },
                 yaxis: { range: [0, 0.4] }
@@ -54,6 +55,23 @@ export default {
                 this.drawDefaultGraph();
             }
         }
+    },
+    created() {
+        var that = this;
+
+        function setGraphDimensions() {
+            if (window.innerWidth > 767) {
+                that.defaultLayout.width = 400;
+                that.defaultLayout.height = 240;
+            }
+            else {
+                that.defaultLayout.width = 300;
+                that.defaultLayout.height = 200;
+            }
+        };
+
+        setGraphDimensions();
+        window.onresize = setGraphDimensions;
     },
     methods: {
         reset() {
