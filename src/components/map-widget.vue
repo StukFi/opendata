@@ -17,7 +17,6 @@ import TimepickerWidget from "./timepicker-widget"
 import CircleStyle from "ol/style/circle"
 import ControlZoom from "ol/control/zoom"
 import ControlZoomSlider from "ol/control/zoomslider"
-import ControlRotate from "ol/control/rotate"
 import ControlScaleLine from "ol/control/scaleline"
 import ControlMousePosition from "ol/control/mouseposition"
 import coordinate from "ol/coordinate"
@@ -142,6 +141,13 @@ export default {
                 this.vectorLayer
             ],
             controls: [
+                new ControlZoom(),
+                new ControlZoomSlider(),
+                new ControlScaleLine(),
+                new ControlMousePosition({
+                    coordinateFormat: coordinate.createStringXY(2),
+                    projection: "EPSG:4326"
+                })
             ],
             view: new View({
                 center: proj.fromLonLat([25, 63]),
