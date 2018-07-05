@@ -3,13 +3,12 @@
 </template>
 
 <script>
-import Utils from "../mixins/utils"
+import dateUtils from "../utils/date";
 
 var Plotly = require("plotly.js/lib/core");
 
 export default {
     name: "TimeSeriesGraph",
-    mixins: [Utils],
     props: {
         siteId: String
     },
@@ -186,12 +185,12 @@ export default {
             var endDate = new Date(evt["xaxis.range[1]"].split(" ")[0]);
 
             if (startDate < that.startDate) {
-                pastDates = that.getDatesBetween(startDate, that.startDate, true, false);
+                pastDates = dateUtils.getDatesBetween(startDate, that.startDate, true, false);
                 pastDates.reverse();
                 that.startDate = startDate;
             }
             if (endDate > that.endDate) {
-                futureDates = that.getDatesBetween(that.endDate, endDate, false, true);
+                futureDates = dateUtils.getDatesBetween(that.endDate, endDate, false, true);
                 that.endDate = endDate;
             }
 
