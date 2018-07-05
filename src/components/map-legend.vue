@@ -1,7 +1,6 @@
 <template>
     <div class="map-legend">
-        <div class="map-legend__bar" v-for="item in settings.doseRates.slice(0, -1)" v-bind:style="{backgroundColor: item.color}">{{item.minValue | formatNumber}} - {{item.maxValue | formatNumber}}</div>
-        <div class="map-legend__bar" v-bind:style="{backgroundColor: settings.doseRates.slice(-1)[0].color}">&gt; {{settings.doseRates.slice(-1)[0].minValue}} &#181;Sv</div>
+        <div class="map-legend__bar" v-for="(item, index) in settings.doseRates" v-bind:style="{backgroundColor: item.color}">{{(index == settings.doseRates.length - 1) ? "&gt; " + item.minValue.toFixed(2) + " &#181;Sv" : item.minValue.toFixed(2) + " - " + item.maxValue.toFixed(2)}}</div>
     </div>
 </template>
 
@@ -10,12 +9,7 @@ import Settings from "../mixins/settings"
 
 export default {
     name: "MapLegend",
-    mixins: [Settings],
-    filters: {
-        formatNumber: function(value) {
-            return value.toFixed(2);
-        }
-    }
+    mixins: [Settings]
 }
 </script>
 
