@@ -64,6 +64,9 @@ export default {
             return "data/dose_rates/" +
                 this.$store.state.datetime.date.toISOString().split("T")[0] + "T" +
                 this.$store.state.datetime.time + ".json";
+        },
+        doseRateRanges() {
+            return this.$store.state.settings.doseRateRanges;
         }
     },
     watch: {
@@ -74,6 +77,9 @@ export default {
             });
 
             this.vectorLayer.setSource(vectorSource);
+        },
+        doseRateRanges: function() {
+            this.vectorLayer.changed();
         }
     },
     methods: {
@@ -117,8 +123,13 @@ export default {
             var doseRateRanges = this.$store.state.settings.doseRateRanges;
             for (var i = 0; i < doseRateRanges.length; ++i) {
                 if (doseRate < doseRateRanges[i].maxValue) {
-                    featureColor = doseRateRanges[i].color;
-                    break;
+                    if (doseRateRanges[i].enabled) {
+                        featureColor = doseRateRanges[i].color;
+                        break;
+                    }
+                    else {
+                        return undefined;
+                    }
                 }
             }
 
