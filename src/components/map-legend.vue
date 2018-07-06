@@ -1,15 +1,17 @@
 <template>
     <div class="map-legend">
-        <div class="map-legend__bar" v-for="(item, index) in settings.doseRates" v-bind:style="{backgroundColor: item.color}">{{(index == settings.doseRates.length - 1) ? "&gt; " + item.minValue.toFixed(2) + " &#181;Sv" : item.minValue.toFixed(2) + " - " + item.maxValue.toFixed(2)}}</div>
+        <div class="map-legend__bar" v-for="(item, index) in doseRateRanges" v-bind:style="{backgroundColor: item.color}">{{(index == doseRateRanges.length - 1) ? "&gt; " + item.minValue.toFixed(2) + " &#181;Sv" : item.minValue.toFixed(2) + " - " + item.maxValue.toFixed(2)}}</div>
     </div>
 </template>
 
 <script>
-import Settings from "../mixins/settings"
-
 export default {
     name: "MapLegend",
-    mixins: [Settings]
+    computed: {
+        doseRateRanges() {
+            return this.$store.state.settings.doseRateRanges;
+        }
+    }
 }
 </script>
 

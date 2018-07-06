@@ -13,7 +13,7 @@ export default {
     computed: {
         date: {
             get() {
-                return this.$store.state.date;
+                return this.$store.state.datetime.date;
             },
             set(newValue) {
                 this.$store.dispatch("setDate", newValue);
@@ -28,7 +28,7 @@ export default {
             return date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
         },
         parseDisabledDates() {
-            var validDatetimes = this.$store.state.validDatetimes;
+            var validDatetimes = this.$store.state.datetime.validDatetimes;
             var disabledDates = {
                 ranges: [],
                 dates: []

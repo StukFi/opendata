@@ -12,7 +12,7 @@ export default {
     computed: {
         time: {
             get() {
-                return this.$store.state.time;
+                return this.$store.state.datetime.time;
             },
             set(newValue) {
                 this.$store.commit("setTime", newValue);

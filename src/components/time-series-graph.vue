@@ -39,7 +39,7 @@ export default {
     },
     computed: {
         date() {
-            return this.$store.state.date;
+            return this.$store.state.datetime.date;
         }
     },
     watch: {

@@ -11,7 +11,6 @@
 import DatepickerWidget from "./datepicker-widget"
 import FeaturePopup from "./feature-popup"
 import MapLegend from "./map-legend"
-import Settings from "../mixins/settings"
 import TimepickerWidget from "./timepicker-widget"
 
 import CircleStyle from "ol/style/circle"
@@ -35,7 +34,6 @@ import View from "ol/view"
 
 export default {
     name: "MapWidget",
-    mixins: [Settings],
     components: {
         DatepickerWidget,
         TimepickerWidget,
@@ -59,13 +57,13 @@ export default {
     },
     computed: {
         datasetFilePath() {
-            if (!this.$store.state.date) {
+            if (!this.$store.state.datetime.date) {
                 return "";
             }
 
             return "data/dose_rates/" +
-                this.$store.state.date.toISOString().split("T")[0] + "T" +
-                this.$store.state.time + ".json";
+                this.$store.state.datetime.date.toISOString().split("T")[0] + "T" +
+                this.$store.state.datetime.time + ".json";
         }
     },
     watch: {
@@ -116,9 +114,10 @@ export default {
             var featureColor = "#000";
             var doseRate = feature.get("doseRate");
 
-            for (var i = 0; i < this.settings.doseRates.length; ++i) {
-                if (doseRate < this.settings.doseRates[i].maxValue) {
-                    featureColor = this.settings.doseRates[i].color;
+            var doseRateRanges = this.$store.state.settings.doseRateRanges;
+            for (var i = 0; i < doseRateRanges.length; ++i) {
+                if (doseRate < doseRateRanges[i].maxValue) {
+                    featureColor = doseRateRanges[i].color;
                     break;
                 }
             }
