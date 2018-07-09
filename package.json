@@ -26,7 +26,6 @@
     "webpack-cli": "^3.0.3"
   },
   "dependencies": {
-    "bootstrap": "^4.1.1",
     "ol": "^4.6.5",
     "plotly.js": "^1.38.3",
     "vue": "^2.5.16",

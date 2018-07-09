@@ -131,11 +131,13 @@ export default {
     text-align: center;
     font-weight: bold;
     font-size: 1.15em;
+    margin: 0;
 }
 
 .feature-popup__dose-rate {
     text-align: center;
     font-size: 2.15em;
+    margin: 0.5em 0;
 }
 
 .feature-popup__closer {
