@@ -25,12 +25,6 @@ module.exports = {
         ]
     },
     plugins: [
-        new VueLoaderPlugin(),
-        new webpack.ProvidePlugin({
-            $: "jquery",
-            jquery: "jquery",
-            "window.jQuery": "jquery",
-            jQuery: "jquery"
-        })
+        new VueLoaderPlugin()
     ]
 };

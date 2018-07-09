@@ -83,7 +83,7 @@ export default {
             this.resetLayout();
         },
         resetLayout() {
-            this.layout = $.extend(true, {}, this.defaultLayout);
+            this.layout = JSON.parse(JSON.stringify(this.defaultLayout));
         },
         getDatasetFilePath(date) {
             var filename = date.toISOString().split("T")[0] + ".json";
