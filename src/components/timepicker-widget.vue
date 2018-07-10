@@ -77,7 +77,6 @@ export default {
     text-align: center;
     border: none;
     background-color: #AADDD5;
-    user-select: none;
 }
 
 .timepicker-container:hover,
@@ -93,7 +92,6 @@ export default {
     -webkit-appearance: none;
     -moz-appearance: none;
     background-color: transparent;
-    user-select: none;
 }
 
 .time-list {
