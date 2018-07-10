@@ -4,6 +4,7 @@
 
 <script>
 import dateUtils from "../utils/date";
+import http from "../utils/http";
 
 var Plotly = require("plotly.js/lib/core");
 
@@ -124,9 +125,10 @@ export default {
             });
         },
         loadDataset(dataset) {
-            return this.$http.get(dataset.filePath).then(function(response) {
+            var that = this;
+            return http.get(dataset.filePath).then(function(response) {
                 dataset["data"] = response.data.data;
-                this.addDataset(dataset);
+                that.addDataset(dataset);
             }).catch(() => {});
         },
         loadDatasets(datasets) {

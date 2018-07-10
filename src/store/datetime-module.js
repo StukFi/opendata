@@ -1,4 +1,4 @@
-import api from "./api"
+import http from "../utils/http"
 
 export default {
     state: {
@@ -47,7 +47,7 @@ export default {
             });
         },
         updateAvailableDatetimes({commit}) {
-            return api.get("data/dose_rates/metadata.json").then(function(response) {
+            return http.get("data/dose_rates/metadata.json").then(function(response) {
                 commit("setValidDatetimes", response.body.available_data);
             });
         },
