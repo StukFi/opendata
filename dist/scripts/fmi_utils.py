@@ -10,24 +10,15 @@ swe_ns = "http://www.opengis.net/swe/2.0"
 wfs_ns = "http://www.opengis.net/wfs/2.0"
 
 request_templates = {
-        "authenticated": {
-            "dose_rate": ("http://data.stuk.fi/fmi-apikey/{}/wfs/eng?"
-            "request=GetFeature&storedquery_id=stuk::observations::"
-            "external-radiation::multipointcoverage&starttime={}&endtime={}&"),
-            "samplers": ("http://data.stuk.fi/fmi-apikey/{}/wfs/eng?"
-                         "request=GetFeature&storedquery_id=stuk::observations"
-                         "::air::radionuclide-activity-concentration::"
-                         "multipointcoverage&starttime={}&endtime={}&")
+        "base": {
+            "authenticated": "http://data.stuk.fi/fmi-apikey/{}/wfs/eng?",
+            "unauthenticated": "http://opendata.fmi.fi/wfs/eng?"
         },
-        "unauthenticated": {
-            "dose_rate": ("http://opendata.fmi.fi/wfs/eng?"
-            "request=GetFeature&storedquery_id=stuk::observations::"
-            "external-radiation::multipointcoverage&starttime={}&endtime={}&"),
-            "samplers": ("http://opendata.fmi.fi/wfs/eng?"
-                         "request=GetFeature&storedquery_id=stuk::observations"
-                         "::air::radionuclide-activity-concentration::"
-                         "multipointcoverage&starttime={}&endtime={}&")
-        }
+        "dose_rate": ("request=GetFeature&storedquery_id=stuk::observations::"
+                     "external-radiation::multipointcoverage&starttime={}&endtime={}"),
+        "samplers": ("request=GetFeature&storedquery_id=stuk::observations"
+                     "::air::radionuclide-activity-concentration::"
+                     "multipointcoverage&starttime={}&endtime={}")
 }
 
 geojson_template = {
@@ -57,9 +48,12 @@ def wfs_request(start_time, end_time, results_type="dose_rate", authenticated=Tr
     t1 = end_time.strftime(timeFormat)
 
     if authenticated:
-        url = request_templates["authenticated"][results_type].format(fmi_api_key, t0, t1)
+        url = request_templates["base"]["authenticated"] + request_templates[results_type]
+        url = url.format(fmi_api_key, t0, t1)
+
     else:
-        url = request_templates["unauthenticated"][results_type].format(t0, t1)
+        url = request_templates["base"]["unauthenticated"] + request_templates[results_type]
+        url = url.format(t0, t1)
 
     response = urlopen(url)
     return response
