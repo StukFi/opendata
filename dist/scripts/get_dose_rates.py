@@ -16,62 +16,71 @@ def write_dose_rates(response, directory=".", geojson_file="auto"):
     """
     wfs_response = ElementTree.fromstring(response.read())
     gml_points = wfs_response.findall('.//{%s}Point' % gml_namespace)
-    # Read location names.
-    locations = {}
     geojson_str = geojson_template
+
+    # Read locations.
+    locations = {}
     for n, point in enumerate(gml_points):
-        point_id = point.attrib['{%s}id' % gml_namespace].split("-")[-1]
+        identifier = point.attrib['{%s}id' % gml_namespace].split("-")[-1]
         name = point.findall('{%s}name' % gml_namespace)[0].text
-        pos = point.findall('{%s}pos' % gml_namespace)[0].text
-        longitude = float(pos.split()[1])
-        latitude = float(pos.split()[0])
-        locations[pos.strip()] = {"site": name,
-                                  "longitude": longitude,
-                                  "latitude": latitude,
-                                  "id": point_id
-                                  }
-    # Store values.
+        position = point.findall('{%s}pos' % gml_namespace)[0].text.strip()
+        longitude = float(position.split()[1])
+        latitude = float(position.split()[0])
+        locations[position] = {
+            "site": name,
+            "longitude": longitude,
+            "latitude": latitude,
+            "id": identifier
+        }
+
+    # Read values.
     values = []
     try:
-        values_lines = wfs_response.findall('.//{%s}doubleOrNilReasonTupleList'\
+        value_lines = wfs_response.findall('.//{%s}doubleOrNilReasonTupleList' \
                                             % gml_namespace)[0].text.split("\n")[1:-1]
     except IndexError:
         raise Exception("No features.")
-    for line in values_lines:
-        l = line.strip()
-        l = l.split()
-        values.append(float(l[0]))
-    # Iterate over the measurements.
-    N = 0
-    for line in wfs_response.findall('.//{%s}positions'\
-                                     % gmlcov_namespace)[0].text.split("\n")[1:-1]:
-        l = line.strip()
-        l = l.split()
-        coords = line.split("  ")[-2]
-        timestamp = datetime.utcfromtimestamp(int(l[-1]))
+
+    for line in value_lines:
+        value = float(line.strip().split()[0])
+        values.append(value)
+
+    # Construct features.
+    position_lines =  wfs_response.findall('.//{%s}positions' \
+                                            % gmlcov_namespace)[0].text.split("\n")[1:-1]
+    for i, line in enumerate(position_lines):
+        line = line.split()
+        coords = line[0] + " " + line[1]
+        timestamp = datetime.utcfromtimestamp(int(line[2]))
+
         feature = {
             "type": "Feature",
             "properties": {},
             "geometry": {"type": "Point"}
         }
+
         feature["properties"] = {
-            "doseRate": values[N],
+            "doseRate": values[i],
             "id": locations[coords]["id"],
             "site": locations[coords]["site"],
             "timestamp": datetime.strftime(timestamp,
                                            "%Y-%m-%dT%H:%M:%SZ")
         }
+
         feature["geometry"]["coordinates"] = [
             locations[coords]["longitude"],
             locations[coords]["latitude"]
         ]
+
         geojson_str["features"].append(feature)
-        N += 1
+
+    # Determine filename.
     if geojson_file=="auto":
         outfile = directory + "/" + datetime.strftime(
             timestamp,"%Y-%m-%dT%H%M%S") + ".json"
     else:
         outfile = result_dir + "/stuk_open_data_doserates.json"
+
     # Write output.
     with open(outfile, 'w', encoding="utf-8") as fp:
         json.dump(geojson_str,
