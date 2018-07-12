@@ -13,7 +13,7 @@ export default {
             }
 
             for (var i = 0; i < state.validDatetimes.length; ++i) {
-                if (state.validDatetimes[i].date.getTime() == state.date.getTime()) {
+                if (state.validDatetimes[i].date.toDateString() == state.date.toDateString()) {
                     return state.validDatetimes[i].times;
                 }
             }

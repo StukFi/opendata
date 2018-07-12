@@ -62,7 +62,7 @@ export default {
             // Disable dates in between the valid dates.
             var currentDate = new Date(firstValidDate);
             function dateExists(datetime) {
-                return datetime.date.getTime() == currentDate.getTime();
+                return datetime.date.toDateString() == currentDate.toDateString();
             }
             while (currentDate < lastValidDate) {
                 if (!validDatetimes.some(dateExists)) {
