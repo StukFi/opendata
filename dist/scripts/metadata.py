@@ -40,9 +40,6 @@ def generate_metadata(list_of_filenames):
     base_key = "available_data"
     result = { base_key: [] }
 
-    if "metadata.json" in list_of_filenames:
-        list_of_filenames.remove("metadata.json")
-
     for filename in list_of_filenames:
         filename = os.path.splitext(filename)[0]
         date, time = filename.split("T")

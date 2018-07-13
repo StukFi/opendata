@@ -8,7 +8,7 @@ def output_results(source_dir, target_dir):
     files.sort()
     meas = []
     for json_file in files:
-        if not ".json" in json_file or json_file == "metadata.json":
+        if not ".json" in json_file:
             continue
         # read json data to dict
         results = json.loads( open( source_dir + "/" + json_file).read() )
