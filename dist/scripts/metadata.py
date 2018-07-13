@@ -58,7 +58,7 @@ def generate_metadata(list_of_filenames):
     for filename in list_of_filenames:
         result["files"].append(filename)
 
-    result = json.dumps(result, indent=4)
+    result = json.dumps(result, separators=(',', ':'))
     return result
 
 def writeFile(filename, data):
