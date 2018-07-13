@@ -1,3 +1,4 @@
+import sys
 from datetime import datetime, timedelta
 from fmi_utils import *
 from xml.etree import ElementTree
@@ -100,7 +101,7 @@ def write_dose_rate_data(data):
     :param data: GeoJSON string of dose rate data
     :return: path of the file that is written
     """
-    directory = "../data/dose_rates"
+    directory = "../data/dose_rates/datasets"
     filepath = (directory + "/" +
         datetime.strftime(data["timestamp"], "%Y-%m-%dT%H%M%S") + ".json")
 

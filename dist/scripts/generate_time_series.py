@@ -2,16 +2,16 @@ import datetime
 import json
 import os
 
-def output_results(directory):
+def output_results(source_dir, target_dir):
     "extract station specific data from geojsons"
-    files = os.listdir(directory)
+    files = os.listdir(source_dir)
     files.sort()
     meas = []
     for json_file in files:
         if not ".json" in json_file or json_file == "metadata.json":
             continue
         # read json data to dict
-        results = json.loads( open( directory + "/" + json_file).read() )
+        results = json.loads( open( source_dir + "/" + json_file).read() )
         features = results["features"]
         # parse time
         timestamp = datetime.datetime.strptime(
@@ -41,12 +41,12 @@ def output_results(directory):
         dr[m["station"]][day_str].append( { "s": m["s"], "e": m["e"], "r": m["r"] } )
 
     for station in dr.keys():
-        os.makedirs( directory +  "/stations/" + station )
+        os.makedirs( target_dir + station )
         for day in dr[station].keys():
             data = {"data": dr[station][day] }
-            f = open( directory + "/stations/" + station + "/" + day + ".json", "w" )
+            f = open( target_dir + station + "/" + day + ".json", "w" )
             f.write ( json.dumps (data ) )
             f.close()
 
 if __name__=="__main__":
-    results = output_results("../data/dose_rates")
+    output_results("../data/dose_rates/datasets/", "../data/dose_rates/time_series/")

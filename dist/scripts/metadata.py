@@ -7,10 +7,9 @@ def update_metadata():
     data file exists. The web application's front-end code reads and parses the file
     to determine which dates and times are selectable in the user interface's widgets.
     """
-    directory = "../data/dose_rates/"
-    list_of_filenames = list_directory(directory, ".json")
+    list_of_filenames = list_directory("../data/dose_rates/datasets", ".json")
     metadata = generate_metadata(list_of_filenames)
-    writeFile(directory + "metadata.json", metadata)
+    writeFile("../data/dose_rates/" + "metadata.json", metadata)
 
 def list_directory(directory, extension):
     """
@@ -55,7 +54,7 @@ def generate_metadata(list_of_filenames):
         else:
             entry["times"].append(time)
 
-    result["files"] = [];
+    result["files"] = []
     for filename in list_of_filenames:
         result["files"].append(filename)
 

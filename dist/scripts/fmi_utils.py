@@ -1,4 +1,6 @@
 import json
+import time
+from requests.exceptions import ReadTimeout
 from urllib.request import urlopen
 
 settings = json.load(open('../../settings.json'))

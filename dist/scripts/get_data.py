@@ -17,7 +17,7 @@ def get_program_arguments():
             help="type of data to get")
     parser.add_argument("-ts", "--timespan", nargs=2, metavar=('FROM', 'TO'),
             help="timespan for which to get data [YYYY-MM-DDThh:mm:ss]")
-    return parser.parse_args();
+    return parser.parse_args()
 
 def get_data(args):
     """

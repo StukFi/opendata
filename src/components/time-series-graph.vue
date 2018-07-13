@@ -20,7 +20,7 @@ export default {
             selectedDate: undefined,
             startDate: undefined,
             endDate: undefined,
-            baseFilePath: "data/dose_rates/stations/",
+            baseFilePath: "data/dose_rates/time_series/",
             eventsRegistered: false,
             layout: {},
             defaultLayout: {
