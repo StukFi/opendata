@@ -101,13 +101,13 @@ def write_dose_rate_data(data):
     :return: path of the file that is written
     """
     directory = "../data/dose_rates"
-    filename = (directory + "/" +
+    filepath = (directory + "/" +
         datetime.strftime(data["timestamp"], "%Y-%m-%dT%H%M%S") + ".json")
 
-    with open(filename, 'w', encoding="utf-8") as fp:
+    with open(filepath, 'w', encoding="utf-8") as fp:
         json.dump(data["data"], fp, ensure_ascii=False, indent=4, sort_keys=True)
 
-    return filename
+    return filepath
 
 def validate_timespan(timespan):
     """

@@ -2,7 +2,6 @@ import argparse
 import sys
 from dose_rates import *
 from fmi_utils import *
-from get_dose_rates import *
 from metadata import update_metadata
 from requests.exceptions import ReadTimeout
 from samplers import *
@@ -31,7 +30,7 @@ def get_data(args):
         parsed_data = parse_dose_rate_data(data)
         write_dose_rate_data(parsed_data)
     elif args.data_type == "samplers":
-        data = get_sampler_data(args)
+        data = get_sampler_data()
         parsed_data = parse_sampler_data(data)
         write_sampler_data(parsed_data)
 
