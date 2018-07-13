@@ -106,7 +106,7 @@ def write_dose_rate_data(data):
         datetime.strftime(data["timestamp"], "%Y-%m-%dT%H%M%S") + ".json")
 
     with open(filepath, 'w', encoding="utf-8") as fp:
-        json.dump(data["data"], fp, ensure_ascii=False, indent=4, sort_keys=True)
+        json.dump(data["data"], fp, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
 
     return filepath
 
