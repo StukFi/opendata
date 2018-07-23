@@ -14,9 +14,9 @@ def get_program_arguments():
     """
     parser = argparse.ArgumentParser(description="Gets data from FMI's open data API.")
     parser.add_argument("data_type", choices=["dose_rates", "samplers"],
-            help="type of data to get")
+                        help="type of data to get")
     parser.add_argument("-ts", "--timespan", nargs=2, metavar=('FROM', 'TO'),
-            help="timespan for which to get data [YYYY-MM-DDThh:mm:ss]")
+                        help="timespan for which to get data [YYYY-MM-DDThh:mm:ss]")
     return parser.parse_args()
 
 def get_data(args):

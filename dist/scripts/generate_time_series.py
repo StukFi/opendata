@@ -35,7 +35,7 @@ def generate_time_series(source_dir, target_dir):
         if not measurement["station"] in result.keys():
             result[measurement["station"]] = {}
 
-        date_string = measurement["timestamp"].strftime( "%Y-%m-%d" )
+        date_string = measurement["timestamp"].strftime("%Y-%m-%d")
         if not date_string in result[measurement["station"]].keys():
             result[measurement["station"]][date_string] = []
 
@@ -48,10 +48,10 @@ def generate_time_series(source_dir, target_dir):
     for station in result.keys():
         os.makedirs(target_dir + station)
         for date in result[station].keys():
-            data = {"data": result[station][date] }
+            data = {"data": result[station][date]}
             f = open(target_dir + station + "/" + date + ".json", "w")
             f.write(json.dumps(data, separators=(",", ":")))
             f.close()
 
-if __name__=="__main__":
+if __name__ == "__main__":
     generate_time_series("../data/dose_rates/datasets/", "../data/dose_rates/time_series/")
