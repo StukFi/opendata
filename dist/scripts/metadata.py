@@ -1,11 +1,15 @@
-"""
-Generates a JSON-based file containing the dates and times for which a server-side
-data file exists. The web application's front-end code reads and parses the file
-to determine which dates and times are selectable in the user interface's widgets.
-"""
-
 import json
 import os
+
+def update_metadata():
+    """
+    Generates a JSON-based file containing the dates and times for which a server-side
+    data file exists. The web application's front-end code reads and parses the file
+    to determine which dates and times are selectable in the user interface's widgets.
+    """
+    list_of_filenames = list_directory("../data/dose_rates/datasets", ".json")
+    metadata = generate_metadata(list_of_filenames)
+    writeFile("../data/dose_rates/" + "metadata.json", metadata)
 
 def list_directory(directory, extension):
     """
@@ -31,13 +35,10 @@ def generate_metadata(list_of_filenames):
     string lists the available dates and times for which a data file exists.
 
     :param list_of_filenames: filenames from which to parse available data
-    :return JSON string
+    :return: JSON string
     """
     base_key = "available_data"
     result = { base_key: [] }
-
-    if "metadata.json" in list_of_filenames:
-        list_of_filenames.remove("metadata.json")
 
     for filename in list_of_filenames:
         filename = os.path.splitext(filename)[0]
@@ -50,11 +51,11 @@ def generate_metadata(list_of_filenames):
         else:
             entry["times"].append(time)
 
-    result["files"] = [];
+    result["files"] = []
     for filename in list_of_filenames:
         result["files"].append(filename)
 
-    result = json.dumps(result, indent=4)
+    result = json.dumps(result, separators=(',', ':'))
     return result
 
 def writeFile(filename, data):
@@ -72,9 +73,3 @@ def writeFile(filename, data):
     file = open(filename, "w")
     file.write(data)
     file.close()
-
-if __name__ == "__main__":
-    directory = "../data/dose_rates/"
-    list_of_filenames = list_directory(directory, ".json")
-    metadata = generate_metadata(list_of_filenames)
-    writeFile(directory + "metadata.json", metadata)

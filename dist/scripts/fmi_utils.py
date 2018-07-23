@@ -1,4 +1,6 @@
 import json
+import time
+from requests.exceptions import ReadTimeout
 from urllib.request import urlopen
 
 settings = json.load(open('../../settings.json'))
@@ -14,7 +16,7 @@ request_templates = {
             "authenticated": "http://data.stuk.fi/fmi-apikey/{}/wfs/eng?",
             "unauthenticated": "http://opendata.fmi.fi/wfs/eng?"
         },
-        "dose_rate": ("request=GetFeature&storedquery_id=stuk::observations::"
+        "dose_rates": ("request=GetFeature&storedquery_id=stuk::observations::"
                      "external-radiation::multipointcoverage&starttime={}&endtime={}"),
         "samplers": ("request=GetFeature&storedquery_id=stuk::observations"
                      "::air::radionuclide-activity-concentration::"
@@ -29,19 +31,19 @@ geojson_template = {
     "features": []
 }
 
-def wfs_request(start_time, end_time, results_type="dose_rate", authenticated=True):
+def wfs_request(start_time, end_time, results_type, authenticated=True):
     """
-    Performs a WFS request to FMI Open Data Portal.
+    Performs a WFS request to the FMI open data API.
 
-    :param start_time: datetime object
-    :param end_time: datetime object
-    :param results_type: 'dose_rates' or 'samplers'
+    :param start_time: start of the timespan for which to get data
+    :param end_time: end of the timespan for which to get data
+    :param results_type: type of data to get
     :param authenticated: indicates whether an API key is used
     :return: HTTPResponse object
     """
-    if (end_time - start_time).total_seconds() > 559:
-        if results_type == "dose_rate":
-            raise Exception("Max timespan is 559. Generate multiple requests to avoid this.")
+    # if (end_time - start_time).total_seconds() > 559:
+    #     if results_type == "dose_rate":
+    #         raise Exception("Max timespan is 559. Generate multiple requests to avoid this.")
 
     timeFormat = "%Y-%m-%dT%H:%M:00Z"
     t0 = start_time.strftime(timeFormat)
@@ -55,5 +57,13 @@ def wfs_request(start_time, end_time, results_type="dose_rate", authenticated=Tr
         url = request_templates["base"]["unauthenticated"] + request_templates[results_type]
         url = url.format(t0, t1)
 
-    response = urlopen(url)
+    tries = 3
+    while tries > 0:
+        try:
+            response = urlopen(url)
+            tries = 0
+        except ReadTimeout:
+            tries -= 1
+            time.sleep(10)
+
     return response

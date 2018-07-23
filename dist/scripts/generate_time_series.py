@@ -2,51 +2,56 @@ import datetime
 import json
 import os
 
-def output_results(directory):
-    "extract station specific data from geojsons"
-    files = os.listdir(directory)
-    files.sort()
-    meas = []
-    for json_file in files:
-        if not ".json" in json_file or json_file == "metadata.json":
-            continue
-        # read json data to dict
-        results = json.loads( open( directory + "/" + json_file).read() )
-        features = results["features"]
-        # parse time
-        timestamp = datetime.datetime.strptime(
-            json_file.split(".")[0],
-            "%Y-%m-%dT%H%M%S" )
-        for f in features:
-            # do not write old results
-            feature_timestamp = datetime.datetime.strptime(f["properties"]["timestamp"],
-                                                           "%Y-%m-%dT%H:%M:%SZ")
-            if feature_timestamp!=timestamp:
-                continue
-            s = int((timestamp-datetime.timedelta(seconds=600)).timestamp()) * 1000
-            e = int(timestamp.timestamp()) * 1000
-            meas.append( {"s": s,
-                          "e": e,
-                          "timestamp": timestamp,
-                          "station": f["properties"]["id"],
-                           "r": f["properties"]["doseRate"] })
-    # reformat measurements to match json structure
-    dr = {}
-    for m in meas:
-        if not m["station"] in dr.keys():
-            dr[m["station"]] = {}
-        day_str = m["timestamp"].strftime( "%Y-%m-%d" )
-        if not day_str in dr[m["station"]].keys():
-            dr[m["station"]][day_str] = []
-        dr[m["station"]][day_str].append( { "s": m["s"], "e": m["e"], "r": m["r"] } )
+def generate_time_series(source_dir, target_dir):
+    """
+    Extract station specific time series data from GeoJSON files.
 
-    for station in dr.keys():
-        os.makedirs( directory +  "/stations/" + station )
-        for day in dr[station].keys():
-            data = {"data": dr[station][day] }
-            f = open( directory + "/stations/" + station + "/" + day + ".json", "w" )
-            f.write ( json.dumps (data ) )
+    :param source_dir: directory from which to read GeoJSON files
+    :param target_dir: directory to which the time series files are generated
+    """
+    files = os.listdir(source_dir)
+    files.sort()
+
+    measurements = []
+    for json_file in files:
+        results = json.loads(open(source_dir + "/" + json_file).read())
+        features = results["features"]
+        file_timestamp = datetime.datetime.strptime(json_file.split(".")[0], "%Y-%m-%dT%H%M%S")
+
+        for feature in features:
+            start = int((file_timestamp - datetime.timedelta(seconds=600)).timestamp()) * 1000
+            end = int(file_timestamp.timestamp()) * 1000
+            measurements.append({
+                "s": start,
+                "e": end,
+                "timestamp": file_timestamp,
+                "station": feature["properties"]["id"],
+                "r": feature["properties"]["doseRate"]
+            })
+
+    # Reformat measurements to match JSON structure.
+    result = {}
+    for measurement in measurements:
+        if not measurement["station"] in result.keys():
+            result[measurement["station"]] = {}
+
+        date_string = measurement["timestamp"].strftime("%Y-%m-%d")
+        if not date_string in result[measurement["station"]].keys():
+            result[measurement["station"]][date_string] = []
+
+        result[measurement["station"]][date_string].append({
+            "s": measurement["s"],
+            "e": measurement["e"],
+            "r": measurement["r"]
+        })
+
+    for station in result.keys():
+        os.makedirs(target_dir + station)
+        for date in result[station].keys():
+            data = {"data": result[station][date]}
+            f = open(target_dir + station + "/" + date + ".json", "w")
+            f.write(json.dumps(data, separators=(",", ":")))
             f.close()
 
-if __name__=="__main__":
-    results = output_results("../data/dose_rates")
+if __name__ == "__main__":
+    generate_time_series("../data/dose_rates/datasets/", "../data/dose_rates/time_series/")
