@@ -145,6 +145,7 @@ export default {
     position: absolute;
     top: 10px;
     right: 12px;
+    color: black;
 }
 
 .feature-popup__closer:after {
