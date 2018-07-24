@@ -17,6 +17,8 @@ def get_program_arguments():
                         help="type of data to get")
     parser.add_argument("-ts", "--timespan", nargs=2, metavar=('FROM', 'TO'),
                         help="timespan for which to get data [YYYY-MM-DDThh:mm:ss]")
+    parser.add_argument("-a", "--auth", action="store_true",
+                        help="use an API key to authenticate requests")
     return parser.parse_args()
 
 def get_data(args):
@@ -30,7 +32,7 @@ def get_data(args):
         parsed_data = parse_dose_rate_data(data)
         write_dose_rate_data(parsed_data)
     elif args.data_type == "samplers":
-        data = get_sampler_data()
+        data = get_sampler_data(args)
         parsed_data = parse_sampler_data(data)
         write_sampler_data(parsed_data)
 

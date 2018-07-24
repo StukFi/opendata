@@ -5,16 +5,17 @@ from xml.etree import ElementTree
 sampler_geojson_template = geojson_template
 sampler_geojson_template["name"] = "stuk_open_data_air_concentrations"
 
-def get_sampler_data():
+def get_sampler_data(args):
     """
     Performs a WFS request for sampler data from the FMI open data API.
     The function returns a dataset of the last ten days' measurements.
 
+    :param args: program arguments
     :return: HTTPResponse object
     """
     end_time = datetime.utcnow()
     start_time = end_time - timedelta(days=10)
-    return wfs_request(start_time, end_time, "samplers")
+    return wfs_request(start_time, end_time, "samplers", args.auth)
 
 def parse_sampler_data(data):
     """

@@ -18,7 +18,7 @@ def get_dose_rate_data(args):
         end_time = datetime.utcnow() - timedelta(seconds=1800)
         start_time = end_time - timedelta(seconds=559)
 
-    return wfs_request(start_time, end_time, "dose_rates")
+    return wfs_request(start_time, end_time, "dose_rates", args.auth)
 
 def parse_dose_rate_data(data):
     """

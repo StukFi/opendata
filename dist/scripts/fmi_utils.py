@@ -31,7 +31,7 @@ geojson_template = {
     "features": []
 }
 
-def wfs_request(start_time, end_time, results_type, authenticated=True):
+def wfs_request(start_time, end_time, results_type, authenticated=False):
     """
     Performs a WFS request to the FMI open data API.
 
