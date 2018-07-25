@@ -1,3 +1,5 @@
-{"settings":
-    {"fmi_api_key": "FMI_API_KEY"}
+{
+    "settings": {
+        "fmi_api_key": "FMI_API_KEY"
+    }
 }
