@@ -3,6 +3,7 @@
 A web application for viewing STUK's open data radiation dose
 rate results. The data is fetched from FMI's open data API.
 
+<br>
 ## Setup
 
 1. Clone the repository.
@@ -18,6 +19,7 @@ rate results. The data is fetched from FMI's open data API.
 5. Manually run or schedule the scripts in the 'dist/scripts'
    directory to get data.
 
+<br>
 ## Fetching data
 
 The application does not contain any data by default. Data
@@ -34,12 +36,10 @@ files from the fetched dose rate datasets. Previously
 generated time series files must currently be manually
 removed before running the script.
 
+<br>
+*Optional: Authenticated FMI API requests*
 
-
-
-### *Optional: Authenticated FMI API requests*
-
-If you wish to use authenticated API requests when 
+If you wish to use authenticated API requests when fetching 
 data from FMI's open data portal, an API key must be used.
 Follow the instructions at 
 http://en.ilmatieteenlaitos.fi/open-data-manual to register
@@ -51,6 +51,7 @@ settings file, replace the FMI API key with your own. When
 fetching data with the 'get_data.py' script, use the '-a' or
 '--auth' argument to enable authentication.
 
+<br>
 ## Usage
 
 The web application's date and time selection widgets only
@@ -65,7 +66,7 @@ map feature opens a larger popup that additionally displays a
 graph showing time series data for the selected measurement
 site. Panning the graph causes it to automatically load in
 more data for the visible dates if available. The graph
-supports multiple ways of interaction, including panning
+supports multiple ways of interaction, including panning,
 zooming, and range selection.
 
 The map legend, located at the bottom of the application,
@@ -74,6 +75,7 @@ Individual dose rate ranges can be enabled or disabled to
 filter the map features visible on the map. This is achieved
 by clicking a dose rate range block on the map legend.
 
+<br>
 ## Technical details
 
 Browsers that are known to *not* work: Internet Explorer.
