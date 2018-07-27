@@ -29,8 +29,10 @@ def get_data(args):
     """
     if args.data_type == "dose_rates":
         data = get_dose_rate_data(args)
-        parsed_data = parse_dose_rate_data(data)
-        write_dose_rate_data(parsed_data)
+        for dataset in data:
+            parsed_data = parse_dose_rate_data(dataset)
+            write_dose_rate_data(parsed_data)
+
     elif args.data_type == "samplers":
         data = get_sampler_data(args)
         parsed_data = parse_sampler_data(data)

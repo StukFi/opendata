@@ -1,4 +1,5 @@
 import sys
+from copy import deepcopy
 from datetime import datetime, timedelta
 from fmi_utils import *
 from xml.etree import ElementTree
@@ -12,13 +13,24 @@ def get_dose_rate_data(args):
     :param args: program arguments
     :return: HTTPResponse object
     """
+    dose_rate_data = []
+
     if args.timespan:
         start_time, end_time = validate_timespan(args.timespan)
+        time_between_measurements = timedelta(seconds=599)
+        t1 = start_time
+        t2 = t1 + time_between_measurements
+        while t2 <= end_time:
+            dose_rate_data.append(wfs_request(t1, t2, "dose_rates", args.auth))
+            t1 = t2
+            t2 += time_between_measurements
+
     else:
         end_time = datetime.utcnow() - timedelta(seconds=1800)
         start_time = end_time - timedelta(seconds=559)
+        dose_rate_data.append(wfs_request(start_time, end_time, "dose_rates", args.auth))
 
-    return wfs_request(start_time, end_time, "dose_rates", args.auth)
+    return dose_rate_data
 
 def parse_dose_rate_data(data):
     """
@@ -29,7 +41,7 @@ def parse_dose_rate_data(data):
     """
     wfs_response = ElementTree.fromstring(data.read())
     gml_points = wfs_response.findall('.//{%s}Point' % gml_namespace)
-    geojson_string = geojson_template
+    geojson_string = deepcopy(geojson_template)
 
     # Read locations.
     locations = {}
