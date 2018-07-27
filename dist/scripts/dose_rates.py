@@ -143,7 +143,7 @@ def validate_timespan(timespan):
     except:
         sys.exit("[Error] Invalid datetime format.")
 
-    if start_time >= end_time:
+    if start_time >= end_time or end_time > datetime.utcnow():
         sys.exit("[Error] Invalid timespan.")
 
     return [start_time, end_time]
