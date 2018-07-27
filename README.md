@@ -29,7 +29,6 @@ scheduling scripts in the 'dist/scripts' directory.
 The 'get_data.py' script is used to fetch data. Run 'python
 get_data.py --help' for specific usage instructions. The type
 of data currently relevant to the application is 'dose_rates'.
-The timespan argument is not yet implemented.
 
 The 'generate_time_series.py' script generates time series
 files from the fetched dose rate datasets. Previously
