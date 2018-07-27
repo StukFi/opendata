@@ -19,16 +19,16 @@ def get_dose_rate_data(args):
 
     if args.timespan:
         start_time, end_time = validate_timespan(args.timespan)
-        time_between_measurements = timedelta(seconds=599)
-        dataset_count = get_dataset_count(start_time, end_time, time_between_measurements)
+        measurement_interval = timedelta(seconds=599)
+        dataset_count = get_dataset_count(start_time, end_time, measurement_interval)
         t1 = start_time
-        t2 = t1 + time_between_measurements
+        t2 = t1 + measurement_interval
         dataset_number = 1
         while t2 <= end_time:
             display_progress("Downloading datasets", dataset_number, dataset_count)
             dose_rate_data.append(wfs_request(t1, t2, "dose_rates", args.auth))
             t1 = t2
-            t2 += time_between_measurements
+            t2 += measurement_interval
             dataset_number += 1
 
     else:
