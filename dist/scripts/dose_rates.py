@@ -1,7 +1,9 @@
 import sys
+import time
 from copy import deepcopy
 from datetime import datetime, timedelta
 from fmi_utils import *
+from progress import display_progress
 from xml.etree import ElementTree
 
 def get_dose_rate_data(args):
@@ -11,23 +13,28 @@ def get_dose_rate_data(args):
     fetches the dataset of the most recent measurements.
 
     :param args: program arguments
-    :return: HTTPResponse object
+    :return: array of HTTPResponse objects
     """
     dose_rate_data = []
 
     if args.timespan:
         start_time, end_time = validate_timespan(args.timespan)
         time_between_measurements = timedelta(seconds=599)
+        dataset_count = get_dataset_count(start_time, end_time, time_between_measurements)
         t1 = start_time
         t2 = t1 + time_between_measurements
+        dataset_number = 1
         while t2 <= end_time:
+            display_progress("Downloading datasets", dataset_number, dataset_count)
             dose_rate_data.append(wfs_request(t1, t2, "dose_rates", args.auth))
             t1 = t2
             t2 += time_between_measurements
+            dataset_number += 1
 
     else:
         end_time = datetime.utcnow() - timedelta(seconds=1800)
         start_time = end_time - timedelta(seconds=559)
+        display_progress("Downloading datasets", 1, 1)
         dose_rate_data.append(wfs_request(start_time, end_time, "dose_rates", args.auth))
 
     return dose_rate_data
@@ -140,3 +147,21 @@ def validate_timespan(timespan):
         sys.exit("[Error] Invalid timespan.")
 
     return [start_time, end_time]
+
+def get_dataset_count(start_time, end_time, measurement_interval):
+    """
+    Determines the number of datasets that will be loaded for
+    a given timespan and measurement interval.
+
+    :param start_time: start of a timespan
+    :param end_time: end of a timespan
+    :param measurement_interval: time between datasets
+    :return: number of datasets to be loaded
+    """
+    dataset_count = 0
+    end_time = end_time - measurement_interval
+    while start_time <= end_time:
+        dataset_count += 1
+        start_time += measurement_interval
+
+    return dataset_count

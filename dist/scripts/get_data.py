@@ -3,6 +3,7 @@ import sys
 from dose_rates import *
 from fmi_utils import *
 from metadata import update_metadata
+from progress import display_progress
 from requests.exceptions import ReadTimeout
 from samplers import *
 
@@ -28,8 +29,9 @@ def get_data(args):
     :param args: program arguments.
     """
     if args.data_type == "dose_rates":
-        data = get_dose_rate_data(args)
-        for dataset in data:
+        datasets = get_dose_rate_data(args)
+        for i, dataset in enumerate(datasets):
+            display_progress("Generating files", i + 1, len(datasets))
             parsed_data = parse_dose_rate_data(dataset)
             write_dose_rate_data(parsed_data)
 
