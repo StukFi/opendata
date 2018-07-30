@@ -12,6 +12,13 @@ export default {
     },
     mounted() {
         this.$store.dispatch("initialize");
+
+        // Update available dates and times periodically by getting
+        // the latest metadata from the server every 10 minutes.
+        var that = this;
+        setInterval(function() {
+            that.$store.dispatch("updateAvailableDatetimes");
+        }, 600000);
     }
 }
 </script>
