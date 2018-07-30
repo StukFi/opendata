@@ -71,7 +71,7 @@ def parse_dose_rate_data(data):
         value_lines = wfs_response.findall('.//{%s}doubleOrNilReasonTupleList' \
                                             % gml_namespace)[0].text.split("\n")[1:-1]
     except IndexError:
-        raise Exception("No features.")
+        raise EmptyDatasetError("No features.")
 
     for line in value_lines:
         value = float(line.strip().split()[0])
@@ -165,3 +165,11 @@ def get_dataset_count(start_time, end_time, measurement_interval):
         start_time += measurement_interval
 
     return dataset_count
+
+
+class EmptyDatasetError(Exception):
+    """
+    A custom exception type for when a dataset retrieved from
+    FMI's API contains no features i.e. it is considered empty.
+    """
+    pass

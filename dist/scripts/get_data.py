@@ -30,10 +30,18 @@ def get_data(args):
     """
     if args.data_type == "dose_rates":
         datasets = get_dose_rate_data(args)
-        for i, dataset in enumerate(datasets):
-            display_progress("Generating files", i + 1, len(datasets))
-            parsed_data = parse_dose_rate_data(dataset)
+        emptyDatasets = 0
+        for i, dataset in enumerate(datasets, start=1):
+            try:
+                parsed_data = parse_dose_rate_data(dataset)
+            except EmptyDatasetError:
+                emptyDatasets += 1
+                continue
             write_dose_rate_data(parsed_data)
+            display_progress("Generating GeoJSON files", i - emptyDatasets, len(datasets))
+
+        if emptyDatasets > 0:
+            print("\n{0} empty datasets were skipped".format(emptyDatasets))
 
     elif args.data_type == "samplers":
         data = get_sampler_data(args)
