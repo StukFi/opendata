@@ -33,6 +33,10 @@ export default {
     font-size: 0.65em;
 }
 
+.map-legend:hover {
+    cursor: pointer;
+}
+
 .map-legend__bar {
     display: inline-block;
     float: left;
