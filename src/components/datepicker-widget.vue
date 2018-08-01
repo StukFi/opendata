@@ -104,6 +104,17 @@ export default {
     text-shadow: 0 0 0 black;
 }
 
+/* This and the following duplicate block cannot be
+   combined. The browser will skip the entire block
+   if it doesn't recognize one of the selectors. */
+.vdp-datepicker input::selection {
+    background-color: transparent;
+}
+
+.vdp-datepicker input::-moz-selection {
+    background-color: transparent;
+}
+
 .vdp-datepicker__calendar {
     position: fixed;
     top: 70px;
