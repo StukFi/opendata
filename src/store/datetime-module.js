@@ -29,6 +29,11 @@ export default {
             for (var i = 0; i < datetimes.length; ++i) {
                 datetimes[i].date = new Date(datetimes[i].date);
             }
+
+            datetimes.sort(function(a, b) {
+                return new Date(a.date) - new Date(b.date);
+            });
+
             state.validDatetimes = datetimes;
         }
     },
