@@ -1,7 +1,9 @@
 import argparse
 import sys
+from datetime import date
 from dose_rates import *
 from fmi_utils import *
+from time_series import generate_time_series
 from metadata import update_metadata
 from progress import display_progress
 from requests.exceptions import ReadTimeout
@@ -26,7 +28,7 @@ def get_data(args):
     """
     Gets data based on the arguments provided to the program.
 
-    :param args: program arguments.
+    :param args: program arguments
     """
     if args.data_type == "dose_rates":
         datasets = get_dose_rate_data(args)
@@ -52,3 +54,4 @@ if __name__ == "__main__":
     args = get_program_arguments()
     get_data(args)
     update_metadata()
+    generate_time_series(args)
