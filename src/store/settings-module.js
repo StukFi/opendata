@@ -2,6 +2,10 @@ import Vue from "vue"
 
 export default {
     state: {
+        map: {
+            minZoom: 4,
+            maxZoom: 10
+        },
         doseRateRanges: [
             {minValue: 0.00, maxValue: 0.10, color: "#1dafaf", enabled: true},
             {minValue: 0.10, maxValue: 0.20, color: "#1d8baf", enabled: true},

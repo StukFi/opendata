@@ -165,6 +165,8 @@ export default {
             ],
             view: new View({
                 center: proj.fromLonLat([25, 63]),
+                minZoom: this.$store.state.settings.map.minZoom,
+                maxZoom: this.$store.state.settings.map.maxZoom,
                 zoom: 5
             })
         });
