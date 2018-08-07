@@ -7,6 +7,7 @@ def update_metadata():
     data file exists. The web application's front-end code reads and parses the file
     to determine which dates and times are selectable in the user interface's widgets.
     """
+    print("Updating metadata", flush=True)
     list_of_filenames = list_directory("../data/dose_rates/datasets", ".json")
     metadata = generate_metadata(list_of_filenames)
     writeFile("../data/dose_rates/" + "metadata.json", metadata)
