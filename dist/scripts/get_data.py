@@ -49,6 +49,7 @@ def get_data(args):
         data = get_sampler_data(args)
         parsed_data = parse_sampler_data(data)
         write_sampler_data(parsed_data)
+        sys.exit()
 
 if __name__ == "__main__":
     args = get_program_arguments()

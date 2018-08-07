@@ -1,3 +1,4 @@
+import os
 from datetime import datetime, timedelta
 from fmi_utils import *
 from xml.etree import ElementTree
@@ -95,8 +96,12 @@ def write_sampler_data(data):
     :param data: GeoJSON string of sampler data
     :return: path of the file that is written
     """
-    result_dir = "../data/samplers"
-    filepath = result_dir + "/stuk_open_data_samplers.json"
+    directory = "../data/samplers"
+    filepath = directory + "/stuk_open_data_samplers.json"
+
+    if not os.path.exists(directory):
+        os.makedirs(directory, exist_ok=True)
+
     with open(filepath, 'w') as fp:
         json.dump(data, fp, ensure_ascii=False, indent=4, sort_keys=True)
 

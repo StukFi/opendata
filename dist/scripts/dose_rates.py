@@ -1,3 +1,4 @@
+import os
 import sys
 import time
 from copy import deepcopy
@@ -123,6 +124,9 @@ def write_dose_rate_data(data):
     directory = "../data/dose_rates/datasets"
     filepath = (directory + "/" +
         datetime.strftime(data["timestamp"], "%Y-%m-%dT%H%M%S") + ".json")
+
+    if not os.path.exists(directory):
+        os.makedirs(directory, exist_ok=True)
 
     with open(filepath, 'w', encoding="utf-8") as fp:
         json.dump(data["data"], fp, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
