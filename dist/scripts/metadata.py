@@ -73,3 +73,6 @@ def writeFile(filename, data):
     file = open(filename, "w")
     file.write(data)
     file.close()
+
+if __name__ == "__main__":
+    update_metadata()
