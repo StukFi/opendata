@@ -16,10 +16,10 @@
   "author": "The Finnish Radiation and Nuclear Safety Authority (STUK)",
   "license": "MIT",
   "devDependencies": {
-    "css-loader": "^0.28.11",
+    "css-loader": "^1.0.0",
     "less": "^3.8.1",
     "less-loader": "^4.1.0",
-    "style-loader": "^0.21.0",
+    "style-loader": "^0.22.0",
     "vue-loader": "^15.3.0",
     "vue-template-compiler": "^2.5.17",
     "webpack": "^4.16.5",
