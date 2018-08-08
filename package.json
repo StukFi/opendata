@@ -14,7 +14,7 @@
   },
   "keywords": [],
   "author": "The Finnish Radiation and Nuclear Safety Authority",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "devDependencies": {
     "css-loader": "^0.28.11",
     "less": "^3.0.4",
