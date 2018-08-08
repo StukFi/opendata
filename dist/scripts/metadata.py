@@ -52,10 +52,6 @@ def generate_metadata(list_of_filenames):
         else:
             entry["times"].append(time)
 
-    result["files"] = []
-    for filename in list_of_filenames:
-        result["files"].append(filename)
-
     result = json.dumps(result, separators=(',', ':'))
     return result
 
