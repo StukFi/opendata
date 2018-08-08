@@ -17,18 +17,18 @@
   "license": "MIT",
   "devDependencies": {
     "css-loader": "^0.28.11",
-    "less": "^3.0.4",
+    "less": "^3.8.1",
     "less-loader": "^4.1.0",
     "style-loader": "^0.21.0",
-    "vue-loader": "^15.2.4",
-    "vue-template-compiler": "^2.5.16",
-    "webpack": "^4.12.0",
-    "webpack-cli": "^3.0.3"
+    "vue-loader": "^15.3.0",
+    "vue-template-compiler": "^2.5.17",
+    "webpack": "^4.16.5",
+    "webpack-cli": "^3.1.0"
   },
   "dependencies": {
     "ol": "^4.6.5",
-    "plotly.js": "^1.38.3",
-    "vue": "^2.5.16",
+    "plotly.js": "^1.39.4",
+    "vue": "^2.5.17",
     "vue-resource": "^1.5.1",
     "vuejs-datepicker": "^1.5.2",
     "vuex": "^3.0.1"
