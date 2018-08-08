@@ -3,6 +3,8 @@ import Vue from "vue"
 export default {
     state: {
         map: {
+            // For local tiles use e.g. "tiles/{z}/{x}/{y}.png".
+            tileServerUrl: "https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png",
             minZoom: 4,
             maxZoom: 10
         },
