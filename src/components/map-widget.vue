@@ -13,22 +13,22 @@ import FeaturePopup from "./feature-popup"
 import MapLegend from "./map-legend"
 import TimepickerWidget from "./timepicker-widget"
 
-import CircleStyle from "ol/style/circle"
-import ControlZoom from "ol/control/zoom"
-import ControlZoomSlider from "ol/control/zoomslider"
-import ControlScaleLine from "ol/control/scaleline"
-import ControlMousePosition from "ol/control/mouseposition"
-import coordinate from "ol/coordinate"
-import FillStyle from "ol/style/fill"
-import GeoJSON from "ol/format/geojson"
-import Map from "ol/map"
-import OSMSource from "ol/source/osm"
-import proj from "ol/proj"
-import Style from "ol/style/style"
-import TileLayer from "ol/layer/tile"
-import VectorLayer from "ol/layer/vector"
-import VectorSource from "ol/source/vector"
-import View from "ol/view"
+import CircleStyle from "ol/style/Circle"
+import ControlZoom from "ol/control/Zoom"
+import ControlZoomSlider from "ol/control/Zoomslider"
+import ControlScaleLine from "ol/control/Scaleline"
+import ControlMousePosition from "ol/control/Mouseposition"
+import {createStringXY} from "ol/coordinate"
+import FillStyle from "ol/style/Fill"
+import {fromLonLat} from "ol/proj"
+import GeoJSON from "ol/format/GeoJSON"
+import Map from "ol/Map"
+import OSMSource from "ol/source/OSM"
+import Style from "ol/style/Style"
+import TileLayer from "ol/layer/Tile"
+import VectorLayer from "ol/layer/Vector"
+import VectorSource from "ol/source/Vector"
+import View from "ol/View"
 
 export default {
     name: "MapWidget",
@@ -161,12 +161,12 @@ export default {
                 new ControlZoomSlider(),
                 new ControlScaleLine(),
                 new ControlMousePosition({
-                    coordinateFormat: coordinate.createStringXY(2),
+                    coordinateFormat: createStringXY(2),
                     projection: "EPSG:4326"
                 })
             ],
             view: new View({
-                center: proj.fromLonLat([25.75, 65.75]),
+                center: fromLonLat([25.75, 65.75]),
                 minZoom: this.$store.state.settings.map.minZoom,
                 maxZoom: this.$store.state.settings.map.maxZoom,
                 zoom: 5
