@@ -4,81 +4,41 @@
         <timepicker-widget></timepicker-widget>
         <map-legend></map-legend>
         <feature-popup ref="featurePopup"></feature-popup>
+        <dose-rate-layer ref="doseRateLayer"></dose-rate-layer>
     </div>
 </template>
 
 <script>
 import DatepickerWidget from "./datepicker-widget"
+import DoseRateLayer from "./dose-rate-layer"
 import FeaturePopup from "./feature-popup"
 import MapLegend from "./map-legend"
 import TimepickerWidget from "./timepicker-widget"
 
-import CircleStyle from "ol/style/Circle"
 import ControlZoom from "ol/control/Zoom"
 import ControlZoomSlider from "ol/control/Zoomslider"
 import ControlScaleLine from "ol/control/Scaleline"
 import ControlMousePosition from "ol/control/Mouseposition"
 import {createStringXY} from "ol/coordinate"
-import FillStyle from "ol/style/Fill"
 import {fromLonLat} from "ol/proj"
-import GeoJSON from "ol/format/GeoJSON"
 import Map from "ol/Map"
 import OSMSource from "ol/source/OSM"
-import Style from "ol/style/Style"
 import TileLayer from "ol/layer/Tile"
-import VectorLayer from "ol/layer/Vector"
-import VectorSource from "ol/source/Vector"
 import View from "ol/View"
 
 export default {
     name: "MapWidget",
     components: {
         DatepickerWidget,
-        TimepickerWidget,
+        DoseRateLayer,
+        FeaturePopup,
         MapLegend,
-        FeaturePopup
+        TimepickerWidget
     },
     data: function() {
         return {
-            map: {},
-            url: "",
-            geoJsonFormat: new GeoJSON({
-                defaultDataProjection: "EPSG:4326"
-            }),
-            vectorLayer: new VectorLayer({
-                source: new VectorSource({
-                    format: this.geoJsonFormat
-                }),
-                style: this.styleFeature
-            })
+            map: {}
         };
-    },
-    computed: {
-        datasetFilePath() {
-            if (!this.$store.state.datetime.date) {
-                return "";
-            }
-
-            return "data/dose_rates/datasets/" +
-                this.$store.state.datetime.date.toISOString().split("T")[0] + "T" +
-                this.$store.state.datetime.time + ".json";
-        },
-        doseRateRanges() {
-            return this.$store.state.settings.doseRateRanges;
-        }
-    },
-    watch: {
-        datasetFilePath: function() {
-            var vectorSource = new VectorSource({
-                format: this.geoJsonFormat,
-                url: this.datasetFilePath
-            });
-
-            this.vectorLayer.setSource(vectorSource);
-        },
-        doseRateRanges: function() {
-            this.vectorLayer.changed();
-        }
     },
     methods: {
         onMapInteraction(evt) {
@@ -114,38 +74,8 @@ export default {
                 duration: 750
             });
         },
-        styleFeature(feature) {
-            var featureColor = "#000";
-            var doseRate = feature.get("doseRate");
-
-            var doseRateRanges = this.$store.state.settings.doseRateRanges;
-            for (var i = 0; i < doseRateRanges.length; ++i) {
-                if (doseRate < doseRateRanges[i].maxValue) {
-                    if (doseRateRanges[i].enabled) {
-                        featureColor = doseRateRanges[i].color;
-                        break;
-                    }
-                    else {
-                        return undefined;
-                    }
-                }
-            }
-
-            var featureStyle = new Style({
-                image: new CircleStyle({
-                    radius: 10,
-                    fill: new FillStyle({
-                        color: featureColor
-                    })
-                })
-            });
-
-            return [featureStyle];
-        }
     },
     mounted: function() {
-        var that = this;
-
         this.map = new Map({
             target: "map",
             layers: [
@@ -153,8 +83,7 @@ export default {
                     source: new OSMSource({
                         url: this.$store.state.settings.map.tileServerUrl
                     })
-                }),
-                this.vectorLayer
+                })
             ],
             controls: [
                 new ControlZoom(),
@@ -177,6 +106,7 @@ export default {
         this.map.on("click", this.onMapInteraction);
 
         this.map.addOverlay(this.$refs.featurePopup.overlay);
+        this.map.addLayer(this.$refs.doseRateLayer.vectorLayer);
 
         this.map.updateSize();
     }
