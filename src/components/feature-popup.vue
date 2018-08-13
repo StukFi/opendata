@@ -66,10 +66,26 @@ export default {
             }
 
             this.enable();
+        },
+        updateDoseRate(doseRateLayer) {
+            var features = doseRateLayer.getSource().getFeatures();
+            for (var i = 0; i < features.length; ++i) {
+                if (features[i].get("id") == this.siteId) {
+                    console.log(features[i].get("id"));
+                    this.getFeatureInformation(features[i]);
+                    return;
+                }
+            }
+
+            // This is in case the new dataset that was loaded doesn't
+            // have a feature for the previously selected measurement site
+            // i.e. the site is missing a measurement for the selected datetime.
+            this.doseRate = "-";
         }
     },
     mounted: function() {
         this.$root.$on("mapInteraction", this.onMapInteraction);
+        this.$root.$on("doseRateLayerChanged", this.updateDoseRate);
 
         this.overlay = new Overlay({
             element: this.$refs.featurePopup,

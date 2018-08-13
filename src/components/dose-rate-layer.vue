@@ -50,6 +50,13 @@ export default {
             this.vectorLayer.changed();
         }
     },
+    mounted() {
+        // The change event is fired when the vector layer's source's state changes.
+        var that = this;
+        this.vectorLayer.on("change", function() {
+            that.$root.$emit("doseRateLayerChanged", that.vectorLayer);
+        });
+    },
     methods: {
         styleFeature(feature) {
             var featureColor = "#000";
