@@ -69,6 +69,11 @@ export default {
         },
         updateDoseRate(doseRateLayer) {
             var features = doseRateLayer.getSource().getFeatures();
+
+            if (features.length == 0) {
+                return;
+            }
+
             for (var i = 0; i < features.length; ++i) {
                 if (features[i].get("id") == this.siteId) {
                     console.log(features[i].get("id"));
