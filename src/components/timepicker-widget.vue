@@ -1,8 +1,10 @@
 <template>
     <div class="timepicker-container">
+        <button class="button__change-time button__decrement-time" @click="decrementTime()"></button>
+        <button class="button__change-time button__increment-time" @click="incrementTime()"></button>
         <div class="timepicker" @click="toggleTimeList">{{time | formatTime}}</div>
         <ul class="time-list" v-show="isTimeListOpen">
-            <li class="time-list__entry" v-bind:class="{'time-list__entry--selected': timeEntry == time}" @click="setTime(timeEntry), toggleTimeList()" v-for="timeEntry in validTimesForCurrentDate">{{timeEntry | formatTime}}</li>
+            <li class="time-list__entry" v-bind:class="{'time-list__entry--selected': timeEntry == time}" @click="setTime(timeEntry), toggleTimeList()" v-for="timeEntry in validTimesForCurrentDate.slice().reverse()">{{timeEntry | formatTime}}</li>
         </ul>
     </div>
 </template>
@@ -25,7 +27,7 @@ export default {
             }
         },
         validTimesForCurrentDate() {
-            return this.$store.getters.validTimesForCurrentDate.sort().reverse();
+            return this.$store.getters.validTimesForCurrentDate;
         }
     },
     mounted() {
@@ -48,6 +50,12 @@ export default {
         },
         setTime(time) {
             this.time = time;
+        },
+        decrementTime() {
+            this.$store.dispatch("decrementTime");
+        },
+        incrementTime() {
+            this.$store.dispatch("incrementTime");
         }
     },
     filters: {
@@ -118,6 +126,29 @@ export default {
 
 .time-list__entry--selected {
     background-color: #4BD;
+}
+
+.button__change-time {
+    width: 25%;
+    height: 100%;
+    position: absolute;
+    border: none;
+    background-color: #aaddd5;
+    background-size: 1.5em;
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    outline: none;
+}
+
+.button__decrement-time {
+    left: 0;
+    background-image: url("../../assets/icons/caret-left.svg");
+}
+
+.button__increment-time {
+    right: 0;
+    background-image: url("../../assets/icons/caret-right.svg");
 }
 
 @media only screen and (min-width: 768px) {

@@ -1,5 +1,9 @@
 <template>
-    <datepicker v-model="date" :monday-first="true" :disabledDates="disabledDates" :format="dateFormatter"></datepicker>
+    <div class="datepicker-container">
+        <button class="button__change-date button__decrement-date" @click="decrementDate()"></button>
+        <button class="button__change-date button__increment-date" @click="incrementDate()"></button>
+        <datepicker v-model="date" :monday-first="true" :disabledDates="disabledDates" :format="dateFormatter"></datepicker>
+    </div>
 </template>
 
 <script>
@@ -15,8 +19,8 @@ export default {
             get() {
                 return this.$store.state.datetime.date;
             },
-            set(newValue) {
-                this.$store.dispatch("setDate", newValue);
+            set(newDate) {
+                this.$store.dispatch("setDate", newDate);
             }
         },
         disabledDates() {
@@ -36,10 +40,6 @@ export default {
 
             if (validDatetimes.length == 0) {
                 return disabledDates;
-            }
-
-            for (var i = 0; i < validDatetimes.length; ++i) {
-                validDatetimes[i].date = new Date(validDatetimes[i].date);
             }
 
             // Disable dates from the start of Unix time to the first valid date.
@@ -73,22 +73,28 @@ export default {
             }
 
             return disabledDates;
+        },
+        decrementDate() {
+            this.$store.dispatch("decrementDate");
+        },
+        incrementDate() {
+            this.$store.dispatch("incrementDate");
         }
     }
 }
 </script>
 
 <style>
-.vdp-datepicker {
+.datepicker-container {
     position: absolute;
     top: 0;
     left: 0;
     width: 50%;
-    height: 50px;
+    height: 75px;
     z-index: 10000;
 }
 
-.vdp-datepicker input {
+.datepicker-container input {
     width: 100%;
     height: 60px;
     line-height: 60px;
@@ -121,6 +127,30 @@ export default {
     left: 50%;
     transform: translateX(-50%);
     width: 300px;
+}
+
+.button__change-date {
+    width: 25%;
+    height: 100%;
+    position: absolute;
+    border: none;
+    background-color: #C7EAE4;
+    background-size: 1.5em;
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    outline: none;
+    z-index: 1;
+}
+
+.button__decrement-date {
+    left: 0;
+    background-image: url("../../assets/icons/caret-left.svg");
+}
+
+.button__increment-date {
+    right: 0;
+    background-image: url("../../assets/icons/caret-right.svg");
 }
 
 @media only screen and (min-width: 768px) {
