@@ -9,8 +9,7 @@ module.exports = {
         path: path.resolve(__dirname, "dist")
     },
     resolve: {
-        extensions: [".js", ".vue", ".json"]
-
+        extensions: [".js", ".vue", ".json"],
     },
     module: {
         rules: [
@@ -21,6 +20,17 @@ module.exports = {
             {
                 test: /\.css$/,
                 loaders: ["style-loader", "css-loader"]
+            },
+            {
+                test: /\.(svg)$/i,
+                use: [
+                    {
+                        loader: "url-loader",
+                        options: {
+                            limit: 8192
+                        }
+                    }
+                ]
             }
         ]
     },
