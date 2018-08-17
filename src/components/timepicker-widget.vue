@@ -1,7 +1,7 @@
 <template>
     <div class="timepicker-container">
-        <button class="button__change-time button__decrement-time" @click="decrementTime()"></button>
-        <button class="button__change-time button__increment-time" @click="incrementTime()"></button>
+        <button class="button__change-time button__decrement-time" @click="decrementTime()" v-bind:class="{'button__change-time--disabled': isFirstTimeSelected}"></button>
+        <button class="button__change-time button__increment-time" @click="incrementTime()" v-bind:class="{'button__change-time--disabled': isLastTimeSelected}"></button>
         <div class="timepicker" @click="toggleTimeList">{{time | formatTime}}</div>
         <ul class="time-list" v-show="isTimeListOpen">
             <li class="time-list__entry" v-bind:class="{'time-list__entry--selected': timeEntry == time}" @click="setTime(timeEntry), toggleTimeList()" v-for="timeEntry in validTimesForCurrentDate.slice().reverse()">{{timeEntry | formatTime}}</li>
@@ -28,6 +28,12 @@ export default {
         },
         validTimesForCurrentDate() {
             return this.$store.getters.validTimesForCurrentDate;
+        },
+        isFirstTimeSelected() {
+            return this.$store.getters.isFirstTimeSelected;
+        },
+        isLastTimeSelected() {
+            return this.$store.getters.isLastTimeSelected;
         }
     },
     mounted() {
@@ -134,7 +140,7 @@ export default {
     position: absolute;
     border: none;
     background-color: #aaddd5;
-    background-size: 1.5em;
+    background-size: 1.2em;
     background-position: center;
     background-repeat: no-repeat;
     cursor: pointer;
@@ -149,6 +155,10 @@ export default {
 .button__increment-time {
     right: 0;
     background-image: url("../../assets/icons/caret-right.svg");
+}
+
+.button__change-time--disabled {
+    background-image: none;
 }
 
 @media only screen and (min-width: 768px) {

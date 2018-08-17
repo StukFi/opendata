@@ -21,6 +21,36 @@ export default {
             }
 
             return times;
+        },
+        isFirstDateSelected(state, getters) {
+            if (state.validDatetimes.length == 0 || !state.date) {
+                return false;
+            }
+
+            var firstDate = state.validDatetimes[0].date.toDateString();
+            return (state.date.toDateString() == firstDate) ? true : false;
+        },
+        isLastDateSelected(state, getters) {
+            if (state.validDatetimes.length == 0 || !state.date) {
+                return false;
+            }
+
+            var lastDate = state.validDatetimes[state.validDatetimes.length - 1].date.toDateString();
+            return (state.date.toDateString() == lastDate) ? true : false;
+        },
+        isFirstTimeSelected(state, getters) {
+            if (getters.isFirstDateSelected) {
+                return state.time == getters.validTimesForCurrentDate[0];
+            }
+
+            return false;
+        },
+        isLastTimeSelected(state, getters) {
+            if (getters.isLastDateSelected) {
+                return state.time == getters.validTimesForCurrentDate.slice(-1)[0];
+            }
+
+            return false;
         }
     },
     mutations: {

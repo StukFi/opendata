@@ -1,7 +1,7 @@
 <template>
     <div class="datepicker-container">
-        <button class="button__change-date button__decrement-date" @click="decrementDate()"></button>
-        <button class="button__change-date button__increment-date" @click="incrementDate()"></button>
+        <button class="button__change-date button__decrement-date" @click="decrementDate()" v-bind:class="{'button__change-date--disabled': isFirstDateSelected}"></button>
+        <button class="button__change-date button__increment-date" @click="incrementDate()" v-bind:class="{'button__change-date--disabled': isLastDateSelected}"></button>
         <datepicker v-model="date" :monday-first="true" :disabledDates="disabledDates" :format="dateFormatter"></datepicker>
     </div>
 </template>
@@ -25,6 +25,12 @@ export default {
         },
         disabledDates() {
             return this.parseDisabledDates();
+        },
+        isFirstDateSelected() {
+            return this.$store.getters.isFirstDateSelected;
+        },
+        isLastDateSelected() {
+            return this.$store.getters.isLastDateSelected;
         }
     },
     methods: {
@@ -135,7 +141,7 @@ export default {
     position: absolute;
     border: none;
     background-color: #C7EAE4;
-    background-size: 1.5em;
+    background-size: 1.2em;
     background-position: center;
     background-repeat: no-repeat;
     cursor: pointer;
@@ -151,6 +157,10 @@ export default {
 .button__increment-date {
     right: 0;
     background-image: url("../../assets/icons/caret-right.svg");
+}
+
+.button__change-date--disabled {
+    background-image: none;
 }
 
 @media only screen and (min-width: 768px) {
