@@ -115,15 +115,31 @@ export default {
             var mostRecentTime = validTimes[validTimes.length - 1];
             commit("setTime", mostRecentTime);
         },
-        decrementTime({commit, getters, state}) {
+        decrementTime({commit, dispatch, getters, state}) {
+            if (getters.isFirstDateSelected && getters.isFirstTimeSelected) {
+                return;
+            }
+
             var index = getters.validTimesForCurrentDate.indexOf(state.time);
-            if (index > 0) {
+            if (index == 0) {
+                dispatch("decrementDate");
+                dispatch("selectMostRecentTime");
+            }
+            else if (index > 0) {
                 commit("setTime", getters.validTimesForCurrentDate[--index]);
             }
         },
-        incrementTime({commit, getters, state}) {
+        incrementTime({commit, dispatch, getters, state}) {
+            if (getters.isLastDateSelected && getters.isLastTimeSelected) {
+                return;
+            }
+
             var index = getters.validTimesForCurrentDate.indexOf(state.time);
-            if (index >= 0 && index < getters.validTimesForCurrentDate.length - 1) {
+            if (index == getters.validTimesForCurrentDate.length - 1) {
+                dispatch("incrementDate");
+                commit("setTime", getters.validTimesForCurrentDate[0]);
+            }
+            else if (index >= 0 && index < getters.validTimesForCurrentDate.length - 1) {
                 commit("setTime", getters.validTimesForCurrentDate[++index]);
             }
         },
