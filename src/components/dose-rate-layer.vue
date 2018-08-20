@@ -79,7 +79,7 @@ export default {
             }
 
             that.bufferLayer.setVisible(false);
-            that.vectorLayer.getSource().clear();
+            that.vectorLayer.getSource().clear(true);
             that.vectorLayer.getSource().addFeatures(loadedFeatures);
 
             that.$root.$emit("doseRateLayerChanged", that.vectorLayer);
