@@ -96,7 +96,7 @@ export default {
     top: 0;
     left: 0;
     width: 50%;
-    height: 75px;
+    height: 60px;
     z-index: 10000;
 }
 
@@ -163,11 +163,21 @@ export default {
     background-image: none;
 }
 
+@media only screen and (max-width: 500px) {
+    .button__change-date {
+        display: none;
+    }
+}
+
 @media only screen and (min-width: 768px) {
     .vdp-datepicker input {
         height: 75px;
         line-height: 75px;
         font-size: 2.3em;
+    }
+
+    .datepicker-container {
+        height: 75px;
     }
 
     .vdp-datepicker__calendar {

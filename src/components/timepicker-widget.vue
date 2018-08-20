@@ -161,6 +161,12 @@ export default {
     background-image: none;
 }
 
+@media only screen and (max-width: 500px) {
+    .button__change-time {
+        display: none;
+    }
+}
+
 @media only screen and (min-width: 768px) {
     .timepicker-container {
         height: 75px;
