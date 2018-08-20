@@ -18,7 +18,8 @@ export default {
                 source: new VectorSource({
                     format: this.featureFormat
                 }),
-                style: this.styleFeature
+                style: this.styleFeature,
+                renderOrder: this.orderFeatures
             }),
             // A buffer layer is used to load in new datasets. Features from the buffer
             // layer are added to the visible vector layer. Features are not loaded into
@@ -114,6 +115,10 @@ export default {
             });
 
             return [featureStyle];
+        },
+        orderFeatures(featureA, featureB) {
+            // Draw features with a higher dose rate on top.
+            return featureA.get("doseRate") < featureB.get("doseRate") ? -1 : 1;
         }
     }
 }
