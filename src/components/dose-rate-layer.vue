@@ -20,6 +20,22 @@ export default {
                 }),
                 style: this.styleFeature
             }),
+            // A buffer layer is used to load in new datasets. Features from the buffer
+            // layer are added to the visible vector layer. Features are not loaded into
+            // the visible layer directly by changing its source, because doing so results
+            // in the map being momentarily empty as the new dataset is being loaded.
+            // Using a buffer layer results in a smooth transition from one dataset to another.
+            // The buffer layer is added to the map because it won't otherwise be updated.
+            bufferLayer: new VectorLayer({
+                source: new VectorSource({
+                    format: this.featureFormat
+                }),
+                style: this.styleFeature,
+                // Setting "visible" to false causes the layer to not be updated or drawn.
+                // This disables the buffer layer when a new dataset is not being loaded.
+                // Likewise visiblity is set to true when loading a new dataset.
+                visible: false,
+            }),
             featureFormat: new GeoJSON({
                 defaultDataProjection: "EPSG:4326"
             })
@@ -41,7 +57,9 @@ export default {
     },
     watch: {
         datasetFilePath: function() {
-            this.vectorLayer.setSource(new VectorSource({
+            // A new dataset is loaded into the buffer layer by changing its source.
+            this.bufferLayer.setVisible(true);
+            this.bufferLayer.setSource(new VectorSource({
                 format: this.featureFormat,
                 url: this.datasetFilePath
             }));
@@ -51,11 +69,22 @@ export default {
         }
     },
     mounted() {
-        // The change event is fired when the vector layer's source's state changes.
         var that = this;
-        this.vectorLayer.on("change", function() {
+        // A generic change event is fired when a layer's source's state changes.
+        // The buffer layer's source is considered 'ready' when it contains features.
+        this.bufferLayer.on("change", function() {
+            var loadedFeatures = that.bufferLayer.getSource().getFeatures();
+            if (loadedFeatures.length == 0) {
+                return;
+            }
+
+            that.bufferLayer.setVisible(false);
+            that.vectorLayer.getSource().clear();
+            that.vectorLayer.getSource().addFeatures(loadedFeatures);
+
             that.$root.$emit("doseRateLayerChanged", that.vectorLayer);
         });
+
     },
     methods: {
         styleFeature(feature) {
