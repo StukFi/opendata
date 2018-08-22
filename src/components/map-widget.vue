@@ -2,6 +2,7 @@
     <div id="map" class="map">
         <datepicker-widget></datepicker-widget>
         <timepicker-widget></timepicker-widget>
+        <media-controls></media-controls>
         <map-legend></map-legend>
         <feature-popup ref="featurePopup"></feature-popup>
         <dose-rate-layer ref="doseRateLayer"></dose-rate-layer>
@@ -13,6 +14,7 @@ import DatepickerWidget from "./datepicker-widget"
 import DoseRateLayer from "./dose-rate-layer"
 import FeaturePopup from "./feature-popup"
 import MapLegend from "./map-legend"
+import MediaControls from "./media-controls"
 import TimepickerWidget from "./timepicker-widget"
 
 import ControlZoom from "ol/control/Zoom"
@@ -33,6 +35,7 @@ export default {
         DoseRateLayer,
         FeaturePopup,
         MapLegend,
+        MediaControls,
         TimepickerWidget
     },
     data: function() {
