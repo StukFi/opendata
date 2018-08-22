@@ -1,7 +1,7 @@
 <template>
     <div class="media-controls">
         <span class="media-controls__button media-controls__button-datetime" v-bind:class="{'media-controls__button-time': playbackMode == 'time', 'media-controls__button-date': playbackMode == 'date'}"@click="toggleMode()"></span>
-        <span class="media-controls__button media-controls__button-playback" v-bind:class="{'media-controls__button-play': !playbackEnabled, 'media-controls__button-pause': playbackEnabled}" @click="togglePlayback()"></span>
+        <span class="media-controls__button" v-bind:class="{'media-controls__button-play': !playbackEnabled, 'media-controls__button-pause': playbackEnabled}" @click="togglePlayback()"></span>
         <span class="media-controls__button media-controls__button-speed" @click="toggleSpeed()">{{playbackSpeed | formatSpeed}}</span>
     </div>
 </template>
@@ -79,13 +79,14 @@ export default {
 .media-controls {
     width: 200px;
     height: 40px;
-    background-color: rgba(255, 255, 255, 0.4);
     position: absolute;
     bottom: 40px;
     left: 50%;
+    display: flex;
     transform: translateX(-50%);
+    background-color: rgba(255, 255, 255, 0.4);
     z-index: 1;
-    padding: 4px;
+    padding: 3px;
     border-radius: 4px;
 }
 
@@ -96,7 +97,7 @@ export default {
 .media-controls__button {
     width: 32%;
     height: 100%;
-    float: left;
+    margin: auto;
     background-repeat: no-repeat;
     background-position: center;
     background-size: 1em;
@@ -109,7 +110,6 @@ export default {
 
 .media-controls__button-datetime {
     border-radius: 2px 0px 0px 2px;
-    margin-right: 2px;
 }
 
 .media-controls__button-date {
@@ -118,10 +118,6 @@ export default {
 
 .media-controls__button-time {
     background-image: url("../../assets/icons/clock.svg");
-}
-
-.media-controls__button-playback {
-    margin-left: 2px;
 }
 
 .media-controls__button-play {
@@ -134,7 +130,6 @@ export default {
 
 .media-controls__button-speed {
     border-radius: 0px 2px 2px 0px;
-    margin-left: 2px;
     float: right;
     text-align: center;
     line-height: 32px;
