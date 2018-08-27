@@ -16,7 +16,7 @@ The application enables viewing of external radiation results from STUK's monito
 
 Results are available in increments of 10 minutes. Each result dataset records the average dose rates measured over the last measurement period. The application uses data local to the server it is hosted on. This means that only data already fetched by the host is available for viewing. Consequently, results for certain dates or times could be missing or there might be gaps in the data.
 
-![](docs/overview.png)
+![](docs/overview.PNG)
 
 Each point on the map represents a single measurement site. A point's color corresponds to the measured dose rate. Hovering a mouse cursor over a point opens a popup showing the site's name and dose rate. Clicking a point opens a larger popup which also shows a time series graph. 
 
