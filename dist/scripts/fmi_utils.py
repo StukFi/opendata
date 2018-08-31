@@ -3,7 +3,7 @@ import time
 from requests.exceptions import ReadTimeout
 from urllib.request import urlopen
 
-settings = json.load(open('../../settings.json'))
+settings = json.load(open('../server-settings.json'))
 fmi_api_key = settings["settings"]["fmi_api_key"]
 
 gml_namespace = "http://www.opengis.net/gml/3.2"

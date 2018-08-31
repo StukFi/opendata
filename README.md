@@ -50,7 +50,7 @@ Every time a new dataset is loaded, time series data for the date to which the d
 
 *Optional: Authenticated FMI API requests*
 
-If you wish to use authenticated API requests when fetching data from FMI's open data portal, an API key must be used. Follow the instructions at  http://en.ilmatieteenlaitos.fi/open-data-manual to register for an API key. Once you have an API key, create a copy of the file 'settings.example.json' and name it 'settings.json'. In the settings file, replace the FMI API key with your own. When fetching data with the 'get_data.py' script, use the '-a' or '--auth' argument to enable authentication.
+If you wish to use authenticated API requests when fetching data from FMI's open data portal, an API key must be used. Follow the instructions at  http://en.ilmatieteenlaitos.fi/open-data-manual to register for an API key. Once you have an API key, create a copy of the file 'server-settings.example.json' in the 'dist' directory and name it 'server-settings.json'. In the settings file, replace the FMI API key with your own. When fetching data with the 'get_data.py' script, use the '-a' or '--auth' argument to enable authentication.
 
 ## 3. Development
 
