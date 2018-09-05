@@ -116,7 +116,7 @@ export default {
     height: 300px;
     overflow: scroll;
     overflow-x: unset;
-    top: 85px;
+    top: 70px;
     margin-top: 0;
     padding: 0;
     background-color: white;
@@ -172,6 +172,10 @@ export default {
         height: 75px;
         line-height: 75px;
         font-size: 2.3em;
+    }
+
+    .time-list {
+        top: 85px;
     }
 }
 </style>
