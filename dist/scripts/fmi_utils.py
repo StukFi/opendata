@@ -41,10 +41,6 @@ def wfs_request(start_time, end_time, results_type, authenticated=False):
     :param authenticated: indicates whether an API key is used
     :return: HTTPResponse object
     """
-    # if (end_time - start_time).total_seconds() > 559:
-    #     if results_type == "dose_rate":
-    #         raise Exception("Max timespan is 559. Generate multiple requests to avoid this.")
-
     timeFormat = "%Y-%m-%dT%H:%M:00Z"
     t0 = start_time.strftime(timeFormat)
     t1 = end_time.strftime(timeFormat)
