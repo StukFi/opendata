@@ -19,7 +19,8 @@ def get_program_arguments():
     parser.add_argument("data_type", choices=["dose_rates", "samplers"],
                         help="type of data to get")
     parser.add_argument("-s", "--timespan", nargs=2, metavar=('FROM', 'TO'),
-                        help="define timespan for which to get data [YYYY-MM-DDThh:mm:ss]")
+                        help="define timespan for which to get data, \
+                              datetime format {}".format(fmi_request_datetime_format))
     parser.add_argument("-a", "--auth", action="store_true",
                         help="use an API key to authenticate requests")
     return parser.parse_args()

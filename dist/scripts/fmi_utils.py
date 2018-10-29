@@ -11,6 +11,8 @@ gmlcov_namespace ="http://www.opengis.net/gmlcov/1.0"
 swe_ns = "http://www.opengis.net/swe/2.0"
 wfs_ns = "http://www.opengis.net/wfs/2.0"
 
+fmi_request_datetime_format = "YYYY-MM-DDThh:mm:ss"
+
 request_templates = {
         "base": {
             "authenticated": "http://data.stuk.fi/fmi-apikey/{}/wfs/eng?",

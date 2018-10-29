@@ -147,8 +147,9 @@ def validate_timespan(timespan):
     try:
         start_time = datetime.strptime(timespan[0], datetimeFormat)
         end_time = datetime.strptime(timespan[1], datetimeFormat)
-    except:
-        sys.exit("[Error] Invalid datetime format.")
+    except ValueError:
+        sys.exit("[Error] Invalid datetime format, should be {}.".format(
+            fmi_request_datetime_format))
 
     if start_time >= end_time or end_time > datetime.utcnow():
         sys.exit("[Error] Invalid timespan.")
