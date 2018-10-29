@@ -58,8 +58,8 @@ def wfs_request(start_time, end_time, results_type, authenticated=False):
         try:
             response = urlopen(url)
             tries = 0
-        except ReadTimeout:
+        except (RequestException, ConnectionError):
             tries -= 1
-            time.sleep(10)
+            time.sleep(5)
 
     return response

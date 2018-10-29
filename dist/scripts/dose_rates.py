@@ -47,6 +47,9 @@ def parse_dose_rate_data(data):
     :param data: raw dose rate data from the FMI open data API.
     :return: GeoJSON string of dose rate data
     """
+    if data is None:
+        raise InvalidDatasetError
+
     wfs_response = ElementTree.fromstring(data.read())
     gml_points = wfs_response.findall('.//{%s}Point' % gml_namespace)
     geojson_string = deepcopy(geojson_template)
@@ -72,7 +75,7 @@ def parse_dose_rate_data(data):
         value_lines = wfs_response.findall('.//{%s}doubleOrNilReasonTupleList' \
                                             % gml_namespace)[0].text.split("\n")[1:-1]
     except IndexError:
-        raise EmptyDatasetError("No features.")
+        raise InvalidDatasetError("Dataset contains no features.")
 
     for line in value_lines:
         value = float(line.strip().split()[0])
@@ -171,9 +174,9 @@ def get_dataset_count(start_time, end_time, measurement_interval):
     return dataset_count
 
 
-class EmptyDatasetError(Exception):
+class InvalidDatasetError(Exception):
     """
     A custom exception type for when a dataset retrieved from
-    FMI's API contains no features i.e. it is considered empty.
+    FMI's API is considered invalid (e.g. it contains no features).
     """
     pass
