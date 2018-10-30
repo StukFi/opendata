@@ -1,6 +1,7 @@
 import json
 import time
 from requests.exceptions import RequestException
+from urllib.error import HTTPError
 from urllib.request import urlopen
 
 settings = json.load(open('../server-settings.json'))
@@ -60,7 +61,7 @@ def wfs_request(start_time, end_time, results_type, authenticated=False):
         try:
             response = urlopen(url)
             tries = 0
-        except (RequestException, ConnectionError):
+        except (RequestException, HTTPError, ConnectionError):
             tries -= 1
             time.sleep(5)
 
