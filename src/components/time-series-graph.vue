@@ -155,7 +155,7 @@ export default {
 
             for (var i = 0; i < this.datasets.length; ++i) {
                 for (var j = 0; j < this.datasets[i].data.length; ++j) {
-                    dates.push(new Date(this.datasets[i].data[j].e));
+                    dates.push(new Date(this.datasets[i].data[j].e).toISOString());
                     values.push(this.datasets[i].data[j].r);
                 }
             }
