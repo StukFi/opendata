@@ -1,4 +1,5 @@
 import json
+import socket
 import time
 from requests.exceptions import RequestException
 from urllib.error import HTTPError
@@ -56,12 +57,13 @@ def wfs_request(start_time, end_time, results_type, authenticated=False):
         url = request_templates["base"]["unauthenticated"] + request_templates[results_type]
         url = url.format(t0, t1)
 
+    response = None
     tries = 3
     while tries > 0:
         try:
-            response = urlopen(url)
+            response = urlopen(url, timeout=5)
             tries = 0
-        except (RequestException, HTTPError, ConnectionError):
+        except (RequestException, HTTPError, ConnectionError, socket.timeout):
             tries -= 1
             time.sleep(5)
 

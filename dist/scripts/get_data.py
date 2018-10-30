@@ -44,7 +44,7 @@ def get_data(args):
                 display_progress("Generating GeoJSON files", i - invalidDatasets, len(datasets))
 
         if invalidDatasets > 0:
-            print("\n{0} invalid datasets were skipped".format(invalidDatasets))
+            print("{0} invalid datasets were skipped".format(invalidDatasets))
 
     elif args.data_type == "samplers":
         data = get_sampler_data(args)
