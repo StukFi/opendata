@@ -1,3 +1,4 @@
+import calendar
 import json
 import os
 import sys
@@ -30,8 +31,9 @@ def generate_time_series(args, regenerate_all=False):
         file_timestamp = datetime.strptime(json_file.split(".")[0], "%Y-%m-%dT%H%M%S")
 
         for feature in features:
-            start = int((file_timestamp - timedelta(seconds=600)).timestamp()) * 1000
-            end = int(file_timestamp.timestamp()) * 1000
+            start = file_timestamp - timedelta(seconds=600)
+            start = int(calendar.timegm(start.utctimetuple())) * 1000
+            end = int(calendar.timegm(file_timestamp.utctimetuple())) * 1000
             measurements.append({
                 "s": start,
                 "e": end,
