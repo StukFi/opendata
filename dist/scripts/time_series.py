@@ -80,7 +80,7 @@ def get_target_dates(args):
         start_time = datetime.strptime(args.timespan[0], datetimeFormat)
         end_time = datetime.strptime(args.timespan[1], datetimeFormat)
     else:
-        end_time = datetime.now()
+        end_time = datetime.utcnow()
         start_time = end_time - timedelta(days=1)
         
     dates = []
