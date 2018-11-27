@@ -1,3 +1,4 @@
+import math
 import os
 import sys
 import time
@@ -85,6 +86,9 @@ def parse_dose_rate_data(data):
     position_lines =  wfs_response.findall('.//{%s}positions' \
                                             % gmlcov_namespace)[0].text.split("\n")[1:-1]
     for i, line in enumerate(position_lines):
+        if math.isnan(values[i]):
+            continue
+
         line = line.split()
         coords = line[0] + " " + line[1]
         timestamp = datetime.utcfromtimestamp(int(line[2]))
