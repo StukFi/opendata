@@ -1,6 +1,6 @@
 <template>
     <div ref="featurePopup" class="feature-popup" v-bind:class="{'feature-popup--large': isGraphVisible}" >
-        <a href="#" ref="featurePopupCloser" class="feature-popup__closer" v-if="isGraphVisible" v-on:click="disable"></a>
+        <a href="#" ref="featurePopupCloser" class="feature-popup__closer" v-if="isGraphVisible" v-on:click="disable">&times;</a>
         <div class="feature-popup__content">
             <p class="feature-popup__site">{{site}}</p>
             <p class="feature-popup__dose-rate">{{doseRate}}</p>
@@ -162,13 +162,10 @@ export default {
 .feature-popup__closer {
     text-decoration: none;
     position: absolute;
-    top: 10px;
+    top: 0;
     right: 12px;
     color: black;
-}
-
-.feature-popup__closer:after {
-    content: "\00274C";
+    font-size: 2em;
 }
 
 @media only screen and (min-width: 768px) {
