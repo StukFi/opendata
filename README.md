@@ -1,81 +1,66 @@
-# STUK Open Data Website
+# opendata
 
-An independent web application for viewing external radiation results from [the Finnish Radiation and Nuclear Safety Authority's (STUK)](https://www.stuk.fi/web/en) monitoring network. The application gets its data from [the Finnish Meteorological Institute's (FMI) open data API](https://en.ilmatieteenlaitos.fi/open-data). STUK's publicly hosted version of the project is available at TBA.
+An independent web application for viewing external radiation results from STUK's monitoring network. The application gets its data from FMI's open data API. The application is hosted at opendata.stuk.fi.
 
-The project's documentation is split in three chapters:
+## 1. Using the application
 
-1. Usage
-2. Hosting
-3. Development
-
-The first chapter covers the web application's features and usage from the viewpoint of a regular user. The second chapter goes through the process of hosting the application locally or on a remote server. The third and final chapter provides the necessary information for customizing or further developing the project.
-
-## 1. Usage
-
-The application enables viewing of external radiation results from STUK's monitoring network. It is usable on a variety of devices and display sizes from mobile phones and tablets to desktop computers. Some features may however be unavailable on smaller displays and touchscreens. 
-
-Results are available in increments of 10 minutes. Each result dataset records the average dose rates measured over the last measurement period. The application uses data local to the server it is hosted on. This means that only data already fetched by the host is available for viewing. Consequently, results for certain dates or times could be missing or there might be gaps in the data.
+The following image shows an overview of the application:
 
 ![](docs/overview.PNG)
 
-Each point on the map represents a single measurement site. A point's color corresponds to the measured dose rate. Hovering a mouse cursor over a point opens a popup showing the site's name and dose rate. Clicking a point opens a larger popup which also shows a time series graph. 
+Results are available in increments of 10 minutes. The application uses data local to its hosting server. This means that only data already fetched by the host is available. The available results may thus be incomplete.
 
-The graph supports multiple ways of interaction: panning, scrolling, and clicking. Data is by default displayed for the selected date. Panning the graph horizontally causes it to load in and display data for additional dates. Both axes and the graph area can be interacted with by scrolling a mouse wheel. These actions take into account the position of the cursor over the element. Double-clicking the axes or the graph area manipulate how the graph is displayed. Shift-clicking and dragging can be used to zoom in on certain sections of the graph both horizontally and vertically.
+Each point on the map represents a single measurement site. A point's color corresponds to the measured dose rate. Hovering a mouse cursor over a point opens a popup showing the site's name and dose rate. Clicking a point opens a larger popup which also includes a time series graph. 
 
-Dose rate ranges, colors, and the unit of measurement (e.g. microsievert) are visible in the map legend located at the bottom of the screen. Measurement sites displayed on the map can be filtered by dose rate by clicking the dose rate ranges on the map legend.
+The time series graph by default displays data for the selected date. Panning the graph causes it to load in and display data for more dates. The graph and its axes are scrollable. Double-clicking the graph or its axes changes how the data displays. Shift-clicking and dragging zooms in on sections of the graph.
 
-The map displays a result dataset for a certain date and time. Both are individually selectable and are visible at the top of the screen. Clicking the date opens a calendar, and clicking the time opens a list. Only dates and times for which data is available are selectable. The arrows next to the date and time can be clicked to increment or decrement the selected date and time.
+At the bottom of the screen is a map legend. It shows dose rate ranges, colors, and the unit of measurement (e.g. microsievert). Clicking a dose rate range toggles the visibility of results that fall within that range.
 
-The application also comes with a set of basic media controls located at the bottom of the screen. They allow the displayed result dataset to be changed automatically by incrementing the selected date or time. The middle button toggles playback on and off, the leftmost button determines whether date or time is incremented, and the rightmost button controls how frequently a new dataset is loaded.
+The map displays results for a certain date and time. Controls for changing the date and time are at the top of the screen. Clicking the date opens a calendar widget, and clicking the time opens a selection list. The application only allows the selection of dates and times for which data is available. The arrow buttons change the date and time in steps. The application is in UTC time.
 
-## 2. Hosting
+The application also comes with a set of basic media controls located at the bottom of the screen. They change the selected date or time with a set interval.
 
-This chapter provides information on hosting the project: building the application, setting it up on a web server, and getting data.
+The application is usable on both mobile devices and desktop computers. Some features such as the media controls are not available on very small screens. Known unsupported browsers include all version of Internet Explorer.
 
-### 2.1 Setting up a server
-
-Hosting the application should be as easy as building it and having a web server point to the 'dist' directory. Refer to chapter 3.1 for instructions on how to build the application. To locally test the project you can use for example the [Web Server for Chrome -plugin](https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb?hl=en). For publicly hosting the application refer to your web server of choice's documentation. 
-
-The application by default gets its map tiles from OpenStreetMap's public servers. This is fine for private or light development use, but is forbidden when distributing an application. If you are to host this project publicly, you should configure the application to use local tiles or use a service that allows its use in distributed applications. STUK's own publicly hosted version of this project is configured to use local map tiles.
-
-### 2.2 Getting data
-
-The application does not contain any data by default. Data must be fetched and processed by manually running or scheduling scripts in the 'dist/scripts' directory. The following dependencies are required to run the scripts: Python 3, and the [Requests](https://github.com/requests/requests) Python library, which can be installed by e.g. running 'pip3 install requests'.
-
-The primary script for getting data is the "get_data.py" script. For technical instructions run "get_data.py --help". The script has one required argument for the type of data to get. The only data type currently relevant to the application is "dose_rates". Running the script without any other arguments would fetch a dataset of the most recent measurements. The script can also be used to fetch multiple datasets of old data by providing a timespan. The timespan argument takes a start time and an end time, and fetches all datasets in between.
-
-The application can be kept up-to-date with the most recent results by scheduling the "get_data.py" script. This can be done with e.g. crontab on Linux or Task Scheduler on Windows. The following crontab configuration would run the script every 10 minutes: `*/10 * * * * cd /var/www/html/opendata/scripts/; /bin/python3 /var/www/html/opendata/scripts/get_data.py dose_rates`. Note the changing of directory to the 'scripts' directory. This is done to ensure that relative paths in the scripts point to the correct place.
-
-Every time a new dataset is loaded, time series data for the date to which the dataset belongs to has to be regenerated for it to be up-to-date. The "get_data.py" script performs this automatically, but the action can be performed manually if required by running the script "time_series.py". Another operation performed automatically is the generation of metadata regarding the available datasets. The metadata is used by the client-side to determine which dates and times are selectable. It can be updated manually by running the script "metadata.py".
-
-*Optional: Authenticated FMI API requests*
-
-If you wish to use authenticated API requests when fetching data from FMI's open data portal, an API key must be used. Follow the instructions at  http://en.ilmatieteenlaitos.fi/open-data-manual to register for an API key. Once you have an API key, create a copy of the file 'server-settings.example.json' in the 'dist' directory and name it 'server-settings.json'. In the settings file, replace the FMI API key with your own. When fetching data with the 'get_data.py' script, use the '-a' or '--auth' argument to enable authentication.
-
-## 3. Development
-
-This chapter covers development related topics, such as building the application, the tools and dependencies used by the application, and technical details.
-
-### 3.1 Building the application
+## 2. Building the application
 
 1. Clone the repository.
 
 2. Install [node.js](https://nodejs.org) which includes npm (node package manager).
 
-3. Install the project's dependencies by running 'npm install' in the project's root directory.
+3. Install the project's dependencies by running `npm install` in the project's root directory.
 
-4. Build the project for production by running 'npm run build' in the project's root directory. During development the project is built with 'npm run dev'. This causes the project's files to be monitored and the project to be automatically rebuilt when changes are detected. The project is built in the 'dist' directory.
+4. Build the project for production by running `npm run build` in the project's root directory. Build the project for development by running `npm run dev`. The project then rebuilds if any files change.
 
-### 3.2 Libraries and tools
+## 3. Hosting the application
 
-The project uses the [node package manager (npm)](https://www.npmjs.com) for managing dependencies. Development and application dependencies are listed in the file 'package.json', which is managed by npm. A build tool called [webpack](https://webpack.js.org) is used to perform various build operations, such as bundling and minifying files.
+Build the application and point a web server to the 'dist' directory. For local testing use for example the Web Server for Chrome -plugin. For public hosting refer to your web server of choice's documentation. 
 
-The application's most notable dependencies are [OpenLayers](https://openlayers.org) for mapping, [plotly.js](https://plot.ly/javascript) for graphing, and [Vue.js](https://vuejs.org) as the JavaScript framework.
+The application by default gets its map tiles from OpenStreetMap's public servers. For public hosting you should configure the application to use local tiles.
 
-### 3.3 Technical details
+## 4. Getting data
 
-Browsers that are known to *not* work: Internet Explorer.
+The application does not contain any data by default. Scripts for fetching and processing data are in the 'dist/scripts' directory. Install all dependencies before running the scripts.
 
-Python version 3.
+"get_data.py" is the main script. It takes one required argument for the type of data to get. This is currently always "dose_rates". Running the script without other arguments fetches the most recent results. Use the "--span" option and datetime arguments to fetch many results. Use the "--help" option for detailed technical instructions.
 
-NodeJS version 8 or newer.
+To keep the application up-to-date schedule the "get_data.py" script. The following crontab configuration runs the script every 10 minutes. The configuration changes directory to the scripts directory. This is due to relative paths in the scripts. Task Scheduler provides similar functionality on Windows.
+
+`*/10 * * * * cd /var/www/html/opendata/scripts/; /bin/python3 /var/www/html/opendata/scripts/get_data.py dose_rates`
+
+The "get_data.py" script performs requests to FMI's open data API. The requests are unauthenticated by default. If you wish to use authenticated requests, you must use an API key. Register at https://ilmatieteenlaitos.fi/rekisteroityminen-avoimen-datan-kayttajaksi to get an API key. Rename the file "server-settings.example.json" in the "dist" directory to "server-settings.json". Change the placeholder value in the file to your API key. To enable authentication use the "-a" or "--auth" option.
+
+The "get_data.py" script also generates time series data and updates a metadata file. It performs these tasks when it fetches new results. To regenerate all time series data run the "time_series.py" script. To update the metadata file run the "metadata.py" script. You do not need to run these scripts under normal operation.
+
+## 5. Dependencies
+
+See the file "package.json" for a list of library dependencies.
+
+npm (included with Node.js)<br>
+Python 3<br>
+[Requests](https://github.com/requests/requests) Python library
+
+## 6. Links
+
+https://www.stuk.fi/avoin-data<br>
+https://en.ilmatieteenlaitos.fi/open-data<br>
