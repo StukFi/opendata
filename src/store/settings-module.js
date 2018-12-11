@@ -2,6 +2,7 @@ import Vue from "vue"
 
 export default {
     state: {
+        language: "English",
         map: {
             // For local tiles use e.g. "tiles/{z}/{x}/{y}.png".
             tileServerUrl: "https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png",
@@ -17,6 +18,9 @@ export default {
         ]
     },
     mutations: {
+        setLanguage(state, language) {
+            state.language = language;
+        },
         toggleDoseRateRange(state, index) {
             // The "enabled" property can't be changed directly with a single statement
             // because doing so won't trigger vue's reactivity.

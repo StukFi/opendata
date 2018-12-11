@@ -97,7 +97,7 @@ export default {
     left: 0;
     width: 50%;
     height: 60px;
-    z-index: 10000;
+    z-index: 3;
 }
 
 .datepicker-container input {

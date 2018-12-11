@@ -1,12 +1,17 @@
 import Vue from "vue"
 import VueResource from "vue-resource"
+import BootstrapVue from 'bootstrap-vue'
+
 import App from "./app"
 import store from "../src/store"
 
+import "bootstrap/dist/css/bootstrap.css"
+import "bootstrap-vue/dist/bootstrap-vue.css"
 import "ol/ol.css"
 import "../dist/global.css"
 
 Vue.use(VueResource)
+Vue.use(BootstrapVue);
 
 Vue.config.productionTip = false
 

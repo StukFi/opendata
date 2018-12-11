@@ -86,7 +86,7 @@ export default {
     width: 50%;
     height: 60px;
     line-height: 60px;
-    z-index: 1000;
+    z-index: 3;
     font-size: 1.7em;
     text-align: center;
     border: none;
