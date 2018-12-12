@@ -3,15 +3,15 @@
         <div class="settings-button" @click="enable()">
             <span class="settings-button__icon"></span>
         </div>
-        <div class="settings-panel__background" v-if="isEnabled"></div>
+        <div class="settings-panel__background" v-if="isEnabled" @click="disable()"></div>
         <div class="settings-panel container" v-if="isEnabled">
             <div class="row">
                 <div class="col">
-                    <b-form-group label="Language">
-                        <b-form-select v-model="language">
-                            <option>Finnish</option>
-                            <option>English</option>
-                        </b-form-select>
+                    <b-form-group :label="$t('language')">
+                        <b-form-radio-group v-model="locale">
+                            <b-form-radio value="en">EN</b-form-radio>
+                            <b-form-radio value="fi">FI</b-form-radio>
+                        </b-form-radio-group>
                     </b-form-group>
                 </div>
             </div>
@@ -23,6 +23,8 @@
 import bFormGroup from "bootstrap-vue/es/components/form-group/form-group"
 import bButton from "bootstrap-vue/es/components/button/button"
 import bFormSelect from "bootstrap-vue/es/components/form-select/form-select"
+import bFormRadio from "bootstrap-vue/es/components/form-radio/form-radio"
+import bFormRadioGroup from "bootstrap-vue/es/components/form-radio/form-radio-group"
 
 export default {
     name: "Settings",
@@ -35,18 +37,22 @@ export default {
         };
     },
     computed: {
-        language: {
+        locale: {
             get() {
-                return this.$store.state.settings.language;
+                return this.$store.state.settings.locale;
             },
-            set(language) {
-                this.$store.commit("setLanguage", language);
+            set(locale) {
+                this.$i18n.locale = locale;
+                this.$store.commit("setLocale", locale);
             }
         }
     },
     methods: {
         enable() {
             this.isEnabled = true;
+        },
+        disable() {
+            this.isEnabled = false;
         }
     }
 }
@@ -109,3 +115,14 @@ export default {
     border: 1px solid rgba(0, 0, 0, 0.5);
 }
 </style>
+
+<i18n>
+{
+    "en": {
+        "language": "Language"
+    },
+    "fi": {
+        "language": "Kieli"
+    }
+}
+</i18n>

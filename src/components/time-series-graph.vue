@@ -6,7 +6,9 @@
 import dateUtils from "../utils/date";
 import http from "../utils/http";
 
-var Plotly = require("plotly.js/lib/core");
+import Plotly from "plotly.js/lib/core";
+import localeFI from "plotly.js/lib/locales/fi";
+Plotly.register(localeFI);
 
 export default {
     name: "TimeSeriesGraph",
@@ -34,13 +36,17 @@ export default {
             config: {
                 scrollZoom: true,
                 connectGaps: true,
-                displayModeBar: false
+                displayModeBar: false,
+                locale: "en"
             }
         };
     },
     computed: {
         date() {
             return this.$store.state.datetime.date;
+        },
+        locale() {
+            return this.$store.state.settings.locale;
         }
     },
     watch: {
@@ -54,6 +60,10 @@ export default {
             if (this.siteId) {
                 this.drawDefaultGraph();
             }
+        },
+        locale: function(locale) {
+            this.config.locale = locale;
+            this.draw();
         }
     },
     created() {

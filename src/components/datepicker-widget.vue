@@ -2,17 +2,24 @@
     <div class="datepicker-container">
         <button class="button__change-date button__decrement-date" @click="decrementDate()" v-bind:class="{'button__change-date--disabled': isFirstDateSelected}"></button>
         <button class="button__change-date button__increment-date" @click="incrementDate()" v-bind:class="{'button__change-date--disabled': isLastDateSelected}"></button>
-        <datepicker v-model="date" :monday-first="true" :disabledDates="disabledDates" :format="dateFormatter"></datepicker>
+        <datepicker v-model="date" :monday-first="true" :disabledDates="disabledDates" :format="dateFormatter" :language="language"></datepicker>
     </div>
 </template>
 
 <script>
 import Datepicker from "vuejs-datepicker";
+import {en, fi} from "vuejs-datepicker/dist/locale"
 
 export default {
     name: "DatepickerWidget",
     components: {
         Datepicker
+    },
+    data: function() {
+        return {
+            en: en,
+            fi: fi
+        }
     },
     computed: {
         date: {
@@ -21,6 +28,21 @@ export default {
             },
             set(newDate) {
                 this.$store.dispatch("setDate", newDate);
+            }
+        },
+        language: {
+            get() {
+                switch (this.$store.state.settings.locale)
+                {
+                    case "en":
+                    default:
+                        return this.en;
+                        break;
+
+                    case "fi":
+                        return this.fi;
+                        break;
+                }
             }
         },
         disabledDates() {
