@@ -57,7 +57,19 @@ export default {
     },
     methods: {
         dateFormatter(date) {
-            return date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
+            switch (this.$store.state.settings.dateFormat)
+            {
+                case "fi":
+                default:
+                    return date.getDate() + "." + (date.getMonth() + 1) + 
+                            "." + date.getFullYear();
+                    break;
+                
+                case "iso":
+                    return date.getFullYear() + "-" + (date.getMonth() + 1) +
+                            "-" + date.getDate();
+                    break;
+            }
         },
         parseDisabledDates() {
             var validDatetimes = this.$store.state.datetime.validDatetimes;

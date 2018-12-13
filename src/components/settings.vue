@@ -9,8 +9,20 @@
                 <div class="col">
                     <b-form-group :label="$t('language')">
                         <b-form-radio-group v-model="locale">
-                            <b-form-radio value="en">EN</b-form-radio>
                             <b-form-radio value="fi">FI</b-form-radio>
+                            <b-form-radio value="en">EN</b-form-radio>
+                        </b-form-radio-group>
+                    </b-form-group>
+                    <b-form-group :label="$t('dateFormat')">
+                        <b-form-radio-group v-model="dateFormat">
+                            <b-form-radio value="fi">{{$t("dateFormatA")}}</b-form-radio>
+                            <b-form-radio value="iso">{{$t("dateFormatB")}}</b-form-radio>
+                        </b-form-radio-group>
+                    </b-form-group>
+                    <b-form-group :label="$t('timeFormat')">
+                        <b-form-radio-group v-model="timeFormat">
+                            <b-form-radio value="24h">{{$t("timeFormatA")}}</b-form-radio>
+                            <b-form-radio value="12h">{{$t("timeFormatB")}}</b-form-radio>
                         </b-form-radio-group>
                     </b-form-group>
                 </div>
@@ -44,6 +56,22 @@ export default {
             set(locale) {
                 this.$i18n.locale = locale;
                 this.$store.commit("setLocale", locale);
+            }
+        },
+        dateFormat: {
+            get() {
+                return this.$store.state.settings.dateFormat;
+            },
+            set(dateFormat) {
+                this.$store.commit("setDateFormat", dateFormat);
+            }
+        },
+        timeFormat: {
+            get() {
+                return this.$store.state.settings.timeFormat;
+            },
+            set(timeFormat) {
+                this.$store.commit("setTimeFormat", timeFormat);
             }
         }
     },
@@ -108,7 +136,7 @@ export default {
     top: 50%;
     width: 50%;
     height: 50%;
-    padding: 5% 5%;
+    padding: 5%;
     z-index: 5;
     background-color: white;
     border-radius: 4px;
@@ -119,10 +147,22 @@ export default {
 <i18n>
 {
     "en": {
-        "language": "Language"
+        "language": "Language",
+        "dateFormat": "Date format",
+        "dateFormatA": "DD.MM.YYYY",
+        "dateFormatB": "YYYY-MM-DD",
+        "timeFormat": "Time notation",
+        "timeFormatA": "24-hour clock",
+        "timeFormatB": "12-hour clock"
     },
     "fi": {
-        "language": "Kieli"
+        "language": "Kieli",
+        "dateFormat": "Päiväyksen muoto",
+        "dateFormatA": "PP.KK.VVVV",
+        "dateFormatB": "VVVV-KK-PP",
+        "timeFormat": "Ajan esitysmuoto",
+        "timeFormatA": "24 tunnin kello",
+        "timeFormatB": "12 tunnin kello"
     }
 }
 </i18n>

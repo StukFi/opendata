@@ -4,6 +4,8 @@ import VueI18n from "vue-i18n"
 export default {
     state: {
         locale: "en",
+        dateFormat: "fi",
+        timeFormat: "24h",
         map: {
             // For local tiles use e.g. "tiles/{z}/{x}/{y}.png".
             tileServerUrl: "https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png",
@@ -21,6 +23,12 @@ export default {
     mutations: {
         setLocale(state, locale) {
             state.locale = locale;
+        },
+        setDateFormat(state, dateFormat) {
+            state.dateFormat = dateFormat;
+        },
+        setTimeFormat(state, timeFormat) {
+            state.timeFormat = timeFormat;
         },
         toggleDoseRateRange(state, index) {
             // The "enabled" property can't be changed directly with a single statement

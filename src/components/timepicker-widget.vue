@@ -2,14 +2,16 @@
     <div class="timepicker-container">
         <button class="button__change-time button__decrement-time" @click="decrementTime()" v-bind:class="{'button__change-time--disabled': isFirstTimeSelected}"></button>
         <button class="button__change-time button__increment-time" @click="incrementTime()" v-bind:class="{'button__change-time--disabled': isLastTimeSelected}"></button>
-        <div class="timepicker" @click="toggleTimeList">{{time | formatTime}}</div>
+        <div class="timepicker" @click="toggleTimeList">{{formatTime(time)}}</div>
         <ul class="time-list" v-show="isTimeListOpen">
-            <li class="time-list__entry" v-bind:class="{'time-list__entry--selected': timeEntry == time}" @click="setTime(timeEntry), toggleTimeList()" v-for="timeEntry in validTimesForCurrentDate.slice().reverse()">{{timeEntry | formatTime}}</li>
+            <li class="time-list__entry" v-bind:class="{'time-list__entry--selected': timeEntry == time}" @click="setTime(timeEntry), toggleTimeList()" v-for="timeEntry in validTimesForCurrentDate.slice().reverse()">{{formatTime(timeEntry)}}</li>
         </ul>
     </div>
 </template>
 
 <script>
+import dateUtils from "../utils/date"
+
 export default {
     name: "TimepickerWidget",
     data: function() {
@@ -62,17 +64,23 @@ export default {
         },
         incrementTime() {
             this.$store.dispatch("incrementTime");
-        }
-    },
-    filters: {
+        },
         formatTime(time) {
             if (!time) {
                 return "";
             }
 
-            var hours = time.slice(0, 2);
-            var minutes = time.slice(2, 4);
-            return hours + ":" + minutes;
+            time = time.slice(0, 2) + ":" + time.slice(2, 4);
+
+            switch (this.$store.state.settings.timeFormat)
+            {
+                case "12h":
+                    return dateUtils.convertTimeTo12HourClock(time);
+
+                case "24h":
+                default:
+                    return time;
+            }
         }
     }
 }
