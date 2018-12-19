@@ -4,27 +4,32 @@
             <span class="settings-button__icon"></span>
         </div>
         <div class="settings-panel__background" v-if="isEnabled" @click="disable()"></div>
-        <div class="settings-panel container" v-if="isEnabled">
+        <div class="settings-panel container p-5" v-if="isEnabled">
             <div class="row">
                 <div class="col">
-                    <b-form-group :label="$t('language')">
+                    <b-form-group class="mb-5" :label="$t('language')">
                         <b-form-radio-group v-model="locale">
                             <b-form-radio value="fi">FI</b-form-radio>
                             <b-form-radio value="en">EN</b-form-radio>
                         </b-form-radio-group>
                     </b-form-group>
-                    <b-form-group :label="$t('dateFormat')">
+                    <b-form-group class="mb-5" :label="$t('dateFormat')">
                         <b-form-radio-group v-model="dateFormat">
                             <b-form-radio value="fi">{{$t("dateFormatA")}}</b-form-radio>
                             <b-form-radio value="iso">{{$t("dateFormatB")}}</b-form-radio>
                         </b-form-radio-group>
                     </b-form-group>
-                    <b-form-group :label="$t('timeFormat')">
+                    <b-form-group class="mb-5" :label="$t('timeFormat')">
                         <b-form-radio-group v-model="timeFormat">
                             <b-form-radio value="24h">{{$t("timeFormatA")}}</b-form-radio>
                             <b-form-radio value="12h">{{$t("timeFormatB")}}</b-form-radio>
                         </b-form-radio-group>
                     </b-form-group>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-6 pt-5">
+                    <b-button class="btn-block" @click="disable()">{{$t("closeButton")}}</b-button>
                 </div>
             </div>
         </div>
@@ -89,7 +94,7 @@ export default {
 <style>
 .settings-button {
     position: absolute;
-    top: 100px;
+    top: 75px;
     left: 15px;
     width: 50px;
     height: 50px;
@@ -136,11 +141,17 @@ export default {
     top: 50%;
     width: 50%;
     height: 50%;
-    padding: 5%;
     z-index: 5;
     background-color: white;
     border-radius: 4px;
     border: 1px solid rgba(0, 0, 0, 0.5);
+    overflow-y: scroll;
+}
+
+@media only screen and (min-width: 768px) {
+    .settings-button {
+        top: 100px;
+    }
 }
 </style>
 
@@ -153,7 +164,8 @@ export default {
         "dateFormatB": "YYYY-MM-DD",
         "timeFormat": "Time notation",
         "timeFormatA": "24-hour clock",
-        "timeFormatB": "12-hour clock"
+        "timeFormatB": "12-hour clock",
+        "closeButton": "Close"
     },
     "fi": {
         "language": "Kieli",
@@ -162,7 +174,8 @@ export default {
         "dateFormatB": "VVVV-KK-PP",
         "timeFormat": "Ajan esitysmuoto",
         "timeFormatA": "24 tunnin kello",
-        "timeFormatB": "12 tunnin kello"
+        "timeFormatB": "12 tunnin kello",
+        "closeButton": "Sulje"
     }
 }
 </i18n>
