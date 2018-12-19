@@ -1,7 +1,11 @@
 import Vue from "vue"
+import VueI18n from "vue-i18n"
 
 export default {
     state: {
+        locale: "en",
+        dateFormat: "fi",
+        timeFormat: "24h",
         map: {
             // For local tiles use e.g. "tiles/{z}/{x}/{y}.png".
             tileServerUrl: "https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png",
@@ -17,12 +21,36 @@ export default {
         ]
     },
     mutations: {
+        setLocale(state, locale) {
+            localStorage.setItem("locale", locale);
+            state.locale = locale;
+        },
+        setDateFormat(state, dateFormat) {
+            localStorage.setItem("dateFormat", dateFormat);
+            state.dateFormat = dateFormat;
+        },
+        setTimeFormat(state, timeFormat) {
+            localStorage.setItem("timeFormat", timeFormat);
+            state.timeFormat = timeFormat;
+        },
         toggleDoseRateRange(state, index) {
             // The "enabled" property can't be changed directly with a single statement
             // because doing so won't trigger vue's reactivity.
             var doseRateRange = state.doseRateRanges[index];
             doseRateRange.enabled = !doseRateRange.enabled;
             Vue.set(state.doseRateRanges, index, doseRateRange);
+        }
+    },
+    actions: {
+        initialize({state}) {
+            for (var property in state) {
+                if (state.hasOwnProperty(property)) {
+                    var settingValue = localStorage.getItem(property);
+                    if (settingValue) {
+                        state[property] = settingValue;
+                    }
+                }
+            }
         }
     }
 }

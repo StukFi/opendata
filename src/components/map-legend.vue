@@ -24,7 +24,7 @@ export default {
 .map-legend {
     position: absolute;
     bottom: 0;
-    z-index: 10000;
+    z-index: 3;
     width: 100%;
     height: 25px;
     line-height: 25px;

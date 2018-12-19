@@ -2,17 +2,24 @@
     <div class="datepicker-container">
         <button class="button__change-date button__decrement-date" @click="decrementDate()" v-bind:class="{'button__change-date--disabled': isFirstDateSelected}"></button>
         <button class="button__change-date button__increment-date" @click="incrementDate()" v-bind:class="{'button__change-date--disabled': isLastDateSelected}"></button>
-        <datepicker v-model="date" :monday-first="true" :disabledDates="disabledDates" :format="dateFormatter"></datepicker>
+        <datepicker v-model="date" :monday-first="true" :disabledDates="disabledDates" :format="dateFormatter" :language="language"></datepicker>
     </div>
 </template>
 
 <script>
 import Datepicker from "vuejs-datepicker";
+import {en, fi} from "vuejs-datepicker/dist/locale"
 
 export default {
     name: "DatepickerWidget",
     components: {
         Datepicker
+    },
+    data: function() {
+        return {
+            en: en,
+            fi: fi
+        }
     },
     computed: {
         date: {
@@ -21,6 +28,21 @@ export default {
             },
             set(newDate) {
                 this.$store.dispatch("setDate", newDate);
+            }
+        },
+        language: {
+            get() {
+                switch (this.$store.state.settings.locale)
+                {
+                    case "en":
+                    default:
+                        return this.en;
+                        break;
+
+                    case "fi":
+                        return this.fi;
+                        break;
+                }
             }
         },
         disabledDates() {
@@ -35,7 +57,19 @@ export default {
     },
     methods: {
         dateFormatter(date) {
-            return date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
+            switch (this.$store.state.settings.dateFormat)
+            {
+                case "fi":
+                default:
+                    return date.getDate() + "." + (date.getMonth() + 1) + 
+                            "." + date.getFullYear();
+                    break;
+                
+                case "iso":
+                    return date.getFullYear() + "-" + (date.getMonth() + 1) +
+                            "-" + date.getDate();
+                    break;
+            }
         },
         parseDisabledDates() {
             var validDatetimes = this.$store.state.datetime.validDatetimes;
@@ -97,7 +131,7 @@ export default {
     left: 0;
     width: 50%;
     height: 60px;
-    z-index: 10000;
+    z-index: 3;
 }
 
 .datepicker-container input {
@@ -141,7 +175,7 @@ export default {
     position: absolute;
     border: none;
     background-color: #C7EAE4;
-    background-size: 1.2em;
+    background-size: 15%;
     background-position: center;
     background-repeat: no-repeat;
     cursor: pointer;

@@ -16,6 +16,7 @@
   "author": "The Finnish Radiation and Nuclear Safety Authority (STUK)",
   "license": "MIT",
   "devDependencies": {
+    "@kazupon/vue-i18n-loader": "^0.3.0",
     "css-loader": "^1.0.0",
     "style-loader": "^0.23.0",
     "url-loader": "^1.1.1",
@@ -25,9 +26,11 @@
     "webpack-cli": "^3.1.0"
   },
   "dependencies": {
+    "bootstrap-vue": "^2.0.0-rc.11",
     "ol": "^5.2.0",
     "plotly.js": "^1.40.1",
     "vue": "^2.5.17",
+    "vue-i18n": "^8.4.0",
     "vue-resource": "^1.5.1",
     "vuejs-datepicker": "^1.5.3",
     "vuex": "^3.0.1"
