@@ -175,7 +175,7 @@ export default {
     position: absolute;
     border: none;
     background-color: #C7EAE4;
-    background-size: 1.2em;
+    background-size: 15%;
     background-position: center;
     background-repeat: no-repeat;
     cursor: pointer;

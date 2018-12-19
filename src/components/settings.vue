@@ -139,8 +139,8 @@ export default {
     transform: translate(-50%, -50%);
     left: 50%;
     top: 50%;
-    width: 50%;
-    height: 50%;
+    height: auto;
+    max-height: 50%;
     z-index: 5;
     background-color: white;
     border-radius: 4px;

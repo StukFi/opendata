@@ -22,12 +22,15 @@ export default {
     },
     mutations: {
         setLocale(state, locale) {
+            localStorage.setItem("locale", locale);
             state.locale = locale;
         },
         setDateFormat(state, dateFormat) {
+            localStorage.setItem("dateFormat", dateFormat);
             state.dateFormat = dateFormat;
         },
         setTimeFormat(state, timeFormat) {
+            localStorage.setItem("timeFormat", timeFormat);
             state.timeFormat = timeFormat;
         },
         toggleDoseRateRange(state, index) {
@@ -36,6 +39,18 @@ export default {
             var doseRateRange = state.doseRateRanges[index];
             doseRateRange.enabled = !doseRateRange.enabled;
             Vue.set(state.doseRateRanges, index, doseRateRange);
+        }
+    },
+    actions: {
+        initialize({state}) {
+            for (var property in state) {
+                if (state.hasOwnProperty(property)) {
+                    var settingValue = localStorage.getItem(property);
+                    if (settingValue) {
+                        state[property] = settingValue;
+                    }
+                }
+            }
         }
     }
 }
