@@ -29,7 +29,7 @@
             </div>
             <div class="row justify-content-center">
                 <div class="col-6 pt-5">
-                    <b-button class="btn-block" @click="disable()">{{$t("closeButton")}}</b-button>
+                    <b-button variant="secondary" class="btn-block" @click="disable()">{{$t("closeButton")}}</b-button>
                 </div>
             </div>
         </div>
@@ -37,17 +37,13 @@
 </template>
 
 <script>
-import bFormGroup from "bootstrap-vue/es/components/form-group/form-group"
 import bButton from "bootstrap-vue/es/components/button/button"
-import bFormSelect from "bootstrap-vue/es/components/form-select/form-select"
+import bFormGroup from "bootstrap-vue/es/components/form-group/form-group"
 import bFormRadio from "bootstrap-vue/es/components/form-radio/form-radio"
 import bFormRadioGroup from "bootstrap-vue/es/components/form-radio/form-radio-group"
 
 export default {
     name: "Settings",
-    components: {
-        'bButton': bButton
-    },
     data: function() {
         return {
             isEnabled: true
