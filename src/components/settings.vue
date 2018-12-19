@@ -46,7 +46,7 @@ export default {
     name: "Settings",
     data: function() {
         return {
-            isEnabled: true
+            isEnabled: false
         };
     },
     computed: {
