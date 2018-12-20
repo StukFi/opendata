@@ -11,7 +11,7 @@
 
 <script>
 import Overlay from "ol/Overlay"
-import TimeSeriesGraph from "./time-series-graph"
+import TimeSeriesGraph from "./TimeSeriesGraph"
 
 export default {
     name: "Popup",

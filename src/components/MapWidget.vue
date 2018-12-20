@@ -2,22 +2,22 @@
     <div id="map" class="map">
         <datepicker-widget></datepicker-widget>
         <timepicker-widget></timepicker-widget>
-        <settings></settings>
+        <settings-widget></settings-widget>
         <media-controls></media-controls>
         <map-legend></map-legend>
-        <feature-popup ref="featurePopup"></feature-popup>
+        <dose-rate-popup ref="doseRatePopup"></dose-rate-popup>
         <dose-rate-layer ref="doseRateLayer"></dose-rate-layer>
     </div>
 </template>
 
 <script>
-import DatepickerWidget from "./datepicker-widget"
-import DoseRateLayer from "./dose-rate-layer"
-import FeaturePopup from "./feature-popup"
-import MapLegend from "./map-legend"
-import MediaControls from "./media-controls"
-import Settings from "./settings"
-import TimepickerWidget from "./timepicker-widget"
+import DatepickerWidget from "./DatepickerWidget"
+import DoseRateLayer from "./DoseRateLayer"
+import DoseRatePopup from "./DoseRatePopup"
+import MapLegend from "./MapLegend"
+import MediaControls from "./MediaControls"
+import SettingsWidget from "./SettingsWidget"
+import TimepickerWidget from "./TimepickerWidget"
 
 import ControlZoom from "ol/control/Zoom"
 import ControlZoomSlider from "ol/control/ZoomSlider"
@@ -35,10 +35,10 @@ export default {
     components: {
         DatepickerWidget,
         DoseRateLayer,
-        FeaturePopup,
+        DoseRatePopup,
         MapLegend,
         MediaControls,
-        Settings,
+        SettingsWidget,
         TimepickerWidget
     },
     data: function() {
@@ -67,7 +67,7 @@ export default {
 
                     // Adjust the y-axis so that the view is centered on the middle
                     // of the popup and not on the clicked feature itself.
-                    featurePixel[1] -= (that.$refs.featurePopup.$el.clientHeight / 2);
+                    featurePixel[1] -= (that.$refs.doseRatePopup.$el.clientHeight / 2);
 
                     var position = that.map.getCoordinateFromPixel(featurePixel);
                     that.centerViewOnPosition(position);
@@ -111,7 +111,7 @@ export default {
         this.map.on("pointermove", this.onMapInteraction);
         this.map.on("click", this.onMapInteraction);
 
-        this.map.addOverlay(this.$refs.featurePopup.overlay);
+        this.map.addOverlay(this.$refs.doseRatePopup.overlay);
         this.map.addLayer(this.$refs.doseRateLayer.vectorLayer);
         this.map.addLayer(this.$refs.doseRateLayer.bufferLayer);
     }
