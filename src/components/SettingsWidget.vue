@@ -92,8 +92,8 @@ export default {
     position: absolute;
     top: 75px;
     left: 15px;
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
     z-index: 1;
     border-radius: 4px;
     background-color: rgba(255, 255, 255, 0.4);
