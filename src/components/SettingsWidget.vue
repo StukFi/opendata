@@ -136,7 +136,7 @@ export default {
     left: 50%;
     top: 50%;
     height: auto;
-    max-height: 50%;
+    max-height: 70%;
     z-index: 5;
     background-color: white;
     border-radius: 4px;
