@@ -92,8 +92,8 @@ export default {
     position: absolute;
     top: 75px;
     left: 15px;
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
     z-index: 1;
     border-radius: 4px;
     background-color: rgba(255, 255, 255, 0.4);
@@ -136,7 +136,7 @@ export default {
     left: 50%;
     top: 50%;
     height: auto;
-    max-height: 50%;
+    max-height: 70%;
     z-index: 5;
     background-color: white;
     border-radius: 4px;

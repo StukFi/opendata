@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import MapWidget from "./components/map-widget"
+import MapWidget from "./components/MapWidget"
 
 export default {
     name: "App",

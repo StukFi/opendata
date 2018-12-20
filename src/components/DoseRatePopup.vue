@@ -1,17 +1,17 @@
 <template>
-    <div ref="featurePopup" class="feature-popup" v-bind:class="{'feature-popup--large': isGraphVisible}" >
-        <a href="#" ref="featurePopupCloser" class="feature-popup__closer" v-if="isGraphVisible" v-on:click="disable">&times;</a>
+    <div ref="featurePopup" class="feature-popup" :class="{'feature-popup--large': isGraphVisible}" >
+        <a href="#" ref="featurePopupCloser" class="feature-popup__closer" v-if="isGraphVisible" @click="disable()">&times;</a>
         <div class="feature-popup__content">
             <p class="feature-popup__site">{{site}}</p>
             <p class="feature-popup__dose-rate">{{doseRate}}</p>
-            <time-series-graph ref="graph" v-show="isGraphVisible" v-bind:site-id="siteId"></time-series-graph>
+            <time-series-graph ref="graph" v-show="isGraphVisible" :site-id="siteId"></time-series-graph>
         </div>
     </div>
 </template>
 
 <script>
 import Overlay from "ol/Overlay"
-import TimeSeriesGraph from "./time-series-graph"
+import TimeSeriesGraph from "./TimeSeriesGraph"
 
 export default {
     name: "Popup",

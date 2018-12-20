@@ -1,8 +1,17 @@
-*.swp
+# dist/
+dist/data
+dist/tiles
+dist/bundle.js
+dist/server-settings.json
+
+# npm
+node_modules
+
+# python
 *.pyc
-bundle.js
-data
-samplers
-settings.json
-metadata.json
-node_modules/
+
+# vscode
+.vscode
+
+# vim
+*.swp

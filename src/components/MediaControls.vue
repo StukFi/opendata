@@ -1,7 +1,7 @@
 <template>
     <div class="media-controls">
-        <span class="media-controls__button media-controls__button-datetime" v-bind:class="{'media-controls__button-time': playbackMode == 'time', 'media-controls__button-date': playbackMode == 'date'}"@click="toggleMode()"></span>
-        <span class="media-controls__button" v-bind:class="{'media-controls__button-play': !playbackEnabled, 'media-controls__button-pause': playbackEnabled}" @click="togglePlayback()"></span>
+        <span class="media-controls__button media-controls__button-datetime" :class="{'media-controls__button-time': playbackMode == 'time', 'media-controls__button-date': playbackMode == 'date'}" @click="toggleMode()"></span>
+        <span class="media-controls__button" :class="{'media-controls__button-play': !playbackEnabled, 'media-controls__button-pause': playbackEnabled}" @click="togglePlayback()"></span>
         <span class="media-controls__button media-controls__button-speed" @click="toggleSpeed()">{{playbackSpeed | formatSpeed}}</span>
     </div>
 </template>

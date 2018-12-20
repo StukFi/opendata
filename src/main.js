@@ -3,7 +3,7 @@ import VueResource from "vue-resource"
 import BootstrapVue from "bootstrap-vue"
 import VueI18n from "vue-i18n"
 
-import App from "./app"
+import App from "./App"
 import store from "../src/store"
 
 import "bootstrap/dist/css/bootstrap.css"
