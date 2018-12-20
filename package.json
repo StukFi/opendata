@@ -1,6 +1,5 @@
 {
-  "name": "STUK_OpenDataWebSite",
-  "version": "1.0.0",
+  "name": "opendata",
   "description": "An independent web application for viewing STUK's open data",
   "main": "index.js",
   "scripts": {
@@ -10,10 +9,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@gogs.stuk.fi:STUK/STUK_OpenDataWebSite.git"
+    "url": "https://github.com/StukFi/opendata.git"
   },
-  "keywords": [],
-  "author": "The Finnish Radiation and Nuclear Safety Authority (STUK)",
+  "author": "Radiation and Nuclear Safety Authority (STUK)",
   "license": "MIT",
   "devDependencies": {
     "@kazupon/vue-i18n-loader": "^0.3.0",
