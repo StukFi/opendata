@@ -114,8 +114,6 @@ export default {
         this.map.addOverlay(this.$refs.featurePopup.overlay);
         this.map.addLayer(this.$refs.doseRateLayer.vectorLayer);
         this.map.addLayer(this.$refs.doseRateLayer.bufferLayer);
-
-        this.map.updateSize();
     }
 }
 </script>
