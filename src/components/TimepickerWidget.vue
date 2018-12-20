@@ -1,10 +1,10 @@
 <template>
     <div class="timepicker-container">
-        <button class="button__change-time button__decrement-time" @click="decrementTime()" v-bind:class="{'button__change-time--disabled': isFirstTimeSelected}"></button>
-        <button class="button__change-time button__increment-time" @click="incrementTime()" v-bind:class="{'button__change-time--disabled': isLastTimeSelected}"></button>
+        <button class="button__change-time button__decrement-time" @click="decrementTime()" :class="{'button__change-time--disabled': isFirstTimeSelected}"></button>
+        <button class="button__change-time button__increment-time" @click="incrementTime()" :class="{'button__change-time--disabled': isLastTimeSelected}"></button>
         <div class="timepicker" @click="toggleTimeList">{{formatTime(time)}}</div>
         <ul class="time-list" v-show="isTimeListOpen">
-            <li class="time-list__entry" v-bind:class="{'time-list__entry--selected': timeEntry == time}" @click="setTime(timeEntry), toggleTimeList()" v-for="timeEntry in validTimesForCurrentDate.slice().reverse()">{{formatTime(timeEntry)}}</li>
+            <li class="time-list__entry" :class="{'time-list__entry--selected': timeEntry == time}" @click="setTime(timeEntry), toggleTimeList()" v-for="timeEntry in validTimesForCurrentDate.slice().reverse()">{{formatTime(timeEntry)}}</li>
         </ul>
     </div>
 </template>
