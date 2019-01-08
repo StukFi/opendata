@@ -1,6 +1,6 @@
 <template>
     <div class="map-legend">
-        <div class="map-legend__bar" @click="toggleDoseRateRange(index)" v-for="(item, index) in doseRateRanges" :style="{backgroundColor: item.color}" :class="{'map-legend__bar--disabled': !item.enabled}">{{(index == doseRateRanges.length - 1) ? "&gt; " + item.minValue.toFixed(2) + " &#181;Sv" : item.minValue.toFixed(2) + " - " + item.maxValue.toFixed(2)}}</div>
+        <div class="map-legend__bar" @click="toggleDoseRateRange(index)" v-for="(item, index) in doseRateRanges" :style="{backgroundColor: item.color}" :class="{'map-legend__bar--disabled': !item.enabled}">{{(index == doseRateRanges.length - 1) ? "&gt; " + item.minValue.toFixed(2) + " &#181;Sv/h" : item.minValue.toFixed(2) + " - " + item.maxValue.toFixed(2)}}</div>
     </div>
 </template>
 
