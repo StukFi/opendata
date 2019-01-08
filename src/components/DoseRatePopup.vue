@@ -168,6 +168,15 @@ export default {
     font-size: 2em;
 }
 
+.feature-popup__closer:hover {
+    color: black;
+    text-decoration: none;
+}
+
+.feature-popup__closer:focus {
+    outline: none;
+}
+
 @media only screen and (min-width: 768px) {
     .feature-popup--large {
         width: 450px;
