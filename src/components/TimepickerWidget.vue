@@ -155,6 +155,10 @@ export default {
     outline: none;
 }
 
+.button__change-time:focus {
+    outline: none;
+}
+
 .button__decrement-time {
     left: 0;
     background-image: url("../../assets/icons/caret-left.svg");

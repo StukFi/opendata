@@ -183,6 +183,10 @@ export default {
     z-index: 1;
 }
 
+.button__change-date:focus {
+    outline: none;
+}
+
 .button__decrement-date {
     left: 0;
     background-image: url("../../assets/icons/caret-left.svg");
