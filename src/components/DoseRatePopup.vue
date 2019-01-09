@@ -3,7 +3,9 @@
         <a href="#" ref="featurePopupCloser" class="feature-popup__closer" v-if="isGraphVisible" @click="disable()">&times;</a>
         <div class="feature-popup__content">
             <p class="feature-popup__site">{{site}}</p>
-            <p class="feature-popup__dose-rate">{{doseRate}}</p>
+            <div class="feature-popup__dose-rate">
+                <span class="feature-popup__dose-rate-value">{{doseRate}}<span class="feature-popup__dose-rate-unit"> &#181;Sv/h</span></span>
+            </div>
             <time-series-graph ref="graph" v-show="isGraphVisible" :site-id="siteId"></time-series-graph>
         </div>
     </div>
@@ -157,6 +159,18 @@ export default {
     text-align: center;
     font-size: 2.15em;
     margin: 0.5em 0;
+}
+
+.feature-popup__dose-rate-value {
+    position: relative;
+    line-height: 100%;
+}
+
+.feature-popup__dose-rate-unit {
+    position: absolute;
+    white-space: pre;
+    font-size: 40%;
+    bottom: 0;
 }
 
 .feature-popup__closer {
