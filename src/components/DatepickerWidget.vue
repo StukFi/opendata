@@ -143,11 +143,11 @@ export default {
     border: none;
     outline: none;
     cursor: pointer;
-    background-color: #C7EAE4;
+    background-color: #0066b3;
 
     /* Hide the input's caret. */
     color: transparent;
-    text-shadow: 0 0 0 black;
+    text-shadow: 0 0 0 white;
 }
 
 /* This and the following duplicate block cannot be
@@ -174,7 +174,7 @@ export default {
     height: 100%;
     position: absolute;
     border: none;
-    background-color: #C7EAE4;
+    background-color: #0066b3;
     background-size: 15%;
     background-position: center;
     background-repeat: no-repeat;

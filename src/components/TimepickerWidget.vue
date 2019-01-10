@@ -99,7 +99,8 @@ export default {
     font-size: 1.7em;
     text-align: center;
     border: none;
-    background-color: #AADDD5;
+    background-color: #005da3;
+    color: white;
 }
 
 .timepicker-container:hover,
@@ -137,10 +138,12 @@ export default {
     list-style-type: none;
     height: 50px;
     line-height: 50px;
+    color: black;
 }
 
 .time-list__entry--selected {
-    background-color: #4BD;
+    background-color: #0066b3;
+    color: white;
 }
 
 .button__change-time {
@@ -148,7 +151,7 @@ export default {
     height: 100%;
     position: absolute;
     border: none;
-    background-color: #aaddd5;
+    background-color: #005da3;
     background-size: 15%;
     background-position: center;
     background-repeat: no-repeat;
