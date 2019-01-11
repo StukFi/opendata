@@ -52,10 +52,10 @@ export default {
     computed: {
         locale: {
             get() {
-                return this.$store.state.settings.locale;
+                this.$i18n.locale = this.$store.state.settings.locale;
+                return this.$i18n.locale;
             },
             set(locale) {
-                this.$i18n.locale = locale;
                 this.$store.commit("setLocale", locale);
             }
         },
