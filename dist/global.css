@@ -24,8 +24,12 @@ p, div, span, select, input {
 
 .ol-zoomslider {
     left: unset;
-    top: 170px !important;
+    top: 170px;
     right: 15px;
+}
+
+.ol-touch .ol-zoomslider {
+    top: 190px;
 }
 
 .ol-scale-line {
