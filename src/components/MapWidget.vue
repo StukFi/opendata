@@ -102,6 +102,7 @@ export default {
             ],
             view: new View({
                 center: fromLonLat([25.75, 65.75]),
+                enableRotation: false,
                 minZoom: this.$store.state.settings.map.minZoom,
                 maxZoom: this.$store.state.settings.map.maxZoom,
                 zoom: 5
