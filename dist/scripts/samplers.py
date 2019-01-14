@@ -1,12 +1,14 @@
-import os
 from datetime import datetime, timedelta
-from fmi_utils import *
 from xml.etree import ElementTree
+import json
+import os
 
-sampler_geojson_template = geojson_template
+import fmi_utils
+
+sampler_geojson_template = fmi_utils.geojson_template
 sampler_geojson_template["name"] = "stuk_open_data_air_concentrations"
 
-def get_sampler_data(args):
+def get_data(args):
     """
     Performs a WFS request for sampler data from the FMI open data API.
     The function returns a dataset of the last ten days' measurements.
@@ -16,9 +18,9 @@ def get_sampler_data(args):
     """
     end_time = datetime.utcnow()
     start_time = end_time - timedelta(days=10)
-    return wfs_request(start_time, end_time, "samplers", args.auth)
+    return fmi_utils.wfs_request(start_time, end_time, "samplers", args.auth)
 
-def parse_sampler_data(data):
+def parse_data(data):
     """
     Parses the argument sampler data into a GeoJSON string.
 
@@ -26,21 +28,21 @@ def parse_sampler_data(data):
     :return: GeoJSON string of sampler data
     """
     wfs_response = ElementTree.fromstring(data.read())
-    wfs_members = wfs_response.findall('.//{%s}member' % wfs_ns)
+    wfs_members = wfs_response.findall('.//{%s}member' % fmi_utils.wfs_ns)
     geojson_string = sampler_geojson_template
 
     for member in wfs_members:
-        point = member.findall('.//{%s}Point' % gml_namespace)[0]
-        point_id = point.attrib['{%s}id' % gml_namespace].split("-")[-1]
-        name = point.findall('{%s}name' % gml_namespace)[0].text
-        position = point.findall('{%s}pos' % gml_namespace)[0].text
+        point = member.findall('.//{%s}Point' % fmi_utils.gml_namespace)[0]
+        point_id = point.attrib['{%s}id' % fmi_utils.gml_namespace].split("-")[-1]
+        name = point.findall('{%s}name' % fmi_utils.gml_namespace)[0].text
+        position = point.findall('{%s}pos' % fmi_utils.gml_namespace)[0].text
         longitude = float(position.split()[1])
         latitude = float(position.split()[0])
         values = member.findall('.//{%s}doubleOrNilReasonTupleList' \
                                 % gml_namespace)[0].text.split()
         values = list(map(float, values))
-        from_time = member.findall('.//{%s}beginPosition' % gml_namespace)[0].text
-        to_time = member.findall('.//{%s}endPosition' % gml_namespace)[0].text
+        from_time = member.findall('.//{%s}beginPosition' % fmi_utils.gml_namespace)[0].text
+        to_time = member.findall('.//{%s}endPosition' % fmi_utils.gml_namespace)[0].text
 
         feature = {
             "type": "Feature",
@@ -60,11 +62,11 @@ def parse_sampler_data(data):
             latitude
         ]
 
-        fields = member.findall( './/{%s}field' % swe_ns)
+        fields = member.findall( './/{%s}field' % fmi_utils.swe_ns)
         for i, field in enumerate(fields):
             name = field.attrib["name"]
-            label = field.findall( './/{%s}label' % swe_ns)[0].text
-            unit = field.findall( './/{%s}uom' % swe_ns)[0].attrib["code"]
+            label = field.findall( './/{%s}label' % fmi_utils.swe_ns)[0].text
+            unit = field.findall( './/{%s}uom' % fmi_utils.swe_ns)[0].attrib["code"]
 
             if "uBq" in unit:
                 unit = unit.replace("u", u"\u00B5")
@@ -89,7 +91,7 @@ def parse_sampler_data(data):
 
     return geojson_string
 
-def write_sampler_data(data):
+def write_data(data):
     """
     Writes the argument sampler data into a file.
 

@@ -1,12 +1,10 @@
-import json
-import socket
-import time
 from requests.exceptions import RequestException
 from urllib.error import HTTPError
 from urllib.request import urlopen
+import socket
+import time
 
-settings = json.load(open('../server-settings.json'))
-fmi_api_key = settings["settings"]["fmi_api_key"]
+import settings
 
 gml_namespace = "http://www.opengis.net/gml/3.2"
 gmlcov_namespace ="http://www.opengis.net/gmlcov/1.0"
@@ -51,20 +49,16 @@ def wfs_request(start_time, end_time, results_type, authenticated=False):
 
     if authenticated:
         url = request_templates["base"]["authenticated"] + request_templates[results_type]
-        url = url.format(fmi_api_key, t0, t1)
+        url = url.format(settings.get("fmi_api_key"), t0, t1)
 
     else:
         url = request_templates["base"]["unauthenticated"] + request_templates[results_type]
         url = url.format(t0, t1)
 
     response = None
-    tries = 3
-    while tries > 0:
-        try:
-            response = urlopen(url, timeout=5)
-            tries = 0
-        except (RequestException, HTTPError, ConnectionError, socket.timeout):
-            tries -= 1
-            time.sleep(5)
+    try:
+        response = urlopen(url, timeout=3)
+    except (RequestException, HTTPError, ConnectionError, socket.timeout):
+        pass
 
     return response

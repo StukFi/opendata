@@ -1,14 +1,17 @@
+from copy import deepcopy
+from datetime import datetime, timedelta
+from xml.etree import ElementTree
+import json
+import logging
 import math
 import os
 import sys
 import time
-from copy import deepcopy
-from datetime import datetime, timedelta
-from fmi_utils import *
-from progress import display_progress
-from xml.etree import ElementTree
 
-def get_dose_rate_data(args):
+import fmi_utils
+import settings
+
+def get_data(args):
     """
     Performs a WFS request for dose rate data from the FMI open data API.
     If no timespan is provided when running the program, the function
@@ -27,8 +30,12 @@ def get_dose_rate_data(args):
         t2 = t1 + measurement_interval
         dataset_number = 1
         while t2 <= end_time:
-            display_progress("Downloading datasets", dataset_number, dataset_count)
-            dose_rate_data.append(wfs_request(t1, t2, "dose_rates", args.auth))
+            logging.info("Downloading dataset {0}/{1}".format(dataset_number, dataset_count))
+            dataset = fmi_utils.wfs_request(t1, t2, "dose_rates", args.auth)
+            if dataset is not None:
+                dose_rate_data.append(dataset)
+            else:
+                logging.warning("Failed to download dataset {0}/{1} ({2})".format(dataset_number, dataset_count, t1))
             t1 = t2
             t2 += measurement_interval
             dataset_number += 1
@@ -36,12 +43,12 @@ def get_dose_rate_data(args):
     else:
         end_time = datetime.utcnow() - timedelta(seconds=1800)
         start_time = end_time - timedelta(seconds=559)
-        display_progress("Downloading datasets", 1, 1)
-        dose_rate_data.append(wfs_request(start_time, end_time, "dose_rates", args.auth))
+        logging.info("Downloading dataset")
+        dose_rate_data.append(fmi_utils.wfs_request(start_time, end_time, "dose_rates", args.auth))
 
     return dose_rate_data
 
-def parse_dose_rate_data(data):
+def parse_data(data):
     """
     Parses the argument dose rate data into a GeoJSON string.
 
@@ -52,15 +59,15 @@ def parse_dose_rate_data(data):
         raise InvalidDatasetError
 
     wfs_response = ElementTree.fromstring(data.read())
-    gml_points = wfs_response.findall('.//{%s}Point' % gml_namespace)
-    geojson_string = deepcopy(geojson_template)
+    gml_points = wfs_response.findall('.//{%s}Point' % fmi_utils.gml_namespace)
+    geojson_string = deepcopy(fmi_utils.geojson_template)
 
     # Read locations.
     locations = {}
     for n, point in enumerate(gml_points):
-        identifier = point.attrib['{%s}id' % gml_namespace].split("-")[-1]
-        name = point.findall('{%s}name' % gml_namespace)[0].text
-        position = point.findall('{%s}pos' % gml_namespace)[0].text.strip()
+        identifier = point.attrib['{%s}id' % fmi_utils.gml_namespace].split("-")[-1]
+        name = point.findall('{%s}name' % fmi_utils.gml_namespace)[0].text
+        position = point.findall('{%s}pos' % fmi_utils.gml_namespace)[0].text.strip()
         longitude = float(position.split()[1])
         latitude = float(position.split()[0])
         locations[position] = {
@@ -74,7 +81,7 @@ def parse_dose_rate_data(data):
     values = []
     try:
         value_lines = wfs_response.findall('.//{%s}doubleOrNilReasonTupleList' \
-                                            % gml_namespace)[0].text.split("\n")[1:-1]
+                                            % fmi_utils.gml_namespace)[0].text.split("\n")[1:-1]
     except IndexError:
         raise InvalidDatasetError("Dataset contains no features.")
 
@@ -84,7 +91,7 @@ def parse_dose_rate_data(data):
 
     # Construct features.
     position_lines =  wfs_response.findall('.//{%s}positions' \
-                                            % gmlcov_namespace)[0].text.split("\n")[1:-1]
+                                            % fmi_utils.gmlcov_namespace)[0].text.split("\n")[1:-1]
     for i, line in enumerate(position_lines):
         if math.isnan(values[i]):
             continue
@@ -121,14 +128,14 @@ def parse_dose_rate_data(data):
 
     return result
 
-def write_dose_rate_data(data):
+def write_data(data):
     """
     Writes the argument dose rate data into a file.
 
     :param data: GeoJSON string of dose rate data
     :return: path of the file that is written
     """
-    directory = "../data/dose_rates/datasets"
+    directory = settings.get("path_dose_rates_datasets")
     filepath = (directory + "/" +
         datetime.strftime(data["timestamp"], "%Y-%m-%dT%H%M%S") + ".json")
 
@@ -153,7 +160,7 @@ def validate_timespan(timespan):
         end_time = datetime.strptime(timespan[1], datetimeFormat)
     except ValueError:
         sys.exit("[Error] Invalid datetime format, should be {}.".format(
-            fmi_request_datetime_format))
+            fmi_utils.fmi_request_datetime_format))
 
     if start_time >= end_time or end_time > datetime.utcnow():
         sys.exit("[Error] Invalid timespan.")

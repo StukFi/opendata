@@ -1,9 +1,11 @@
 import calendar
 import json
+import logging
 import os
 import sys
 from datetime import datetime, timedelta
-from progress import display_progress
+
+import settings
 
 def generate_time_series(args, regenerate_all=False):
     """
@@ -12,10 +14,10 @@ def generate_time_series(args, regenerate_all=False):
     :param args: program arguments
     :param regenerate_all: indicates whether to regenerate all time series files
     """
-    print("Generating time series files", flush=True)
+    logging.info("Generating time series files")
 
-    source_dir = "../data/dose_rates/datasets/"
-    target_dir = "../data/dose_rates/time_series/"
+    source_dir = settings.get("path_dose_rates_datasets")
+    target_dir = settings.get("path_dose_rates_time_series")
 
     source_files = os.listdir(source_dir)
     source_files.sort()
@@ -59,11 +61,12 @@ def generate_time_series(args, regenerate_all=False):
         })
 
     for station in result.keys():
-        if not os.path.isdir(target_dir + station):
-            os.makedirs(target_dir + station)
+        path = target_dir + "/" + station
+        if not os.path.isdir(path):
+            os.makedirs(path)
         for date in result[station].keys():
             data = {"data": result[station][date]}
-            f = open(target_dir + station + "/" + date + ".json", "w")
+            f = open(path + "/" + date + ".json", "w")
             f.write(json.dumps(data, separators=(",", ":")))
             f.close()
 

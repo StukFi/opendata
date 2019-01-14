@@ -1,13 +1,15 @@
-import argparse
-import sys
 from datetime import date
-from dose_rates import *
-from fmi_utils import *
 from time_series import generate_time_series
 from metadata import update_metadata
-from progress import display_progress
 from requests.exceptions import ReadTimeout
-from samplers import *
+import argparse
+import logging
+import sys
+
+from fmi_utils import fmi_request_datetime_format
+import dose_rates
+import samplers
+import settings
 
 def get_program_arguments():
     """
@@ -19,11 +21,25 @@ def get_program_arguments():
     parser.add_argument("data_type", choices=["dose_rates", "samplers"],
                         help="type of data to get")
     parser.add_argument("-s", "--timespan", nargs=2, metavar=('FROM', 'TO'),
-                        help="define timespan for which to get data, \
+                        help="define a timespan for which to get data, \
                               datetime format {}".format(fmi_request_datetime_format))
     parser.add_argument("-a", "--auth", action="store_true",
                         help="use an API key to authenticate requests")
+    parser.add_argument("-q", "--quiet", action="store_true",
+                        help="suppress console output")
     return parser.parse_args()
+
+def initialize_logging(args):
+    """
+    Initializes logging facilities.
+
+    :param args: program arguments
+    """
+    if args.quiet:
+        logger = logging.getLogger()
+        logger.disabled = True
+    else:
+        logging.basicConfig(level=logging.DEBUG, format="%(levelname)s:%(message)s")
 
 def get_data(args):
     """
@@ -32,28 +48,30 @@ def get_data(args):
     :param args: program arguments
     """
     if args.data_type == "dose_rates":
-        datasets = get_dose_rate_data(args)
+        datasets = dose_rates.get_data(args)
         invalidDatasets = 0
-        for i, dataset in enumerate(datasets, start=1):
+        logging.info("Generating GeoJSON files")
+        for dataset in datasets:
             try:
-                parsed_data = parse_dose_rate_data(dataset)
-            except InvalidDatasetError:
+                parsed_data = dose_rates.parse_data(dataset)
+            except dose_rates.InvalidDatasetError:
                 invalidDatasets += 1
             else:
-                write_dose_rate_data(parsed_data)
-                display_progress("Generating GeoJSON files", i - invalidDatasets, len(datasets))
+                dose_rates.write_data(parsed_data)
 
         if invalidDatasets > 0:
-            print("\n{0} invalid datasets were skipped".format(invalidDatasets))
+            logging.info("{0} invalid datasets were skipped".format(invalidDatasets))
+
+        update_metadata()
+        generate_time_series(args)
 
     elif args.data_type == "samplers":
-        data = get_sampler_data(args)
-        parsed_data = parse_sampler_data(data)
-        write_sampler_data(parsed_data)
-        sys.exit()
+        data = samplers.get_data(args)
+        parsed_data = samplers.parse_data(data)
+        samplers.write_data(parsed_data)
 
 if __name__ == "__main__":
     args = get_program_arguments()
+    initialize_logging(args)
+    settings.load()
     get_data(args)
-    update_metadata()
-    generate_time_series(args)
