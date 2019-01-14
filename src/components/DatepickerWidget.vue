@@ -2,7 +2,7 @@
     <div class="datepicker-container">
         <button class="button__change-date button__decrement-date" @click="decrementDate()" :class="{'button__change-date--disabled': isFirstDateSelected}"></button>
         <button class="button__change-date button__increment-date" @click="incrementDate()" :class="{'button__change-date--disabled': isLastDateSelected}"></button>
-        <datepicker v-model="date" :monday-first="true" :disabledDates="disabledDates" :format="dateFormatter" :language="language"></datepicker>
+        <datepicker v-model="date" :use-utc="true" :monday-first="true" :disabledDates="disabledDates" :format="dateFormatter" :language="language"></datepicker>
     </div>
 </template>
 
