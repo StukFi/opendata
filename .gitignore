@@ -2,7 +2,9 @@
 dist/data
 dist/tiles
 dist/bundle.js
-dist/scripts/settings.json
+
+# src/
+src/scripts/settings.json
 
 # npm
 node_modules

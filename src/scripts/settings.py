@@ -10,7 +10,7 @@ def load():
     :return: HTTPResponse object
     """
     global settings
-    settings = json.load(open("settings.json"))
+    settings = json.load(open("src/scripts/settings.json"))
 
     # Construct specific directory paths based on the root data directory path.
     data_directory = settings["data_directory"]

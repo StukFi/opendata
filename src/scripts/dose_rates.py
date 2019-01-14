@@ -35,7 +35,7 @@ def get_data(args):
             if dataset is not None:
                 dose_rate_data.append(dataset)
             else:
-                logging.warning("Failed to download dataset {0}/{1} ({2})".format(dataset_number, dataset_count, t1))
+                logging.warning("Failed to download dataset {0}/{1} ({2})".format(dataset_number, dataset_count, start_time))
             t1 = t2
             t2 += measurement_interval
             dataset_number += 1
@@ -44,7 +44,11 @@ def get_data(args):
         end_time = datetime.utcnow() - timedelta(seconds=1800)
         start_time = end_time - timedelta(seconds=559)
         logging.info("Downloading dataset")
-        dose_rate_data.append(fmi_utils.wfs_request(start_time, end_time, "dose_rates", args.auth))
+        dataset = fmi_utils.wfs_request(start_time, end_time, "dose_rates", args.auth)
+        if dataset is not None:
+            dose_rate_data.append(dataset)
+        else:
+            logging.warning("Failed to download dataset")
 
     return dose_rate_data
 
