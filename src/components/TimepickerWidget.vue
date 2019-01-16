@@ -99,7 +99,7 @@ export default {
     font-size: 1.7em;
     text-align: center;
     border: none;
-    background-color: #005da3;
+    background-color: #0066b3;
     color: white;
 }
 
@@ -142,7 +142,7 @@ export default {
 }
 
 .time-list__entry--selected {
-    background-color: #0066b3;
+    background-color: #1773B9;
     color: white;
 }
 
@@ -151,7 +151,7 @@ export default {
     height: 100%;
     position: absolute;
     border: none;
-    background-color: #005da3;
+    background-color: #0066b3;
     background-size: 15%;
     background-position: center;
     background-repeat: no-repeat;

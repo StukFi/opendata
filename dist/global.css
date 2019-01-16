@@ -44,7 +44,7 @@ p, div, span, select, input {
 }
 
 .vdp-datepicker__calendar .cell.selected {
-    background-color: #0066b3;
+    background-color: #1773B9;
     color: white;
 }
 

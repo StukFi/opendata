@@ -143,7 +143,7 @@ export default {
     border: none;
     outline: none;
     cursor: pointer;
-    background-color: #0066b3;
+    background-color: #1773B9;
 
     /* Hide the input's caret. */
     color: transparent;
@@ -174,7 +174,7 @@ export default {
     height: 100%;
     position: absolute;
     border: none;
-    background-color: #0066b3;
+    background-color: #1773B9;
     background-size: 15%;
     background-position: center;
     background-repeat: no-repeat;
