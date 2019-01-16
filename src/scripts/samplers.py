@@ -4,6 +4,7 @@ import json
 import os
 
 import fmi_utils
+import settings
 
 sampler_geojson_template = fmi_utils.geojson_template
 sampler_geojson_template["name"] = "stuk_open_data_air_concentrations"
@@ -39,7 +40,7 @@ def parse_data(data):
         longitude = float(position.split()[1])
         latitude = float(position.split()[0])
         values = member.findall('.//{%s}doubleOrNilReasonTupleList' \
-                                % gml_namespace)[0].text.split()
+                                % fmi_utils.gml_namespace)[0].text.split()
         values = list(map(float, values))
         from_time = member.findall('.//{%s}beginPosition' % fmi_utils.gml_namespace)[0].text
         to_time = member.findall('.//{%s}endPosition' % fmi_utils.gml_namespace)[0].text
@@ -98,7 +99,7 @@ def write_data(data):
     :param data: GeoJSON string of sampler data
     :return: path of the file that is written
     """
-    directory = "../data/samplers"
+    directory = settings.get("path_samplers")
     filepath = directory + "/stuk_open_data_samplers.json"
 
     if not os.path.exists(directory):
