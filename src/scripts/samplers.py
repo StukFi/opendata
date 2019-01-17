@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from xml.etree import ElementTree
 import json
+import logging
 import os
 
 import fmi_utils
@@ -19,6 +20,7 @@ def get_data(args):
     """
     end_time = datetime.utcnow()
     start_time = end_time - timedelta(days=10)
+    logging.info("Downloading dataset")
     return fmi_utils.wfs_request(start_time, end_time, "samplers", args.auth)
 
 def parse_data(data):
@@ -28,6 +30,8 @@ def parse_data(data):
     :param data: raw sampler data from the FMI open data API.
     :return: GeoJSON string of sampler data
     """
+    logging.info("Generating GeoJSON")
+
     wfs_response = ElementTree.fromstring(data.read())
     wfs_members = wfs_response.findall('.//{%s}member' % fmi_utils.wfs_ns)
     geojson_string = sampler_geojson_template
@@ -99,6 +103,8 @@ def write_data(data):
     :param data: GeoJSON string of sampler data
     :return: path of the file that is written
     """
+    logging.info("Writing GeoJSON file")
+
     directory = settings.get("path_samplers")
     filepath = directory + "/stuk_open_data_samplers.json"
 
