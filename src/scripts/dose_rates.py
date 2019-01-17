@@ -49,6 +49,7 @@ def get_data(args):
             dose_rate_data.append(dataset)
         else:
             logging.warning("Failed to download dataset")
+            sys.exit(1)
 
     return dose_rate_data
 
