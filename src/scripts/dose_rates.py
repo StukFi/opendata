@@ -35,7 +35,7 @@ def get_data(args):
             if dataset is not None:
                 dose_rate_data.append(dataset)
             else:
-                logging.warning("Failed to download dataset {0}/{1} ({2})".format(dataset_number, dataset_count, start_time))
+                logging.warning("Failed to download dataset {0}/{1} ({2})".format(dataset_number, dataset_count, t1))
             t1 = t2
             t2 += measurement_interval
             dataset_number += 1
