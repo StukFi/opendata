@@ -9,7 +9,7 @@ import store from "../src/store"
 import "bootstrap/dist/css/bootstrap.css"
 import "bootstrap-vue/dist/bootstrap-vue.css"
 import "ol/ol.css"
-import "../dist/global.css"
+import "../public/global.css"
 
 Vue.use(VueResource)
 Vue.use(BootstrapVue)
@@ -27,3 +27,5 @@ new Vue({
     i18n,
     render: h => h(App)
 })
+
+export { i18n };

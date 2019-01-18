@@ -52,7 +52,6 @@ export default {
     computed: {
         locale: {
             get() {
-                this.$i18n.locale = this.$store.state.settings.locale;
                 return this.$i18n.locale;
             },
             set(locale) {

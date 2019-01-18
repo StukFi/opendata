@@ -1,5 +1,5 @@
 import Vue from "vue"
-import VueI18n from "vue-i18n"
+import { i18n } from "../../main.js"
 
 export default {
     state: {
@@ -22,6 +22,7 @@ export default {
     },
     mutations: {
         setLocale(state, locale) {
+            i18n.locale = locale;
             localStorage.setItem("locale", locale);
             state.locale = locale;
         },
