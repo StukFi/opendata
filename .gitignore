@@ -1,7 +1,9 @@
-# dist/
-dist/data
-dist/tiles
-dist/bundle.js
+# /
+dist
+tiles
+
+# public/
+public/data
 
 # src/
 src/scripts/settings.json
