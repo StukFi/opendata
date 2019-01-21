@@ -1,9 +1,9 @@
 import Vue from "vue"
 
 export default {
-    get(url) {
+    get (url) {
         return Vue.http.get(url)
             .then((response) => Promise.resolve(response))
-            .catch((error) => Promise.reject(error));
+            .catch((error) => Promise.reject(error))
     }
 }

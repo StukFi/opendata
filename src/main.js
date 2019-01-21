@@ -28,4 +28,4 @@ new Vue({
     render: h => h(App)
 })
 
-export { i18n };
+export { i18n }

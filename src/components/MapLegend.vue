@@ -1,6 +1,12 @@
 <template>
     <div class="map-legend">
-        <div class="map-legend__bar" @click="toggleDoseRateRange(index)" v-for="(item, index) in doseRateRanges" :style="{backgroundColor: item.color}" :class="{'map-legend__bar--disabled': !item.enabled}">{{(index == doseRateRanges.length - 1) ? "&gt; " + item.minValue.toFixed(2) + " &#181;Sv/h" : item.minValue.toFixed(2) + " - " + item.maxValue.toFixed(2)}}</div>
+        <div
+            v-for="(item, index) in doseRateRanges"
+            :key="index"
+            :style="{backgroundColor: item.color}"
+            :class="{'map-legend__bar--disabled': !item.enabled}"
+            class="map-legend__bar"
+            @click="toggleDoseRateRange(index)">{{ (index == doseRateRanges.length - 1) ? "&gt; " + item.minValue.toFixed(2) + " &#181;Sv/h" : item.minValue.toFixed(2) + " - " + item.maxValue.toFixed(2) }}</div>
     </div>
 </template>
 
@@ -8,13 +14,13 @@
 export default {
     name: "MapLegend",
     computed: {
-        doseRateRanges() {
-            return this.$store.state.settings.doseRateRanges;
+        doseRateRanges () {
+            return this.$store.state.settings.doseRateRanges
         }
     },
     methods: {
-        toggleDoseRateRange(index) {
-            this.$store.commit("toggleDoseRateRange", index);
+        toggleDoseRateRange (index) {
+            this.$store.commit("toggleDoseRateRange", index)
         }
     }
 }
@@ -39,7 +45,6 @@ export default {
 
 .map-legend__bar {
     display: inline-block;
-    float: left;
     width: 20%;
     height: 100%;
     margin: 0px auto;

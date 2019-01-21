@@ -1,75 +1,81 @@
 <template>
     <div class="media-controls">
-        <span class="media-controls__button media-controls__button-datetime" :class="{'media-controls__button-time': playbackMode == 'time', 'media-controls__button-date': playbackMode == 'date'}" @click="toggleMode()"></span>
-        <span class="media-controls__button" :class="{'media-controls__button-play': !playbackEnabled, 'media-controls__button-pause': playbackEnabled}" @click="togglePlayback()"></span>
-        <span class="media-controls__button media-controls__button-speed" @click="toggleSpeed()">{{playbackSpeed | formatSpeed}}</span>
+        <span
+            :class="{'media-controls__button-time': playbackMode == 'time', 'media-controls__button-date': playbackMode == 'date'}"
+            class="media-controls__button media-controls__button-datetime"
+            @click="toggleMode()"/>
+        <span
+            :class="{'media-controls__button-play': !playbackEnabled, 'media-controls__button-pause': playbackEnabled}"
+            class="media-controls__button"
+            @click="togglePlayback()"/>
+        <span
+            class="media-controls__button media-controls__button-speed"
+            @click="toggleSpeed()">{{ playbackSpeed | formatSpeed }}</span>
     </div>
 </template>
 
 <script>
 export default {
     name: "MediaControls",
-    data: function() {
+    filters: {
+        formatSpeed (playbackSpeed) {
+            return playbackSpeed / 1000.0 + " s"
+        }
+    },
+    data: function () {
         return {
             playbackEnabled: false,
             playbackMode: "time",
             playbackSpeed: 1000,
             playbackSpeeds: [500, 1000, 2000],
             playbackTimeoutId: undefined
-        };
+        }
     },
     methods: {
-        togglePlayback() {
-            this.playbackEnabled ? this.pause() : this.play();
+        togglePlayback () {
+            this.playbackEnabled ? this.pause() : this.play()
         },
-        play() {
+        play () {
             if (this.playbackEnabled || this.playbackTimeoutId) {
-                return;
+                return
             }
 
-            var that = this;
+            var that = this
             this.playbackEnabled = true;
 
-            (function loadNextDataset() {
+            (function loadNextDataset () {
                 if ((that.playbackMode == "time" && that.$store.getters.isLastTimeSelected) ||
                     (that.playbackMode == "date" && that.$store.getters.isLastDateSelected)) {
-                    that.pause();
-                    return;
+                    that.pause()
+                    return
                 }
 
                 if (that.playbackMode == "date") {
-                    that.$store.dispatch("incrementDate");
-                }
-                else if (that.playbackMode == "time") {
-                    that.$store.dispatch("incrementTime");
+                    that.$store.dispatch("incrementDate")
+                } else if (that.playbackMode == "time") {
+                    that.$store.dispatch("incrementTime")
                 }
 
-                that.playbackTimeoutId = setTimeout(loadNextDataset, that.playbackSpeed);
-            })();
+                that.playbackTimeoutId = setTimeout(loadNextDataset, that.playbackSpeed)
+            })()
         },
-        pause() {
-            this.playbackEnabled = false;
+        pause () {
+            this.playbackEnabled = false
             if (this.playbackTimeoutId) {
-                clearTimeout(this.playbackTimeoutId);
-                this.playbackTimeoutId = undefined;
+                clearTimeout(this.playbackTimeoutId)
+                this.playbackTimeoutId = undefined
             }
         },
-        toggleMode() {
-            this.playbackMode = (this.playbackMode == "date") ? "time" : "date";
+        toggleMode () {
+            this.playbackMode = (this.playbackMode == "date") ? "time" : "date"
         },
-        toggleSpeed() {
-            var index = this.playbackSpeeds.indexOf(this.playbackSpeed);
+        toggleSpeed () {
+            var index = this.playbackSpeeds.indexOf(this.playbackSpeed)
             if (index >= this.playbackSpeeds.length - 1) {
-                this.playbackSpeed = this.playbackSpeeds[0];
+                this.playbackSpeed = this.playbackSpeeds[0]
+            } else {
+                this.playbackSpeed = this.playbackSpeeds[++index]
             }
-            else {
-                this.playbackSpeed = this.playbackSpeeds[++index];
-            }
-        }
-    },
-    filters: {
-        formatSpeed(playbackSpeed) {
-            return playbackSpeed / 1000.0 + " s";
         }
     }
 }
