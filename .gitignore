@@ -6,7 +6,7 @@ tiles
 public/data
 
 # src/
-src/scripts/settings.json
+scripts/settings.json
 
 # npm
 node_modules
