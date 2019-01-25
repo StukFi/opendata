@@ -5,7 +5,7 @@ tiles
 # public/
 public/data
 
-# src/
+# scripts/
 scripts/settings.json
 
 # npm
