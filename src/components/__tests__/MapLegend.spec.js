@@ -33,17 +33,17 @@ describe("MapLegend.vue", () => {
         ranges = store.state.settings.doseRateRanges
     })
 
-    test("renders the correct amount of bars", () => {
-        expect(bars.length).toBe(ranges.length)
+    test("renders the amount of bars specified in settings", () => {
+        expect(bars).toHaveLength(ranges.length)
     })
 
-    test("renders the bars with the correct color", () => {
+    test("renders the bars with the colors specified in settings", () => {
         bars.wrappers.forEach((bar, i) => {
             expect(bar.element.style.backgroundColor).toBe(ranges[i].color)
         })
     })
 
-    test("renders the bars with the correct text", () => {
+    test("renders the bars with the dose rate ranges specified in settings", () => {
         bars.wrappers.forEach((bar, i) => {
             if (i < bars.wrappers.length - 1) {
                 const expectedText = ranges[i].minValue.toFixed(2) +
@@ -60,10 +60,13 @@ describe("MapLegend.vue", () => {
         })
     })
 
-    test("applies the correct CSS class to disabled bars", () => {
+    test("changes the style of disabled bars", () => {
+        const style = "map-legend__bar--disabled"
+        expect(bars.wrappers[0].classes()).not.toContain(style)
+
         ranges[0].enabled = false
 
-        expect(bars.wrappers[0].classes()).toContain("map-legend__bar--disabled")
+        expect(bars.wrappers[0].classes()).toContain(style)
     })
 
     test("commits toggleDoseRateRange with index of clicked bar", () => {
