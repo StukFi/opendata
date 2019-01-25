@@ -6,7 +6,7 @@
             @click="toggleMode()"/>
         <span
             :class="{'media-controls__button-play': !playbackEnabled, 'media-controls__button-pause': playbackEnabled}"
-            class="media-controls__button"
+            class="media-controls__button media-controls__button-playback"
             @click="togglePlayback()"/>
         <span
             class="media-controls__button media-controls__button-speed"
