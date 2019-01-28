@@ -31,7 +31,7 @@ def get_data(args):
         dataset_number = 1
         while t2 <= end_time:
             logging.info("Downloading dataset {0}/{1}".format(dataset_number, dataset_count))
-            dataset = fmi_utils.wfs_request(t1, t2, "dose_rates", args.auth)
+            dataset = fmi_utils.wfs_request(t1, t2, "dose_rates")
             if dataset is not None:
                 dose_rate_data.append(dataset)
             else:
@@ -44,7 +44,7 @@ def get_data(args):
         end_time = datetime.utcnow() - timedelta(seconds=1800)
         start_time = end_time - timedelta(seconds=559)
         logging.info("Downloading dataset")
-        dataset = fmi_utils.wfs_request(start_time, end_time, "dose_rates", args.auth)
+        dataset = fmi_utils.wfs_request(start_time, end_time, "dose_rates")
         if dataset is not None:
             dose_rate_data.append(dataset)
         else:

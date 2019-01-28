@@ -1,4 +1,3 @@
 {
-    "data_directory": "/example/opendata/dist/data",
-    "fmi_api_key": "FMI_API_KEY"
+    "data_directory": "/example/opendata/dist/data"
 }

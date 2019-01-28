@@ -23,8 +23,6 @@ def get_program_arguments():
     parser.add_argument("-s", "--timespan", nargs=2, metavar=('FROM', 'TO'),
                         help="define a timespan for which to get data, \
                               datetime format {}".format(fmi_request_datetime_format))
-    parser.add_argument("-a", "--auth", action="store_true",
-                        help="use an API key to authenticate requests")
     parser.add_argument("-q", "--quiet", action="store_true",
                         help="suppress console output")
     return parser.parse_args()

@@ -14,15 +14,13 @@ wfs_ns = "http://www.opengis.net/wfs/2.0"
 fmi_request_datetime_format = "YYYY-MM-DDThh:mm:ss"
 
 request_templates = {
-        "base": {
-            "authenticated": "http://data.stuk.fi/fmi-apikey/{}/wfs/eng?",
-            "unauthenticated": "http://opendata.fmi.fi/wfs/eng?"
-        },
-        "dose_rates": ("request=GetFeature&storedquery_id=stuk::observations::"
-                     "external-radiation::multipointcoverage&starttime={}&endtime={}"),
-        "samplers": ("request=GetFeature&storedquery_id=stuk::observations"
-                     "::air::radionuclide-activity-concentration::"
-                     "multipointcoverage&starttime={}&endtime={}")
+    "dose_rates": ("http://opendata.fmi.fi/wfs/eng?"
+                    "request=GetFeature&storedquery_id=stuk::observations::"
+                    "external-radiation::multipointcoverage&starttime={}&endtime={}"),
+    "samplers": ("http://opendata.fmi.fi/wfs/eng?"
+                    "request=GetFeature&storedquery_id=stuk::observations"
+                    "::air::radionuclide-activity-concentration::"
+                    "multipointcoverage&starttime={}&endtime={}")
 }
 
 geojson_template = {
@@ -47,15 +45,10 @@ def wfs_request(start_time, end_time, results_type, authenticated=False):
     t0 = start_time.strftime(timeFormat)
     t1 = end_time.strftime(timeFormat)
 
-    if authenticated:
-        url = request_templates["base"]["authenticated"] + request_templates[results_type]
-        url = url.format(settings.get("fmi_api_key"), t0, t1)
-
-    else:
-        url = request_templates["base"]["unauthenticated"] + request_templates[results_type]
-        url = url.format(t0, t1)
-
+    url = request_templates[results_type]
+    url = url.format(t0, t1)
     response = None
+
     try:
         response = urlopen(url, timeout=3)
     except (RequestException, HTTPError, ConnectionError, socket.timeout):

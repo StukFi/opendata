@@ -21,7 +21,7 @@ def get_data(args):
     end_time = datetime.utcnow()
     start_time = end_time - timedelta(days=10)
     logging.info("Downloading dataset")
-    return fmi_utils.wfs_request(start_time, end_time, "samplers", args.auth)
+    return fmi_utils.wfs_request(start_time, end_time, "samplers")
 
 def parse_data(data):
     """

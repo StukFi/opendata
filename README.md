@@ -52,8 +52,6 @@ To keep the application up-to-date schedule the "get_data.py" script. The follow
 
 `*/10 * * * * cd /home/lma/opendata/src/scripts/; /bin/python3 /home/lma/opendata/src/scripts/get_data.py dose_rates`
 
-The "get_data.py" script performs requests to FMI's open data API. The requests are unauthenticated by default. If you wish to use authenticated requests, you need an API key. Register at https://ilmatieteenlaitos.fi/rekisteroityminen-avoimen-datan-kayttajaksi to get an API key. Change the value of the "fmi_api_key" key in the previously created "settings.json" file to your API key. To enable authentication use the "-a" or "--auth" option.
-
 The "get_data.py" script also generates time series data and updates a metadata file. It performs these tasks when it fetches new results. To regenerate all time series data run the "time_series.py" script. To update the metadata file run the "metadata.py" script. You do not need to run these scripts under normal operation.
 
 ## 5. Dependencies
