@@ -52,6 +52,8 @@ export default {
                     }
                 }
             }
+
+            i18n.locale = state.locale
         }
     }
 }
