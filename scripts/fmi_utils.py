@@ -31,14 +31,13 @@ geojson_template = {
     "features": []
 }
 
-def wfs_request(start_time, end_time, results_type, authenticated=False):
+def wfs_request(start_time, end_time, results_type):
     """
     Performs a WFS request to the FMI open data API.
 
     :param start_time: start of the timespan for which to get data
     :param end_time: end of the timespan for which to get data
     :param results_type: type of data to get
-    :param authenticated: indicates whether an API key is used
     :return: HTTPResponse object
     """
     timeFormat = "%Y-%m-%dT%H:%M:00Z"
