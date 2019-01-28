@@ -86,6 +86,9 @@ export default {
                 dispatch("selectMostRecentDate")
                 dispatch("selectMostRecentTime")
             })
+
+            // Update available data every 10 minutes.
+            setInterval(() => { dispatch("updateAvailableDatetimes") }, 600000)
         },
         updateAvailableDatetimes ({ commit }) {
             return http.get("data/dose_rates/metadata.json").then(function (response) {
