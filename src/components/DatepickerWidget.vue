@@ -1,21 +1,33 @@
 <template>
     <div class="datepicker-container">
-        <button class="button__change-date button__decrement-date" @click="decrementDate()" :class="{'button__change-date--disabled': isFirstDateSelected}"></button>
-        <button class="button__change-date button__increment-date" @click="incrementDate()" :class="{'button__change-date--disabled': isLastDateSelected}"></button>
-        <datepicker v-model="date" :use-utc="true" :monday-first="true" :disabledDates="disabledDates" :format="dateFormatter" :language="language"></datepicker>
+        <button 
+            :class="{'button__change-date--disabled': isFirstDateSelected}" 
+            class="button__change-date button__decrement-date" 
+            @click="decrementDate()"/>
+        <button 
+            :class="{'button__change-date--disabled': isLastDateSelected}" 
+            class="button__change-date button__increment-date" 
+            @click="incrementDate()"/>
+        <datepicker 
+            v-model="date" 
+            :use-utc="true" 
+            :monday-first="true" 
+            :disabled-dates="disabledDates" 
+            :format="dateFormatter" 
+            :language="language"/>
     </div>
 </template>
 
 <script>
-import Datepicker from "vuejs-datepicker";
-import {en, fi} from "vuejs-datepicker/dist/locale"
+import Datepicker from "vuejs-datepicker"
+import { en, fi } from "vuejs-datepicker/dist/locale"
 
 export default {
     name: "DatepickerWidget",
     components: {
         Datepicker
     },
-    data: function() {
+    data: function () {
         return {
             en: en,
             fi: fi
@@ -23,102 +35,96 @@ export default {
     },
     computed: {
         date: {
-            get() {
-                return this.$store.state.datetime.date;
+            get () {
+                return this.$store.state.datetime.date
             },
-            set(newDate) {
-                this.$store.dispatch("setDate", newDate);
+            set (newDate) {
+                this.$store.dispatch("setDate", newDate)
             }
         },
         language: {
-            get() {
-                switch (this.$store.state.settings.locale)
-                {
-                    case "en":
-                    default:
-                        return this.en;
-                        break;
+            get () {
+                switch (this.$store.state.settings.locale) {
+                case "en":
+                default:
+                    return this.en
 
-                    case "fi":
-                        return this.fi;
-                        break;
+                case "fi":
+                    return this.fi
                 }
             }
         },
-        disabledDates() {
-            return this.parseDisabledDates();
+        disabledDates () {
+            return this.parseDisabledDates()
         },
-        isFirstDateSelected() {
-            return this.$store.getters.isFirstDateSelected;
+        isFirstDateSelected () {
+            return this.$store.getters.isFirstDateSelected
         },
-        isLastDateSelected() {
-            return this.$store.getters.isLastDateSelected;
+        isLastDateSelected () {
+            return this.$store.getters.isLastDateSelected
         }
     },
     methods: {
-        dateFormatter(date) {
-            switch (this.$store.state.settings.dateFormat)
-            {
-                case "fi":
-                default:
-                    return date.getDate() + "." + (date.getMonth() + 1) + 
-                            "." + date.getFullYear();
-                    break;
-                
-                case "iso":
-                    return date.getFullYear() + "-" + (date.getMonth() + 1) +
-                            "-" + date.getDate();
-                    break;
+        dateFormatter (date) {
+            switch (this.$store.state.settings.dateFormat) {
+            case "fi":
+            default:
+                return date.getDate() + "." + (date.getMonth() + 1) +
+                            "." + date.getFullYear()
+
+            case "iso":
+                return date.getFullYear() + "-" + (date.getMonth() + 1) +
+                            "-" + date.getDate()
             }
         },
-        parseDisabledDates() {
-            var validDatetimes = this.$store.state.datetime.validDatetimes;
+        parseDisabledDates () {
+            var validDatetimes = this.$store.state.datetime.validDatetimes
             var disabledDates = {
                 ranges: [],
                 dates: []
-            };
+            }
 
             if (validDatetimes.length == 0) {
-                return disabledDates;
+                return disabledDates
             }
 
             // Disable dates from the start of Unix time to the first valid date.
-            var firstValidDate = validDatetimes[0].date;
+            var firstValidDate = validDatetimes[0].date
             var datesBeforeFirstValidDate = {
                 from: new Date(0),
                 to: new Date(firstValidDate)
-            };
-            disabledDates.ranges.push(datesBeforeFirstValidDate);
+            }
+            disabledDates.ranges.push(datesBeforeFirstValidDate)
 
             // Disable dates from the next ten years after the last valid date.
-            var lastValidDate = validDatetimes.slice(-1)[0].date;
+            var lastValidDate = validDatetimes.slice(-1)[0].date
             var datesAfterLastValidDate = {
                 from: lastValidDate,
                 to: new Date(lastValidDate.getFullYear() + 10, lastValidDate.getMonth(),
                     lastValidDate.getDate())
             }
-            disabledDates.ranges.push(datesAfterLastValidDate);
+            disabledDates.ranges.push(datesAfterLastValidDate)
 
             // Disable dates in between the valid dates.
-            var currentDate = new Date(firstValidDate);
-            function dateExists(datetime) {
-                return datetime.date.toDateString() == currentDate.toDateString();
+            var currentDate = new Date(firstValidDate)
+            function dateExists (datetime) {
+                return datetime.date.toDateString() == currentDate.toDateString()
             }
             while (currentDate < lastValidDate) {
                 if (!validDatetimes.some(dateExists)) {
-                    disabledDates.dates.push(new Date(currentDate));
+                    disabledDates.dates.push(new Date(currentDate))
                 }
 
-                currentDate.setDate(currentDate.getDate() + 1);
+                currentDate.setDate(currentDate.getDate() + 1)
             }
 
-            return disabledDates;
+            return disabledDates
         },
-        decrementDate() {
-            this.$store.dispatch("decrementDate");
+        decrementDate () {
+            this.$store.dispatch("decrementDate")
         },
-        incrementDate() {
-            this.$store.dispatch("incrementDate");
+        incrementDate () {
+            this.$store.dispatch("incrementDate")
         }
     }
 }

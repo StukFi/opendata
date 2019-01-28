@@ -1,35 +1,51 @@
 <template>
     <div class="settings">
-        <div class="settings-button" @click="enable()">
-            <span class="settings-button__icon"></span>
+        <div
+            class="settings-button"
+            @click="enable()">
+            <span class="settings-button__icon"/>
         </div>
-        <div class="settings-panel__background" v-if="isEnabled" @click="disable()"></div>
-        <div class="settings-panel container p-5" v-if="isEnabled">
+        <div
+            v-if="isEnabled"
+            class="settings-panel__background"
+            @click="disable()"/>
+        <div
+            v-if="isEnabled"
+            class="settings-panel container p-5">
             <div class="row">
                 <div class="col">
-                    <b-form-group class="mb-5" :label="$t('language')">
+                    <b-form-group
+                        :label="$t('language')"
+                        class="mb-5">
                         <b-form-radio-group v-model="locale">
                             <b-form-radio value="fi">FI</b-form-radio>
                             <b-form-radio value="en">EN</b-form-radio>
                         </b-form-radio-group>
                     </b-form-group>
-                    <b-form-group class="mb-5" :label="$t('dateFormat')">
+                    <b-form-group
+                        :label="$t('dateFormat')"
+                        class="mb-5">
                         <b-form-radio-group v-model="dateFormat">
-                            <b-form-radio value="fi">{{$t("dateFormatA")}}</b-form-radio>
-                            <b-form-radio value="iso">{{$t("dateFormatB")}}</b-form-radio>
+                            <b-form-radio value="fi">{{ $t("dateFormatA") }}</b-form-radio>
+                            <b-form-radio value="iso">{{ $t("dateFormatB") }}</b-form-radio>
                         </b-form-radio-group>
                     </b-form-group>
-                    <b-form-group class="mb-5" :label="$t('timeFormat')">
+                    <b-form-group
+                        :label="$t('timeFormat')"
+                        class="mb-5">
                         <b-form-radio-group v-model="timeFormat">
-                            <b-form-radio value="24h">{{$t("timeFormatA")}}</b-form-radio>
-                            <b-form-radio value="12h">{{$t("timeFormatB")}}</b-form-radio>
+                            <b-form-radio value="24h">{{ $t("timeFormatA") }}</b-form-radio>
+                            <b-form-radio value="12h">{{ $t("timeFormatB") }}</b-form-radio>
                         </b-form-radio-group>
                     </b-form-group>
                 </div>
             </div>
             <div class="row justify-content-center">
                 <div class="col-6 pt-5">
-                    <b-button variant="secondary" class="btn-block" @click="disable()">{{$t("closeButton")}}</b-button>
+                    <b-button
+                        variant="secondary"
+                        class="btn-block"
+                        @click="disable()">{{ $t("closeButton") }}</b-button>
                 </div>
             </div>
         </div>
@@ -44,44 +60,49 @@ import bFormRadioGroup from "bootstrap-vue/es/components/form-radio/form-radio-g
 
 export default {
     name: "Settings",
-    data: function() {
+    components: {
+        bButton,
+        bFormGroup,
+        bFormRadio,
+        bFormRadioGroup
+    },
+    data: function () {
         return {
             isEnabled: false
-        };
+        }
     },
     computed: {
         locale: {
-            get() {
-                this.$i18n.locale = this.$store.state.settings.locale;
-                return this.$i18n.locale;
+            get () {
+                return this.$i18n.locale
             },
-            set(locale) {
-                this.$store.commit("setLocale", locale);
+            set (locale) {
+                this.$store.commit("setLocale", locale)
             }
         },
         dateFormat: {
-            get() {
-                return this.$store.state.settings.dateFormat;
+            get () {
+                return this.$store.state.settings.dateFormat
             },
-            set(dateFormat) {
-                this.$store.commit("setDateFormat", dateFormat);
+            set (dateFormat) {
+                this.$store.commit("setDateFormat", dateFormat)
             }
         },
         timeFormat: {
-            get() {
-                return this.$store.state.settings.timeFormat;
+            get () {
+                return this.$store.state.settings.timeFormat
             },
-            set(timeFormat) {
-                this.$store.commit("setTimeFormat", timeFormat);
+            set (timeFormat) {
+                this.$store.commit("setTimeFormat", timeFormat)
             }
         }
     },
     methods: {
-        enable() {
-            this.isEnabled = true;
+        enable () {
+            this.isEnabled = true
         },
-        disable() {
-            this.isEnabled = false;
+        disable () {
+            this.isEnabled = false
         }
     }
 }

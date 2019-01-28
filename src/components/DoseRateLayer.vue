@@ -1,5 +1,5 @@
 <template>
-    <div></div>
+    <div/>
 </template>
 
 <script>
@@ -12,7 +12,7 @@ import VectorSource from "ol/source/Vector"
 
 export default {
     name: "DoseRateLayer",
-    data: function() {
+    data: function () {
         return {
             vectorLayer: new VectorLayer({
                 source: new VectorSource({
@@ -35,72 +35,70 @@ export default {
                 // Setting "visible" to false causes the layer to not be updated or drawn.
                 // This disables the buffer layer when a new dataset is not being loaded.
                 // Likewise visiblity is set to true when loading a new dataset.
-                visible: false,
+                visible: false
             }),
             featureFormat: new GeoJSON({
                 defaultDataProjection: "EPSG:4326"
             })
-        };
+        }
     },
     computed: {
-        datasetFilePath() {
+        datasetFilePath () {
             if (!this.$store.state.datetime.date) {
-                return "";
+                return ""
             }
 
             return "data/dose_rates/datasets/" +
                 this.$store.state.datetime.date.toISOString().split("T")[0] + "T" +
-                this.$store.state.datetime.time + ".json";
+                this.$store.state.datetime.time + ".json"
         },
-        doseRateRanges() {
-            return this.$store.state.settings.doseRateRanges;
+        doseRateRanges () {
+            return this.$store.state.settings.doseRateRanges
         }
     },
     watch: {
-        datasetFilePath: function() {
+        datasetFilePath: function () {
             // A new dataset is loaded into the buffer layer by changing its source.
-            this.bufferLayer.setVisible(true);
+            this.bufferLayer.setVisible(true)
             this.bufferLayer.setSource(new VectorSource({
                 format: this.featureFormat,
                 url: this.datasetFilePath
-            }));
+            }))
         },
-        doseRateRanges: function() {
-            this.vectorLayer.changed();
+        doseRateRanges: function () {
+            this.vectorLayer.changed()
         }
     },
-    mounted() {
-        var that = this;
+    mounted () {
+        var that = this
         // A generic change event is fired when a layer's source's state changes.
         // The buffer layer's source is considered 'ready' when it contains features.
-        this.bufferLayer.on("change", function() {
-            var loadedFeatures = that.bufferLayer.getSource().getFeatures();
+        this.bufferLayer.on("change", function () {
+            var loadedFeatures = that.bufferLayer.getSource().getFeatures()
             if (loadedFeatures.length == 0) {
-                return;
+                return
             }
 
-            that.bufferLayer.setVisible(false);
-            that.vectorLayer.getSource().clear(true);
-            that.vectorLayer.getSource().addFeatures(loadedFeatures);
+            that.bufferLayer.setVisible(false)
+            that.vectorLayer.getSource().clear(true)
+            that.vectorLayer.getSource().addFeatures(loadedFeatures)
 
-            that.$root.$emit("doseRateLayerChanged", that.vectorLayer);
-        });
-
+            that.$root.$emit("doseRateLayerChanged", that.vectorLayer)
+        })
     },
     methods: {
-        styleFeature(feature) {
-            var featureColor = "#000";
-            var doseRate = feature.get("doseRate");
+        styleFeature (feature) {
+            var featureColor = "#000"
+            var doseRate = feature.get("doseRate")
 
-            var doseRateRanges = this.$store.state.settings.doseRateRanges;
+            var doseRateRanges = this.$store.state.settings.doseRateRanges
             for (var i = 0; i < doseRateRanges.length; ++i) {
                 if (doseRate < doseRateRanges[i].maxValue) {
                     if (doseRateRanges[i].enabled) {
-                        featureColor = doseRateRanges[i].color;
-                        break;
-                    }
-                    else {
-                        return undefined;
+                        featureColor = doseRateRanges[i].color
+                        break
+                    } else {
+                        return undefined
                     }
                 }
             }
@@ -112,13 +110,13 @@ export default {
                         color: featureColor
                     })
                 })
-            });
+            })
 
-            return [featureStyle];
+            return [featureStyle]
         },
-        orderFeatures(featureA, featureB) {
+        orderFeatures (featureA, featureB) {
             // Draw features with a higher dose rate on top.
-            return featureA.get("doseRate") < featureB.get("doseRate") ? -1 : 1;
+            return featureA.get("doseRate") < featureB.get("doseRate") ? -1 : 1
         }
     }
 }

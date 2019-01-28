@@ -1,12 +1,23 @@
 <template>
-    <div ref="featurePopup" class="feature-popup" :class="{'feature-popup--large': isGraphVisible}" >
-        <a href="#" ref="featurePopupCloser" class="feature-popup__closer" v-if="isGraphVisible" @click="disable()">&times;</a>
+    <div 
+        ref="featurePopup" 
+        :class="{'feature-popup--large': isGraphVisible}" 
+        class="feature-popup" >
+        <a 
+            v-if="isGraphVisible" 
+            ref="featurePopupCloser" 
+            href="#" 
+            class="feature-popup__closer" 
+            @click="disable()">&times;</a>
         <div class="feature-popup__content">
-            <p class="feature-popup__site">{{site}}</p>
+            <p class="feature-popup__site">{{ site }}</p>
             <div class="feature-popup__dose-rate">
-                <span class="feature-popup__dose-rate-value">{{doseRate}}<span class="feature-popup__dose-rate-unit"> &#181;Sv/h</span></span>
+                <span class="feature-popup__dose-rate-value">{{ doseRate }}<span class="feature-popup__dose-rate-unit"> &#181;Sv/h</span></span>
             </div>
-            <time-series-graph ref="graph" v-show="isGraphVisible" :site-id="siteId"></time-series-graph>
+            <time-series-graph 
+                v-show="isGraphVisible" 
+                ref="graph" 
+                :site-id="siteId"/>
         </div>
     </div>
 </template>
@@ -20,7 +31,7 @@ export default {
     components: {
         TimeSeriesGraph
     },
-    data: function() {
+    data: function () {
         return {
             overlay: undefined,
             position: "",
@@ -28,33 +39,42 @@ export default {
             siteId: "",
             doseRate: 0.0,
             isGraphVisible: false
-        };
+        }
+    },
+    mounted: function () {
+        this.$root.$on("mapInteraction", this.onMapInteraction)
+        this.$root.$on("doseRateLayerChanged", this.updateDoseRate)
+
+        this.overlay = new Overlay({
+            element: this.$refs.featurePopup,
+            position: undefined
+        })
     },
     methods: {
-        enable() {
-            this.overlay.setPosition(this.position);
+        enable () {
+            this.overlay.setPosition(this.position)
         },
-        disable() {
-            this.isGraphVisible = false;
-            this.overlay.setPosition(undefined);
+        disable () {
+            this.isGraphVisible = false
+            this.overlay.setPosition(undefined)
         },
-        getFeatureInformation(feature) {
-            this.site = feature.get("site");
-            this.siteId = feature.get("id");
-            this.doseRate = feature.get("doseRate");
-            this.position = feature.getGeometry().getCoordinates();
+        getFeatureInformation (feature) {
+            this.site = feature.get("site")
+            this.siteId = feature.get("id")
+            this.doseRate = feature.get("doseRate")
+            this.position = feature.getGeometry().getCoordinates()
         },
-        onMapInteraction(evt) {
+        onMapInteraction (evt) {
             if (evt.type == "pointermove" && this.isGraphVisible) {
-                return;
+                return
             }
 
             if (!evt.features) {
-                this.disable();
-                return;
+                this.disable()
+                return
             }
 
-            this.getFeatureInformation(evt.features[0]);
+            this.getFeatureInformation(evt.features[0])
 
             if (evt.type == "click") {
                 // If the graph is drawn immediately, it will sometimes incorrectly
@@ -62,40 +82,31 @@ export default {
                 // the siteId prop's value has not had time to propagate to the graph.
                 // This problem is fixed by using vue.js' nextTick() function.
                 this.$nextTick(() => {
-                    this.$refs.graph.drawDefaultGraph();
-                    this.isGraphVisible = true;
-                });
+                    this.$refs.graph.drawDefaultGraph()
+                    this.isGraphVisible = true
+                })
             }
 
-            this.enable();
+            this.enable()
         },
-        updateDoseRate(doseRateLayer) {
-            var features = doseRateLayer.getSource().getFeatures();
+        updateDoseRate (doseRateLayer) {
+            var features = doseRateLayer.getSource().getFeatures()
             if (features.length == 0) {
-                return;
+                return
             }
 
             for (var i = 0; i < features.length; ++i) {
                 if (features[i].get("id") == this.siteId) {
-                    this.getFeatureInformation(features[i]);
-                    return;
+                    this.getFeatureInformation(features[i])
+                    return
                 }
             }
 
             // This is in case the new dataset that was loaded doesn't
             // have a feature for the previously selected measurement site
             // i.e. the site is missing a measurement for the selected datetime.
-            this.doseRate = "-";
+            this.doseRate = "-"
         }
-    },
-    mounted: function() {
-        this.$root.$on("mapInteraction", this.onMapInteraction);
-        this.$root.$on("doseRateLayerChanged", this.updateDoseRate);
-
-        this.overlay = new Overlay({
-            element: this.$refs.featurePopup,
-            position: undefined
-        });
     }
 }
 </script>

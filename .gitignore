@@ -1,10 +1,12 @@
-# dist/
-dist/data
-dist/tiles
-dist/bundle.js
+# /
+dist
+tiles
 
-# src/
-src/scripts/settings.json
+# public/
+public/data
+
+# scripts/
+scripts/settings.json
 
 # npm
 node_modules

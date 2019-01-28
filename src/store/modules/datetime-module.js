@@ -7,154 +7,152 @@ export default {
         time: undefined
     },
     getters: {
-        validTimesForCurrentDate(state) {
+        validTimesForCurrentDate (state) {
             if (!state.date) {
-                return [];
+                return []
             }
 
-            var times = [];
+            var times = []
             for (var i = 0; i < state.validDatetimes.length; ++i) {
                 if (state.validDatetimes[i].date.toDateString() == state.date.toDateString()) {
-                    times = state.validDatetimes[i].times;
-                    break;
+                    times = state.validDatetimes[i].times
+                    break
                 }
             }
 
-            return times;
+            return times
         },
-        isFirstDateSelected(state, getters) {
+        isFirstDateSelected (state) {
             if (state.validDatetimes.length == 0 || !state.date) {
-                return false;
+                return false
             }
 
-            var firstDate = state.validDatetimes[0].date.toDateString();
-            return (state.date.toDateString() == firstDate) ? true : false;
+            var firstDate = state.validDatetimes[0].date.toDateString()
+            return (state.date.toDateString() == firstDate)
         },
-        isLastDateSelected(state, getters) {
+        isLastDateSelected (state) {
             if (state.validDatetimes.length == 0 || !state.date) {
-                return false;
+                return false
             }
 
-            var lastDate = state.validDatetimes[state.validDatetimes.length - 1].date.toDateString();
-            return (state.date.toDateString() == lastDate) ? true : false;
+            var lastDate = state.validDatetimes[state.validDatetimes.length - 1].date.toDateString()
+            return (state.date.toDateString() == lastDate)
         },
-        isFirstTimeSelected(state, getters) {
+        isFirstTimeSelected (state, getters) {
             if (getters.isFirstDateSelected) {
-                return state.time == getters.validTimesForCurrentDate[0];
+                return state.time == getters.validTimesForCurrentDate[0]
             }
 
-            return false;
+            return false
         },
-        isLastTimeSelected(state, getters) {
+        isLastTimeSelected (state, getters) {
             if (getters.isLastDateSelected) {
-                return state.time == getters.validTimesForCurrentDate.slice(-1)[0];
+                return state.time == getters.validTimesForCurrentDate.slice(-1)[0]
             }
 
-            return false;
+            return false
         }
     },
     mutations: {
-        setTime(state, time) {
-            state.time = time;
+        setTime (state, time) {
+            state.time = time
         },
-        setDate(state, date) {
-            state.date = date;
+        setDate (state, date) {
+            state.date = date
         },
-        setValidDatetimes(state, datetimes) {
+        setValidDatetimes (state, datetimes) {
             for (var i = 0; i < datetimes.length; ++i) {
-                datetimes[i].date = new Date(datetimes[i].date);
-                datetimes[i].times.sort();
+                datetimes[i].date = new Date(datetimes[i].date)
+                datetimes[i].times.sort()
             }
 
-            datetimes.sort(function(a, b) {
-                return new Date(a.date) - new Date(b.date);
-            });
+            datetimes.sort(function (a, b) {
+                return new Date(a.date) - new Date(b.date)
+            })
 
-            state.validDatetimes = datetimes;
+            state.validDatetimes = datetimes
         }
     },
     actions: {
-        setDate({state, commit, dispatch, getters}, date) {
-            commit("setDate", date);
+        setDate ({ state, commit, dispatch, getters }, date) {
+            commit("setDate", date)
 
             if (!getters.validTimesForCurrentDate.includes(state.time)) {
-                dispatch("selectMostRecentTime");
+                dispatch("selectMostRecentTime")
             }
         },
-        initialize({dispatch}) {
-            dispatch("updateAvailableDatetimes").then(function() {
-                dispatch("selectMostRecentDate");
-                dispatch("selectMostRecentTime");
-            });
+        initialize ({ dispatch }) {
+            dispatch("updateAvailableDatetimes").then(function () {
+                dispatch("selectMostRecentDate")
+                dispatch("selectMostRecentTime")
+            })
         },
-        updateAvailableDatetimes({commit}) {
-            return http.get("data/dose_rates/metadata.json").then(function(response) {
-                commit("setValidDatetimes", response.body.available_data);
-            });
+        updateAvailableDatetimes ({ commit }) {
+            return http.get("data/dose_rates/metadata.json").then(function (response) {
+                commit("setValidDatetimes", response.body.available_data)
+            })
         },
-        selectMostRecentDate({state, dispatch}) {
+        selectMostRecentDate ({ state, dispatch }) {
             if (state.validDatetimes.length == 0) {
-                return;
+                return
             }
 
-            var mostRecentDate = state.validDatetimes[0].date;
+            var mostRecentDate = state.validDatetimes[0].date
             for (var i = 0; i < state.validDatetimes.length; ++i) {
                 if (state.validDatetimes[i].date > mostRecentDate) {
-                    mostRecentDate = state.validDatetimes[i].date;
+                    mostRecentDate = state.validDatetimes[i].date
                 }
             }
 
-            dispatch("setDate", mostRecentDate);
+            dispatch("setDate", mostRecentDate)
         },
-        selectMostRecentTime({state, getters, commit}) {
-            var validTimes = getters.validTimesForCurrentDate;
+        selectMostRecentTime ({getters, commit }) {
+            var validTimes = getters.validTimesForCurrentDate
             if (validTimes.length == 0) {
-                return;
+                return
             }
 
-            var mostRecentTime = validTimes[validTimes.length - 1];
-            commit("setTime", mostRecentTime);
+            var mostRecentTime = validTimes[validTimes.length - 1]
+            commit("setTime", mostRecentTime)
         },
-        decrementTime({commit, dispatch, getters, state}) {
+        decrementTime ({ commit, dispatch, getters, state }) {
             if (getters.isFirstDateSelected && getters.isFirstTimeSelected) {
-                return;
+                return
             }
 
-            var index = getters.validTimesForCurrentDate.indexOf(state.time);
+            var index = getters.validTimesForCurrentDate.indexOf(state.time)
             if (index == 0) {
-                dispatch("decrementDate");
-                dispatch("selectMostRecentTime");
-            }
-            else if (index > 0) {
-                commit("setTime", getters.validTimesForCurrentDate[--index]);
+                dispatch("decrementDate")
+                dispatch("selectMostRecentTime")
+            } else if (index > 0) {
+                commit("setTime", getters.validTimesForCurrentDate[--index])
             }
         },
-        incrementTime({commit, dispatch, getters, state}) {
+        incrementTime ({ commit, dispatch, getters, state }) {
             if (getters.isLastDateSelected && getters.isLastTimeSelected) {
-                return;
+                return
             }
 
-            var index = getters.validTimesForCurrentDate.indexOf(state.time);
+            var index = getters.validTimesForCurrentDate.indexOf(state.time)
             if (index == getters.validTimesForCurrentDate.length - 1) {
-                dispatch("incrementDate");
-                commit("setTime", getters.validTimesForCurrentDate[0]);
-            }
-            else if (index >= 0 && index < getters.validTimesForCurrentDate.length - 1) {
-                commit("setTime", getters.validTimesForCurrentDate[++index]);
+                dispatch("incrementDate")
+                commit("setTime", getters.validTimesForCurrentDate[0])
+            } else if (index >= 0 && index < getters.validTimesForCurrentDate.length - 1) {
+                commit("setTime", getters.validTimesForCurrentDate[++index])
             }
         },
-        decrementDate({dispatch, state}) {
-            var dates = state.validDatetimes.map(function(datetime) { return datetime.date.toDateString(); });
-            var index = dates.indexOf(state.date.toDateString());
+        decrementDate ({ dispatch, state }) {
+            var dates = state.validDatetimes.map(function (datetime) { return datetime.date.toDateString() })
+            var index = dates.indexOf(state.date.toDateString())
             if (index > 0) {
-                dispatch("setDate", state.validDatetimes[--index].date);
+                dispatch("setDate", state.validDatetimes[--index].date)
             }
         },
-        incrementDate({dispatch, state}) {
-            var dates = state.validDatetimes.map(function(datetime) { return datetime.date.toDateString(); });
-            var index = dates.indexOf(state.date.toDateString());
+        incrementDate ({ dispatch, state }) {
+            var dates = state.validDatetimes.map(function (datetime) { return datetime.date.toDateString() })
+            var index = dates.indexOf(state.date.toDateString())
             if (index >= 0 && index < state.validDatetimes.length - 1) {
-                dispatch("setDate", state.validDatetimes[++index].date);
+                dispatch("setDate", state.validDatetimes[++index].date)
             }
         }
     }

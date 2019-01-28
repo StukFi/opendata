@@ -1,10 +1,25 @@
 <template>
     <div class="timepicker-container">
-        <button class="button__change-time button__decrement-time" @click="decrementTime()" :class="{'button__change-time--disabled': isFirstTimeSelected}"></button>
-        <button class="button__change-time button__increment-time" @click="incrementTime()" :class="{'button__change-time--disabled': isLastTimeSelected}"></button>
-        <div class="timepicker" @click="toggleTimeList">{{formatTime(time, true)}}</div>
-        <ul class="time-list" v-show="isTimeListOpen">
-            <li class="time-list__entry" :class="{'time-list__entry--selected': timeEntry == time}" @click="setTime(timeEntry), toggleTimeList()" v-for="(timeEntry, index) in validTimesForCurrentDate.slice().reverse()" :key="index">{{formatTime(timeEntry)}}</li>
+        <button
+            :class="{'button__change-time--disabled': isFirstTimeSelected}"
+            class="button__change-time button__decrement-time"
+            @click="decrementTime()"/>
+        <button
+            :class="{'button__change-time--disabled': isLastTimeSelected}"
+            class="button__change-time button__increment-time"
+            @click="incrementTime()"/>
+        <div
+            class="timepicker"
+            @click="toggleTimeList">{{ formatTime(time, true) }}</div>
+        <ul
+            v-show="isTimeListOpen"
+            class="time-list">
+            <li
+                v-for="(timeEntry, index) in validTimesForCurrentDate.slice().reverse()"
+                :class="{'time-list__entry--selected': timeEntry == time}"
+                :key="index"
+                class="time-list__entry"
+                @click="setTime(timeEntry), toggleTimeList()">{{ formatTime(timeEntry) }}</li>
         </ul>
     </div>
 </template>
@@ -14,73 +29,72 @@ import dateUtils from "../utils/date"
 
 export default {
     name: "TimepickerWidget",
-    data: function() {
+    data: function () {
         return {
             isTimeListOpen: false
-        };
+        }
     },
     computed: {
         time: {
-            get() {
-                return this.$store.state.datetime.time;
+            get () {
+                return this.$store.state.datetime.time
             },
-            set(newValue) {
-                this.$store.commit("setTime", newValue);
+            set (newValue) {
+                this.$store.commit("setTime", newValue)
             }
         },
-        validTimesForCurrentDate() {
-            return this.$store.getters.validTimesForCurrentDate;
+        validTimesForCurrentDate () {
+            return this.$store.getters.validTimesForCurrentDate
         },
-        isFirstTimeSelected() {
-            return this.$store.getters.isFirstTimeSelected;
+        isFirstTimeSelected () {
+            return this.$store.getters.isFirstTimeSelected
         },
-        isLastTimeSelected() {
-            return this.$store.getters.isLastTimeSelected;
+        isLastTimeSelected () {
+            return this.$store.getters.isLastTimeSelected
         }
     },
-    mounted() {
-        var that = this;
+    mounted () {
+        var that = this
 
         // Clicking outside the timelist should close it.
-        window.addEventListener("click", function(e) {
+        window.addEventListener("click", function (e) {
             if (e.target.className != "time-list__entry" &&
                 e.target.className != "timepicker") {
-                that.closeTimeList();
+                that.closeTimeList()
             }
-        });
+        })
     },
     methods: {
-        closeTimeList() {
-            this.isTimeListOpen = false;
+        closeTimeList () {
+            this.isTimeListOpen = false
         },
-        toggleTimeList() {
-            this.isTimeListOpen = !this.isTimeListOpen;
+        toggleTimeList () {
+            this.isTimeListOpen = !this.isTimeListOpen
         },
-        setTime(time) {
-            this.time = time;
+        setTime (time) {
+            this.time = time
         },
-        decrementTime() {
-            this.$store.dispatch("decrementTime");
+        decrementTime () {
+            this.$store.dispatch("decrementTime")
         },
-        incrementTime() {
-            this.$store.dispatch("incrementTime");
+        incrementTime () {
+            this.$store.dispatch("incrementTime")
         },
-        formatTime(time, isSelectedTime) {
+        formatTime (time, isSelectedTime) {
             if (!time) {
-                return "";
+                return ""
             }
 
-            time = time.slice(0, 2) + ":" + time.slice(2, 4);
+            time = time.slice(0, 2) + ":" + time.slice(2, 4)
 
-            switch (this.$store.state.settings.timeFormat)
-            {
-                case "12h":
-                    time = dateUtils.convertTimeTo12HourClock(time);
-                    return isSelectedTime ? (time.split(" ")[0] + "Z " + time.split(" ")[1]) : time;
+            switch (this.$store.state.settings.timeFormat) {
+            case "12h":
+                time = dateUtils.convertTimeTo12HourClock(time)
+                return isSelectedTime ? (time.split(" ")[0] + "Z " + time.split(" ")[1]) : time
 
-                case "24h":
-                default:
-                    return isSelectedTime ? (time + "Z") : time;
+            case "24h":
+            default:
+                return isSelectedTime ? (time + "Z") : time
             }
         }
     }
