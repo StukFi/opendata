@@ -10,7 +10,7 @@ The following image shows an overview of the application:
 
 Results are available in increments of 10 minutes. The application uses data local to its hosting server. This means that only data already fetched by the host is available. The available results may thus be incomplete.
 
-Each point on the map represents a single measurement site. A point's color corresponds to the measured dose rate. Hovering a mouse cursor over a point opens a popup showing the site's name and dose rate. Clicking a point opens a larger popup which also includes a time series graph. 
+Each point on the map represents a single measurement site. A point's color corresponds to the measured dose rate. Hovering a mouse cursor over a point opens a popup showing the site's name and dose rate. Clicking a point opens a larger popup which also includes a time series graph.
 
 The time series graph by default displays data for the selected date. Panning the graph causes it to load in and display data for more dates. The graph and its axes are scrollable. Double-clicking the graph or its axes changes how the data displays. Shift-clicking and dragging zooms in on sections of the graph.
 
@@ -42,9 +42,9 @@ The application by default gets its map tiles from OpenStreetMap's public server
 
 ## 4. Getting data
 
-The application does not contain any data by default. Scripts for fetching and processing data are in the "src/scripts" directory. Install all Python dependencies before running the scripts.
+The application does not contain any data by default. Python scripts for fetching and processing data are in the "scripts" directory. Install all Python dependencies before running the scripts.
 
-Create a copy of the file "settings.example.json" in the "src/scripts" directory and rename it "settings.json". Change the value of the "data_directory" key to the path of the directory where you want data to be stored. For example: "/var/www/html/opendata/data". Note that the path does not end in a forward slash. The data directory should be located next to the "index.html" file at the root of the opendata web hosting directory. You can alternatively create a symlink that points to another location.
+Create a copy of the file "settings.example.json" in the "scripts" directory and rename it "settings.json". Change the value of the "data_directory" key to the path of the directory where you want data to be stored. For example: "/var/www/html/opendata/data". Note that the path does not end in a forward slash. The data directory should be located next to the "index.html" file at the root of the opendata web hosting directory. You can alternatively create a symlink that points to another location.
 
 "get_data.py" is the main script. It takes one required argument for the type of data to get. This is currently always "dose_rates". Running the script without other arguments fetches the most recent results. Use the "--span" option and datetime arguments to fetch many results. Use the "--help" option for detailed technical instructions.
 
