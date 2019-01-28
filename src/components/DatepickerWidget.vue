@@ -1,19 +1,19 @@
 <template>
     <div class="datepicker-container">
-        <button 
-            :class="{'button__change-date--disabled': isFirstDateSelected}" 
-            class="button__change-date button__decrement-date" 
+        <button
+            :class="{'button__change-date--disabled': isFirstDateSelected}"
+            class="button__change-date button__decrement-date"
             @click="decrementDate()"/>
-        <button 
-            :class="{'button__change-date--disabled': isLastDateSelected}" 
-            class="button__change-date button__increment-date" 
+        <button
+            :class="{'button__change-date--disabled': isLastDateSelected}"
+            class="button__change-date button__increment-date"
             @click="incrementDate()"/>
-        <datepicker 
-            v-model="date" 
-            :use-utc="true" 
-            :monday-first="true" 
-            :disabled-dates="disabledDates" 
-            :format="dateFormatter" 
+        <datepicker
+            v-model="date"
+            :use-utc="true"
+            :monday-first="true"
+            :disabled-dates="disabledDates"
+            :format="dateFormatter"
             :language="language"/>
     </div>
 </template>
@@ -168,7 +168,7 @@ export default {
 }
 
 .vdp-datepicker__calendar {
-    position: fixed;
+    position: fixed !important;
     top: 70px;
     left: 50%;
     transform: translateX(-50%);
