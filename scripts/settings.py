@@ -24,4 +24,8 @@ def get(setting):
     :param setting: string
     :return: string
     """
+    global settings
+    if settings is None:
+        load()
+
     return settings[setting]
