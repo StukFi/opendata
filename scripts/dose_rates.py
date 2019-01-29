@@ -13,14 +13,35 @@ import settings
 
 def get_data(args):
     """
+    Downloads, parses, and writes dose rate data.
+
+    :param args: program arguments
+    """
+    data = download_data(args)
+
+    logging.info("Generating GeoJSON files")
+    invalidDatasets = 0
+    for dataset in data:
+        try:
+            parsed_data = parse_data(dataset)
+        except InvalidDatasetError:
+            invalidDatasets += 1
+        else:
+            write_data(parsed_data)
+
+    if invalidDatasets > 0:
+        logging.info("{0} invalid datasets were skipped".format(invalidDatasets))
+
+def download_data(args):
+    """
     Performs a WFS request for dose rate data from the FMI open data API.
     If no timespan is provided when running the program, the function
-    fetches the dataset of the most recent measurements.
+    fetches the most recent measurements.
 
     :param args: program arguments
     :return: array of HTTPResponse objects
     """
-    dose_rate_data = []
+    data = []
 
     if args.timespan:
         start_time, end_time = validate_timespan(args.timespan)
@@ -33,7 +54,7 @@ def get_data(args):
             logging.info("Downloading dataset {0}/{1}".format(dataset_number, dataset_count))
             dataset = fmi_utils.wfs_request(t1, t2, "dose_rates")
             if dataset is not None:
-                dose_rate_data.append(dataset)
+                data.append(dataset)
             else:
                 logging.warning("Failed to download dataset {0}/{1} ({2})".format(dataset_number, dataset_count, t1))
             t1 = t2
@@ -46,12 +67,12 @@ def get_data(args):
         logging.info("Downloading dataset")
         dataset = fmi_utils.wfs_request(start_time, end_time, "dose_rates")
         if dataset is not None:
-            dose_rate_data.append(dataset)
+            data.append(dataset)
         else:
             logging.warning("Failed to download dataset")
             sys.exit(1)
 
-    return dose_rate_data
+    return data
 
 def parse_data(data):
     """
@@ -128,17 +149,16 @@ def parse_data(data):
 
     result = {
         "timestamp": timestamp,
-        "data": geojson_string
+        "geojson_string": geojson_string
     }
 
     return result
 
 def write_data(data):
     """
-    Writes the argument dose rate data into a file.
+    Writes the argument GeoJSON dose rate data into a file.
 
-    :param data: GeoJSON string of dose rate data
-    :return: path of the file that is written
+    :param data: GeoJSON string of dose rate data and a timestamp
     """
     directory = settings.get("path_dose_rates_datasets")
     filepath = (directory + "/" +
@@ -147,10 +167,8 @@ def write_data(data):
     if not os.path.exists(directory):
         os.makedirs(directory, exist_ok=True)
 
-    with open(filepath, 'w', encoding="utf-8") as fp:
-        json.dump(data["data"], fp, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
-
-    return filepath
+    with open(filepath, "w", encoding="utf-8") as fp:
+        json.dump(data["geojson_string"], fp, ensure_ascii=False, separators=(",", ":"), sort_keys=True)
 
 def validate_timespan(timespan):
     """
@@ -189,7 +207,6 @@ def get_dataset_count(start_time, end_time, measurement_interval):
         start_time += measurement_interval
 
     return dataset_count
-
 
 class InvalidDatasetError(Exception):
     """

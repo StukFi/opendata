@@ -9,7 +9,7 @@ import settings
 
 def generate_time_series(args, regenerate_all=False):
     """
-    Generate time series files from GeoJSON dataset files.
+    Generates time series files from GeoJSON dataset files.
 
     :param args: program arguments
     :param regenerate_all: indicates whether to regenerate all time series files
@@ -85,20 +85,20 @@ def get_target_dates(args):
     else:
         end_time = datetime.utcnow()
         start_time = end_time - timedelta(days=1)
-        
+
     dates = []
     dateFormat = "%Y-%m-%d"
     while start_time <= end_time:
         dates.append(start_time.strftime(dateFormat))
-        start_time += timedelta(days=1)        
-    
+        start_time += timedelta(days=1)
+
     dates.append(end_time.strftime(dateFormat))
 
     return dates
 
 def filter_source_files(source_files, target_dates):
     """
-    Filters dataset files by date. This optimizes time series generation by only 
+    Filters dataset files by date. This optimizes time series generation by only
     using files that belong to the dates for which new dataset files were fetched for.
 
     :param source_files: list of filenames to filter

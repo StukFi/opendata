@@ -12,6 +12,16 @@ sampler_geojson_template["name"] = "stuk_open_data_air_concentrations"
 
 def get_data(args):
     """
+    Downloads, parses, and writes sampler data.
+
+    :param args: program arguments
+    """
+    data = download_data(args)
+    parsed_data = parse_data(data)
+    write_data(parsed_data)
+
+def download_data(args):
+    """
     Performs a WFS request for sampler data from the FMI open data API.
     The function returns a dataset of the last ten days' measurements.
 
@@ -70,7 +80,7 @@ def parse_data(data):
         fields = member.findall( './/{%s}field' % fmi_utils.swe_ns)
         for i, field in enumerate(fields):
             name = field.attrib["name"]
-            label = field.findall( './/{%s}label' % fmi_utils.swe_ns)[0].text
+            # label = field.findall( './/{%s}label' % fmi_utils.swe_ns)[0].text
             unit = field.findall( './/{%s}uom' % fmi_utils.swe_ns)[0].attrib["code"]
 
             if "uBq" in unit:
@@ -98,10 +108,9 @@ def parse_data(data):
 
 def write_data(data):
     """
-    Writes the argument sampler data into a file.
+    Writes the argument GeoJSON sampler data into a file.
 
     :param data: GeoJSON string of sampler data
-    :return: path of the file that is written
     """
     logging.info("Writing GeoJSON file")
 
@@ -111,7 +120,5 @@ def write_data(data):
     if not os.path.exists(directory):
         os.makedirs(directory, exist_ok=True)
 
-    with open(filepath, 'w') as fp:
+    with open(filepath, "w") as fp:
         json.dump(data, fp, ensure_ascii=False, indent=4, sort_keys=True)
-
-    return filepath

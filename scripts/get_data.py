@@ -1,12 +1,12 @@
 from datetime import date
-from time_series import generate_time_series
-from metadata import update_metadata
 from requests.exceptions import ReadTimeout
 import argparse
 import logging
 import sys
 
 from fmi_utils import fmi_request_datetime_format
+from metadata import update_metadata
+from time_series import generate_time_series
 import dose_rates
 import samplers
 import settings
@@ -46,27 +46,12 @@ def get_data(args):
     :param args: program arguments
     """
     if args.data_type == "dose_rates":
-        datasets = dose_rates.get_data(args)
-        invalidDatasets = 0
-        logging.info("Generating GeoJSON files")
-        for dataset in datasets:
-            try:
-                parsed_data = dose_rates.parse_data(dataset)
-            except dose_rates.InvalidDatasetError:
-                invalidDatasets += 1
-            else:
-                dose_rates.write_data(parsed_data)
-
-        if invalidDatasets > 0:
-            logging.info("{0} invalid datasets were skipped".format(invalidDatasets))
-
+        dose_rates.get_data(args)
         update_metadata()
         generate_time_series(args)
 
     elif args.data_type == "samplers":
-        data = samplers.get_data(args)
-        parsed_data = samplers.parse_data(data)
-        samplers.write_data(parsed_data)
+        samplers.get_data(args)
 
 if __name__ == "__main__":
     args = get_program_arguments()

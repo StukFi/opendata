@@ -4,10 +4,8 @@ settings = None
 
 def load():
     """
-    Loads server settings from a configuration file.
+    Loads settings from a configuration file.
 
-    :param args: program arguments
-    :return: HTTPResponse object
     """
     global settings
     settings = json.load(open("settings.json"))

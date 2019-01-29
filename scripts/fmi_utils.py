@@ -43,9 +43,7 @@ def wfs_request(start_time, end_time, results_type):
     timeFormat = "%Y-%m-%dT%H:%M:00Z"
     t0 = start_time.strftime(timeFormat)
     t1 = end_time.strftime(timeFormat)
-
-    url = request_templates[results_type]
-    url = url.format(t0, t1)
+    url = request_templates[results_type].format(t0, t1)
     response = None
 
     try:
