@@ -28,7 +28,7 @@ def generate_time_series(args, regenerate_all=False):
 
     measurements = []
     for json_file in source_files:
-        results = json.loads(open(source_dir + "/" + json_file).read())
+        results = json.loads(open(source_dir + "/" + json_file, encoding="utf-8").read())
         features = results["features"]
         file_timestamp = datetime.strptime(json_file.split(".")[0], "%Y-%m-%dT%H%M%S")
 
