@@ -43,9 +43,16 @@ p, div, span, select, input {
     right: 15px;
 }
 
-.vdp-datepicker__calendar .cell.selected {
-    background-color: #1773B9;
+.vdp-datepicker__calendar .cell.selected,
+.vdp-datepicker__calendar .cell.selected:hover {
+    background-color: #1773B9 !important;
     color: white;
+}
+
+.vdp-datepicker__calendar .cell:not(.blank):not(.disabled).day:hover,
+.vdp-datepicker__calendar .cell:not(.blank):not(.disabled).month:hover,
+.vdp-datepicker__calendar .cell:not(.blank):not(.disabled).year:hover {
+    border: 1px solid #1773B9 !important;
 }
 
 @media only screen and (max-width: 767px) {
