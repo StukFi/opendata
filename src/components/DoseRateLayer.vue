@@ -93,7 +93,8 @@ export default {
 
             var doseRateRanges = this.$store.state.settings.doseRateRanges
             for (var i = 0; i < doseRateRanges.length; ++i) {
-                if (doseRate < doseRateRanges[i].maxValue) {
+                if (doseRate >= doseRateRanges[i].minValue &&
+                    doseRate < doseRateRanges[i].maxValue) {
                     if (doseRateRanges[i].enabled) {
                         featureColor = doseRateRanges[i].color
                         break
