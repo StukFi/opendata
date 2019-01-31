@@ -7,7 +7,6 @@ export default {
         dateFormat: "fi",
         timeFormat: "24h",
         map: {
-            // For local tiles use e.g. "tiles/{z}/{x}/{y}.png".
             tileServerUrl: "https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png",
             minZoom: 4,
             maxZoom: 10
