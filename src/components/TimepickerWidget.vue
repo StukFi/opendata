@@ -166,7 +166,8 @@ export default {
     position: absolute;
     border: none;
     background-color: #0066b3;
-    background-size: 15%;
+    background-size: 1em;
+    font-size: 16px;
     background-position: center;
     background-repeat: no-repeat;
     cursor: pointer;
