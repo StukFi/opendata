@@ -28,6 +28,7 @@ export default {
 
 <style>
 .map-legend {
+    display: flex;
     position: absolute;
     bottom: 0;
     z-index: 3;
@@ -44,9 +45,11 @@ export default {
 }
 
 .map-legend__bar {
-    display: inline-block;
     width: 20%;
     height: 100%;
+    flex-basis: auto;
+    flex-grow: 1;
+    flex-shrink: 1;
     margin: 0px auto;
     color: white;
 }
