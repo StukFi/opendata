@@ -1,6 +1,6 @@
 <template>
-    <div 
-        id="map" 
+    <div
+        id="map"
         class="map">
         <datepicker-widget/>
         <timepicker-widget/>
@@ -54,7 +54,7 @@ export default {
             layers: [
                 new TileLayer({
                     source: new OSMSource({
-                        url: this.$store.state.settings.map.tileServerUrl
+                        url: "https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     })
                 })
             ],
@@ -70,8 +70,8 @@ export default {
             view: new View({
                 center: fromLonLat([25.75, 65.75]),
                 enableRotation: false,
-                minZoom: this.$store.state.settings.map.minZoom,
-                maxZoom: this.$store.state.settings.map.maxZoom,
+                minZoom: 4,
+                maxZoom: 10,
                 zoom: 5
             })
         })

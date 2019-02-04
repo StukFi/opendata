@@ -6,17 +6,12 @@ export default {
         locale: "en",
         dateFormat: "fi",
         timeFormat: "24h",
-        map: {
-            tileServerUrl: "https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            minZoom: 4,
-            maxZoom: 10
-        },
         doseRateRanges: [
-            { minValue: 0.00, maxValue: 0.10, color: "#1dafaf", enabled: true },
-            { minValue: 0.10, maxValue: 0.20, color: "#1d8baf", enabled: true },
-            { minValue: 0.20, maxValue: 0.30, color: "#1d66af", enabled: true },
-            { minValue: 0.30, maxValue: 0.40, color: "#1d41af", enabled: true },
-            { minValue: 0.40, maxValue: Number.MAX_VALUE, color: "#411daf", enabled: true }
+            { minValue: 0.00, color: "#1dafaf", enabled: true },
+            { minValue: 0.10, color: "#1d8baf", enabled: true },
+            { minValue: 0.20, color: "#1d66af", enabled: true },
+            { minValue: 0.30, color: "#1d41af", enabled: true },
+            { minValue: 0.40, color: "#411daf", enabled: true }
         ]
     },
     mutations: {
@@ -39,6 +34,19 @@ export default {
             var doseRateRange = state.doseRateRanges[index]
             doseRateRange.enabled = !doseRateRange.enabled
             Vue.set(state.doseRateRanges, index, doseRateRange)
+        },
+        saveDoseRateRanges (state) {
+            state.doseRateRanges.forEach(element => {
+                try {
+                    element.minValue = parseFloat(element.minValue)
+                    if (element.minValue < 10) {
+                        element.minValue = element.minValue.toFixed(2)
+                    }
+                }
+                catch (TypeError) { /* Ignore. */ }
+            });
+
+            localStorage.setItem("doseRateRanges", JSON.stringify(state.doseRateRanges))
         }
     },
     actions: {
@@ -47,7 +55,15 @@ export default {
                 if (state.hasOwnProperty(property)) {
                     var settingValue = localStorage.getItem(property)
                     if (settingValue) {
-                        state[property] = settingValue
+                        try {
+                            settingValue = JSON.parse(settingValue)
+                        }
+                        catch (SyntaxError) {
+                            // Setting value was not a serialized object.
+                        }
+                        finally {
+                            state[property] = settingValue
+                        }
                     }
                 }
             }

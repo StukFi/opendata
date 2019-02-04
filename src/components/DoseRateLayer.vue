@@ -66,11 +66,14 @@ export default {
             }))
         },
         doseRateRanges: function () {
-            this.vectorLayer.changed()
+            this.redraw()
         }
     },
     mounted () {
         var that = this
+
+        this.$root.$on("redrawDoseRateLayer", this.redraw)
+
         // A generic change event is fired when a layer's source's state changes.
         // The buffer layer's source is considered 'ready' when it contains features.
         this.bufferLayer.on("change", function () {
@@ -87,14 +90,18 @@ export default {
         })
     },
     methods: {
+        redraw () {
+            this.vectorLayer.changed()
+        },
         styleFeature (feature) {
-            var featureColor = "#000"
+            var featureColor = "#0000"
             var doseRate = feature.get("doseRate")
 
             var doseRateRanges = this.$store.state.settings.doseRateRanges
             for (var i = 0; i < doseRateRanges.length; ++i) {
-                if (doseRate >= doseRateRanges[i].minValue &&
-                    doseRate < doseRateRanges[i].maxValue) {
+                var minValue = doseRateRanges[i].minValue
+                var maxValue = (doseRateRanges[i + 1]) ? doseRateRanges[i + 1].minValue : 1000000000
+                if (doseRate >= minValue && doseRate < maxValue) {
                     if (doseRateRanges[i].enabled) {
                         featureColor = doseRateRanges[i].color
                         break

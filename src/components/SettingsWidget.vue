@@ -38,6 +38,18 @@
                             <b-form-radio value="12h">{{ $t("timeFormatB") }}</b-form-radio>
                         </b-form-radio-group>
                     </b-form-group>
+                    <b-form-group
+                        :label="$t('doseRateThresholds')"
+                        class="mb-5">
+                        <b-input-group>
+                            <b-form-input
+                                v-for="(item, i) in $store.state.settings.doseRateRanges"
+                                :key="i"
+                                v-model="item.minValue"
+                                class="settings-panel__dose-rate-threshold"
+                                type="number"/>
+                        </b-input-group>
+                    </b-form-group>
                 </div>
             </div>
             <div class="row justify-content-center">
@@ -55,16 +67,20 @@
 <script>
 import bButton from "bootstrap-vue/es/components/button/button"
 import bFormGroup from "bootstrap-vue/es/components/form-group/form-group"
+import bFormInput from "bootstrap-vue/es/components/form-input/form-input"
 import bFormRadio from "bootstrap-vue/es/components/form-radio/form-radio"
 import bFormRadioGroup from "bootstrap-vue/es/components/form-radio/form-radio-group"
+import bInputGroup from "bootstrap-vue/es/components/input-group/input-group"
 
 export default {
     name: "Settings",
     components: {
         bButton,
         bFormGroup,
+        bFormInput,
         bFormRadio,
-        bFormRadioGroup
+        bFormRadioGroup,
+        bInputGroup
     },
     data: function () {
         return {
@@ -102,6 +118,9 @@ export default {
             this.isEnabled = true
         },
         disable () {
+            this.$store.commit("saveDoseRateRanges")
+            this.$root.$emit("redrawDoseRateLayer")
+
             this.isEnabled = false
         }
     }
@@ -165,6 +184,16 @@ export default {
     overflow-y: scroll;
 }
 
+.settings-panel__dose-rate-threshold {
+    text-align: center;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 @media only screen and (min-width: 768px) {
     .settings-button {
         top: 100px;
@@ -182,6 +211,7 @@ export default {
         "timeFormat": "Time notation",
         "timeFormatA": "24-hour clock",
         "timeFormatB": "12-hour clock",
+        "doseRateThresholds": "Dose rate thresholds",
         "closeButton": "Close"
     },
     "fi": {
@@ -192,6 +222,7 @@ export default {
         "timeFormat": "Ajan esitysmuoto",
         "timeFormatA": "24 tunnin kello",
         "timeFormatB": "12 tunnin kello",
+        "doseRateThresholds": "Annosnopeusrajat",
         "closeButton": "Sulje"
     }
 }
