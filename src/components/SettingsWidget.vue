@@ -43,10 +43,10 @@
                         class="mb-5">
                         <b-input-group>
                             <b-form-input
-                                class="settings-panel__dose-rate-threshold"
                                 v-for="(item, i) in $store.state.settings.doseRateRanges"
                                 :key="i"
                                 v-model="item.minValue"
+                                class="settings-panel__dose-rate-threshold"
                                 type="number"/>
                         </b-input-group>
                     </b-form-group>
@@ -119,6 +119,8 @@ export default {
         },
         disable () {
             this.$store.commit("saveDoseRateRanges")
+            this.$root.$emit("redrawDoseRateLayer")
+
             this.isEnabled = false
         }
     }
