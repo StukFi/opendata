@@ -18,9 +18,9 @@ describe("MapLegend.vue", () => {
                 settings: {
                     state: {
                         doseRateRanges: [
-                            { minValue: 0.00, maxValue: 0.10, color: "rgb(29, 175, 175)", enabled: true },
-                            { minValue: 0.10, maxValue: 0.20, color: "rgb(29, 139, 175)", enabled: true },
-                            { minValue: 0.20, maxValue: 0.30, color: "rgb(29, 102, 175)", enabled: true }
+                            { minValue: 0, color: "rgb(29, 175, 175)", enabled: true },
+                            { minValue: 0.1, color: "rgb(29, 139, 175)", enabled: true },
+                            { minValue: 0.2, color: "rgb(29, 102, 175)", enabled: true }
                         ]
                     }
                 }
@@ -46,15 +46,13 @@ describe("MapLegend.vue", () => {
     test("renders the bars with the dose rate ranges specified in settings", () => {
         bars.wrappers.forEach((bar, i) => {
             if (i < bars.wrappers.length - 1) {
-                const expectedText = ranges[i].minValue.toFixed(2) +
-                    " - " + ranges[i].maxValue.toFixed(2)
+                const expectedText = ranges[i].minValue +
+                    " - " + ranges[i + 1].minValue
 
                 expect(bar.text()).toBe(expectedText)
             }
             else {
-                const expectedText = "> " +
-                    ranges[i].minValue.toFixed(2) + " µSv/h"
-
+                const expectedText = "> " + ranges[i].minValue + " µSv/h"
                 expect(bar.text()).toBe(expectedText)
             }
         })
