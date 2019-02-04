@@ -88,13 +88,13 @@ export default {
     },
     methods: {
         styleFeature (feature) {
-            var featureColor = "#000"
+            var featureColor = "#0000"
             var doseRate = feature.get("doseRate")
 
             var doseRateRanges = this.$store.state.settings.doseRateRanges
             for (var i = 0; i < doseRateRanges.length; ++i) {
                 if (doseRate >= doseRateRanges[i].minValue &&
-                    doseRate < doseRateRanges[i].maxValue) {
+                    doseRate < doseRateRanges[i + 1].minValue) {
                     if (doseRateRanges[i].enabled) {
                         featureColor = doseRateRanges[i].color
                         break
