@@ -6,12 +6,6 @@ export default {
         locale: "en",
         dateFormat: "fi",
         timeFormat: "24h",
-        map: {
-            // tileServerUrl: "https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            tileServerUrl: "http://navetta.stuk.fi/osm_tiles/{z}/{x}/{y}.png",
-            minZoom: 4,
-            maxZoom: 10
-        },
         doseRateRanges: [
             { minValue: 0.00, color: "#1dafaf", enabled: true },
             { minValue: 0.10, color: "#1d8baf", enabled: true },
