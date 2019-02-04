@@ -188,6 +188,12 @@ export default {
     text-align: center;
 }
 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 @media only screen and (min-width: 768px) {
     .settings-button {
         top: 100px;
