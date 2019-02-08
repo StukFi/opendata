@@ -53,7 +53,7 @@
                 </div>
             </div>
             <div class="row justify-content-center">
-                <div class="col-6 pt-5">
+                <div class="col-6">
                     <b-button
                         variant="secondary"
                         class="btn-block"
