@@ -11,7 +11,7 @@ import localeFI from "plotly.js/lib/locales/fi"
 Plotly.register(localeFI)
 
 export default {
-    name: "TimeSeriesGraph",
+    name: "FeaturePopupGraph",
     props: {
         siteId: {
             default: "",
@@ -67,6 +67,9 @@ export default {
         locale: function (locale) {
             this.config.locale = locale
             this.draw()
+        },
+        siteId: function () {
+            this.drawDefaultGraph()
         }
     },
     created () {

@@ -137,15 +137,15 @@ export default {
     left: 50%;
     transform: translate(-50%);
     width: 300px;
-    height: 300px;
+    height: 282px;
     overflow: scroll;
     overflow-x: unset;
     top: 70px;
-    margin-top: 0;
+    margin: 0;
     padding: 0;
     background-color: white;
     border: 1px solid #CCC;
-    font-size: 0.8em;
+    font-size: 26px;
 }
 
 .time-list__entry {

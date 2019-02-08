@@ -53,7 +53,7 @@
                 </div>
             </div>
             <div class="row justify-content-center">
-                <div class="col-6 pt-5">
+                <div class="col-6">
                     <b-button
                         variant="secondary"
                         class="btn-block"
@@ -130,7 +130,7 @@ export default {
 <style>
 .settings-button {
     position: absolute;
-    top: 75px;
+    bottom: 40px;
     left: 15px;
     width: 45px;
     height: 45px;
