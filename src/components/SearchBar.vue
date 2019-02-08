@@ -1,5 +1,5 @@
 <template>
-    <div 
+    <div
         v-on-clickaway="onClickAway"
         class="search-bar">
         <span
@@ -63,12 +63,13 @@ export default {
         },
         showSuggestions () {
             this.displaySuggestions = true
+            this.updateSuggestions()
         },
         hideSuggestions () {
             this.displaySuggestions = false
         },
         updateSuggestions () {
-            if (!this.showSuggestions) {
+            if (!this.displaySuggestions) {
                 return
             }
 
@@ -76,7 +77,9 @@ export default {
             this.features.forEach((feature) => {
                 var site = feature.get("site")
                 if (site.toLowerCase().startsWith(this.searchTerm.toLowerCase())) {
-                    this.suggestions.push(site)
+                    if (!this.suggestions.includes(site)) {
+                        this.suggestions.push(site)
+                    }
                 }
             })
 
