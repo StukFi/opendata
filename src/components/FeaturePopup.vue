@@ -34,6 +34,7 @@ export default {
     },
     mounted: function () {
         this.$root.$on("featureClicked", this.open)
+        this.$root.$on("featureSelectedViaSearch", this.open)
         this.$root.$on("emptyMapLocationClicked", this.close)
         this.$root.$on("doseRateLayerChanged", this.update)
 
