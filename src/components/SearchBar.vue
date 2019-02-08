@@ -1,12 +1,13 @@
 <template>
-    <div class="search-bar"
-        v-on-clickaway="onClickAway">
+    <div 
+        v-on-clickaway="onClickAway"
+        class="search-bar">
         <span
             class="search-bar__icon"
             @click="search()"/>
         <input
-            v-model="searchTerm"
             ref="searchBarInput"
+            v-model="searchTerm"
             type="text"
             maxlength="28"
             spellcheck="false"
