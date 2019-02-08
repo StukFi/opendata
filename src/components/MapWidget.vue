@@ -3,14 +3,14 @@
         id="map"
         class="map">
         <datepicker-widget/>
-        <timepicker-widget/>
-        <!-- <search-bar/> -->
-        <settings-panel/>
-        <media-controls/>
-        <map-legend/>
+        <dose-rate-layer ref="doseRateLayer"/>
         <feature-popover ref="featurePopover"/>
         <feature-popup ref="featurePopup"/>
-        <dose-rate-layer ref="doseRateLayer"/>
+        <map-legend/>
+        <media-controls/>
+        <search-bar/>
+        <settings-widget/>
+        <timepicker-widget/>
     </div>
 </template>
 
@@ -22,7 +22,7 @@ import FeaturePopup from "./FeaturePopup"
 import MapLegend from "./MapLegend"
 import MediaControls from "./MediaControls"
 import SearchBar from "./SearchBar"
-import SettingsPanel from "./SettingsPanel"
+import SettingsWidget from "./SettingsWidget"
 import TimepickerWidget from "./TimepickerWidget"
 
 import ControlZoom from "ol/control/Zoom"
@@ -46,7 +46,7 @@ export default {
         MapLegend,
         MediaControls,
         SearchBar,
-        SettingsPanel,
+        SettingsWidget,
         TimepickerWidget
     },
     data: function () {
