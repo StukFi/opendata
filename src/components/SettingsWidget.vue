@@ -130,7 +130,7 @@ export default {
 <style>
 .settings-button {
     position: absolute;
-    top: 75px;
+    bottom: 40px;
     left: 15px;
     width: 45px;
     height: 45px;
