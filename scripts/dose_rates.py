@@ -118,6 +118,8 @@ def parse_data(data):
     # Construct features.
     position_lines =  wfs_response.findall('.//{%s}positions' \
                                             % fmi_utils.gmlcov_namespace)[0].text.split("\n")[1:-1]
+
+    dataset_timestamp = None
     for i, line in enumerate(position_lines):
         if math.isnan(values[i]):
             continue
@@ -125,6 +127,15 @@ def parse_data(data):
         line = line.split()
         coords = line[0] + " " + line[1]
         timestamp = datetime.utcfromtimestamp(int(line[2]))
+
+        # Some datasets contain duplicate entries for sites where the timestamp
+        # of one of the entries differs by e.g. a minute.
+        # Entries that don't match the dataset's timestamp are skipped.
+        # The dataset's timestamp is set to the timestamp of the first entry.
+        if dataset_timestamp is None:
+            dataset_timestamp = timestamp
+        elif timestamp != dataset_timestamp:
+            continue
 
         feature = {
             "type": "Feature",
@@ -148,7 +159,7 @@ def parse_data(data):
         geojson_string["features"].append(feature)
 
     result = {
-        "timestamp": timestamp,
+        "timestamp": dataset_timestamp,
         "geojson_string": geojson_string
     }
 
