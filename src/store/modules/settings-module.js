@@ -1,6 +1,18 @@
 import Vue from "vue"
 import { i18n } from "../../main.js"
 
+function formatDoseRateRanges (doseRateRanges) {
+    doseRateRanges.forEach((range) => {
+        try {
+            range.minValue = parseFloat(range.minValue)
+            if (range.minValue < 10) {
+                range.minValue = range.minValue.toFixed(2)
+            }
+        }
+        catch (TypeError) { /* Ignore. */ }
+    });
+}
+
 export default {
     state: {
         locale: "en",
@@ -36,16 +48,7 @@ export default {
             Vue.set(state.doseRateRanges, index, doseRateRange)
         },
         saveDoseRateRanges (state) {
-            state.doseRateRanges.forEach(element => {
-                try {
-                    element.minValue = parseFloat(element.minValue)
-                    if (element.minValue < 10) {
-                        element.minValue = element.minValue.toFixed(2)
-                    }
-                }
-                catch (TypeError) { /* Ignore. */ }
-            });
-
+            formatDoseRateRanges(state.doseRateRanges)
             localStorage.setItem("doseRateRanges", JSON.stringify(state.doseRateRanges))
         }
     },
@@ -68,6 +71,7 @@ export default {
                 }
             }
 
+            formatDoseRateRanges(state.doseRateRanges)
             i18n.locale = state.locale
         }
     }
