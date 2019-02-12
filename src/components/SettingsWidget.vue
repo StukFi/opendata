@@ -194,6 +194,10 @@ input[type=number]::-webkit-outer-spin-button {
   margin: 0;
 }
 
+input[type=number] {
+    -moz-appearance:textfield;
+}
+
 @media only screen and (min-width: 768px) {
     .settings-button {
         top: 100px;
