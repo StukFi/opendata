@@ -7,11 +7,12 @@
             @click="search()"/>
         <input
             ref="searchBarInput"
-            v-model="searchTerm"
+            :value="searchTerm"
             type="text"
             maxlength="28"
             spellcheck="false"
             class="search-bar__input"
+            @input="searchTerm = $event.target.value"
             @click="showSuggestions()"
             @focus="showSuggestions()"
             @keyup.enter="search()">
