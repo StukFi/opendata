@@ -72,6 +72,8 @@ export default {
             }
 
             formatDoseRateRanges(state.doseRateRanges)
+            state.doseRateRanges.forEach((range) => { range.enabled = true })
+
             i18n.locale = state.locale
         }
     }
