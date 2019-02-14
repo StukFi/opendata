@@ -59,9 +59,6 @@ describe("MediaControls.vue", () => {
         expect(store.dispatch).toHaveBeenCalledWith("incrementDate")
     })
 
-    xtest("stops playback on last date or time", () => {
-    })
-
     test("toggles playback mode between date and time", () => {
         const button = wrapper.find(".media-controls__button-datetime")
         wrapper.vm.playbackMode = "time"
