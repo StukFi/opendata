@@ -19,7 +19,8 @@ export default {
                     format: this.featureFormat
                 }),
                 style: this.styleFeature,
-                renderOrder: this.orderFeatures
+                renderOrder: this.orderFeatures,
+                renderMode: "image"
             }),
             // A buffer layer is used to load in new datasets. Features from the buffer
             // layer are added to the visible vector layer. Features are not loaded into
