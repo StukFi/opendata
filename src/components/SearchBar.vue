@@ -1,6 +1,6 @@
 <template>
     <div
-        v-on-clickaway="onClickAway"
+        v-on-clickaway="blur"
         class="search-bar">
         <span
             class="search-bar__icon"
@@ -55,16 +55,13 @@ export default {
             this.features = layer.getSource().getFeatures()
             this.updateSuggestions()
         },
-        onClickAway () {
-            this.hideSuggestions()
-            this.blurInput()
-        },
-        blurInput () {
+        blur () {
             this.$refs.searchBarInput.blur()
+            this.hideSuggestions()
         },
         showSuggestions () {
-            this.displaySuggestions = true
             this.updateSuggestions()
+            this.displaySuggestions = true
         },
         hideSuggestions () {
             this.displaySuggestions = false
@@ -97,8 +94,7 @@ export default {
                 var site = this.features[i].get("site")
                 if (site.toLowerCase() == this.searchTerm.toLowerCase()) {
                     this.searchTerm = site
-                    this.blurInput()
-                    this.hideSuggestions()
+                    this.blur()
                     this.$root.$emit("featureSelectedViaSearch", this.features[i])
                     return
                 }
