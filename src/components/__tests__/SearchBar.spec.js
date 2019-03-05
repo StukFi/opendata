@@ -1,4 +1,4 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils"
+import { shallowMount, createLocalVue, createWrapper } from "@vue/test-utils"
 import SearchBar from "components/SearchBar.vue"
 
 const localVue = createLocalVue()
@@ -43,5 +43,17 @@ describe("SearchBar.vue", () => {
         expect(suggestions.element.style.display).toBe("none")
         searchBarInput.trigger("click")
         expect(suggestions.element.style.display).not.toBe("none")
+    })
+
+    test("emits a featureSelectedViaSearch event on a successful search", () => {
+        const rootWrapper = createWrapper(wrapper.vm.$root)
+        wrapper.vm.searchTerm = "Helsinki"
+        wrapper.vm.features.push({
+            get: jest.fn(() => { return "Helsinki" })
+        })
+
+        wrapper.vm.search()
+
+        expect(rootWrapper.emitted("featureSelectedViaSearch")).toHaveLength(1)
     })
 })
