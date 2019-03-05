@@ -1,5 +1,4 @@
 from datetime import date
-from requests.exceptions import ReadTimeout
 import argparse
 import logging
 import sys

@@ -51,7 +51,7 @@ The application by default gets its map tiles from OpenStreetMap's public server
 
 ## Getting data
 
-The application does not contain any data by default. Python scripts for fetching and processing data are in the "scripts" directory. Install all Python dependencies before running the scripts.
+The application does not contain any data by default. Python scripts for fetching and processing data are in the "scripts" directory.
 
 Create a copy of the file "settings.example.json" in the "scripts" directory and rename it "settings.json". Change the value of the "data_directory" key to the path of the directory where you want data to be stored. The name of the directory must be "data". For example: "/var/www/html/opendata/data". Note that the path does not end in a forward slash. The data directory should be located next to the "index.html" file at the root of the opendata web hosting directory. You can alternatively create a symlink that points to another location.
 
@@ -69,7 +69,6 @@ See the file "package.json" for a list of JavaScript dependencies.
 
 npm (included with Node.js)<br>
 Python 3<br>
-[Requests](https://github.com/requests/requests) Python library
 
 ## Links
 

@@ -1,5 +1,4 @@
-from requests.exceptions import RequestException
-from urllib.error import HTTPError
+from urllib.error import URLError
 from urllib.request import urlopen
 import socket
 import time
@@ -48,7 +47,7 @@ def wfs_request(start_time, end_time, results_type):
 
     try:
         response = urlopen(url, timeout=3)
-    except (RequestException, HTTPError, ConnectionError, socket.timeout):
+    except (URLError, ConnectionError, socket.timeout):
         pass
 
     return response
