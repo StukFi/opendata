@@ -10,7 +10,7 @@ describe("FeaturePopover.vue", () => {
         wrapper = shallowMount(FeaturePopover, { localVue })
     })
 
-    test("opens if a feature is hovered", () => {
+    test("opens when a map feature is hovered", () => {
         wrapper.vm.overlay.setPosition(undefined)
         wrapper.vm.getSiteData = jest.fn()
 
@@ -23,7 +23,7 @@ describe("FeaturePopover.vue", () => {
         expect(wrapper.vm.overlay.getPosition()).not.toEqual(undefined)
     })
 
-    test("closes if an empty map location is hovered", () => {
+    test("closes when an empty map location is hovered", () => {
         wrapper.vm.overlay.setPosition([0, 0])
 
         wrapper.vm.$root.$emit("emptyMapLocationHovered")
