@@ -9,6 +9,6 @@ module.exports = {
         "^.+\\.vue$": "vue-jest"
     },
     "transformIgnorePatterns": [
-        "node_modules/(?!(ol)/)"
+        "node_modules/(?!(ol|vuejs-datepicker)/)"
     ]
 }
