@@ -53,7 +53,9 @@ export default {
     methods: {
         onDoseRateLayerChanged (layer) {
             this.features = layer.getSource().getFeatures()
-            this.updateSuggestions()
+            if (this.displaySuggestions) {
+                this.updateSuggestions()
+            }
         },
         blur () {
             this.$refs.searchBarInput.blur()
@@ -67,10 +69,6 @@ export default {
             this.displaySuggestions = false
         },
         updateSuggestions () {
-            if (!this.displaySuggestions) {
-                return
-            }
-
             this.suggestions = []
             this.features.forEach((feature) => {
                 var site = feature.get("site")

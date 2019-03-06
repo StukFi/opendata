@@ -31,6 +31,7 @@ describe("SearchBar.vue", () => {
 
     test("displays suggestions when the input field is focused or clicked", () => {
         wrapper.vm.suggestions.push("test")
+        wrapper.vm.updateSuggestions = jest.fn()
         const searchBarInput = wrapper.find(".search-bar__input")
         const suggestions = wrapper.find(".search-bar__suggestions")
 
