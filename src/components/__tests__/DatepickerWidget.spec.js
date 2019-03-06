@@ -46,6 +46,5 @@ describe("DatepickerWidget.vue", () => {
         button.trigger("click")
 
         expect(store.dispatch).toHaveBeenCalledWith("decrementDate")
-
     })
 })
