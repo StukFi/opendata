@@ -73,7 +73,7 @@ export default {
     mounted () {
         var that = this
 
-        this.$root.$on("redrawDoseRateLayer", this.redraw)
+        this.$root.$on("settingsChanged", this.redraw)
 
         // A generic change event is fired when a layer's source's state changes.
         // The buffer layer's source is considered 'ready' when it contains features.

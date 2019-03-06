@@ -119,7 +119,7 @@ export default {
         },
         disable () {
             this.$store.commit("saveDoseRateRanges")
-            this.$root.$emit("redrawDoseRateLayer")
+            this.$root.$emit("settingsChanged")
 
             this.isEnabled = false
         }
