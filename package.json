@@ -17,27 +17,27 @@
     "test:unit:debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --no-cache --runInBand"
   },
   "dependencies": {
-    "bootstrap-vue": "^2.0.0-rc.11",
-    "ol": "^5.3.0",
-    "plotly.js": "^1.44.3",
-    "vue": "^2.6.5",
+    "bootstrap-vue": "^2.0.0-rc.13",
+    "ol": "^5.3.1",
+    "plotly.js": "^1.45.1",
+    "vue": "^2.6.8",
     "vue-clickaway": "^2.2.2",
-    "vue-i18n": "^8.8.1",
+    "vue-i18n": "^8.8.2",
     "vue-resource": "^1.5.1",
     "vuejs-datepicker": "^1.5.4",
     "vuex": "^3.1.0"
   },
   "devDependencies": {
     "@kazupon/vue-i18n-loader": "^0.3.0",
-    "@vue/cli-plugin-babel": "^3.4.0",
-    "@vue/cli-plugin-eslint": "^3.4.0",
-    "@vue/cli-service": "^3.4.0",
+    "@vue/cli-plugin-babel": "^3.4.1",
+    "@vue/cli-plugin-eslint": "^3.4.1",
+    "@vue/cli-service": "^3.4.1",
     "@vue/test-utils": "^1.0.0-beta.29",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^24.1.0",
     "jest": "^24.1.0",
-    "vue-cli-plugin-i18n": "^0.5.1",
-    "vue-jest": "^3.0.3",
-    "vue-template-compiler": "^2.6.5"
+    "vue-cli-plugin-i18n": "^0.5.2",
+    "vue-jest": "^3.0.4",
+    "vue-template-compiler": "^2.6.8"
   }
 }
