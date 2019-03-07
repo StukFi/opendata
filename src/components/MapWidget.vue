@@ -84,7 +84,7 @@ export default {
 
         this.map.on("click", this.onMapInteraction)
         this.map.on("pointermove", this.onMapInteraction)
-        this.$root.$on("centerViewOnFeaturePopup", this.onCenterViewOnFeaturePopup)
+        this.$root.$on("featurePopupOpened", this.centerViewOnFeaturePopup)
 
         this.map.addOverlay(this.$refs.featurePopover.overlay)
         this.map.addOverlay(this.$refs.featurePopup.overlay)
@@ -112,7 +112,7 @@ export default {
                 }
             }
         },
-        onCenterViewOnFeaturePopup (feature) {
+        centerViewOnFeaturePopup (feature) {
             var featureCoordinates = feature.getGeometry().getCoordinates()
             var featurePixel = this.map.getPixelFromCoordinate(featureCoordinates)
 

@@ -47,8 +47,7 @@ export default {
         open (feature) {
             this.getSiteData(feature)
             this.overlay.setPosition(feature.getGeometry().getCoordinates())
-            this.$root.$emit("featurePopupOpened")
-            this.$root.$emit("centerViewOnFeaturePopup", feature)
+            this.$root.$emit("featurePopupOpened", feature)
         },
         close () {
             this.overlay.setPosition(undefined)
