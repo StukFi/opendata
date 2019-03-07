@@ -1,5 +1,7 @@
 <template>
-    <div class="timepicker-container">
+    <div
+        v-on-clickaway="closeTimeList"
+        class="timepicker-container">
         <button
             :class="{'button__change-time--disabled': isFirstTimeSelected}"
             class="button__change-time button__decrement-time"
@@ -25,10 +27,12 @@
 </template>
 
 <script>
+import { mixin as clickaway } from "vue-clickaway"
 import dateUtils from "../utils/date"
 
 export default {
     name: "TimepickerWidget",
+    mixins: [ clickaway ],
     data: function () {
         return {
             isTimeListOpen: false
@@ -52,17 +56,6 @@ export default {
         isLastTimeSelected () {
             return this.$store.getters.isLastTimeSelected
         }
-    },
-    mounted () {
-        var that = this
-
-        // Clicking outside the timelist should close it.
-        window.addEventListener("click", function (e) {
-            if (e.target.className != "time-list__entry" &&
-                e.target.className != "timepicker") {
-                that.closeTimeList()
-            }
-        })
     },
     methods: {
         closeTimeList () {
