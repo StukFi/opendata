@@ -1,7 +1,6 @@
 <template>
     <div
-        id="map"
-        class="map">
+        id="map">
         <datepicker-widget/>
         <dose-rate-layer ref="doseRateLayer"/>
         <feature-popover ref="featurePopover"/>
@@ -132,7 +131,7 @@ export default {
 </script>
 
 <style>
-.map {
+#map {
     position: relative;
     width: 100%;
     height: 100%;
