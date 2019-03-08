@@ -156,6 +156,7 @@ export default {
     background-position: center;
     background-color: rgba(0, 50, 136, 0.5);
     background-size: 50%;
+    cursor: pointer;
 }
 
 .settings-button__icon:hover {

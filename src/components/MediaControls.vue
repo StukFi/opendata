@@ -108,6 +108,7 @@ export default {
     background-position: center;
     background-size: 1em;
     background-color: rgba(0, 60, 136, 0.5);
+    cursor: pointer;
 }
 
 .media-controls__button:hover {
