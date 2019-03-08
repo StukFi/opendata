@@ -70,15 +70,6 @@ describe("FeaturePopup.vue", () => {
         expect(rootWrapper.emitted("featurePopupOpened")).toHaveLength(1)
     })
 
-    test("emits centerViewOnFeaturePopup event when opened", () => {
-        wrapper.vm.getSiteData = jest.fn()
-        const rootWrapper = createWrapper(wrapper.vm.$root)
-
-        wrapper.vm.open(mockMapFeature)
-
-        expect(rootWrapper.emitted("centerViewOnFeaturePopup")).toHaveLength(1)
-    })
-
     test("emits featurePopupClosed event when closed", () => {
         const rootWrapper = createWrapper(wrapper.vm.$root)
 
