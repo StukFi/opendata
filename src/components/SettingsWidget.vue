@@ -6,11 +6,11 @@
             <span class="settings-button__icon"/>
         </div>
         <div
-            v-if="isEnabled"
+            v-show="isEnabled"
             class="settings-panel__background"
             @click="disable()"/>
         <div
-            v-if="isEnabled"
+            v-show="isEnabled"
             class="settings-panel container p-5">
             <div class="row">
                 <div class="col">
@@ -56,7 +56,7 @@
                 <div class="col-6">
                     <b-button
                         variant="secondary"
-                        class="btn-block"
+                        class="settings-panel__close-button btn-block"
                         @click="disable()">{{ $t("closeButton") }}</b-button>
                 </div>
             </div>
@@ -118,10 +118,10 @@ export default {
             this.isEnabled = true
         },
         disable () {
+            this.isEnabled = false
+
             this.$store.commit("saveDoseRateRanges")
             this.$root.$emit("settingsChanged")
-
-            this.isEnabled = false
         }
     }
 }
