@@ -63,18 +63,4 @@ describe("SettingsWidget.vue", () => {
         expect(background.element.style.display).toBe("none")
         expect(panel.element.style.display).toBe("none")
     })
-
-    xit("closes the settings panel when the close button is clicked", () => {
-        const panel = wrapper.find(".settings-panel")
-        const button = wrapper.find(".settings-panel__close-button")
-        wrapper.vm.enable()
-        expect(panel.element.style.display).not.toBe("none")
-
-        // Neither of these work for some reason. Something to
-        // do with bootstrap-vue?
-        button.element.click()
-        button.trigger("click")
-
-        expect(panel.element.style.display).toBe("none")
-    })
 })
