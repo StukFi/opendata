@@ -15,7 +15,8 @@ node_modules
 *.pyc
 
 # vscode
-.vscode
+.vscode/*
+!.vscode/launch.json
 
 # vim
 *.swp
