@@ -13,10 +13,10 @@ wfs_ns = "http://www.opengis.net/wfs/2.0"
 fmi_request_datetime_format = "YYYY-MM-DDThh:mm:ss"
 
 request_templates = {
-    "dose_rates": ("http://opendata.fmi.fi/wfs/eng?"
+    "dose_rates": ("https://opendata.fmi.fi/wfs/eng?"
                     "request=GetFeature&storedquery_id=stuk::observations::"
                     "external-radiation::multipointcoverage&starttime={}&endtime={}"),
-    "samplers": ("http://opendata.fmi.fi/wfs/eng?"
+    "samplers": ("https://opendata.fmi.fi/wfs/eng?"
                     "request=GetFeature&storedquery_id=stuk::observations"
                     "::air::radionuclide-activity-concentration::"
                     "multipointcoverage&starttime={}&endtime={}")
