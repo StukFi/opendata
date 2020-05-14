@@ -114,6 +114,10 @@ def parse_data(data):
     for line in value_lines:
         value = float(line.strip().split()[0])
         values.append(value)
+    
+    # check if all values are NaNs
+    if all ( math.isnan(value) for value in values ):
+        raise InvalidDatasetError("Dataset values are all NaN")
 
     # Construct features.
     position_lines =  wfs_response.findall('.//{%s}positions' \
