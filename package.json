@@ -13,8 +13,7 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "test": "npm run test:unit",
-    "test:unit": "jest --no-cache",
-    "test:unit:debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --no-cache --runInBand"
+    "test:unit": "jest --no-cache"
   },
   "dependencies": {
     "bootstrap-vue": "^2.14.0",
