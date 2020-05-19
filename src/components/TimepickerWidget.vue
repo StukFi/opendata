@@ -1,27 +1,37 @@
 <template>
     <div
         v-on-clickaway="closeTimeList"
-        class="timepicker-container">
+        class="timepicker-container"
+    >
         <button
             :class="{'button__change-time--disabled': isFirstTimeSelected}"
             class="button__change-time button__decrement-time"
-            @click="decrementTime()"/>
+            @click="decrementTime()"
+        />
         <button
             :class="{'button__change-time--disabled': isLastTimeSelected}"
             class="button__change-time button__increment-time"
-            @click="incrementTime()"/>
+            @click="incrementTime()"
+        />
         <div
             class="timepicker"
-            @click="toggleTimeList">{{ formatTime(time, true) }}</div>
+            @click="toggleTimeList"
+        >
+            {{ formatTime(time, true) }}
+        </div>
         <ul
             v-show="isTimeListOpen"
-            class="time-list">
+            class="time-list"
+        >
             <li
                 v-for="(timeEntry, index) in validTimesForCurrentDate.slice().reverse()"
-                :class="{'time-list__entry--selected': timeEntry == time}"
                 :key="index"
+                :class="{'time-list__entry--selected': timeEntry == time}"
                 class="time-list__entry"
-                @click="setTime(timeEntry), toggleTimeList()">{{ formatTime(timeEntry) }}</li>
+                @click="setTime(timeEntry), toggleTimeList()"
+            >
+                {{ formatTime(timeEntry) }}
+            </li>
         </ul>
     </div>
 </template>

@@ -3,18 +3,21 @@
         <button
             :class="{'button__change-date--disabled': isFirstDateSelected}"
             class="button__change-date button__decrement-date"
-            @click="decrementDate()"/>
+            @click="decrementDate()"
+        />
         <button
             :class="{'button__change-date--disabled': isLastDateSelected}"
             class="button__change-date button__increment-date"
-            @click="incrementDate()"/>
+            @click="incrementDate()"
+        />
         <datepicker
             v-model="date"
             :use-utc="true"
             :monday-first="true"
             :disabled-dates="disabledDates"
             :format="dateFormatter"
-            :language="language"/>
+            :language="language"
+        />
     </div>
 </template>
 

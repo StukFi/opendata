@@ -1,4 +1,5 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils"
+import Vue from "vue"
 import Vuex from "vuex"
 import MapLegend from "components/MapLegend.vue"
 
@@ -58,12 +59,13 @@ describe("MapLegend.vue", () => {
         })
     })
 
-    test("changes the style of disabled bars", () => {
+    test("changes the style of disabled bars", async () => {
         const style = "map-legend__bar--disabled"
         expect(bars.wrappers[0].classes()).not.toContain(style)
 
         ranges[0].enabled = false
 
+        await Vue.nextTick()
         expect(bars.wrappers[0].classes()).toContain(style)
     })
 

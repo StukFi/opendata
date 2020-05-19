@@ -1,8 +1,11 @@
 <template>
     <div
         ref="featurePopover"
-        class="feature-popover" >
-        <p class="feature-popover__site">{{ site }}</p>
+        class="feature-popover"
+    >
+        <p class="feature-popover__site">
+            {{ site }}
+        </p>
         <div class="feature-popover__dose-rate">
             <span class="feature-popover__dose-rate-value">{{ doseRate }}<span class="feature-popover__dose-rate-unit"> &#181;sv/h</span></span>
         </div>

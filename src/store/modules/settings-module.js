@@ -55,7 +55,7 @@ export default {
     actions: {
         initialize ({ state }) {
             for (var property in state) {
-                if (state.hasOwnProperty(property)) {
+                if (Object.hasOwnProperty.call(state, property)) {
                     var settingValue = localStorage.getItem(property)
                     if (settingValue) {
                         try {

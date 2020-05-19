@@ -1,4 +1,5 @@
 import { shallowMount, createLocalVue, createWrapper } from "@vue/test-utils"
+import Vue from "vue"
 import FeaturePopup from "components/FeaturePopup.vue"
 
 const localVue = createLocalVue()
@@ -50,13 +51,14 @@ describe("FeaturePopup.vue", () => {
         expect(wrapper.vm.overlay.getPosition()).toEqual(undefined)
     })
 
-    test("renders a site's name and dose rate", () => {
+    test("renders a site's name and dose rate", async () => {
         wrapper.vm.site = "test"
         wrapper.vm.doseRate = "1.0"
 
         var site = wrapper.find(".feature-popup__site")
         var doseRate = wrapper.find(".feature-popup__dose-rate-value")
 
+        await Vue.nextTick()
         expect(site.text()).toContain(wrapper.vm.site)
         expect(doseRate.text()).toContain(wrapper.vm.doseRate)
     })

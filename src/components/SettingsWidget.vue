@@ -2,52 +2,72 @@
     <div class="settings">
         <div
             class="settings-button"
-            @click="enable()">
-            <span class="settings-button__icon"/>
+            @click="enable()"
+        >
+            <span class="settings-button__icon" />
         </div>
         <div
             v-show="isEnabled"
             class="settings-panel__background"
-            @click="disable()"/>
+            @click="disable()"
+        />
         <div
             v-show="isEnabled"
-            class="settings-panel container p-5">
+            class="settings-panel container p-5"
+        >
             <div class="row">
                 <div class="col">
                     <b-form-group
                         :label="$t('language')"
-                        class="mb-5">
+                        class="mb-5"
+                    >
                         <b-form-radio-group v-model="locale">
-                            <b-form-radio value="fi">FI</b-form-radio>
-                            <b-form-radio value="en">EN</b-form-radio>
+                            <b-form-radio value="fi">
+                                FI
+                            </b-form-radio>
+                            <b-form-radio value="en">
+                                EN
+                            </b-form-radio>
                         </b-form-radio-group>
                     </b-form-group>
                     <b-form-group
                         :label="$t('dateFormat')"
-                        class="mb-5">
+                        class="mb-5"
+                    >
                         <b-form-radio-group v-model="dateFormat">
-                            <b-form-radio value="fi">{{ $t("dateFormatA") }}</b-form-radio>
-                            <b-form-radio value="iso">{{ $t("dateFormatB") }}</b-form-radio>
+                            <b-form-radio value="fi">
+                                {{ $t("dateFormatA") }}
+                            </b-form-radio>
+                            <b-form-radio value="iso">
+                                {{ $t("dateFormatB") }}
+                            </b-form-radio>
                         </b-form-radio-group>
                     </b-form-group>
                     <b-form-group
                         :label="$t('timeFormat')"
-                        class="mb-5">
+                        class="mb-5"
+                    >
                         <b-form-radio-group v-model="timeFormat">
-                            <b-form-radio value="24h">{{ $t("timeFormatA") }}</b-form-radio>
-                            <b-form-radio value="12h">{{ $t("timeFormatB") }}</b-form-radio>
+                            <b-form-radio value="24h">
+                                {{ $t("timeFormatA") }}
+                            </b-form-radio>
+                            <b-form-radio value="12h">
+                                {{ $t("timeFormatB") }}
+                            </b-form-radio>
                         </b-form-radio-group>
                     </b-form-group>
                     <b-form-group
                         :label="$t('doseRateThresholds')"
-                        class="mb-5">
+                        class="mb-5"
+                    >
                         <b-input-group>
                             <b-form-input
                                 v-for="(item, i) in $store.state.settings.doseRateRanges"
                                 :key="i"
                                 v-model="item.minValue"
                                 class="settings-panel__dose-rate-threshold"
-                                type="number"/>
+                                type="number"
+                            />
                         </b-input-group>
                     </b-form-group>
                 </div>
@@ -57,7 +77,10 @@
                     <b-button
                         variant="secondary"
                         class="settings-panel__close-button btn-block"
-                        @click="disable()">{{ $t("closeButton") }}</b-button>
+                        @click="disable()"
+                    >
+                        {{ $t("closeButton") }}
+                    </b-button>
                 </div>
             </div>
         </div>
@@ -65,22 +88,22 @@
 </template>
 
 <script>
-import bButton from "bootstrap-vue/es/components/button/button"
-import bFormGroup from "bootstrap-vue/es/components/form-group/form-group"
-import bFormInput from "bootstrap-vue/es/components/form-input/form-input"
-import bFormRadio from "bootstrap-vue/es/components/form-radio/form-radio"
-import bFormRadioGroup from "bootstrap-vue/es/components/form-radio/form-radio-group"
-import bInputGroup from "bootstrap-vue/es/components/input-group/input-group"
+import { BButton } from "bootstrap-vue"
+import { BFormGroup } from "bootstrap-vue"
+import { BFormInput } from "bootstrap-vue"
+import { BFormRadio } from "bootstrap-vue"
+import { BFormRadioGroup } from "bootstrap-vue"
+import { BInputGroup } from "bootstrap-vue"
 
 export default {
     name: "Settings",
     components: {
-        bButton,
-        bFormGroup,
-        bFormInput,
-        bFormRadio,
-        bFormRadioGroup,
-        bInputGroup
+        BButton,
+        BFormGroup,
+        BFormInput,
+        BFormRadio,
+        BFormRadioGroup,
+        BInputGroup
     },
     data: function () {
         return {

@@ -1,10 +1,12 @@
 <template>
     <div
         v-on-clickaway="blur"
-        class="search-bar">
+        class="search-bar"
+    >
         <span
             class="search-bar__icon"
-            @click="search()"/>
+            @click="search()"
+        />
         <input
             ref="searchBarInput"
             :value="searchTerm"
@@ -15,15 +17,20 @@
             @input="searchTerm = $event.target.value"
             @click="showSuggestions()"
             @focus="showSuggestions()"
-            @keyup.enter="search()">
+            @keyup.enter="search()"
+        >
         <div
             v-show="displaySuggestions && suggestions.length != 0"
-            class="search-bar__suggestions">
+            class="search-bar__suggestions"
+        >
             <p
                 v-for="suggestion in suggestions"
                 :key="suggestion"
                 class="search-bar__suggestions-item"
-                @click="searchTerm = suggestion, search()">{{ suggestion }}</p>
+                @click="searchTerm = suggestion, search()"
+            >
+                {{ suggestion }}
+            </p>
         </div>
     </div>
 </template>

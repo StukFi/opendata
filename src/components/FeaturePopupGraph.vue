@@ -1,5 +1,5 @@
 <template>
-    <div ref="graphContainer"/>
+    <div ref="graphContainer" />
 </template>
 
 <script>

@@ -1,4 +1,5 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils"
+import Vue from "vue"
 import Vuex from "vuex"
 import MediaControls from "components/MediaControls.vue"
 
@@ -83,24 +84,27 @@ describe("MediaControls.vue", () => {
         expect(wrapper.vm.playbackSpeed).toBe(playbackSpeeds[0])
     })
 
-    test("displays a date or time icon based on playback mode", () => {
+    test("displays a date or time icon based on playback mode", async () => {
         const button = wrapper.find(".media-controls__button-datetime")
         wrapper.vm.playbackMode = "time"
 
-        button.trigger("click")
+        await button.trigger("click")
         expect(button.classes()).toContain("media-controls__button-date")
-        button.trigger("click")
+        await button.trigger("click")
         expect(button.classes()).toContain("media-controls__button-time")
     })
 
-    test("displays playback speed in seconds using a filter", () => {
+    test("displays playback speed in seconds using a filter", async () => {
         const button = wrapper.find(".media-controls__button-speed")
 
         wrapper.vm.playbackSpeed = 500
+        await Vue.nextTick()
         expect(button.text()).toBe("0.5 s")
         wrapper.vm.playbackSpeed = 1000
+        await Vue.nextTick()
         expect(button.text()).toBe("1 s")
         wrapper.vm.playbackSpeed = 1500
+        await Vue.nextTick()
         expect(button.text()).toBe("1.5 s")
     })
 })

@@ -1,4 +1,5 @@
 import { shallowMount, createLocalVue, createWrapper } from "@vue/test-utils"
+import Vue from "vue"
 import SearchBar from "components/SearchBar.vue"
 
 const localVue = createLocalVue()
@@ -19,9 +20,10 @@ describe("SearchBar.vue", () => {
         expect(wrapper.vm.search).toHaveBeenCalledTimes(1)
     })
 
-    test("performs a search when a suggestion is clicked", () => {
+    test("performs a search when a suggestion is clicked", async () => {
         wrapper.vm.search = jest.fn()
         wrapper.vm.suggestions.push("test")
+        await Vue.nextTick()
         const suggestion = wrapper.find(".search-bar__suggestions-item")
 
         suggestion.trigger("click")
@@ -29,7 +31,7 @@ describe("SearchBar.vue", () => {
         expect(wrapper.vm.search).toHaveBeenCalledTimes(1)
     })
 
-    test("displays suggestions when the input field is focused or clicked", () => {
+    test("displays suggestions when the input field is focused or clicked", async () => {
         wrapper.vm.suggestions.push("test")
         wrapper.vm.updateSuggestions = jest.fn()
         const searchBarInput = wrapper.find(".search-bar__input")
@@ -38,12 +40,14 @@ describe("SearchBar.vue", () => {
         wrapper.vm.displaySuggestions = false
         expect(suggestions.element.style.display).toBe("none")
         searchBarInput.element.focus()
-        expect(suggestions.element.style.display).not.toBe("none")
+        await Vue.nextTick()
+        expect(suggestions.element).toBeVisible()
 
         wrapper.vm.displaySuggestions = false
-        expect(suggestions.element.style.display).toBe("none")
-        searchBarInput.trigger("click")
-        expect(suggestions.element.style.display).not.toBe("none")
+        await Vue.nextTick()
+        expect(suggestions.element).not.toBeVisible()
+        await searchBarInput.trigger("click")
+        expect(suggestions.element).toBeVisible()
     })
 
     test("emits a featureSelectedViaSearch event on a successful search", () => {

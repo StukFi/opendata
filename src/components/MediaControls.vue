@@ -3,14 +3,17 @@
         <span
             :class="{'media-controls__button-time': playbackMode == 'time', 'media-controls__button-date': playbackMode == 'date'}"
             class="media-controls__button media-controls__button-datetime"
-            @click="toggleMode()"/>
+            @click="toggleMode()"
+        />
         <span
             :class="{'media-controls__button-play': !playbackEnabled, 'media-controls__button-pause': playbackEnabled}"
             class="media-controls__button media-controls__button-playback"
-            @click="togglePlayback()"/>
+            @click="togglePlayback()"
+        />
         <span
             class="media-controls__button media-controls__button-speed"
-            @click="toggleSpeed()">{{ playbackSpeed | formatSpeed }}</span>
+            @click="toggleSpeed()"
+        >{{ playbackSpeed | formatSpeed }}</span>
     </div>
 </template>
 

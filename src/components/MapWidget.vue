@@ -1,15 +1,16 @@
 <template>
     <div
-        id="map">
-        <datepicker-widget/>
-        <dose-rate-layer ref="doseRateLayer"/>
-        <feature-popover ref="featurePopover"/>
-        <feature-popup ref="featurePopup"/>
-        <map-legend/>
-        <media-controls/>
-        <search-bar/>
-        <settings-widget/>
-        <timepicker-widget/>
+        id="map"
+    >
+        <datepicker-widget />
+        <dose-rate-layer ref="doseRateLayer" />
+        <feature-popover ref="featurePopover" />
+        <feature-popup ref="featurePopup" />
+        <map-legend />
+        <media-controls />
+        <search-bar />
+        <settings-widget />
+        <timepicker-widget />
     </div>
 </template>
 

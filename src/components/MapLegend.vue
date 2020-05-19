@@ -6,7 +6,10 @@
             :style="{backgroundColor: item.color}"
             :class="{'map-legend__bar--disabled': !item.enabled}"
             class="map-legend__bar"
-            @click="toggleDoseRateRange(i)">{{ (i == doseRateRanges.length - 1) ? "&gt; " + item.minValue + " &#181;Sv/h" : item.minValue + " - " + doseRateRanges[i + 1].minValue }}</div>
+            @click="toggleDoseRateRange(i)"
+        >
+            {{ (i == doseRateRanges.length - 1) ? "&gt; " + item.minValue + " &#181;Sv/h" : item.minValue + " - " + doseRateRanges[i + 1].minValue }}
+        </div>
     </div>
 </template>
 

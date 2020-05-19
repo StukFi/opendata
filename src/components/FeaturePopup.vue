@@ -1,17 +1,21 @@
 <template>
     <div
         ref="featurePopup"
-        class="feature-popup" >
+        class="feature-popup"
+    >
         <a
             ref="featurePopupCloser"
             href="#"
             class="feature-popup__closer"
-            @click="close()">&times;</a>
-        <p class="feature-popup__site">{{ site }}</p>
+            @click="close()"
+        >&times;</a>
+        <p class="feature-popup__site">
+            {{ site }}
+        </p>
         <div class="feature-popup__dose-rate">
             <span class="feature-popup__dose-rate-value">{{ doseRate }}<span class="feature-popup__dose-rate-unit"> &#181;sv/h</span></span>
         </div>
-        <feature-popup-graph :site-id="siteId"/>
+        <feature-popup-graph :site-id="siteId" />
     </div>
 </template>
 

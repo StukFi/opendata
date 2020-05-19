@@ -1,4 +1,5 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils"
+import Vue from "vue"
 import Vuex from "vuex"
 import VueI18n from "vue-i18n"
 import SettingsWidget from "components/SettingsWidget.vue"
@@ -41,24 +42,25 @@ describe("SettingsWidget.vue", () => {
         store.commit = jest.fn()
     })
 
-    it("opens the settings panel when the settings button is clicked", () => {
+    it("opens the settings panel when the settings button is clicked", async () => {
         const button = wrapper.find(".settings-button")
         const panel = wrapper.find(".settings-panel")
-        expect(panel.element.style.display).toBe("none")
+        expect(panel.element).not.toBeVisible()
 
-        button.trigger("click")
+        await button.trigger("click")
 
-        expect(panel.element.style.display).not.toBe("none")
+        expect(panel.element).toBeVisible()
     })
 
-    it("closes the settings panel when the background is clicked", () => {
+    it("closes the settings panel when the background is clicked", async () => {
         const panel = wrapper.find(".settings-panel")
         const background = wrapper.find(".settings-panel__background")
         wrapper.vm.enable()
-        expect(background.element.style.display).not.toBe("none")
-        expect(panel.element.style.display).not.toBe("none")
+        await Vue.nextTick()
+        expect(background.element).toBeVisible()
+        expect(panel.element).toBeVisible()
 
-        background.trigger("click")
+        await background.trigger("click")
 
         expect(background.element.style.display).toBe("none")
         expect(panel.element.style.display).toBe("none")

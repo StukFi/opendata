@@ -10,5 +10,6 @@ module.exports = {
     },
     "transformIgnorePatterns": [
         "node_modules/(?!(ol|vuejs-datepicker)/)"
-    ]
+    ],
+    setupFilesAfterEnv: ["@testing-library/jest-dom"]
 }

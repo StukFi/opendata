@@ -1,4 +1,5 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils"
+import Vue from "vue"
 import FeaturePopover from "components/FeaturePopover.vue"
 
 const localVue = createLocalVue()
@@ -49,12 +50,14 @@ describe("FeaturePopover.vue", () => {
         expect(wrapper.vm.isEnabled).toBe(true)
     })
 
-    test("renders a site's name and dose rate", () => {
+    test("renders a site's name and dose rate", async () => {
         wrapper.vm.site = "test"
         wrapper.vm.doseRate = "1.0"
 
         var site = wrapper.find(".feature-popover__site")
         var doseRate = wrapper.find(".feature-popover__dose-rate-value")
+
+        await Vue.nextTick()
 
         expect(site.text()).toContain(wrapper.vm.site)
         expect(doseRate.text()).toContain(wrapper.vm.doseRate)
