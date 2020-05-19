@@ -1,6 +1,6 @@
 # opendata
 
-Opendata is an independent web application for viewing external radiation results from STUK's monitoring network. The application gets its data from the Finnish Meteorological Institute's open data API.  The included Python scripts can also be used stand-alone to get the data in GeoJSON format for other purposes. The application is hosted by STUK at [opendata.stuk.fi](https://opendata.stuk.fi).
+Opendata is an independent web application for viewing external radiation results from STUK's monitoring network. The application gets its data from the Finnish Meteorological Institute's open data API.  The included Python scripts can also be used stand-alone to get the data in GeoJSON format for other purposes. The online demo of the application is avaiable at [stukfi.github.io](https://stukfi.github.io/).
 
 - [Using the application](#using-the-application)
 - [Building the application](#building-the-application)
