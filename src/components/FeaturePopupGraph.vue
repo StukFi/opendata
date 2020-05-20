@@ -3,8 +3,8 @@
 </template>
 
 <script>
-import dateUtils from "../utils/date"
-import http from "../utils/http"
+import dateUtils from "@/utils/date"
+import http from "@/utils/http"
 
 import Plotly from "plotly.js/lib/core"
 import localeFI from "plotly.js/lib/locales/fi"

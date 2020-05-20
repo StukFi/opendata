@@ -38,7 +38,7 @@
 
 <script>
 import { mixin as clickaway } from "vue-clickaway"
-import dateUtils from "../utils/date"
+import dateUtils from "@/utils/date"
 
 export default {
     name: "TimepickerWidget",
