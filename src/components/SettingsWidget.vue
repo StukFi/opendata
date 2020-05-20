@@ -174,7 +174,7 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
     border-radius: 4px;
-    background-image: url("../../assets/icons/cog.svg");
+    background-image: url("~~@/assets/icons/cog.svg");
     background-repeat: no-repeat;
     background-position: center;
     background-color: rgba(0, 50, 136, 0.5);

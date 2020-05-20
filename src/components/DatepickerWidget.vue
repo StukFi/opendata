@@ -199,12 +199,12 @@ export default {
 
 .button__decrement-date {
     left: 0;
-    background-image: url("../../assets/icons/caret-left.svg");
+    background-image: url("~@/assets/icons/caret-left.svg");
 }
 
 .button__increment-date {
     right: 0;
-    background-image: url("../../assets/icons/caret-right.svg");
+    background-image: url("~@/assets/icons/caret-right.svg");
 }
 
 .button__change-date--disabled {

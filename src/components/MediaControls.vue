@@ -123,19 +123,19 @@ export default {
 }
 
 .media-controls__button-date {
-    background-image: url("../../assets/icons/calendar.svg");
+    background-image: url("~@/assets/icons/calendar.svg");
 }
 
 .media-controls__button-time {
-    background-image: url("../../assets/icons/clock.svg");
+    background-image: url("~@/assets/icons/clock.svg");
 }
 
 .media-controls__button-play {
-    background-image: url("../../assets/icons/media-play.svg");
+    background-image: url("~@/assets/icons/media-play.svg");
 }
 
 .media-controls__button-pause {
-    background-image: url("../../assets/icons/media-pause.svg");
+    background-image: url("~@/assets/icons/media-pause.svg");
 }
 
 .media-controls__button-speed {

@@ -183,12 +183,12 @@ export default {
 
 .button__decrement-time {
     left: 0;
-    background-image: url("../../assets/icons/caret-left.svg");
+    background-image: url("~@/assets/icons/caret-left.svg");
 }
 
 .button__increment-time {
     right: 0;
-    background-image: url("../../assets/icons/caret-right.svg");
+    background-image: url("~@/assets/icons/caret-right.svg");
 }
 
 .button__change-time--disabled {
