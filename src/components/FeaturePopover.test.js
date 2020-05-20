@@ -1,6 +1,6 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils"
 import Vue from "vue"
-import FeaturePopover from "components/FeaturePopover.vue"
+import FeaturePopover from "./FeaturePopover.vue"
 
 const localVue = createLocalVue()
 

@@ -1,6 +1,6 @@
 import { shallowMount, createLocalVue, createWrapper } from "@vue/test-utils"
 import Vue from "vue"
-import SearchBar from "components/SearchBar.vue"
+import SearchBar from "./SearchBar.vue"
 
 const localVue = createLocalVue()
 

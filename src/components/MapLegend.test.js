@@ -1,7 +1,7 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils"
 import Vue from "vue"
 import Vuex from "vuex"
-import MapLegend from "components/MapLegend.vue"
+import MapLegend from "./MapLegend.vue"
 
 const localVue = createLocalVue()
 localVue.use(Vuex)

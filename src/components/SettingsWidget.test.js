@@ -2,7 +2,7 @@ import { shallowMount, createLocalVue } from "@vue/test-utils"
 import Vue from "vue"
 import Vuex from "vuex"
 import VueI18n from "vue-i18n"
-import SettingsWidget from "components/SettingsWidget.vue"
+import SettingsWidget from "./SettingsWidget.vue"
 
 const localVue = createLocalVue()
 localVue.use(Vuex)

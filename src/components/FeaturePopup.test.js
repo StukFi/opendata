@@ -1,6 +1,6 @@
 import { shallowMount, createLocalVue, createWrapper } from "@vue/test-utils"
 import Vue from "vue"
-import FeaturePopup from "components/FeaturePopup.vue"
+import FeaturePopup from "./FeaturePopup.vue"
 
 const localVue = createLocalVue()
 

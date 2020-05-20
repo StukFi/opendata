@@ -1,6 +1,6 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils"
 import Vuex from "vuex"
-import TimepickerWidget from "components/TimepickerWidget.vue"
+import TimepickerWidget from "./TimepickerWidget.vue"
 
 const localVue = createLocalVue()
 localVue.use(Vuex)

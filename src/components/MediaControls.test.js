@@ -1,7 +1,7 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils"
 import Vue from "vue"
 import Vuex from "vuex"
-import MediaControls from "components/MediaControls.vue"
+import MediaControls from "./MediaControls.vue"
 
 const localVue = createLocalVue()
 localVue.use(Vuex)

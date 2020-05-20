@@ -1,6 +1,6 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils"
 import Vuex from "vuex"
-import DatepickerWidget from "components/DatepickerWidget.vue"
+import DatepickerWidget from "./DatepickerWidget.vue"
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
