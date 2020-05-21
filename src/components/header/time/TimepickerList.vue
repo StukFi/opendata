@@ -1,29 +1,33 @@
 <template>
-    <div
-        v-on-clickaway="closeTimeList"
-        class="timepicker-container"
+    <ul
+        v-if="isEnabled"
+        v-on-clickaway="close"
+        class="time-list"
     >
-        <div
-            class="timepicker"
-            @click="toggleTimeList"
-        >
-            {{ formatTime(time, true) }}
-        </div>
-        <timepicker-list ref="timepickerList" />
-    </div>
+        <timepicker-list-item
+            v-for="(timeEntry, index) in validTimesForCurrentDate.slice().reverse()"
+            :key="index"
+            @click="setTime(timeEntry), toggleTimeList()"
+        />
+    </ul>
 </template>
 
 <script>
-import TimepickerList from "./TimepickerList"
+import TimepickerListItem from "./TimepickerListItem"
 import { mixin as clickaway } from "vue-clickaway"
 import dateUtils from "@/utils/date"
 
 export default {
-    name: "Timepicker",
+    name: "TimepickerList",
     components: {
-        TimepickerList
+        TimepickerListItem
     },
     mixins: [ clickaway ],
+    data: function () {
+        return {
+            isEnabled: false
+        }
+    },
     computed: {
         time: {
             get () {
@@ -38,11 +42,11 @@ export default {
         }
     },
     methods: {
-        closeTimeList () {
-            this.$refs.timepickerList.close()
+        close () {
+            this.isEnabled = false
         },
-        toggleTimeList () {
-            this.$refs.timepickerList.toggle()
+        toggle () {
+            this.isEnabled = !this.isEnabled
         },
         setTime (time) {
             this.time = time
@@ -77,10 +81,9 @@ export default {
 <style>
 .timepicker-container {
     flex-basis: 50%;
-    flex-grow: 1;
     line-height: 60px;
     z-index: 3;
-    font-size: 1.7rem;
+    font-size: 1rem;
     text-align: center;
     border: none;
     background-color: #0066b3;
@@ -115,7 +118,7 @@ export default {
     padding: 0;
     background-color: white;
     border: 1px solid #CCC;
-    font-size: 26px;
+    font-size: 1rem;
 }
 
 .time-list__entry {
@@ -131,12 +134,6 @@ export default {
 }
 
 @media only screen and (min-width: 768px) {
-    .timepicker-container {
-        height: 75px;
-        line-height: 75px;
-        font-size: 2.3rem;
-    }
-
     .time-list {
         top: 85px;
     }

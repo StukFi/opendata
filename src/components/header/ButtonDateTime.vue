@@ -1,6 +1,7 @@
 <template>
     <button
         :style="style"
+        :disabled="disabled"
         @click="$emit('click')"
     />
 </template>
@@ -41,7 +42,7 @@ button {
     border: none;
     background-color: #1773B9;
     background-size: 1em;
-    font-size: 16px;
+    font-size: 1rem;
     background-position: center;
     background-repeat: no-repeat;
     cursor: pointer;
@@ -51,6 +52,10 @@ button {
 
 button:focus {
     outline: none;
+}
+
+button:disabled {
+    cursor: auto;
 }
 
 @media only screen and (max-width: 500px) {

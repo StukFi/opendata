@@ -6,6 +6,7 @@
         :disabled-dates="disabledDates"
         :format="formatDate"
         :language="language"
+        class="datepicker"
     />
 </template>
 
@@ -108,10 +109,15 @@ export default {
 </script>
 
 <style>
-.vdp-datepicker input {
+.datepicker {
     flex-basis: 50%;
-    line-height: 60px;
-    font-size: 1.7em;
+    flex-grow: 1;
+}
+
+.vdp-datepicker input {
+    width: 100%;
+    height: 60px;
+    font-size: 1.7rem;
     text-align: center;
     border: none;
     outline: none;
@@ -143,7 +149,7 @@ export default {
     .vdp-datepicker input {
         height: 75px;
         line-height: 75px;
-        font-size: 2.3em;
+        font-size: 2.3rem;
     }
 
     .vdp-datepicker__calendar {
