@@ -1,34 +1,23 @@
 <template>
-    <div class="datepicker-container">
-        <button
-            :class="{'button__change-date--disabled': isFirstDateSelected}"
-            class="button__change-date button__decrement-date"
-            @click="decrementDate()"
-        />
-        <button
-            :class="{'button__change-date--disabled': isLastDateSelected}"
-            class="button__change-date button__increment-date"
-            @click="incrementDate()"
-        />
-        <datepicker
-            v-model="date"
-            :use-utc="true"
-            :monday-first="true"
-            :disabled-dates="disabledDates"
-            :format="dateFormatter"
-            :language="language"
-        />
-    </div>
+    <vue-datepicker
+        v-model="date"
+        :use-utc="true"
+        :monday-first="true"
+        :disabled-dates="disabledDates"
+        :format="formatDate"
+        :language="language"
+        class="datepicker"
+    />
 </template>
 
 <script>
-import Datepicker from "vuejs-datepicker"
+import VueDatepicker from "vuejs-datepicker"
 import { en, fi } from "vuejs-datepicker/dist/locale"
 
 export default {
-    name: "DatepickerWidget",
+    name: "Datepicker",
     components: {
-        Datepicker
+        VueDatepicker
     },
     data: function () {
         return {
@@ -41,8 +30,8 @@ export default {
             get () {
                 return this.$store.state.datetime.date
             },
-            set (newDate) {
-                this.$store.dispatch("setDate", newDate)
+            set (date) {
+                this.$store.dispatch("setDate", date)
             }
         },
         language: {
@@ -58,29 +47,6 @@ export default {
             }
         },
         disabledDates () {
-            return this.parseDisabledDates()
-        },
-        isFirstDateSelected () {
-            return this.$store.getters.isFirstDateSelected
-        },
-        isLastDateSelected () {
-            return this.$store.getters.isLastDateSelected
-        }
-    },
-    methods: {
-        dateFormatter (date) {
-            switch (this.$store.state.settings.dateFormat) {
-            case "fi":
-            default:
-                return date.getDate() + "." + (date.getMonth() + 1) +
-                            "." + date.getFullYear()
-
-            case "iso":
-                return date.getFullYear() + "-" + (date.getMonth() + 1) +
-                            "-" + date.getDate()
-            }
-        },
-        parseDisabledDates () {
             var validDatetimes = this.$store.state.datetime.validDatetimes
             var disabledDates = {
                 ranges: [],
@@ -122,32 +88,36 @@ export default {
             }
 
             return disabledDates
+
         },
-        decrementDate () {
-            this.$store.dispatch("decrementDate")
-        },
-        incrementDate () {
-            this.$store.dispatch("incrementDate")
+    },
+    methods: {
+        formatDate (date) {
+            switch (this.$store.state.settings.dateFormat) {
+            case "fi":
+            default:
+                return date.getDate() + "." + (date.getMonth() + 1) +
+                            "." + date.getFullYear()
+
+            case "iso":
+                return date.getFullYear() + "-" + (date.getMonth() + 1) +
+                            "-" + date.getDate()
+            }
         }
     }
 }
 </script>
 
 <style>
-.datepicker-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 50%;
-    height: 60px;
-    z-index: 3;
+.datepicker {
+    flex-basis: 50%;
+    flex-grow: 1;
 }
 
-.datepicker-container input {
+.vdp-datepicker input {
     width: 100%;
     height: 60px;
-    line-height: 60px;
-    font-size: 1.7em;
+    font-size: 1.7rem;
     text-align: center;
     border: none;
     outline: none;
@@ -159,9 +129,6 @@ export default {
     text-shadow: 0 0 0 white;
 }
 
-/* This and the following duplicate block cannot be
-   combined. The browser will skip the entire block
-   if it doesn't recognize one of the selectors. */
 .vdp-datepicker input::selection {
     background-color: transparent;
 }
@@ -178,54 +145,11 @@ export default {
     width: 300px;
 }
 
-.button__change-date {
-    width: 25%;
-    height: 100%;
-    position: absolute;
-    border: none;
-    background-color: #1773B9;
-    background-size: 1em;
-    font-size: 16px;
-    background-position: center;
-    background-repeat: no-repeat;
-    cursor: pointer;
-    outline: none;
-    z-index: 1;
-}
-
-.button__change-date:focus {
-    outline: none;
-}
-
-.button__decrement-date {
-    left: 0;
-    background-image: url("~@/assets/icons/caret-left.svg");
-}
-
-.button__increment-date {
-    right: 0;
-    background-image: url("~@/assets/icons/caret-right.svg");
-}
-
-.button__change-date--disabled {
-    background-image: none;
-}
-
-@media only screen and (max-width: 500px) {
-    .button__change-date {
-        display: none;
-    }
-}
-
 @media only screen and (min-width: 768px) {
     .vdp-datepicker input {
         height: 75px;
         line-height: 75px;
-        font-size: 2.3em;
-    }
-
-    .datepicker-container {
-        height: 75px;
+        font-size: 2.3rem;
     }
 
     .vdp-datepicker__calendar {

@@ -2,7 +2,6 @@
     <div
         id="map"
     >
-        <datepicker-widget />
         <dose-rate-layer ref="doseRateLayer" />
         <feature-popover ref="featurePopover" />
         <feature-popup ref="featurePopup" />
@@ -10,12 +9,11 @@
         <media-controls />
         <search-bar />
         <settings-widget />
-        <timepicker-widget />
+        <the-header />
     </div>
 </template>
 
 <script>
-import DatepickerWidget from "./DatepickerWidget"
 import DoseRateLayer from "./DoseRateLayer"
 import FeaturePopover from "./FeaturePopover"
 import FeaturePopup from "./FeaturePopup"
@@ -23,7 +21,7 @@ import MapLegend from "./MapLegend"
 import MediaControls from "./MediaControls"
 import SearchBar from "./SearchBar"
 import SettingsWidget from "./SettingsWidget"
-import TimepickerWidget from "./TimepickerWidget"
+import TheHeader from "@/components/header/TheHeader"
 
 import ControlZoom from "ol/control/Zoom"
 import ControlZoomSlider from "ol/control/ZoomSlider"
@@ -39,7 +37,6 @@ import View from "ol/View"
 export default {
     name: "MapWidget",
     components: {
-        DatepickerWidget,
         DoseRateLayer,
         FeaturePopover,
         FeaturePopup,
@@ -47,7 +44,7 @@ export default {
         MediaControls,
         SearchBar,
         SettingsWidget,
-        TimepickerWidget
+        TheHeader
     },
     data: function () {
         return {
