@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import ButtonDecrementDate from "@/components/header/date/ButtonDecrementDate"
-import ButtonIncrementDate from "@/components/header/date/ButtonIncrementDate"
+import ButtonDecrementDate from "./ButtonDecrementDate"
+import ButtonIncrementDate from "./ButtonIncrementDate"
 import Datepicker from "./Datepicker"
 
 export default {
@@ -21,7 +21,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .date-widget {
     display: flex;
     flex-basis: 50%;

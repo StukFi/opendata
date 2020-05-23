@@ -1,13 +1,12 @@
 <template>
     <div
-        v-on-clickaway="closeTimeList"
-        class="timepicker-container"
+        class="timepicker"
     >
         <div
-            class="timepicker"
+            class="timepicker-view"
             @click="toggleTimeList"
         >
-            {{ formatTime(time, true) }}
+            {{ formattedTime }}
         </div>
         <timepicker-list ref="timepickerList" />
     </div>
@@ -15,7 +14,6 @@
 
 <script>
 import TimepickerList from "./TimepickerList"
-import { mixin as clickaway } from "vue-clickaway"
 import dateUtils from "@/utils/date"
 
 export default {
@@ -23,39 +21,11 @@ export default {
     components: {
         TimepickerList
     },
-    mixins: [ clickaway ],
     computed: {
-        time: {
-            get () {
-                return this.$store.state.datetime.time
-            },
-            set (time) {
-                this.$store.commit("setTime", time)
-            }
-        },
-        validTimesForCurrentDate () {
-            return this.$store.getters.validTimesForCurrentDate
-        }
-    },
-    methods: {
-        closeTimeList () {
-            this.$refs.timepickerList.close()
-        },
-        toggleTimeList () {
-            this.$refs.timepickerList.toggle()
-        },
-        setTime (time) {
-            this.time = time
-        },
-        decrementTime () {
-            this.$store.dispatch("decrementTime")
-        },
-        incrementTime () {
-            this.$store.dispatch("incrementTime")
-        },
-        formatTime (time, isSelectedTime) {
+        formattedTime () {
+            let time = this.$store.state.datetime.time
             if (!time) {
-                return ""
+                return
             }
 
             time = time.slice(0, 2) + ":" + time.slice(2, 4)
@@ -63,19 +33,24 @@ export default {
             switch (this.$store.state.settings.timeFormat) {
             case "12h":
                 time = dateUtils.convertTimeTo12HourClock(time)
-                return isSelectedTime ? (time.split(" ")[0] + "Z " + time.split(" ")[1]) : time
+                return time.split(" ")[0] + "Z " + time.split(" ")[1]
 
             case "24h":
             default:
-                return isSelectedTime ? (time + "Z") : time
+                return time + "Z"
             }
+        }
+    },
+    methods: {
+        toggleTimeList () {
+            this.$refs.timepickerList.toggle()
         }
     }
 }
 </script>
 
 <style>
-.timepicker-container {
+.timepicker {
     flex-basis: 50%;
     flex-grow: 1;
     line-height: 60px;
@@ -87,12 +62,12 @@ export default {
     color: white;
 }
 
-.timepicker-container:hover,
-.timepicker:hover {
+.timepicker:hover,
+.timepicker-view:hover {
     cursor: pointer;
 }
 
-.timepicker {
+.timepicker-view {
     width: 100%;
     height: 100%;
     border: none;
@@ -102,43 +77,11 @@ export default {
     background-color: transparent;
 }
 
-.time-list {
-    position: fixed;
-    left: 50%;
-    transform: translate(-50%);
-    width: 300px;
-    height: 282px;
-    overflow: scroll;
-    overflow-x: unset;
-    top: 70px;
-    margin: 0;
-    padding: 0;
-    background-color: white;
-    border: 1px solid #CCC;
-    font-size: 26px;
-}
-
-.time-list__entry {
-    list-style-type: none;
-    height: 50px;
-    line-height: 50px;
-    color: black;
-}
-
-.time-list__entry--selected {
-    background-color: #1773B9;
-    color: white;
-}
-
 @media only screen and (min-width: 768px) {
-    .timepicker-container {
+    .timepicker {
         height: 75px;
         line-height: 75px;
         font-size: 2.3rem;
-    }
-
-    .time-list {
-        top: 85px;
     }
 }
 </style>

@@ -1,9 +1,9 @@
 <template>
     <li
         :class="{'selected': time == selectedTime}"
-        @click="selectTime"
+        @click="$emit('click')"
     >
-        {{ formatTime() }}
+        {{ formattedTime }}
     </li>
 </template>
 
@@ -21,26 +21,17 @@ export default {
     computed: {
         selectedTime () {
             return this.$store.state.datetime.time
-        }
-    },
-    methods: {
-        selectTime () {
         },
-        formatTime (time, isSelectedTime) {
-            if (!time) {
-                return ""
-            }
-
-            time = time.slice(0, 2) + ":" + time.slice(2, 4)
+        formattedTime () {
+            let time = this.time.slice(0, 2) + ":" + this.time.slice(2, 4)
 
             switch (this.$store.state.settings.timeFormat) {
             case "12h":
-                time = dateUtils.convertTimeTo12HourClock(time)
-                return isSelectedTime ? (time.split(" ")[0] + "Z " + time.split(" ")[1]) : time
+                return dateUtils.convertTimeTo12HourClock(time)
 
             case "24h":
             default:
-                return isSelectedTime ? (time + "Z") : time
+                return time
             }
         }
     }
@@ -49,9 +40,9 @@ export default {
 
 <style>
 li {
-    list-style-type: none;
     height: 50px;
     line-height: 50px;
+    font-size: 1.625rem;
     color: black;
 }
 
