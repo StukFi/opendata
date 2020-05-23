@@ -9,7 +9,7 @@
 <script>
 import ButtonDecrementTime from "@/components/header/time/ButtonDecrementTime"
 import ButtonIncrementTime from "@/components/header/time/ButtonIncrementTime"
-import Timepicker from "./Timepicker"
+import Timepicker from "@/components/header/time/timepicker/Timepicker"
 
 export default {
     name: "TimeWidget",

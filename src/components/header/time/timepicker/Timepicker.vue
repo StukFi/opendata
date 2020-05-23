@@ -2,12 +2,12 @@
     <div
         class="timepicker"
     >
-        <div
-            class="timepicker-view"
+        <button
+            class="timepicker-button"
             @click="toggleTimeList"
         >
             {{ formattedTime }}
-        </div>
+        </button>
         <timepicker-list ref="timepickerList" />
     </div>
 </template>
@@ -67,9 +67,7 @@ export default {
     cursor: pointer;
 }
 
-.timepicker-view {
-    width: 100%;
-    height: 100%;
+.timepicker-button {
     border: none;
     outline: none;
     -webkit-appearance: none;
