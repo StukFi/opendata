@@ -3,8 +3,9 @@ import TimepickerListItem from "./TimepickerListItem"
 
 const localVue = createLocalVue()
 const mockStore = {
-    dispatch: jest.fn(),
-    state: { settings: { timeFormat: "24h" }} }
+    commit: jest.fn(),
+    state: { settings: { timeFormat: "24h" }}
+}
 
 function customMount (computed = {}) {
     return mount(TimepickerListItem, {
@@ -35,6 +36,13 @@ describe("TimepickerListItem.vue", () => {
         expect(wrapper.classes()).not.toContain("selected")
         await wrapper.setProps({ time: time })
         expect(wrapper.classes()).toContain("selected")
+    })
+
+    it("commits a mutation when clicked", async () => {
+        const time = "240000"
+        await wrapper.setProps({ time: time })
+        wrapper.trigger("click")
+        expect(mockStore.commit).toHaveBeenCalledWith("setTime", time)
     })
 
     it("emits a click event when clicked", () => {

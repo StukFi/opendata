@@ -1,7 +1,7 @@
 <template>
     <li
         :class="{'selected': time == selectedTime}"
-        @click="$emit('click')"
+        @click="setTime"
     >
         {{ formattedTime }}
     </li>
@@ -34,6 +34,12 @@ export default {
                 return time
             }
         }
+    },
+    methods: {
+        setTime () {
+            this.$store.commit("setTime", this.time)
+            this.$emit("click")
+        }
     }
 }
 </script>
@@ -44,6 +50,10 @@ li {
     line-height: 50px;
     font-size: 1.625rem;
     color: black;
+}
+
+li:hover {
+    cursor: pointer;
 }
 
 li.selected {

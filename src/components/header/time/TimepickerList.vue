@@ -1,14 +1,13 @@
 <template>
     <ul
-        v-if="isEnabled"
-        v-on-clickaway="close"
+        v-show="isEnabled"
         class="timepicker-list"
     >
         <timepicker-list-item
             v-for="(time, index) in validTimesForCurrentDate.slice().reverse()"
             :key="index"
             :time="time"
-            @click="setTime(time), close()"
+            @click="close()"
         />
     </ul>
 </template>
@@ -34,9 +33,6 @@ export default {
         }
     },
     methods: {
-        setTime (time) {
-            this.$store.commit("setTime", time)
-        },
         close () {
             this.isEnabled = false
         },
@@ -63,6 +59,11 @@ export default {
     border: 1px solid #CCC;
     font-size: 1rem;
 }
+
+.timepicker-list:hover {
+    cursor: auto;
+}
+
 @media only screen and (min-width: 768px) {
     .timepicker-list {
         top: 85px;
