@@ -2,12 +2,12 @@
     <div
         class="timepicker"
     >
-        <button
+        <div
             class="timepicker-button"
             @click="toggleTimeList"
         >
             {{ formattedTime }}
-        </button>
+        </div>
         <timepicker-list ref="timepickerList" />
     </div>
 </template>
