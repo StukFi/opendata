@@ -10,11 +10,11 @@
 
 <script>
 export default {
-    name: "ButtonDateTime",
+    name: "MediaControllerButton",
     props: {
         icon: {
             type: String,
-            required: true
+            default: ""
         },
         text: {
             type: String,
@@ -27,10 +27,8 @@ export default {
     },
     computed: {
         style () {
-            if (this.disabled) {
-                return {
-                    backgroundImage: "none"
-                }
+            if (!this.icon) {
+                return {}
             }
             else {
                 return {
@@ -44,29 +42,29 @@ export default {
 
 <style scoped>
 button {
-    flex-basis: 25%;
-    border: none;
-    background-color: #1773B9;
-    background-size: 1em;
-    font-size: 1rem;
-    background-position: center;
+    width: 32%;
+    height: 100%;
+    margin: auto;
     background-repeat: no-repeat;
+    background-position: center;
+    background-size: 1em;
+    color: white;
+    font-weight: 700;
+    background-color: rgba(0, 60, 136, 0.5);
+    border: none;
     cursor: pointer;
-    outline: none;
-    z-index: 1;
 }
 
 button:focus {
     outline: none;
 }
 
-button:disabled {
-    cursor: auto;
+button:hover {
+    background-color: rgba(0, 60, 136, 0.7);
 }
 
-@media only screen and (max-width: 500px) {
-    button {
-        display: none;
-    }
+button:disabled {
+    background-color: rgba(0, 60, 136, 0.5);
+    cursor: auto;
 }
 </style>

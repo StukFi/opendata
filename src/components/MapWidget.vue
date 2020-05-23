@@ -6,9 +6,9 @@
         <feature-popover ref="featurePopover" />
         <feature-popup ref="featurePopup" />
         <map-legend />
-        <media-controls />
         <search-bar />
         <settings-widget />
+        <media-controller />
         <the-header />
     </div>
 </template>
@@ -18,9 +18,9 @@ import DoseRateLayer from "./DoseRateLayer"
 import FeaturePopover from "./FeaturePopover"
 import FeaturePopup from "./FeaturePopup"
 import MapLegend from "./MapLegend"
-import MediaControls from "./MediaControls"
 import SearchBar from "./SearchBar"
 import SettingsWidget from "./SettingsWidget"
+import MediaController from "@/components/media-controller/MediaController"
 import TheHeader from "@/components/header/TheHeader"
 
 import ControlZoom from "ol/control/Zoom"
@@ -41,9 +41,9 @@ export default {
         FeaturePopover,
         FeaturePopup,
         MapLegend,
-        MediaControls,
         SearchBar,
         SettingsWidget,
+        MediaController,
         TheHeader
     },
     data: function () {
