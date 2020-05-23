@@ -50,6 +50,7 @@ li {
     line-height: 50px;
     font-size: 1.625rem;
     color: black;
+    list-style-type: none;
 }
 
 li:hover {
