@@ -3,6 +3,6 @@ process.env.VUE_CLI_BABEL_TARGET_NODE = "node"
 
 module.exports = {
     presets: [
-        "@vue/app"
+        ["@vue/app", { useBuiltIns: "entry" }]
     ]
 }

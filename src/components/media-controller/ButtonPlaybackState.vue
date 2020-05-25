@@ -2,7 +2,7 @@
     <media-controller-button
         :icon="icon"
         :disabled="disabled"
-        @click="$emit('click')"
+        @click="mediaController.togglePlayback()"
     />
 </template>
 
@@ -15,17 +15,17 @@ export default {
         MediaControllerButton
     },
     props: {
-        playbackEnabled: {
-            type: Boolean,
-            default: false
+        mediaController: {
+            type: Object,
+            required: true
         }
     },
     computed: {
         icon () {
-            return this.playbackEnabled ? "media-pause" : "media-play"
+            return this.mediaController.isPlaybackEnabled ? "media-pause" : "media-play"
         },
         disabled () {
-            return this.$store.getters.isLastDateSelected && this.$store.getters.isLastTimeSelected
+            return this.mediaController.isPlaybackEndReached()
         }
     }
 }

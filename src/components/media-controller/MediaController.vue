@@ -1,16 +1,13 @@
 <template>
     <div class="media-controller">
         <button-playback-mode
-            :playback-mode="playbackMode"
-            @click="toggleMode()"
+            :media-controller="mediaController"
         />
         <button-playback-state
-            :playback-enabled="playbackEnabled"
-            @click="togglePlayback()"
+            :media-controller="mediaController"
         />
         <button-playback-speed
-            :playback-speed="playbackSpeed"
-            @click="toggleSpeed()"
+            :media-controller="mediaController"
         />
     </div>
 </template>
@@ -19,6 +16,7 @@
 import ButtonPlaybackState from "./ButtonPlaybackState"
 import ButtonPlaybackMode from "./ButtonPlaybackMode"
 import ButtonPlaybackSpeed from "./ButtonPlaybackSpeed"
+import MediaController from "@/models/MediaController"
 
 export default {
     name: "MediaController",
@@ -29,58 +27,7 @@ export default {
     },
     data: function () {
         return {
-            playbackEnabled: false,
-            playbackMode: "time",
-            playbackSpeed: 1000,
-            playbackSpeeds: [500, 1000, 2000],
-            playbackTimeoutId: undefined
-        }
-    },
-    methods: {
-        togglePlayback () {
-            this.playbackEnabled ? this.pause() : this.play()
-        },
-        toggleMode () {
-            this.playbackMode = (this.playbackMode == "date") ? "time" : "date"
-        },
-        toggleSpeed () {
-            var index = this.playbackSpeeds.indexOf(this.playbackSpeed)
-            if (index >= this.playbackSpeeds.length - 1) {
-                this.playbackSpeed = this.playbackSpeeds[0]
-            } else {
-                this.playbackSpeed = this.playbackSpeeds[++index]
-            }
-        },
-        play () {
-            if (this.playbackEnabled || this.playbackTimeoutId) {
-                return
-            }
-
-            var that = this
-            this.playbackEnabled = true;
-
-            (function loadNextDataset () {
-                if ((that.playbackMode == "time" && that.$store.getters.isLastTimeSelected) ||
-                    (that.playbackMode == "date" && that.$store.getters.isLastDateSelected)) {
-                    that.pause()
-                    return
-                }
-
-                if (that.playbackMode == "date") {
-                    that.$store.dispatch("incrementDate")
-                } else if (that.playbackMode == "time") {
-                    that.$store.dispatch("incrementTime")
-                }
-
-                that.playbackTimeoutId = setTimeout(loadNextDataset, that.playbackSpeed)
-            })()
-        },
-        pause () {
-            this.playbackEnabled = false
-            if (this.playbackTimeoutId) {
-                clearTimeout(this.playbackTimeoutId)
-                this.playbackTimeoutId = undefined
-            }
+            mediaController: new MediaController()
         }
     }
 }

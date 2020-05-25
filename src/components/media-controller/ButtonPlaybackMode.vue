@@ -1,12 +1,13 @@
 <template>
     <media-controller-button
         :icon="icon"
-        @click="$emit('click')"
+        @click="mediaController.toggleMode()"
     />
 </template>
 
 <script>
 import MediaControllerButton from "./MediaControllerButton"
+import { PlaybackMode } from "@/models/MediaController"
 
 export default {
     name: "ButtonPlaybackMode",
@@ -14,14 +15,14 @@ export default {
         MediaControllerButton
     },
     props: {
-        playbackMode: {
-            type: String,
-            default: "date"
+        mediaController: {
+            type: Object,
+            required: true
         }
     },
     computed: {
         icon () {
-            return this.playbackMode  == "time" ? "clock" : "calendar"
+            return this.mediaController.playbackMode == PlaybackMode.Time ? "clock" : "calendar"
         }
     }
 }

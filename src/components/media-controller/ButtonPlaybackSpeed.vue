@@ -1,7 +1,7 @@
 <template>
     <media-controller-button
-        :text="text"
-        @click="$emit('click')"
+        :text="playbackSpeed"
+        @click="mediaController.toggleSpeed()"
     />
 </template>
 
@@ -14,14 +14,14 @@ export default {
         MediaControllerButton
     },
     props: {
-        playbackSpeed: {
-            type: Number,
-            default: 1000
+        mediaController: {
+            type: Object,
+            required: true
         }
     },
     computed: {
-        text () {
-            return this.playbackSpeed / 1000.0 + " s"
+        playbackSpeed () {
+            return this.mediaController.playbackSpeed / 1000.0 + " s"
         }
     }
 }
