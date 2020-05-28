@@ -1,7 +1,7 @@
 import Vue from "vue"
 import VueResource from "vue-resource"
 import BootstrapVue from "bootstrap-vue"
-import VueI18n from "vue-i18n"
+import i18n from "./i18n"
 
 import App from "./App"
 import store from "../src/store"
@@ -13,13 +13,8 @@ import "../public/global.css"
 
 Vue.use(VueResource)
 Vue.use(BootstrapVue)
-Vue.use(VueI18n)
 
 Vue.config.productionTip = false
-
-const i18n = new VueI18n({
-    locale: "en"
-})
 
 new Vue({
     el: "#app",
@@ -27,5 +22,3 @@ new Vue({
     i18n,
     render: h => h(App)
 })
-
-export { i18n }

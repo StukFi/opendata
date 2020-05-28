@@ -8,6 +8,9 @@ module.exports = {
         "node": true,
         "jest": true
     },
+    "parserOptions": {
+        "parser": "babel-eslint"
+    },
     "rules": {
         "indent": ["error", 4],
         "vue/html-indent": ["error", 4],
