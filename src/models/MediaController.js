@@ -42,7 +42,7 @@ class MediaController {
             return
         }
 
-        if (this.isPlaybackEndReached()) {
+        if (this.isPlaybackFinished()) {
             this.stop()
             return
         }
@@ -79,7 +79,7 @@ class MediaController {
     }
 
     /** Indicates whether playback has reached the end of available datasets. */
-    isPlaybackEndReached () {
+    isPlaybackFinished () {
         return (this.playbackMode == PlaybackMode.Time && store.getters.isLastTimeSelected) ||
             (this.playbackMode == PlaybackMode.Date && store.getters.isLastDateSelected)
     }

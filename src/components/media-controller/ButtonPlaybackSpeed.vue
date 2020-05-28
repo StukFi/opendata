@@ -1,6 +1,7 @@
 <template>
     <media-controller-button
         :text="playbackSpeed"
+        :title="$t('title')"
         @click="mediaController.toggleSpeed()"
     />
 </template>
@@ -26,3 +27,14 @@ export default {
     }
 }
 </script>
+
+<i18n>
+{
+    "fi": {
+        "title": "Toistonopeus"
+    },
+    "en": {
+        "title": "Playback speed"
+    }
+}
+</i18n>

@@ -64,7 +64,7 @@ button:hover {
 }
 
 button:disabled {
-    background-color: rgba(0, 60, 136, 0.5);
+    background-color: rgba(0, 0, 0, 0.5);
     cursor: auto;
 }
 </style>
