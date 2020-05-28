@@ -11,14 +11,17 @@ describe("ButtonPlaybackSpeed.vue", () => {
         wrapper = mount(ButtonPlaybackSpeed, {
             propsData: {
                 mediaController: mediaController
+            },
+            mocks: {
+                $t: () => {}
             }
         })
     })
 
     it("changes playback speed when clicked", async () => {
-        const spy = jest.spyOn(mediaController, "toggleSpeed")
+        const originalPlaybackSpeed = mediaController.playbackSpeed
         await wrapper.findComponent(MediaControllerButton).trigger("click")
-        expect(spy).toHaveBeenCalledTimes(1)
+        expect(mediaController.playbackSpeed).not.toBe(originalPlaybackSpeed)
     })
 
     it("renders the current playback speed", async () => {

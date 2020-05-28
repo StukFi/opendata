@@ -14,6 +14,9 @@ function customMount (computed = {}) {
         computed,
         propsData: {
             mediaController: mediaController
+        },
+        mocks: {
+            $t: () => {}
         }
     })
 }
@@ -34,17 +37,5 @@ describe("ButtonPlaybackState.vue", () => {
     it("is disabled when the end of playback is reached", () => {
         wrapper = customMount({ disabled: () => true })
         expect(wrapper.findComponent(MediaControllerButton).props().disabled).toBe(true)
-    })
-
-    it("renders a pause icon when playback is enabled", () => {
-        const iconPause = "media-pause"
-        wrapper = customMount({ icon: () => iconPause })
-        expect(wrapper.findComponent(MediaControllerButton).props().icon).toBe(iconPause)
-    })
-
-    it("renders a play icon when playback is disabled", () => {
-        const iconPlay = "media-play"
-        wrapper = customMount({ icon: () => iconPlay })
-        expect(wrapper.findComponent(MediaControllerButton).props().icon).toBe(iconPlay)
     })
 })

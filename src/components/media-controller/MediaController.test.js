@@ -8,8 +8,13 @@ describe("MediaController.vue", () => {
     let wrapper
 
     beforeEach(() => {
-        wrapper = mount(MediaController)
+        wrapper = mount(MediaController, {
+            mocks: {
+                $t: () => {}
+            }
+        })
     })
+
 
     it("passes a media controller object to its subcomponents", () => {
         expect(wrapper.findComponent(ButtonPlaybackMode).props().mediaController).toBe(wrapper.vm.mediaController)
