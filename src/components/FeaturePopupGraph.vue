@@ -4,7 +4,7 @@
 
 <script>
 import dateUtils from "@/utils/date"
-import http from "@/utils/http"
+import api from "@/api"
 
 import Plotly from "plotly.js/lib/core"
 import localeFI from "plotly.js/lib/locales/fi"
@@ -139,12 +139,12 @@ export default {
                 that.draw()
             })
         },
-        loadDataset (dataset) {
-            var that = this
-            return http.get(dataset.filePath).then(function (response) {
-                dataset["data"] = response.data.data
-                that.addDataset(dataset)
-            }).catch(() => {})
+        async loadDataset (dataset) {
+            try {
+                dataset["data"] = await api.doseRate.getTimeSeries(dataset.filePath)
+                this.addDataset(dataset)
+            }
+            catch {() => {}}
         },
         loadDatasets (datasets) {
             var that = this
