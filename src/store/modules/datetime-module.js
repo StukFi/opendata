@@ -1,4 +1,4 @@
-import http from "../../utils/http"
+import api from "@/api"
 
 export default {
     state: {
@@ -90,10 +90,9 @@ export default {
             // Update available data every 10 minutes.
             setInterval(() => { dispatch("updateAvailableDatetimes") }, 600000)
         },
-        updateAvailableDatetimes ({ commit }) {
-            return http.get("data/dose_rates/metadata.json").then(function (response) {
-                commit("setValidDatetimes", response.body.available_data)
-            })
+        async updateAvailableDatetimes ({ commit }) {
+            const availableData = await api.doseRate.getMetadata()
+            commit("setValidDatetimes", availableData)
         },
         selectMostRecentDate ({ state, dispatch }) {
             if (state.validDatetimes.length == 0) {
