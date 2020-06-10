@@ -1,34 +1,31 @@
 <template>
     <div
-        v-show="isEnabled"
+        v-show="isEnabled && suggestions.length > 0"
         class="search-suggest-list"
-        @clickaway="hide"
     >
         <search-suggest-list-item
             v-for="suggestion in suggestions"
             :key="suggestion"
             :suggestion="suggestion"
-            @click="$emit('search', suggestion)"
+            @click="$emit('select', suggestion)"
         />
     </div>
 </template>
 
 <script>
 import SearchSuggestListItem from "./SearchSuggestListItem"
-import { mixin as clickaway } from "vue-clickaway"
 
 export default {
     name: "SearchSuggestList",
     components: {
         SearchSuggestListItem
     },
-    mixins: [ clickaway ],
     props: {
         searchTerm: {
             type: String,
             required: true
         },
-        features: {
+        sites: {
             type: Array,
             required: true
         }
@@ -41,8 +38,7 @@ export default {
     computed: {
         suggestions () {
             let suggestions = []
-            this.features.forEach(feature => {
-                const site = feature.get("site")
+            this.sites.forEach(site => {
                 if (site.toLowerCase().indexOf(this.searchTerm.toLowerCase()) >= 0) {
                     if (!suggestions.includes(site)) {
                         suggestions.push(site)
@@ -50,12 +46,7 @@ export default {
                 }
             })
 
-            // Sort alphabetically.
-            // suggestions.sort((a, b) => {
-            //     return (a > b) ? 1 : (a < b) ? -1 : 0
-            // })
-
-            return suggestions
+            return suggestions.sort()
         }
     },
     methods: {

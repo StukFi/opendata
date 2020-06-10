@@ -22,8 +22,8 @@
         <search-suggest-list
             ref="searchSuggestList"
             :search-term="searchTerm"
-            :features="features"
-            @search="search"
+            :sites="sites"
+            @select="onSuggestionSelected"
         />
     </div>
 </template>
@@ -44,12 +44,29 @@ export default {
             features: []
         }
     },
+    computed: {
+        sites () {
+            let sites = []
+            for (let i = 0; i < this.features.length; ++i) {
+                const site = this.features[i].get("site")
+                if (!sites.includes(site)) {
+                    sites.push(site)
+                }
+            }
+
+            return sites
+        }
+    },
     mounted () {
         this.$root.$on("doseRateLayerChanged", this.onDoseRateLayerChanged)
     },
     methods: {
         onDoseRateLayerChanged (layer) {
             this.features = layer.getSource().getFeatures()
+        },
+        onSuggestionSelected (suggestion) {
+            this.searchTerm = suggestion
+            this.search()
         },
         search() {
             if (this.searchTerm.length == 0) {
