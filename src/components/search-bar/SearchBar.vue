@@ -19,39 +19,42 @@
             @focus="showSuggestions()"
             @keyup.enter="search()"
         >
-        <div
-            v-show="displaySuggestions && suggestions.length != 0"
-            class="search-bar__suggestions"
-        >
-            <p
-                v-for="suggestion in suggestions"
-                :key="suggestion"
-                class="search-bar__suggestions-item"
-                @click="searchTerm = suggestion, search()"
-            >
-                {{ suggestion }}
-            </p>
-        </div>
+        <search-suggest-list
+            ref="searchSuggestList"
+            :search-term="searchTerm"
+            :sites="sites"
+            @select="onSuggestionSelected"
+        />
     </div>
 </template>
 
 <script>
+import SearchSuggestList from "./SearchSuggestList"
 import { mixin as clickaway } from "vue-clickaway"
 
 export default {
     name: "SearchBar",
+    components: {
+        SearchSuggestList
+    },
     mixins: [ clickaway ],
     data: function () {
         return {
-            features: [],
-            suggestions: [],
             searchTerm: "",
-            displaySuggestions: false
+            features: []
         }
     },
-    watch: {
-        searchTerm: function () {
-            this.updateSuggestions()
+    computed: {
+        sites () {
+            let sites = []
+            for (let i = 0; i < this.features.length; ++i) {
+                const site = this.features[i].get("site")
+                if (!sites.includes(site)) {
+                    sites.push(site)
+                }
+            }
+
+            return sites
         }
     },
     mounted () {
@@ -60,51 +63,36 @@ export default {
     methods: {
         onDoseRateLayerChanged (layer) {
             this.features = layer.getSource().getFeatures()
-            if (this.displaySuggestions) {
-                this.updateSuggestions()
-            }
         },
-        blur () {
-            this.$refs.searchBarInput.blur()
-            this.hideSuggestions()
-        },
-        showSuggestions () {
-            this.updateSuggestions()
-            this.displaySuggestions = true
-        },
-        hideSuggestions () {
-            this.displaySuggestions = false
-        },
-        updateSuggestions () {
-            this.suggestions = []
-            this.features.forEach((feature) => {
-                var site = feature.get("site")
-                if (site.toLowerCase().startsWith(this.searchTerm.toLowerCase())) {
-                    if (!this.suggestions.includes(site)) {
-                        this.suggestions.push(site)
-                    }
-                }
-            })
-
-            this.suggestions.sort((a, b) => {
-                return (a > b) ? 1 : (a < b) ? -1 : 0
-            })
+        onSuggestionSelected (suggestion) {
+            this.searchTerm = suggestion
+            this.search()
         },
         search() {
             if (this.searchTerm.length == 0) {
                 return
             }
 
-            for (var i = 0; i < this.features.length; ++i) {
-                var site = this.features[i].get("site")
+            for (let i = 0; i < this.features.length; ++i) {
+                const site = this.features[i].get("site")
                 if (site.toLowerCase() == this.searchTerm.toLowerCase()) {
                     this.searchTerm = site
                     this.blur()
                     this.$root.$emit("featureSelectedViaSearch", this.features[i])
-                    return
+                    break
                 }
             }
-        }
+        },
+        showSuggestions () {
+            this.$refs.searchSuggestList.show()
+        },
+        hideSuggestions () {
+            this.$refs.searchSuggestList.hide()
+        },
+        blur () {
+            this.$refs.searchBarInput.blur()
+            this.hideSuggestions()
+        },
     }
 }
 </script>
@@ -161,27 +149,6 @@ export default {
 }
 
 .search-bar__icon:hover {
-    cursor: pointer;
-}
-
-.search-bar__suggestions {
-    position: relative;
-    top: 55px;
-    max-height: 212px;
-    overflow: scroll;
-    overflow-x: unset;
-    background-color: white;
-    border: 1px solid #CCC;
-}
-
-.search-bar__suggestions-item {
-    height: 40px;
-    line-height: 40px;
-    padding-left: 20px;
-    margin: 0;
-}
-
-.search-bar__suggestions:hover {
     cursor: pointer;
 }
 
