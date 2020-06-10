@@ -18,9 +18,9 @@ import DoseRateLayer from "./DoseRateLayer"
 import FeaturePopover from "./FeaturePopover"
 import FeaturePopup from "./FeaturePopup"
 import MapLegend from "./MapLegend"
-import SearchBar from "./SearchBar"
 import SettingsWidget from "./SettingsWidget"
 import MediaController from "@/components/media-controller/MediaController"
+import SearchBar from "@/components/search-bar/SearchBar"
 import TheHeader from "@/components/header/TheHeader"
 
 import ControlZoom from "ol/control/Zoom"
@@ -57,7 +57,8 @@ export default {
             layers: [
                 new TileLayer({
                     source: new OSMSource({
-                        url: "https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        // url: "https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        url: ""
                     })
                 })
             ],
