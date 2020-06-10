@@ -13,7 +13,7 @@
         />
         <div
             v-show="isEnabled"
-            class="settings-panel container p-5"
+            class="settings-panel container pt-5 pl-5 pr-5 pb-2"
         >
             <div class="row">
                 <div class="col">
@@ -83,6 +83,9 @@
                     </b-button>
                 </div>
             </div>
+            <div class="row justify-content-center mt-3 app-version">
+                <p>{{ appVersion }}</p>
+            </div>
         </div>
     </div>
 </template>
@@ -134,6 +137,13 @@ export default {
             set (timeFormat) {
                 this.$store.commit("setTimeFormat", timeFormat)
             }
+        },
+        appVersion () {
+            let version = "v" + process.env.APP_VERSION
+            if (process.env.NODE_ENV == "development") {
+                version += " (dev)"
+            }
+            return version
         }
     },
     methods: {
@@ -220,6 +230,10 @@ input[type=number]::-webkit-outer-spin-button {
 
 input[type=number] {
     -moz-appearance:textfield;
+}
+
+.app-version {
+    color: lightgray;
 }
 
 @media only screen and (min-width: 768px) {
