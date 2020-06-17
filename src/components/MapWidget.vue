@@ -60,8 +60,7 @@ export default {
             layers: [
                 new TileLayer({
                     source: new OSMSource({
-                        // url: "https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                        url: ""
+                        url: "https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     })
                 })
             ],

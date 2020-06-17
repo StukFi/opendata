@@ -1,6 +1,6 @@
 <template>
     <div v-show="isEnabled">
-        <settings-panel-background @click="disable" />
+        <settings-panel-backdrop @click="disable" />
         <div class="settings-panel container pt-5 pl-5 pr-5 pb-2">
             <field-language />
             <field-date-format />
@@ -18,7 +18,7 @@ import FieldDateFormat from "./FieldDateFormat"
 import FieldTimeFormat from "./FieldTimeFormat"
 import FieldMapLegend from "./FieldMapLegend"
 import ButtonCloseSettings from "./ButtonCloseSettings"
-import SettingsPanelBackground from "./SettingsPanelBackground"
+import SettingsPanelBackdrop from "./SettingsPanelBackdrop"
 import AppVersion from "./AppVersion"
 
 export default {
@@ -29,7 +29,7 @@ export default {
         FieldTimeFormat,
         FieldMapLegend,
         ButtonCloseSettings,
-        SettingsPanelBackground,
+        SettingsPanelBackdrop,
         AppVersion
     },
     data: function () {

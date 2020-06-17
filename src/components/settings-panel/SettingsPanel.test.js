@@ -7,15 +7,14 @@ describe("SettingsPanel.vue", () => {
     beforeEach(() => {
         wrapper = shallowMount(SettingsPanel, {
             mocks: {
-                $store: {},
-                $t: () => {}
+                $store: {}
             }
         })
     })
 
-    it("is opened when the settings button is clicked", async () => {
-    })
-
-    it("is closed when the close button is clicked", () => {
+    it("opens when an event is emitted", async () => {
+        expect(wrapper.element).not.toBeVisible()
+        await wrapper.vm.$root.$emit("settings-panel-open")
+        expect(wrapper.element).toBeVisible()
     })
 })

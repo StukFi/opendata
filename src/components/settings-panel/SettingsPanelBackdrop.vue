@@ -1,18 +1,18 @@
 <template>
     <div
-        class="settings-panel-background"
+        class="settings-panel-backdrop"
         @click="$emit('click')"
     />
 </template>
 
 <script>
 export default {
-    name: "SettingsPanelBackground"
+    name: "SettingsPanelBackdrop"
 }
 </script>
 
 <style>
-.settings-panel-background {
+.settings-panel-backdrop {
     width: 100%;
     height: 100%;
     position: fixed;
