@@ -1,6 +1,5 @@
 import { shallowMount } from "@vue/test-utils"
 import SettingsPanel from "./SettingsPanel"
-import ButtonOpenSettings from "./ButtonOpenSettings"
 
 describe("SettingsPanel.vue", () => {
     let wrapper

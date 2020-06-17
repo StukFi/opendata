@@ -1,55 +1,48 @@
 <template>
-    <div>
-        <button-open-settings @click="enable" />
-        <settings-panel-background
-            v-show="isEnabled"
-            @click="disable"
-        />
-        <div
-            v-show="isEnabled"
-            class="settings-panel container pt-5 pl-5 pr-5 pb-2"
-        >
+    <div v-show="isEnabled">
+        <settings-panel-background @click="disable" />
+        <div class="settings-panel container pt-5 pl-5 pr-5 pb-2">
             <field-language />
             <field-date-format />
             <field-time-format />
             <field-map-legend />
             <button-close-settings @click="disable" />
-            <field-app-version />
+            <app-version />
         </div>
     </div>
 </template>
 
 <script>
-import FieldAppVersion from "./FieldAppVersion"
 import FieldLanguage from "./FieldLanguage"
 import FieldDateFormat from "./FieldDateFormat"
 import FieldTimeFormat from "./FieldTimeFormat"
 import FieldMapLegend from "./FieldMapLegend"
-import ButtonOpenSettings from "./ButtonOpenSettings"
 import ButtonCloseSettings from "./ButtonCloseSettings"
 import SettingsPanelBackground from "./SettingsPanelBackground"
+import AppVersion from "./AppVersion"
 
 export default {
     name: "SettingsPanel",
     components: {
-        FieldAppVersion,
         FieldLanguage,
         FieldDateFormat,
         FieldTimeFormat,
         FieldMapLegend,
-        ButtonOpenSettings,
         ButtonCloseSettings,
-        SettingsPanelBackground
+        SettingsPanelBackground,
+        AppVersion
     },
     data: function () {
         return {
             isEnabled: false
         }
     },
+    mounted () {
+        this.$root.$on("settings-panel-open", this.enable)
+    },
     methods: {
         enable () {
             this.isEnabled = true
-            console.log("LOL")
         },
         disable () {
             this.isEnabled = false

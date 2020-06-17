@@ -6,7 +6,7 @@
 
 <script>
 export default {
-    name: "FieldAppVersion",
+    name: "AppVersion",
     computed: {
         appVersion () {
             let version = "v" + process.env.APP_VERSION

@@ -1,12 +1,12 @@
 import { mount } from "@vue/test-utils"
-import FieldAppVersion from "./FieldAppVersion"
+import AppVersion from "./AppVersion"
 
-describe("FieldAppVersion.vue", () => {
+describe("AppVersion.vue", () => {
     let wrapper
     const appVersion = "1.0.0"
 
     beforeEach(() => {
-        wrapper = mount(FieldAppVersion, {
+        wrapper = mount(AppVersion, {
             computed: {
                 appVersion: () => appVersion
             }

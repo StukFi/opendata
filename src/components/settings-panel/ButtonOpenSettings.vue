@@ -1,7 +1,8 @@
 <template>
     <div
         class="button-open-settings"
-        @click="$emit('click')"
+        :title="$t('settings')"
+        @click="$root.$emit('settings-panel-open')"
     >
         <span class="button-open-settings__icon" />
     </div>
@@ -55,3 +56,14 @@ export default {
     }
 }
 </style>
+
+<i18n>
+{
+    "en": {
+        "settings": "Settings"
+    },
+    "fi": {
+        "settings": "Asetukset"
+    }
+}
+</i18n>
