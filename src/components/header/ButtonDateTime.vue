@@ -3,9 +3,7 @@
         :style="style"
         :disabled="disabled"
         @click="$emit('click')"
-    >
-        {{ text }}
-    </button>
+    />
 </template>
 
 <script>
@@ -15,10 +13,6 @@ export default {
         icon: {
             type: String,
             required: true
-        },
-        text: {
-            type: String,
-            default: ""
         },
         disabled: {
             type: Boolean,
