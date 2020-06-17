@@ -7,7 +7,8 @@
         <feature-popup ref="featurePopup" />
         <map-legend />
         <search-bar />
-        <settings-widget />
+        <button-open-settings />
+        <settings-panel />
         <media-controller />
         <the-header />
     </div>
@@ -18,7 +19,8 @@ import DoseRateLayer from "./DoseRateLayer"
 import FeaturePopover from "./FeaturePopover"
 import FeaturePopup from "./FeaturePopup"
 import MapLegend from "./MapLegend"
-import SettingsWidget from "./SettingsWidget"
+import ButtonOpenSettings from "@/components/settings-panel/ButtonOpenSettings"
+import SettingsPanel from "@/components/settings-panel/SettingsPanel"
 import MediaController from "@/components/media-controller/MediaController"
 import SearchBar from "@/components/search-bar/SearchBar"
 import TheHeader from "@/components/header/TheHeader"
@@ -42,7 +44,8 @@ export default {
         FeaturePopup,
         MapLegend,
         SearchBar,
-        SettingsWidget,
+        ButtonOpenSettings,
+        SettingsPanel,
         MediaController,
         TheHeader
     },
