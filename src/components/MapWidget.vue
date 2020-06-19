@@ -17,8 +17,8 @@
 <script>
 import DoseRateLayer from "./DoseRateLayer"
 import FeaturePopover from "./FeaturePopover"
-import FeaturePopup from "./FeaturePopup"
 import MapLegend from "./MapLegend"
+import FeaturePopup from "@/components/feature-popup/FeaturePopup"
 import ButtonOpenSettings from "@/components/settings-panel/ButtonOpenSettings"
 import SettingsPanel from "@/components/settings-panel/SettingsPanel"
 import MediaController from "@/components/media-controller/MediaController"
@@ -60,7 +60,8 @@ export default {
             layers: [
                 new TileLayer({
                     source: new OSMSource({
-                        url: "https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        // url: "https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        url: ""
                     })
                 })
             ],
