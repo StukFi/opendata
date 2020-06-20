@@ -1,5 +1,7 @@
 import api from "@/api"
 import dateUtils from "@/utils/date"
+import { wait } from "@/utils/promise"
+import store from "@/store/index"
 
 /** Class representing time series data for a single date. */
 class Dataset {
@@ -22,6 +24,7 @@ class TimeSeriesGraph {
         this.startDate = undefined
         this.endDate = undefined
         this.onUpdate = () => {}
+        this.isLoading = false
     }
 
     /**
@@ -38,26 +41,33 @@ class TimeSeriesGraph {
         }
     }
 
-    /** Internal function for updating state to match the configured timespan. */
+    /** Update state to match the configured timespan. */
     async update () {
-        try {
-            let datesToLoad = dateUtils.getDatesBetween(this.startDate, this.endDate)
-            datesToLoad = datesToLoad.filter(date => {
-                return !this.datasets.some(dataset => dataset.date.getTime() == date.getTime())
-            })
+        let datesToLoad = dateUtils.getDatesBetween(this.startDate, this.endDate)
+        datesToLoad = datesToLoad.filter(date => {
+            const isLoaded = this.datasets.some(dataset => dataset.date.getTime() == date.getTime())
+            const isAvailable = store.state.datetime.validDatetimes.some(
+                datetime => datetime.date.getTime() == date.getTime())
+            return !isLoaded && isAvailable
+        })
 
-            await Promise.all(datesToLoad.map(async date => {
+        if (datesToLoad.length > 0) {
+            this.isLoading = true
+            await Promise.allSettled(datesToLoad.map(async date => {
                 const dataPoints = await api.doseRate.getTimeSeries(this.siteId, date)
                 this.datasets.push(new Dataset(date, dataPoints))
             }))
 
-            this.datasets.sort((a, b) => a.date < b.date ? -1 : 1)
-            this.generateDataPoints()
-            this.onUpdate()
+            // Always wait a minimum amount of time. This prevents loading indicators
+            // from flashing if everything loads quickly.
+            await wait(250)
+
+            this.isLoading = false
         }
-        catch (error) {
-            console.log(error)
-        }
+
+        this.datasets.sort((a, b) => a.date < b.date ? -1 : 1)
+        this.generateDataPoints()
+        this.onUpdate()
     }
 
     /**

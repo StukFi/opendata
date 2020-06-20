@@ -1,15 +1,23 @@
 <template>
-    <div ref="graphContainer" />
+    <div class="wrapper">
+        <div ref="graphContainer">
+            <loading-spinner :is-enabled="isLoading" />
+        </div>
+    </div>
 </template>
 
 <script>
 import TimeSeriesGraph from "@/models/TimeSeriesGraph"
+import LoadingSpinner from "./LoadingSpinner"
 import Plotly from "plotly.js/lib/core"
 import localeFI from "plotly.js/lib/locales/fi"
 Plotly.register(localeFI)
 
 export default {
     name: "TimeSeriesGraph",
+    components: {
+        LoadingSpinner
+    },
     props: {
         feature: {
             type: Object,
@@ -19,7 +27,8 @@ export default {
     data: function () {
         return {
             timeSeriesGraph: new TimeSeriesGraph(),
-            plotlyLayout: {
+            plotlyLayout: {},
+            defaultPlotlyLayout: {
                 width: 0,
                 height: 0,
                 dragmode: "pan",
@@ -40,10 +49,14 @@ export default {
         },
         locale () {
             return this.$store.state.settings.locale
+        },
+        isLoading () {
+            return this.timeSeriesGraph.isLoading
         }
     },
     watch: {
         feature: function (feature) {
+            this.plotlyLayout = JSON.parse(JSON.stringify(this.defaultPlotlyLayout))
             this.timeSeriesGraph = new TimeSeriesGraph(feature.get("id"))
             this.timeSeriesGraph.onUpdate = this.draw.bind(this)
             this.timeSeriesGraph.loadTimespan(this.selectedDate, this.selectedDate)
@@ -63,7 +76,7 @@ export default {
             Plotly.react(
                 this.$refs.graphContainer,
                 this.timeSeriesGraph.dataPoints,
-                JSON.parse(JSON.stringify(this.plotlyLayout)),
+                this.plotlyLayout,
                 this.plotlyConfig
             )
         },
@@ -92,3 +105,9 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.wrapper {
+    position: relative;
+}
+</style>
