@@ -3,27 +3,27 @@
         ref="featurePopover"
         class="feature-popover"
     >
-        <p class="feature-popover__site">
-            {{ site }}
-        </p>
-        <div class="feature-popover__dose-rate">
-            <span class="feature-popover__dose-rate-value">{{ doseRate }}<span class="feature-popover__dose-rate-unit"> &#181;sv/h</span></span>
-        </div>
+        <site-name :feature="feature" />
+        <site-dose-rate :feature="feature" />
     </div>
 </template>
 
 <script>
+import SiteName from "./SiteName"
+import SiteDoseRate from "./SiteDoseRate"
 import Overlay from "ol/Overlay"
 
 export default {
     name: "FeaturePopover",
+    components: {
+        SiteName,
+        SiteDoseRate
+    },
     data: function () {
         return {
             isEnabled: true,
             overlay: undefined,
-            site: "",
-            siteId: "",
-            doseRate: 0.0
+            feature: undefined
         }
     },
     mounted: function () {
@@ -39,21 +39,21 @@ export default {
         })
     },
     methods: {
-        open (feature) {
-            if (this.isEnabled) {
-                this.getSiteData(feature)
-                this.overlay.setPosition(feature.getGeometry().getCoordinates())
-            }
-        },
-        close () {
-            this.overlay.setPosition(undefined)
-        },
         enable () {
             this.isEnabled = true
         },
         disable () {
             this.isEnabled = false
             this.close()
+        },
+        open (feature) {
+            if (this.isEnabled) {
+                this.feature = feature
+                this.overlay.setPosition(feature.getGeometry().getCoordinates())
+            }
+        },
+        close () {
+            this.overlay.setPosition(undefined)
         },
         update (layer) {
             var features = layer.getSource().getFeatures()
@@ -63,17 +63,12 @@ export default {
 
             for (var i = 0; i < features.length; ++i) {
                 if (features[i].get("id") == this.siteId) {
-                    this.getSiteData(features[i])
+                    this.feature = features[i]
                     return
                 }
             }
 
-            this.doseRate = "-"
-        },
-        getSiteData (feature) {
-            this.site = feature.get("site")
-            this.siteId = feature.get("id")
-            this.doseRate = feature.get("doseRate")
+            this.feature = undefined
         }
     }
 }
@@ -111,30 +106,5 @@ export default {
     border-top-color: #cccccc;
     border-width: 11px;
     margin-left: -11px;
-}
-
-.feature-popover__site {
-    text-align: center;
-    font-weight: bold;
-    font-size: 1.15em;
-    margin: 0;
-}
-
-.feature-popover__dose-rate {
-    text-align: center;
-    font-size: 2.15em;
-    margin: 0.5em 0;
-}
-
-.feature-popover__dose-rate-value {
-    position: relative;
-    line-height: 100%;
-}
-
-.feature-popover__dose-rate-unit {
-    position: absolute;
-    white-space: pre;
-    font-size: 40%;
-    bottom: 0;
 }
 </style>
