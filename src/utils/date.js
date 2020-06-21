@@ -1,21 +1,20 @@
 export default {
-    getDatesBetween (startDate, endDate, includeStartDate, includeEndDate) {
+    /**
+     * Get dates between two dates, including the argument dates.
+     * @param {Date} startDate
+     * @param {Date} endDate
+     * @return {Array}
+     */
+    getDatesBetween (startDate, endDate) {
         var dates = []
         var currentDate = new Date(startDate)
         var lastDate = new Date(endDate)
-
-        if (!includeStartDate) {
-            currentDate.setDate(currentDate.getDate() + 1)
-        }
-
-        if (!includeEndDate) {
-            lastDate.setDate(lastDate.getDate() - 1)
-        }
 
         while (currentDate <= lastDate) {
             dates.push(new Date(currentDate))
             currentDate.setDate(currentDate.getDate() + 1)
         }
+
         return dates
     },
     convertTimeTo12HourClock (time) {

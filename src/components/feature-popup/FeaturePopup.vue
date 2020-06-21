@@ -3,53 +3,48 @@
         ref="featurePopup"
         class="feature-popup"
     >
-        <a
-            ref="featurePopupCloser"
-            href="#"
-            class="feature-popup__closer"
-            @click="close()"
-        >&times;</a>
-        <p class="feature-popup__site">
-            {{ site }}
-        </p>
-        <div class="feature-popup__dose-rate">
-            <span class="feature-popup__dose-rate-value">{{ doseRate }}<span class="feature-popup__dose-rate-unit"> &#181;sv/h</span></span>
-        </div>
-        <feature-popup-graph :site-id="siteId" />
+        <button-close-popup @click="close" />
+        <site-name :feature="feature" />
+        <site-dose-rate :feature="feature" />
+        <time-series-graph :feature="feature" />
     </div>
 </template>
 
 <script>
 import Overlay from "ol/Overlay"
-import FeaturePopupGraph from "./FeaturePopupGraph"
+import ButtonClosePopup from "./ButtonClosePopup"
+import SiteName from "./SiteName"
+import SiteDoseRate from "./SiteDoseRate"
+import TimeSeriesGraph from "./TimeSeriesGraph"
 
 export default {
     name: "FeaturePopup",
     components: {
-        FeaturePopupGraph
+        ButtonClosePopup,
+        SiteName,
+        SiteDoseRate,
+        TimeSeriesGraph
     },
     data: function () {
         return {
             overlay: undefined,
-            site: "",
-            siteId: "",
-            doseRate: 0.0
+            feature: undefined
         }
     },
     mounted: function () {
-        this.$root.$on("featureClicked", this.open)
-        this.$root.$on("featureSelectedViaSearch", this.open)
-        this.$root.$on("emptyMapLocationClicked", this.close)
-        this.$root.$on("doseRateLayerChanged", this.update)
-
         this.overlay = new Overlay({
             element: this.$refs.featurePopup,
             position: undefined
         })
+
+        this.$root.$on("featureClicked", this.open)
+        this.$root.$on("featureSelectedViaSearch", this.open)
+        this.$root.$on("emptyMapLocationClicked", this.close)
+        this.$root.$on("doseRateLayerChanged", this.update)
     },
     methods: {
         open (feature) {
-            this.getSiteData(feature)
+            this.feature = feature
             this.overlay.setPosition(feature.getGeometry().getCoordinates())
             this.$root.$emit("featurePopupOpened", feature)
         },
@@ -64,18 +59,13 @@ export default {
             }
 
             for (var i = 0; i < features.length; ++i) {
-                if (features[i].get("id") == this.siteId) {
-                    this.getSiteData(features[i])
+                if (!this.feature || features[i].get("id") == this.feature.get("id")) {
+                    this.feature = features[i]
                     return
                 }
             }
 
-            this.doseRate = "-"
-        },
-        getSiteData (feature) {
-            this.site = feature.get("site")
-            this.siteId = feature.get("id")
-            this.doseRate = feature.get("doseRate")
+            this.feature = undefined
         }
     }
 }
@@ -125,56 +115,12 @@ export default {
     margin-left: -11px;
 }
 
-.feature-popup__site {
-    text-align: center;
-    font-weight: bold;
-    font-size: 1.15em;
-    margin: 0;
-}
-
-.feature-popup__dose-rate {
-    text-align: center;
-    font-size: 2.15em;
-    margin: 0.5em 0;
-}
-
-.feature-popup__dose-rate-value {
-    position: relative;
-    line-height: 100%;
-}
-
-.feature-popup__dose-rate-unit {
-    position: absolute;
-    white-space: pre;
-    font-size: 40%;
-    bottom: 0;
-}
-
-.feature-popup__closer {
-    text-decoration: none;
-    position: absolute;
-    top: 0;
-    right: 12px;
-    color: black;
-    font-size: 2em;
-}
-
-.feature-popup__closer:hover {
-    color: black;
-    text-decoration: none;
-}
-
-.feature-popup__closer:focus {
-    outline: none;
-}
-
 @media only screen and (min-width: 768px) {
     .feature-popup {
         width: 450px;
         min-height: 385px;
         left: -225px;
         --pseudo-left: 224px;
-
     }
 }
 </style>
