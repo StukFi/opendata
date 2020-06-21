@@ -13,8 +13,8 @@
 <script>
 import Overlay from "ol/Overlay"
 import ButtonClosePopup from "./ButtonClosePopup"
-import SiteName from "./SiteName"
-import SiteDoseRate from "./SiteDoseRate"
+import SiteName from "@/components/feature-popover/SiteName"
+import SiteDoseRate from "@/components/feature-popover/SiteDoseRate"
 import TimeSeriesGraph from "./TimeSeriesGraph"
 
 export default {
