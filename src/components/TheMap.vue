@@ -37,7 +37,7 @@ import TileLayer from "ol/layer/Tile"
 import View from "ol/View"
 
 export default {
-    name: "MapWidget",
+    name: "TheMap",
     components: {
         DoseRateLayer,
         FeaturePopover,

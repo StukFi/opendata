@@ -1,14 +1,14 @@
 <template>
-    <map-widget />
+    <the-map />
 </template>
 
 <script>
-import MapWidget from "./components/MapWidget"
+import TheMap from "./components/TheMap"
 
 export default {
     name: "App",
     components: {
-        MapWidget
+        TheMap
     },
     mounted () {
         this.$store.dispatch("initialize")
