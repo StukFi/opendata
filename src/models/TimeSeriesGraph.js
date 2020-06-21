@@ -36,7 +36,7 @@ class TimeSeriesGraph {
         this.startDate = startDate
         this.endDate = endDate
 
-        if (this.startDate && this.endDate) {
+        if (this.startDate && this.endDate && this.siteId) {
             this.update()
         }
     }
