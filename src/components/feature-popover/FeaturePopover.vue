@@ -85,7 +85,8 @@ export default {
     border: 1px solid #cccccc;
 }
 
-.feature-popover:after, .feature-popover:before {
+.feature-popover:after,
+.feature-popover:before {
     left: 139px;
     top: 100%;
     border: solid transparent;
