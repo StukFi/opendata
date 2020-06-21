@@ -6,7 +6,7 @@ For more information on STUK's and FMI's open data, see the following resources:
 - https://www.stuk.fi/avoin-data
 - https://en.ilmatieteenlaitos.fi/open-data
 
-## Contents
+### Contents
 - [Using the application](#using-the-application)
 - [Building the application](#building-the-application)
 - [Hosting the application](#hosting-the-application)
