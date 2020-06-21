@@ -2,10 +2,6 @@
 
 Opendata is an independent web application for viewing external radiation results from STUK's monitoring network. The application gets its data from the Finnish Meteorological Institute's open data API.  The included Python scripts can also be used stand-alone to get the data in GeoJSON format for other purposes. A demo of the application is available at [stukfi.github.io](https://stukfi.github.io/).
 
-For more information on STUK's and FMI's open data, see the following resources:
-- https://www.stuk.fi/avoin-data
-- https://en.ilmatieteenlaitos.fi/open-data
-
 ### Contents
 - [Using the application](#using-the-application)
 - [Building the application](#building-the-application)
@@ -14,6 +10,7 @@ For more information on STUK's and FMI's open data, see the following resources:
 - [Development Tools](#development-tools)
 - [Dependencies](#dependencies)
 - [Browser and Device Support](#browser-and-device-support)
+- [Links](#links)
 
 ## Using the application
 
@@ -48,23 +45,23 @@ The application is configurable via a settings page. You can open the settings p
 
 ## Hosting the application
 
-Build the application and point a web server to the "dist" directory. For local testing use for example the "Web Server for Chrome" -plugin or the "http-server" command-line http server from npm. For public hosting refer to your web server of choice's documentation.
+Build the application and point a web server to the `dist` directory. For local testing use for example the "Web Server for Chrome" -plugin or the "http-server" command-line http server from npm. For public hosting refer to your web server of choice's documentation.
 
 The application by default gets its map tiles from OpenStreetMap's public servers. For public hosting you should configure the application to use local tiles or some other service. The map tile source URL is configured in the map's Vue component file.
 
 ## Getting data
 
-The application does not contain any data by default. Python scripts for fetching and processing data are in the "scripts" directory.
+The application does not contain any data by default. Python scripts for fetching and processing data are in the `scripts` directory.
 
-Create a copy of the file "settings.example.json" in the "scripts" directory and rename it "settings.json". Change the value of the "data_directory" key to the path of the directory where you want data to be stored. The name of the directory must be "data". For example, "/var/www/html/opendata/data". Note that the path does not end in a forward slash. The data directory should be located next to the "index.html" file at the root of the opendata web hosting directory. You can alternatively create a symlink that points to another location.
+Create a copy of the file `settings.example.json` in the scripts directory and rename it `settings.json`. Change the value of the `data_directory` key to the path of the directory where you want data to be stored. The name of the directory must be `data`. For example, `/var/www/html/opendata/data`. Note that the path does not end in a forward slash. The data directory should be located next to the `index.html` file at the root of the opendata web hosting directory. You can alternatively create a symlink that points to another location.
 
-"get_data.py" is the main script. It takes one required argument for the type of data to get. This is currently always "dose_rates". Running the script without other arguments fetches the most recent results. Use the "--span" option and datetime arguments to fetch many results. Use the "--help" option for detailed technical instructions.
+`get_data.py` is the main script. It takes one required argument for the type of data to get. This is currently always `dose_rates`. Running the script without other arguments fetches the most recent results. Use the `--span` option and datetime arguments to fetch many results. Use the `--help` option for detailed technical instructions.
 
-To keep the application up-to-date schedule the "get_data.py" script. The following crontab configuration runs the script every 10 minutes. The configuration changes directory to the scripts directory. This is due to relative paths in the scripts. Task Scheduler provides similar functionality on Windows.
+To keep the application up-to-date schedule the `get_data.py` script. The following crontab configuration runs the script every 10 minutes. The configuration changes directory to the scripts directory. This is due to relative paths in the scripts. Task Scheduler provides similar functionality on Windows.
 
 `*/10 * * * * cd /home/lma/opendata/scripts/; /bin/python3 /home/lma/opendata/scripts/get_data.py dose_rates`
 
-The "get_data.py" script also generates time series data and updates a metadata file. It performs these tasks when it fetches new results. To regenerate all time series data run the "time_series.py" script. To update the metadata file run the "metadata.py" script. You do not need to run these scripts under normal operation.
+The `get_data.py` script also generates time series data and updates a metadata file. It performs these tasks when it fetches new results. To regenerate all time series data run the `time_series.py` script. To update the metadata file run the `metadata.py` script. You do not need to run these scripts under normal operation.
 
 ## Development Tools
 
@@ -91,3 +88,9 @@ Recommended development tools:
 The application is usable on both mobile devices and desktop computers. Some features such as the media controller are not available on small displays. Automatic scaling is not implemented for large high resolution displays. To improve usability on such displays manually zoom the web page.
 
 Known unsupported browsers include all versions of Internet Explorer.
+
+## Links
+
+For more information on STUK's and FMI's open data, see the following resources:
+- https://www.stuk.fi/avoin-data
+- https://en.ilmatieteenlaitos.fi/open-data
