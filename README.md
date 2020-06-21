@@ -7,9 +7,9 @@ Opendata is an independent web application for viewing external radiation result
 - [Building the application](#building-the-application)
 - [Hosting the application](#hosting-the-application)
 - [Getting data](#getting-data)
-- [Development Tools](#development-tools)
+- [Development tools](#development-tools)
 - [Dependencies](#dependencies)
-- [Browser and Device Support](#browser-and-device-support)
+- [Browser and device support](#browser-and-device-support)
 - [Links](#links)
 
 ## Using the application
@@ -63,7 +63,7 @@ To keep the application up-to-date schedule the `get_data.py` script. The follow
 
 The `get_data.py` script also generates time series data and updates a metadata file. It performs these tasks when it fetches new results. To regenerate all time series data run the `time_series.py` script. To update the metadata file run the `metadata.py` script. You do not need to run these scripts under normal operation.
 
-## Development Tools
+## Development tools
 
 Recommended development tools:
 
@@ -83,7 +83,7 @@ Recommended development tools:
 - npm
 - Python 3
 
-## Browser and Device Support
+## Browser and device support
 
 The application is usable on both mobile devices and desktop computers. Some features such as the media controller are not available on small displays. Automatic scaling is not implemented for large high resolution displays. To improve usability on such displays manually zoom the web page.
 
