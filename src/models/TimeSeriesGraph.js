@@ -54,19 +54,24 @@ class TimeSeriesGraph {
         if (datesToLoad.length > 0) {
             this.isLoading = true
             await Promise.allSettled(datesToLoad.map(async date => {
-                const dataPoints = await api.doseRate.getTimeSeries(this.siteId, date)
-                this.datasets.push(new Dataset(date, dataPoints))
+                let dataPoints = undefined
+                try {
+                    dataPoints = await api.doseRate.getTimeSeries(this.siteId, date)
+                }
+                finally {
+                    this.datasets.push(new Dataset(date, dataPoints))
+                }
             }))
 
             // Always wait a minimum amount of time. This prevents loading indicators
-            // from flashing if everything loads quickly.
+            // from flashing if loading finishes quickly.
             await wait(250)
 
+            this.datasets.sort((a, b) => a.date < b.date ? -1 : 1)
+            this.generateDataPoints()
             this.isLoading = false
         }
 
-        this.datasets.sort((a, b) => a.date < b.date ? -1 : 1)
-        this.generateDataPoints()
         this.onUpdate()
     }
 
@@ -77,10 +82,12 @@ class TimeSeriesGraph {
         let dates = []
         let values = []
         for (var i = 0; i < this.datasets.length; ++i) {
-            for (var j = 0; j < this.datasets[i].dataPoints.length; ++j) {
-                const currentDataPoint = this.datasets[i].dataPoints[j]
-                dates.push(new Date(currentDataPoint.e).toISOString())
-                values.push(currentDataPoint.r)
+            if (this.datasets[i].dataPoints) {
+                for (var j = 0; j < this.datasets[i].dataPoints.length; ++j) {
+                    const currentDataPoint = this.datasets[i].dataPoints[j]
+                    dates.push(new Date(currentDataPoint.e).toISOString())
+                    values.push(currentDataPoint.r)
+                }
             }
         }
 

@@ -52,14 +52,17 @@ export default {
         },
         isLoading () {
             return this.timeSeriesGraph.isLoading
+        },
+        featureId () {
+            return this.feature ? this.feature.get("id") : undefined
         }
     },
     watch: {
-        feature: function (feature) {
-            this.plotlyLayout = JSON.parse(JSON.stringify(this.defaultPlotlyLayout))
-            this.timeSeriesGraph = new TimeSeriesGraph(feature.get("id"))
-            this.timeSeriesGraph.onUpdate = this.draw.bind(this)
-            this.timeSeriesGraph.loadTimespan(this.selectedDate, this.selectedDate)
+        featureId: function () {
+            this.reset()
+        },
+        selectedDate: function () {
+            this.reset()
         },
         locale: function (locale) {
             this.plotlyConfig.locale = locale
@@ -101,6 +104,12 @@ export default {
             }
 
             this.draw()
+        },
+        reset () {
+            this.plotlyLayout = JSON.parse(JSON.stringify(this.defaultPlotlyLayout))
+            this.timeSeriesGraph = new TimeSeriesGraph(this.featureId)
+            this.timeSeriesGraph.onUpdate = this.draw.bind(this)
+            this.timeSeriesGraph.loadTimespan(this.selectedDate, this.selectedDate)
         }
     }
 }
