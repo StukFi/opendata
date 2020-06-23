@@ -1,4 +1,4 @@
-# opendata ![Build](https://github.com/StukFi/opendata/workflows/Build/badge.svg?branch=master)
+# opendata [![Build](https://github.com/StukFi/opendata/workflows/Build/badge.svg?branch=master)](https://github.com/StukFi/opendata/actions)
 
 Opendata is an independent web application for viewing external radiation results from STUK's monitoring network. The application gets its data from the Finnish Meteorological Institute's open data API.  The included Python scripts can also be used stand-alone to get the data in GeoJSON format for other purposes. A demo of the application is available at [stukfi.github.io](https://stukfi.github.io/).
 
