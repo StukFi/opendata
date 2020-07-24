@@ -62,7 +62,7 @@ def download_data(args):
             dataset_number += 1
 
     else:
-        end_time = datetime.utcnow() - timedelta(seconds=1800)
+        end_time = datetime.utcnow() - timedelta(seconds=2400)
         start_time = end_time - timedelta(seconds=559)
         logging.info("Downloading dataset")
         dataset = fmi_utils.wfs_request(start_time, end_time, "dose_rates")
