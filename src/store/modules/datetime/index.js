@@ -4,7 +4,7 @@ import getters from "./getters"
 
 export default {
     state: {
-        validDatetimes: [],
+        availableDatasets: [],
         date: undefined,
         time: undefined
     },

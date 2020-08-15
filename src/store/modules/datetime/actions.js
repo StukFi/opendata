@@ -9,27 +9,27 @@ export default {
         }
     },
     initialize ({ dispatch }) {
-        dispatch("updateAvailableDatetimes").then(function () {
+        dispatch("queryAvailableDatasets").then(function () {
             dispatch("selectMostRecentDate")
             dispatch("selectMostRecentTime")
         })
 
         // Update available data every 10 minutes.
-        setInterval(() => { dispatch("updateAvailableDatetimes") }, 600000)
+        setInterval(() => { dispatch("queryAvailableDatasets") }, 600000)
     },
-    async updateAvailableDatetimes ({ commit }) {
-        const availableData = await api.doseRate.getMetadata()
-        commit("setValidDatetimes", availableData)
+    async queryAvailableDatasets({ commit }) {
+        const availableDatasets = await api.doseRate.queryAvailableDatasets()
+        commit("setAvailableDatasets", availableDatasets)
     },
     selectMostRecentDate ({ state, dispatch }) {
-        if (state.validDatetimes.length == 0) {
+        if (state.availableDatasets.length == 0) {
             return
         }
 
-        var mostRecentDate = state.validDatetimes[0].date
-        for (var i = 0; i < state.validDatetimes.length; ++i) {
-            if (state.validDatetimes[i].date > mostRecentDate) {
-                mostRecentDate = state.validDatetimes[i].date
+        var mostRecentDate = state.availableDatasets[0].date
+        for (var i = 0; i < state.availableDatasets.length; ++i) {
+            if (state.availableDatasets[i].date > mostRecentDate) {
+                mostRecentDate = state.availableDatasets[i].date
             }
         }
 
@@ -71,17 +71,17 @@ export default {
         }
     },
     decrementDate ({ dispatch, state }) {
-        var dates = state.validDatetimes.map(function (datetime) { return datetime.date.toDateString() })
+        var dates = state.availableDatasets.map(function (datetime) { return datetime.date.toDateString() })
         var index = dates.indexOf(state.date.toDateString())
         if (index > 0) {
-            dispatch("setDate", state.validDatetimes[--index].date)
+            dispatch("setDate", state.availableDatasets[--index].date)
         }
     },
     incrementDate ({ dispatch, state }) {
-        var dates = state.validDatetimes.map(function (datetime) { return datetime.date.toDateString() })
+        var dates = state.availableDatasets.map(function (datetime) { return datetime.date.toDateString() })
         var index = dates.indexOf(state.date.toDateString())
-        if (index >= 0 && index < state.validDatetimes.length - 1) {
-            dispatch("setDate", state.validDatetimes[++index].date)
+        if (index >= 0 && index < state.availableDatasets.length - 1) {
+            dispatch("setDate", state.availableDatasets[++index].date)
         }
     }
 }

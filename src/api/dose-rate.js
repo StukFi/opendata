@@ -2,14 +2,28 @@ import http from "@/utils/http"
 
 export default {
     /**
-     * Get metadata file.
+     * Query a list of available datasets. Each element consists of a date
+     * and the times for which a dataset exists on that date.
+     * @return {Array}
      */
-    async getMetadata () {
+    async queryAvailableDatasets () {
         const response = await http.get("data/dose_rates/metadata.json")
-        return response.body.available_data
+        let availableDatasets = response.body.available_data
+
+        availableDatasets.forEach(element => {
+            element.date = new Date(element.date)
+            element.times.sort()
+        })
+
+        // Sort available datasets chronologically by date.
+        availableDatasets.sort((elementA, elementB) => {
+            return new Date(elementA.date) - new Date(elementB.date)
+        })
+
+        return availableDatasets
     },
     /**
-     * Get a time series file.
+     * Get a time series file for a given site and date.
      * @param {String} siteId
      * @param {Date} date
      */
