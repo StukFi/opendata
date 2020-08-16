@@ -4,7 +4,7 @@ import TimepickerListItem from "./TimepickerListItem"
 const localVue = createLocalVue()
 const mockStore = {
     commit: jest.fn(),
-    state: { settings: { timeFormat: "24h" }}
+    state: { settings: { settings: { timeFormat: "24h" }}}
 }
 
 function customMount (computed = {}) {

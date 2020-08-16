@@ -2,10 +2,10 @@
     <div v-show="isEnabled">
         <settings-panel-backdrop @click="disable" />
         <div class="settings-panel container pt-5 pl-5 pr-5 pb-2">
-            <field-language />
-            <field-date-format />
-            <field-time-format />
-            <field-map-legend />
+            <field-language :settings="settings" />
+            <field-date-format :settings="settings" />
+            <field-time-format :settings="settings" />
+            <field-map-legend :settings="settings" />
             <button-close-settings @click="disable" />
             <app-version />
         </div>
@@ -20,6 +20,8 @@ import FieldMapLegend from "./FieldMapLegend"
 import ButtonCloseSettings from "./ButtonCloseSettings"
 import SettingsPanelBackdrop from "./SettingsPanelBackdrop"
 import AppVersion from "./AppVersion"
+import Settings from "@/models/Settings"
+import cloneDeep from "lodash/cloneDeep"
 
 export default {
     name: "SettingsPanel",
@@ -34,7 +36,16 @@ export default {
     },
     data: function () {
         return {
-            isEnabled: false
+            isEnabled: false,
+            settings: new Settings()
+        }
+    },
+    watch: {
+        settings: {
+            deep: true,
+            handler () {
+                this.saveSettings()
+            }
         }
     },
     mounted () {
@@ -42,11 +53,15 @@ export default {
     },
     methods: {
         enable () {
+            this.settings = cloneDeep(this.$store.state.settings.settings)
             this.isEnabled = true
         },
         disable () {
             this.isEnabled = false
-            this.$store.commit("saveDoseRateRanges")
+            this.saveSettings()
+        },
+        saveSettings () {
+            this.$store.commit("setSettings", cloneDeep(this.settings))
             this.$root.$emit("settingsChanged")
         }
     }

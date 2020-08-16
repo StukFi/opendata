@@ -30,7 +30,7 @@ export default {
 
             time = time.slice(0, 2) + ":" + time.slice(2, 4)
 
-            switch (this.$store.state.settings.timeFormat) {
+            switch (this.$store.state.settings.settings.timeFormat) {
             case "12h":
                 time = dateUtils.convertTimeTo12HourClock(time)
                 return time.split(" ")[0] + "Z " + time.split(" ")[1]
