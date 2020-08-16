@@ -40,6 +40,14 @@ export default {
             settings: new Settings()
         }
     },
+    watch: {
+        settings: {
+            deep: true,
+            handler () {
+                this.saveSettings()
+            }
+        }
+    },
     mounted () {
         this.$root.$on("settings-panel-open", this.enable)
     },
@@ -55,14 +63,6 @@ export default {
         saveSettings () {
             this.$store.commit("setSettings", cloneDeep(this.settings))
             this.$root.$emit("settingsChanged")
-        }
-    },
-    watch: {
-        settings: {
-            deep: true,
-            handler () {
-                this.saveSettings()
-            }
         }
     }
 }
