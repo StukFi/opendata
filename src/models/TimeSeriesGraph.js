@@ -46,8 +46,8 @@ class TimeSeriesGraph {
         let datesToLoad = dateUtils.getDatesBetween(this.startDate, this.endDate)
         datesToLoad = datesToLoad.filter(date => {
             const isLoaded = this.datasets.some(dataset => dataset.date.getTime() == date.getTime())
-            const isAvailable = store.state.datetime.validDatetimes.some(
-                datetime => datetime.date.getTime() == date.getTime())
+            const isAvailable = store.state.datetime.availableDatasets.some(
+                element => element.date.getTime() == date.getTime())
             return !isLoaded && isAvailable
         })
 

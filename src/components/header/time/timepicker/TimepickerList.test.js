@@ -4,12 +4,12 @@ import TimepickerListItem from "./TimepickerListItem"
 
 describe("TimepickerList.vue", () => {
     let wrapper
-    const validTimesForCurrentDate = ["000000", "060000", "120000"]
+    const availableTimesForSelectedDate = ["000000", "060000", "120000"]
 
     beforeEach(() => {
         wrapper = shallowMount(TimepickerList, {
             computed: {
-                validTimesForCurrentDate: () => validTimesForCurrentDate
+                availableTimesForSelectedDate: () => availableTimesForSelectedDate
             }
         })
 
@@ -17,7 +17,7 @@ describe("TimepickerList.vue", () => {
     })
 
     it("renders a list item for every available time of the selected date", () => {
-        expect(wrapper.findAllComponents(TimepickerListItem)).toHaveLength(validTimesForCurrentDate.length)
+        expect(wrapper.findAllComponents(TimepickerListItem)).toHaveLength(availableTimesForSelectedDate.length)
     })
 
     it("is visible only when enabled", async () => {

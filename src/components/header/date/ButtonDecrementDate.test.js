@@ -19,12 +19,12 @@ describe("ButtonDecrementDate.vue", () => {
     let wrapper
 
     beforeEach(() => {
-        wrapper = customMount({ isFirstDateSelected: () => false })
+        wrapper = customMount({ isOldestDateSelected: () => false })
     })
 
     it("is disabled when the first available date is selected", () => {
         expect(wrapper.findComponent(ButtonDateTime).props().disabled).toBe(false)
-        wrapper = customMount({ isFirstDateSelected: () => true })
+        wrapper = customMount({ isOldestDateSelected: () => true })
         expect(wrapper.findComponent(ButtonDateTime).props().disabled).toBe(true)
     })
 

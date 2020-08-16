@@ -19,12 +19,12 @@ describe("ButtonIncrementDate.vue", () => {
     let wrapper
 
     beforeEach(() => {
-        wrapper = customMount({ isLastDateSelected: () => false })
+        wrapper = customMount({ isNewestDateSelected: () => false })
     })
 
     it("is disabled when the last available date is selected", () => {
         expect(wrapper.findComponent(ButtonDateTime).props().disabled).toBe(false)
-        wrapper = customMount({ isLastDateSelected: () => true })
+        wrapper = customMount({ isNewestDateSelected: () => true })
         expect(wrapper.findComponent(ButtonDateTime).props().disabled).toBe(true)
     })
 

@@ -1,8 +1,8 @@
 import Vue from "vue"
 import Vuex from "vuex"
 
-import datetime from "./modules/datetime-module.js"
-import settings from "./modules/settings-module.js"
+import datetime from "./modules/datetime/index"
+import settings from "./modules/settings/index"
 
 Vue.use(Vuex)
 

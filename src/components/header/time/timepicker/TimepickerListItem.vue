@@ -20,7 +20,7 @@ export default {
     },
     computed: {
         selectedTime () {
-            return this.$store.state.datetime.time
+            return this.$store.state.datetime.selectedTime
         },
         formattedTime () {
             let time = this.time.slice(0, 2) + ":" + this.time.slice(2, 4)

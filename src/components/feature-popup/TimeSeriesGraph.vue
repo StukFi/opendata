@@ -45,7 +45,7 @@ export default {
     },
     computed: {
         selectedDate () {
-            return this.$store.state.datetime.date
+            return this.$store.state.datetime.selectedDate
         },
         locale () {
             return this.$store.state.settings.locale

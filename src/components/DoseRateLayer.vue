@@ -45,13 +45,13 @@ export default {
     },
     computed: {
         datasetFilePath () {
-            if (!this.$store.state.datetime.date) {
+            if (!this.$store.state.datetime.selectedDate) {
                 return ""
             }
 
             return "data/dose_rates/datasets/" +
-                this.$store.state.datetime.date.toISOString().split("T")[0] + "T" +
-                this.$store.state.datetime.time + ".json"
+                this.$store.state.datetime.selectedDate.toISOString().split("T")[0] + "T" +
+                this.$store.state.datetime.selectedTime + ".json"
         },
         doseRateRanges () {
             return this.$store.state.settings.doseRateRanges

@@ -23,7 +23,7 @@ export default {
     },
     computed: {
         formattedTime () {
-            let time = this.$store.state.datetime.time
+            let time = this.$store.state.datetime.selectedTime
             if (!time) {
                 return
             }

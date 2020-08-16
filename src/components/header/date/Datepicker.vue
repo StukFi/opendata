@@ -28,7 +28,7 @@ export default {
     computed: {
         date: {
             get () {
-                return this.$store.state.datetime.date
+                return this.$store.state.datetime.selectedDate
             },
             set (date) {
                 this.$store.dispatch("setDate", date)
@@ -47,18 +47,18 @@ export default {
             }
         },
         disabledDates () {
-            var validDatetimes = this.$store.state.datetime.validDatetimes
+            var availableDatasets = this.$store.state.datetime.availableDatasets
             var disabledDates = {
                 ranges: [],
                 dates: []
             }
 
-            if (validDatetimes.length == 0) {
+            if (availableDatasets.length == 0) {
                 return disabledDates
             }
 
             // Disable dates from the start of Unix time to the first valid date.
-            var firstValidDate = validDatetimes[0].date
+            var firstValidDate = availableDatasets[0].date
             var datesBeforeFirstValidDate = {
                 from: new Date(0),
                 to: new Date(firstValidDate)
@@ -66,7 +66,7 @@ export default {
             disabledDates.ranges.push(datesBeforeFirstValidDate)
 
             // Disable dates from the next ten years after the last valid date.
-            var lastValidDate = validDatetimes.slice(-1)[0].date
+            var lastValidDate = availableDatasets.slice(-1)[0].date
             var datesAfterLastValidDate = {
                 from: lastValidDate,
                 to: new Date(lastValidDate.getFullYear() + 10, lastValidDate.getMonth(),
@@ -80,7 +80,7 @@ export default {
                 return datetime.date.toDateString() == currentDate.toDateString()
             }
             while (currentDate < lastValidDate) {
-                if (!validDatetimes.some(dateExists)) {
+                if (!availableDatasets.some(dateExists)) {
                     disabledDates.dates.push(new Date(currentDate))
                 }
 
