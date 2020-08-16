@@ -47,7 +47,7 @@ class TimeSeriesGraph {
         datesToLoad = datesToLoad.filter(date => {
             const isLoaded = this.datasets.some(dataset => dataset.date.getTime() == date.getTime())
             const isAvailable = store.state.datetime.availableDatasets.some(
-                datetime => datetime.date.getTime() == date.getTime())
+                element => element.date.getTime() == date.getTime())
             return !isLoaded && isAvailable
         })
 

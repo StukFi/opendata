@@ -28,7 +28,7 @@ export default {
     computed: {
         date: {
             get () {
-                return this.$store.state.datetime.date
+                return this.$store.state.datetime.selectedDate
             },
             set (date) {
                 this.$store.dispatch("setDate", date)

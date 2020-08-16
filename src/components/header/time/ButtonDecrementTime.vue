@@ -1,7 +1,7 @@
 <template>
     <button-date-time
         icon="caret-left"
-        :disabled="isFirstTimeSelected"
+        :disabled="isOldestTimeSelected"
         @click="decrementTime()"
     />
 </template>
@@ -15,8 +15,8 @@ export default {
         ButtonDateTime
     },
     computed: {
-        isFirstTimeSelected () {
-            return this.$store.getters.isFirstTimeSelected
+        isOldestTimeSelected () {
+            return this.$store.getters.isOldestTimeSelected
         }
     },
     methods: {

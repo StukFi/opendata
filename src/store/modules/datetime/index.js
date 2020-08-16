@@ -5,8 +5,8 @@ import getters from "./getters"
 export default {
     state: {
         availableDatasets: [],
-        date: undefined,
-        time: undefined
+        selectedDate: undefined,
+        selectedTime: undefined
     },
     mutations: mutations,
     actions: actions,

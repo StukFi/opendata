@@ -1,87 +1,87 @@
 import api from "@/api"
 
 export default {
-    setDate ({ state, commit, dispatch, getters }, date) {
-        commit("setDate", date)
+    async initialize ({ dispatch }) {
+        await dispatch("queryAvailableDatasets")
+        await dispatch("selectNewestDate")
+        await dispatch("selectNewestTime")
 
-        if (!getters.validTimesForCurrentDate.includes(state.time)) {
-            dispatch("selectMostRecentTime")
-        }
-    },
-    initialize ({ dispatch }) {
-        dispatch("queryAvailableDatasets").then(function () {
-            dispatch("selectMostRecentDate")
-            dispatch("selectMostRecentTime")
-        })
-
-        // Update available data every 10 minutes.
+        // Update available datasets every 10 minutes.
         setInterval(() => { dispatch("queryAvailableDatasets") }, 600000)
     },
     async queryAvailableDatasets({ commit }) {
         const availableDatasets = await api.doseRate.queryAvailableDatasets()
         commit("setAvailableDatasets", availableDatasets)
     },
-    selectMostRecentDate ({ state, dispatch }) {
+    selectNewestDate ({ state, dispatch }) {
         if (state.availableDatasets.length == 0) {
             return
         }
 
-        var mostRecentDate = state.availableDatasets[0].date
-        for (var i = 0; i < state.availableDatasets.length; ++i) {
-            if (state.availableDatasets[i].date > mostRecentDate) {
-                mostRecentDate = state.availableDatasets[i].date
-            }
-        }
-
-        dispatch("setDate", mostRecentDate)
+        const newestDate = state.availableDatasets.slice(-1)[0].date
+        dispatch("setDate", newestDate)
     },
-    selectMostRecentTime ({getters, commit }) {
-        var validTimes = getters.validTimesForCurrentDate
-        if (validTimes.length == 0) {
+    selectNewestTime ({getters, commit }) {
+        const availableTimesForSelectedDate = getters.availableTimesForSelectedDate
+        if (availableTimesForSelectedDate.length == 0) {
             return
         }
 
-        var mostRecentTime = validTimes[validTimes.length - 1]
-        commit("setTime", mostRecentTime)
+        var newestTime = availableTimesForSelectedDate.slice(-1)[0]
+        commit("setTime", newestTime)
     },
     decrementTime ({ commit, dispatch, getters, state }) {
-        if (getters.isFirstDateSelected && getters.isFirstTimeSelected) {
+        if (getters.isOldestDateSelected && getters.isOldestTimeSelected) {
             return
         }
 
-        var index = getters.validTimesForCurrentDate.indexOf(state.time)
-        if (index == 0) {
+        const indexOfSelectedTime = getters.availableTimesForSelectedDate.indexOf(state.selectedTime)
+        const isOldestTimeSelected = indexOfSelectedTime == 0
+        if (isOldestTimeSelected) {
             dispatch("decrementDate")
-            dispatch("selectMostRecentTime")
-        } else if (index > 0) {
-            commit("setTime", getters.validTimesForCurrentDate[--index])
+            dispatch("selectNewestTime")
+        }
+        else {
+            const previousTime = getters.availableTimesForSelectedDate[indexOfSelectedTime - 1]
+            commit("setTime", previousTime)
         }
     },
     incrementTime ({ commit, dispatch, getters, state }) {
-        if (getters.isLastDateSelected && getters.isLastTimeSelected) {
+        if (getters.isNewestDateSelected && getters.isNewestTimeSelected) {
             return
         }
 
-        var index = getters.validTimesForCurrentDate.indexOf(state.time)
-        if (index == getters.validTimesForCurrentDate.length - 1) {
+        const indexOfSelectedTime = getters.availableTimesForSelectedDate.indexOf(state.selectedTime)
+        const isNewestTimeSelected = indexOfSelectedTime == getters.availableTimesForSelectedDate.length - 1
+        if (isNewestTimeSelected) {
             dispatch("incrementDate")
-            commit("setTime", getters.validTimesForCurrentDate[0])
-        } else if (index >= 0 && index < getters.validTimesForCurrentDate.length - 1) {
-            commit("setTime", getters.validTimesForCurrentDate[++index])
+            commit("setTime", getters.availableTimesForSelectedDate[0])
+        }
+        else {
+            const nextTime = getters.availableTimesForSelectedDate[indexOfSelectedTime + 1]
+            commit("setTime", nextTime)
         }
     },
-    decrementDate ({ dispatch, state }) {
-        var dates = state.availableDatasets.map(function (datetime) { return datetime.date.toDateString() })
-        var index = dates.indexOf(state.date.toDateString())
-        if (index > 0) {
-            dispatch("setDate", state.availableDatasets[--index].date)
+    decrementDate ({ dispatch, getters, state }) {
+        if (!getters.isOldestDateSelected) {
+            const availableDates = state.availableDatasets.map(element => element.date.toDateString())
+            const indexOfSelectedDate = availableDates.indexOf(state.selectedDate.toDateString())
+            const previousDate = state.availableDatasets[indexOfSelectedDate - 1].date
+            dispatch("setDate", previousDate)
         }
     },
-    incrementDate ({ dispatch, state }) {
-        var dates = state.availableDatasets.map(function (datetime) { return datetime.date.toDateString() })
-        var index = dates.indexOf(state.date.toDateString())
-        if (index >= 0 && index < state.availableDatasets.length - 1) {
-            dispatch("setDate", state.availableDatasets[++index].date)
+    incrementDate ({ dispatch, getters, state }) {
+        if (!getters.isNewestDateSelected) {
+            const availableDates = state.availableDatasets.map(element => element.date.toDateString())
+            const indexOfSelectedDate = availableDates.indexOf(state.selectedDate.toDateString())
+            const nextDate = state.availableDatasets[indexOfSelectedDate + 1].date
+            dispatch("setDate", nextDate)
+        }
+    },
+    setDate ({ state, commit, dispatch, getters }, date) {
+        commit("setDate", date)
+        if (!getters.availableTimesForSelectedDate.includes(state.selectedTime)) {
+            dispatch("selectNewestTime")
         }
     }
 }

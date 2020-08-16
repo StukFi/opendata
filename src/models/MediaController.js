@@ -80,8 +80,8 @@ class MediaController {
 
     /** Indicates whether playback has reached the end of available datasets. */
     isPlaybackFinished () {
-        return (this.playbackMode == PlaybackMode.Time && store.getters.isLastTimeSelected) ||
-            (this.playbackMode == PlaybackMode.Date && store.getters.isLastDateSelected)
+        return (this.playbackMode == PlaybackMode.Time && store.getters.isNewestTimeSelected) ||
+            (this.playbackMode == PlaybackMode.Date && store.getters.isNewestDateSelected)
     }
 }
 

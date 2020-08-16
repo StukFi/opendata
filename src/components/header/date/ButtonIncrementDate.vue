@@ -1,7 +1,7 @@
 <template>
     <button-date-time
         icon="caret-right"
-        :disabled="isLastDateSelected"
+        :disabled="isNewestDateSelected"
         @click="incrementDate()"
     />
 </template>
@@ -15,8 +15,8 @@ export default {
         ButtonDateTime
     },
     computed: {
-        isLastDateSelected () {
-            return this.$store.getters.isLastDateSelected
+        isNewestDateSelected () {
+            return this.$store.getters.isNewestDateSelected
         }
     },
     methods: {

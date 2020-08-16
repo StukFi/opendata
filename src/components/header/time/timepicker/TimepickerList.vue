@@ -4,7 +4,7 @@
         class="timepicker-list"
     >
         <timepicker-list-item
-            v-for="(time, index) in validTimesForCurrentDate.slice().reverse()"
+            v-for="(time, index) in availableTimesForSelectedDate.slice().reverse()"
             :key="index"
             :time="time"
             @click="close()"
@@ -28,8 +28,8 @@ export default {
         }
     },
     computed: {
-        validTimesForCurrentDate () {
-            return this.$store.getters.validTimesForCurrentDate
+        availableTimesForSelectedDate () {
+            return this.$store.getters.availableTimesForSelectedDate
         }
     },
     methods: {

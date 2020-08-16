@@ -1,45 +1,46 @@
 export default {
-    validTimesForCurrentDate (state) {
-        if (!state.date) {
+    availableTimesForSelectedDate (state) {
+        if (!state.selectedDate) {
             return []
         }
 
-        var times = []
-        for (var i = 0; i < state.availableDatasets.length; ++i) {
-            if (state.availableDatasets[i].date.toDateString() == state.date.toDateString()) {
-                times = state.availableDatasets[i].times
-                break
+        for (let i = 0; i < state.availableDatasets.length; ++i) {
+            if (state.availableDatasets[i].date.toDateString() == state.selectedDate.toDateString()) {
+                return state.availableDatasets[i].times
             }
         }
 
-        return times
+        return []
     },
-    isFirstDateSelected (state) {
-        if (state.availableDatasets.length == 0 || !state.date) {
+    isOldestDateSelected (state) {
+        if (state.availableDatasets.length == 0 || !state.selectedDate) {
             return false
         }
 
-        var firstDate = state.availableDatasets[0].date.toDateString()
-        return (state.date.toDateString() == firstDate)
+        const firstDate = state.availableDatasets[0].date
+        return state.selectedDate.toDateString() == firstDate.toDateString()
     },
-    isLastDateSelected (state) {
-        if (state.availableDatasets.length == 0 || !state.date) {
+    isNewestDateSelected (state) {
+        if (state.availableDatasets.length == 0 || !state.selectedDate) {
             return false
         }
 
-        var lastDate = state.availableDatasets[state.availableDatasets.length - 1].date.toDateString()
-        return (state.date.toDateString() == lastDate)
+        const lastDate = state.availableDatasets.slice(-1)[0].date
+        return state.selectedDate.toDateString() == lastDate.toDateString()
     },
-    isFirstTimeSelected (state, getters) {
-        if (getters.isFirstDateSelected) {
-            return state.time == getters.validTimesForCurrentDate[0]
+    isOldestTimeSelected (state, getters) {
+        if (getters.isOldestDateSelected) {
+            const firstTime = getters.availableTimesForSelectedDate[0]
+            return state.selectedTime == firstTime
         }
 
         return false
     },
-    isLastTimeSelected (state, getters) {
-        if (getters.isLastDateSelected) {
-            return state.time == getters.validTimesForCurrentDate.slice(-1)[0]
+    isNewestTimeSelected (state, getters) {
+        if (getters.isNewestDateSelected) {
+            const lastTime = getters.availableTimesForSelectedDate.slice(-1)[0]
+            return state.selectedTime == lastTime
+
         }
 
         return false
