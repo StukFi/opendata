@@ -5,7 +5,7 @@
     >
         <b-input-group>
             <b-form-input
-                v-for="(item, i) in $store.state.settings.doseRateRanges"
+                v-for="(item, i) in settings.doseRateRanges"
                 :key="i"
                 v-model="item.minValue"
                 class="settings-panel__dose-rate-threshold"
@@ -27,7 +27,13 @@ export default {
         BFormGroup,
         BFormInput,
         BInputGroup
-    }
+    },
+    props: {
+        settings: {
+            type: Object,
+            required: true
+        }
+    },
 }
 </script>
 

@@ -3,7 +3,7 @@
         :label="$t('timeFormat')"
         class="mb-5"
     >
-        <b-form-radio-group v-model="timeFormat">
+        <b-form-radio-group v-model="settings.timeFormat">
             <b-form-radio value="24h">
                 {{ $t("timeFormatA") }}
             </b-form-radio>
@@ -26,14 +26,10 @@ export default {
         BFormRadio,
         BFormRadioGroup
     },
-    computed: {
-        timeFormat: {
-            get () {
-                return this.$store.state.settings.timeFormat
-            },
-            set (timeFormat) {
-                this.$store.commit("setTimeFormat", timeFormat)
-            }
+    props: {
+        settings: {
+            type: Object,
+            required: true
         }
     }
 }

@@ -3,7 +3,7 @@
         :label="$t('language')"
         class="mb-5"
     >
-        <b-form-radio-group v-model="locale">
+        <b-form-radio-group v-model="settings.locale">
             <b-form-radio value="fi">
                 FI
             </b-form-radio>
@@ -26,14 +26,10 @@ export default {
         BFormRadio,
         BFormRadioGroup
     },
-    computed: {
-        locale: {
-            get () {
-                return this.$i18n.locale
-            },
-            set (locale) {
-                this.$store.commit("setLocale", locale)
-            }
+    props: {
+        settings: {
+            type: Object,
+            required: true
         }
     }
 }

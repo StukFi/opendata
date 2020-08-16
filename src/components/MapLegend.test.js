@@ -18,11 +18,13 @@ describe("MapLegend.vue", () => {
             modules: {
                 settings: {
                     state: {
-                        doseRateRanges: [
-                            { minValue: 0, color: "rgb(29, 175, 175)", enabled: true },
-                            { minValue: 0.1, color: "rgb(29, 139, 175)", enabled: true },
-                            { minValue: 0.2, color: "rgb(29, 102, 175)", enabled: true }
-                        ]
+                        settings: {
+                            doseRateRanges: [
+                                { minValue: 0, color: "rgb(29, 175, 175)", enabled: true },
+                                { minValue: 0.1, color: "rgb(29, 139, 175)", enabled: true },
+                                { minValue: 0.2, color: "rgb(29, 102, 175)", enabled: true }
+                            ]
+                        }
                     }
                 }
             }
@@ -31,7 +33,7 @@ describe("MapLegend.vue", () => {
         store = new Vuex.Store(storeOptions)
         wrapper = shallowMount(MapLegend, { localVue, store })
         bars = wrapper.findAll(".map-legend__bar")
-        ranges = store.state.settings.doseRateRanges
+        ranges = store.state.settings.settings.doseRateRanges
     })
 
     test("renders the amount of bars specified in settings", () => {

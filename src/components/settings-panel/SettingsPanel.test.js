@@ -1,5 +1,6 @@
 import { shallowMount } from "@vue/test-utils"
 import SettingsPanel from "./SettingsPanel"
+import Settings from "@/models/Settings"
 
 describe("SettingsPanel.vue", () => {
     let wrapper
@@ -7,7 +8,7 @@ describe("SettingsPanel.vue", () => {
     beforeEach(() => {
         wrapper = shallowMount(SettingsPanel, {
             mocks: {
-                $store: {}
+                $store: { state: { settings: { settings: new Settings()}}, commit: jest.fn()}
             }
         })
     })

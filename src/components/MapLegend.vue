@@ -18,7 +18,7 @@ export default {
     name: "MapLegend",
     computed: {
         doseRateRanges () {
-            return this.$store.state.settings.doseRateRanges
+            return this.$store.state.settings.settings.doseRateRanges
         }
     },
     methods: {

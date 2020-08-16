@@ -25,7 +25,7 @@ export default {
         formattedTime () {
             let time = this.time.slice(0, 2) + ":" + this.time.slice(2, 4)
 
-            switch (this.$store.state.settings.timeFormat) {
+            switch (this.$store.state.settings.settings.timeFormat) {
             case "12h":
                 return dateUtils.convertTimeTo12HourClock(time)
 

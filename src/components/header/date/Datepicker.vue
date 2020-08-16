@@ -36,7 +36,7 @@ export default {
         },
         language: {
             get () {
-                switch (this.$store.state.settings.locale) {
+                switch (this.$store.state.settings.settings.locale) {
                 case "en":
                 default:
                     return this.en
@@ -93,7 +93,7 @@ export default {
     },
     methods: {
         formatDate (date) {
-            switch (this.$store.state.settings.dateFormat) {
+            switch (this.$store.state.settings.settings.dateFormat) {
             case "fi":
             default:
                 return date.getDate() + "." + (date.getMonth() + 1) +

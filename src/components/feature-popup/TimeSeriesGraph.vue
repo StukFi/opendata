@@ -48,7 +48,7 @@ export default {
             return this.$store.state.datetime.selectedDate
         },
         locale () {
-            return this.$store.state.settings.locale
+            return this.$store.state.settings.settings.locale
         },
         isLoading () {
             return this.timeSeriesGraph.isLoading
