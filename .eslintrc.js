@@ -15,5 +15,6 @@ module.exports = {
         "indent": ["error", 4],
         "vue/html-indent": ["error", 4],
         "quotes": ["error", "double"],
+        "no-trailing-spaces": 2
     }
 }
