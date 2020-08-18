@@ -1,29 +1,79 @@
 import Vue from "vue"
 
+/** Class repsenting the map legend. */
 class MapLegend {
     constructor () {
-        this.unit = "µSv/h"
-        this.thresholds = [
-            { value: 0.00, color: "#1dafaf", isEnabled: true },
-            { value: 0.10, color: "#1d8baf", isEnabled: true },
-            { value: 0.20, color: "#1d66af", isEnabled: true },
-            { value: 0.30, color: "#1d41af", isEnabled: true },
-            { value: 0.40, color: "#411daf", isEnabled: true }
-        ]
-    }
+        this.bars = []
 
-    toString () {
-        return "map-legend-test"
+        this.addBar(new MapLegendBar(0.00, "#1dafaf"))
+        this.addBar(new MapLegendBar(0.10, "#1d8baf"))
+        this.addBar(new MapLegendBar(0.20, "#1d66af"))
+        this.addBar(new MapLegendBar(0.30, "#1d41af"))
+        this.addBar(new MapLegendBar(0.40, "#411daf"))
     }
 
     /**
-     * Toggle the state of a threshold.
+     * Add a bar to the map legend.
+     * @param {Object} bar
+     */
+    addBar (bar) {
+        let tail = this.bars.slice(-1)[0]
+        if (tail) {
+            tail.nextBar = bar
+        }
+
+        this.bars.push(bar)
+    }
+
+    /**
+     * Toggle the state of a bar.
      * @param {Number} index
      */
-    toggleThreshold (index) {
-        var doseRateRange = this.thresholds[index]
-        doseRateRange.enabled = !doseRateRange.enabled
-        Vue.set(this.thresholds, index, doseRateRange)
+    toggleBar (index) {
+        var bar = this.bars[index]
+        bar.toggleState()
+        Vue.set(this.bars, index, bar)
+    }
+
+    /**
+     * Clear the map legend of bars.
+     */
+    clear () {
+        this.bars = []
+    }
+
+    /**
+     * Return a custom string representation for settings saving.
+     */
+    toString () {
+        return JSON.stringify(this.bars.map(bar => bar.toString()))
+    }
+}
+
+/** Class representing a map legend bar. */
+export class MapLegendBar {
+    constructor (threshold, color) {
+        this.nextBar = undefined
+        this.threshold = threshold < 10 ? threshold.toFixed(2) : threshold
+        this.color = color
+        this.isEnabled = true
+    }
+
+    get label () {
+        if (this.nextBar) {
+            return `${this.threshold} - ${this.nextBar.threshold}`
+        }
+        else {
+            return `> ${this.threshold} µSv/h`
+        }
+    }
+
+    toggleState () {
+        this.isEnabled = !this.isEnabled
+    }
+
+    toString () {
+        return `{"threshold": ${this.threshold}, "color": "${this.color}"}`
     }
 }
 

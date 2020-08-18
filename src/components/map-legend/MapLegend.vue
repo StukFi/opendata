@@ -1,10 +1,10 @@
 <template>
     <div class="map-legend">
         <map-legend-bar
-            v-for="(threshold, index) in mapLegend.thresholds"
-            :map-legend="mapLegend"
-            :index="index"
+            v-for="(mapLegendBar, index) in mapLegendBars"
             :key="index"
+            :map-legend-bar="mapLegendBar"
+            @click="toggle(index)"
         />
     </div>
 </template>
@@ -18,8 +18,13 @@ export default {
         MapLegendBar
     },
     computed: {
-        mapLegend () {
-            return this.$store.state.settings.settings.mapLegend
+        mapLegendBars () {
+            return this.$store.state.settings.settings.mapLegend.bars
+        }
+    },
+    methods: {
+        toggle (index) {
+            this.$store.state.settings.settings.mapLegend.toggleBar(index)
         }
     }
 }

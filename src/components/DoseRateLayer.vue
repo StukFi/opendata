@@ -54,7 +54,7 @@ export default {
                 this.$store.state.datetime.selectedTime + ".json"
         },
         doseRateRanges () {
-            return this.$store.state.settings.settings.doseRateRanges
+            return this.$store.state.settings.settings.mapLegend.bars
         }
     },
     watch: {
@@ -98,12 +98,12 @@ export default {
             var featureColor = "#0000"
             var doseRate = feature.get("doseRate")
 
-            var doseRateRanges = this.$store.state.settings.settings.doseRateRanges
+            var doseRateRanges = this.$store.state.settings.settings.mapLegend.bars
             for (var i = 0; i < doseRateRanges.length; ++i) {
-                var minValue = doseRateRanges[i].minValue
-                var maxValue = (doseRateRanges[i + 1]) ? doseRateRanges[i + 1].minValue : 1000000000
+                var minValue = doseRateRanges[i].threshold
+                var maxValue = (doseRateRanges[i + 1]) ? doseRateRanges[i + 1].threshold : 1000000000
                 if (doseRate >= minValue && doseRate < maxValue) {
-                    if (doseRateRanges[i].enabled) {
+                    if (doseRateRanges[i].isEnabled) {
                         featureColor = doseRateRanges[i].color
                         break
                     } else {

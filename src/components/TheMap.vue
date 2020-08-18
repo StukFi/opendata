@@ -16,7 +16,7 @@
 
 <script>
 import DoseRateLayer from "./DoseRateLayer"
-import MapLegend from "./MapLegend"
+import MapLegend from "@/components/map-legend/MapLegend"
 import FeaturePopover from "@/components/feature-popover/FeaturePopover"
 import FeaturePopup from "@/components/feature-popup/FeaturePopup"
 import ButtonOpenSettings from "@/components/settings-panel/ButtonOpenSettings"
