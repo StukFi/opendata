@@ -5,9 +5,9 @@
     >
         <b-input-group>
             <b-form-input
-                v-for="(item, i) in settings.doseRateRanges"
+                v-for="(bar, i) in settings.mapLegend.bars"
                 :key="i"
-                v-model="item.minValue"
+                v-model="bar.threshold"
                 class="settings-panel__dose-rate-threshold"
                 type="number"
                 step="any"

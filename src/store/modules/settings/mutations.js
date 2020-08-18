@@ -3,7 +3,7 @@ export default {
         state.settings = settings
         state.settings.save()
     },
-    toggleDoseRateRange (state, index) {
-        state.settings.toggleDoseRateRange(index)
+    toggleMapLegendBar (state, index) {
+        state.settings.mapLegend.toggleThreshold(index)
     }
 }
