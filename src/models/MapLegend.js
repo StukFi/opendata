@@ -43,7 +43,7 @@ class MapLegend {
     }
 
     /**
-     * Return a custom string representation for settings saving.
+     * Return a custom string representation for saving settings.
      */
     toString () {
         return JSON.stringify(this.bars.map(bar => bar.toString()))
