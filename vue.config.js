@@ -7,6 +7,7 @@ const version = JSON.parse(packageJSON).version || 0
 module.exports = {
     publicPath: "./",
     productionSourceMap: false,
+    lintOnSave: false,
     configureWebpack: {
         devtool: "source-map",
         plugins: [
