@@ -1,29 +1,25 @@
 <template>
     <div class="map-legend">
-        <div
-            v-for="(item, i) in doseRateRanges"
-            :key="i"
-            :style="{backgroundColor: item.color}"
-            :class="{'map-legend__bar--disabled': !item.enabled}"
-            class="map-legend__bar"
-            @click="toggleDoseRateRange(i)"
-        >
-            {{ (i == doseRateRanges.length - 1) ? "&gt; " + item.minValue + " &#181;Sv/h" : item.minValue + " - " + doseRateRanges[i + 1].minValue }}
-        </div>
+        <map-legend-bar
+            v-for="(threshold, index) in mapLegend.thresholds"
+            :map-legend="mapLegend"
+            :index="index"
+            :key="index"
+        />
     </div>
 </template>
 
 <script>
+import MapLegendBar from "./MapLegendBar"
+
 export default {
     name: "MapLegend",
-    computed: {
-        doseRateRanges () {
-            return this.$store.state.settings.settings.doseRateRanges
-        }
+    components: {
+        MapLegendBar
     },
-    methods: {
-        toggleDoseRateRange (index) {
-            this.$store.commit("toggleDoseRateRange", index)
+    computed: {
+        mapLegend () {
+            return this.$store.state.settings.settings.mapLegend
         }
     }
 }
@@ -45,21 +41,6 @@ export default {
 
 .map-legend:hover {
     cursor: pointer;
-}
-
-.map-legend__bar {
-    width: 20%;
-    height: 100%;
-    flex-basis: auto;
-    flex-grow: 1;
-    flex-shrink: 1;
-    margin: 0px auto;
-    color: white;
-}
-
-.map-legend__bar--disabled {
-    color: rgba(255, 255, 255, 0.2);
-    background-color: rgba(80, 80, 80) !important;
 }
 
 @media only screen and (min-width: 768px) {
