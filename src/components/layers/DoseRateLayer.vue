@@ -46,8 +46,8 @@ export default {
     },
     watch: {
         datasetFilePath: async function () {
-            let dataset = await api.doseRate.getDataset(this.datasetFilePath)
-            let features = dataset.features.map(feature => {
+            const dataset = await api.doseRate.getDataset(this.datasetFilePath)
+            const features = dataset.features.map(feature => {
                 return new Feature({
                     geometry: new Point(transform(feature.geometry.coordinates, "EPSG:4326", "EPSG:3857")),
                     id: feature.properties.id,
