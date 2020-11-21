@@ -24,7 +24,7 @@ export default {
     },
     /**
      * Get a dose rate dataset file.
-     * @param {String} filePath
+     * @param {String} datasetFilePath
      */
     async getDataset (datasetFilePath) {
         let response = await http.get(datasetFilePath)
