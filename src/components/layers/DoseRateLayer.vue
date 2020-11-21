@@ -24,9 +24,40 @@ export default {
                         defaultDataProjection: "EPSG:4326"
                     })
                 }),
-                style: this.styleFeature,
-                renderOrder: this.orderFeatures,
-                renderMode: "image"
+                renderMode: "image",
+                renderOrder: function (featureA, featureB) {
+                    // Draw features with a higher dose rate on top.
+                    return featureA.get("doseRate") < featureB.get("doseRate") ? -1 : 1
+                },
+                style: feature => {
+                    var featureColor = "#0000"
+                    var doseRate = feature.get("doseRate")
+
+                    var doseRateRanges = this.$store.state.settings.settings.mapLegend.bars
+                    for (var i = 0; i < doseRateRanges.length; ++i) {
+                        var minValue = doseRateRanges[i].threshold
+                        var maxValue = (doseRateRanges[i + 1]) ? doseRateRanges[i + 1].threshold : 1000000000
+                        if (doseRate >= minValue && doseRate < maxValue) {
+                            if (doseRateRanges[i].isEnabled) {
+                                featureColor = doseRateRanges[i].color
+                                break
+                            } else {
+                                return undefined
+                            }
+                        }
+                    }
+
+                    var featureStyle = new Style({
+                        image: new CircleStyle({
+                            radius: 10,
+                            fill: new FillStyle({
+                                color: featureColor
+                            })
+                        })
+                    })
+
+                    return [featureStyle]
+                }
             })
         }
     },
@@ -70,39 +101,6 @@ export default {
     methods: {
         redraw () {
             this.vectorLayer.changed()
-        },
-        styleFeature (feature) {
-            var featureColor = "#0000"
-            var doseRate = feature.get("doseRate")
-
-            var doseRateRanges = this.$store.state.settings.settings.mapLegend.bars
-            for (var i = 0; i < doseRateRanges.length; ++i) {
-                var minValue = doseRateRanges[i].threshold
-                var maxValue = (doseRateRanges[i + 1]) ? doseRateRanges[i + 1].threshold : 1000000000
-                if (doseRate >= minValue && doseRate < maxValue) {
-                    if (doseRateRanges[i].isEnabled) {
-                        featureColor = doseRateRanges[i].color
-                        break
-                    } else {
-                        return undefined
-                    }
-                }
-            }
-
-            var featureStyle = new Style({
-                image: new CircleStyle({
-                    radius: 10,
-                    fill: new FillStyle({
-                        color: featureColor
-                    })
-                })
-            })
-
-            return [featureStyle]
-        },
-        orderFeatures (featureA, featureB) {
-            // Draw features with a higher dose rate on top.
-            return featureA.get("doseRate") < featureB.get("doseRate") ? -1 : 1
         }
     }
 }
