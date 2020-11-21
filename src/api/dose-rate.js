@@ -23,6 +23,14 @@ export default {
         return availableDatasets
     },
     /**
+     * Get a dose rate dataset file.
+     * @param {String} datasetFilePath
+     */
+    async getDataset (datasetFilePath) {
+        let response = await http.get(datasetFilePath)
+        return response.data
+    },
+    /**
      * Get a time series file for a given site and date.
      * @param {String} siteId
      * @param {Date} date
