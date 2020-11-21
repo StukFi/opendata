@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import DoseRateLayer from "./DoseRateLayer"
+import DoseRateLayer from "./layers/DoseRateLayer"
 import MapLegend from "@/components/map-legend/MapLegend"
 import FeaturePopover from "@/components/feature-popover/FeaturePopover"
 import FeaturePopup from "@/components/feature-popup/FeaturePopup"
@@ -89,7 +89,6 @@ export default {
         this.map.addOverlay(this.$refs.featurePopover.overlay)
         this.map.addOverlay(this.$refs.featurePopup.overlay)
         this.map.addLayer(this.$refs.doseRateLayer.vectorLayer)
-        this.map.addLayer(this.$refs.doseRateLayer.bufferLayer)
     },
     methods: {
         onMapInteraction (evt) {

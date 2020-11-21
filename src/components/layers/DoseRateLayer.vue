@@ -10,6 +10,11 @@ import Style from "ol/style/Style"
 import VectorLayer from "ol/layer/Vector"
 import VectorSource from "ol/source/Vector"
 
+import Feature from "ol/Feature"
+import Point from "ol/geom/Point"
+import { transform } from "ol/proj"
+import api from "@/api/index"
+
 export default {
     name: "DoseRateLayer",
     data: function () {
@@ -21,22 +26,6 @@ export default {
                 style: this.styleFeature,
                 renderOrder: this.orderFeatures,
                 renderMode: "image"
-            }),
-            // A buffer layer is used to load in new datasets. Features from the buffer
-            // layer are added to the visible vector layer. Features are not loaded into
-            // the visible layer directly by changing its source, because doing so results
-            // in the map being momentarily empty as the new dataset is being loaded.
-            // Using a buffer layer results in a smooth transition from one dataset to another.
-            // The buffer layer is added to the map because it won't otherwise be updated.
-            bufferLayer: new VectorLayer({
-                source: new VectorSource({
-                    format: this.featureFormat
-                }),
-                style: this.styleFeature,
-                // Setting "visible" to false causes the layer to not be updated or drawn.
-                // This disables the buffer layer when a new dataset is not being loaded.
-                // Likewise visiblity is set to true when loading a new dataset.
-                visible: false
             }),
             featureFormat: new GeoJSON({
                 defaultDataProjection: "EPSG:4326"
@@ -58,37 +47,27 @@ export default {
         }
     },
     watch: {
-        datasetFilePath: function () {
-            // A new dataset is loaded into the buffer layer by changing its source.
-            this.bufferLayer.setVisible(true)
-            this.bufferLayer.setSource(new VectorSource({
-                format: this.featureFormat,
-                url: this.datasetFilePath
-            }))
+        datasetFilePath: async function () {
+            let dataset = await api.doseRate.getDataset(this.datasetFilePath)
+            let features = dataset.features.map(feature => {
+                return new Feature({
+                    geometry: new Point(transform(feature.geometry.coordinates, "EPSG:4326", "EPSG:3857")),
+                    id: feature.properties.id,
+                    site: feature.properties.site,
+                    doseRate: feature.properties.doseRate
+                })
+            })
+
+            this.vectorLayer.getSource().clear(true)
+            this.vectorLayer.getSource().addFeatures(features)
+            this.$root.$emit("doseRateLayerChanged", this.vectorLayer)
         },
         doseRateRanges: function () {
             this.redraw()
         }
     },
     mounted () {
-        var that = this
-
         this.$root.$on("settingsChanged", this.redraw)
-
-        // A generic change event is fired when a layer's source's state changes.
-        // The buffer layer's source is considered 'ready' when it contains features.
-        this.bufferLayer.on("change", function () {
-            var loadedFeatures = that.bufferLayer.getSource().getFeatures()
-            if (loadedFeatures.length == 0) {
-                return
-            }
-
-            that.bufferLayer.setVisible(false)
-            that.vectorLayer.getSource().clear(true)
-            that.vectorLayer.getSource().addFeatures(loadedFeatures)
-
-            that.$root.$emit("doseRateLayerChanged", that.vectorLayer)
-        })
     },
     methods: {
         redraw () {
