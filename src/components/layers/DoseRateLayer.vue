@@ -21,14 +21,13 @@ export default {
         return {
             vectorLayer: new VectorLayer({
                 source: new VectorSource({
-                    format: this.featureFormat
+                    format: new GeoJSON({
+                        defaultDataProjection: "EPSG:4326"
+                    })
                 }),
                 style: this.styleFeature,
                 renderOrder: this.orderFeatures,
                 renderMode: "image"
-            }),
-            featureFormat: new GeoJSON({
-                defaultDataProjection: "EPSG:4326"
             })
         }
     },
