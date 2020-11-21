@@ -9,7 +9,6 @@ import FillStyle from "ol/style/Fill"
 import Style from "ol/style/Style"
 import VectorLayer from "ol/layer/Vector"
 import VectorSource from "ol/source/Vector"
-
 import Feature from "ol/Feature"
 import Point from "ol/geom/Point"
 import { transform } from "ol/proj"
