@@ -97,16 +97,16 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .search-bar {
     position: absolute;
-    height: 45px;
-    width: 300px;
-    top: 75px;
+    height: 3em;
+    width: 16em;
+    top: 5em;
     left: 50%;
     transform: translateX(-50%);
-    border-radius: 4px;
-    z-index: 1;
+    border-radius: 0.25em;
+    z-index: $z-index-search-bar;
     background-color: rgba(255, 255, 255, 0.4);
 }
 
@@ -115,15 +115,15 @@ export default {
 }
 
 .search-bar__input {
-    height: 40px;
-    width: 295px;
+    height: 2.5em;
+    width: 16em;
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    line-height: 40px;
+    line-height: 2.5em;
     background-color: rgba(0, 50, 136, 0.5);
-    border-radius: 4px;
+    border-radius: 0.25em;
     text-align: center;
     color: white;
     border: none;
@@ -139,8 +139,8 @@ export default {
 
 .search-bar__icon {
     position: absolute;
-    width: 45px;
-    height: 45px;
+    width: 3em;
+    height: 3em;
     background-image: url("~@/assets/icons/magnifying-glass.svg");
     background-repeat: no-repeat;
     background-position: center;
@@ -150,11 +150,5 @@ export default {
 
 .search-bar__icon:hover {
     cursor: pointer;
-}
-
-@media only screen and (min-width: 768px) {
-    .search-bar {
-        top: 100px;
-    }
 }
 </style>

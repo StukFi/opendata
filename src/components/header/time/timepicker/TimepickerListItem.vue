@@ -44,11 +44,11 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 li {
-    height: 50px;
-    line-height: 50px;
-    font-size: 1.625rem;
+    height: 3em;
+    line-height: 3em;
+    font-size: $font-md;
     color: black;
     list-style-type: none;
 }

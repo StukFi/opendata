@@ -18,29 +18,29 @@ p, div, span, select, input {
 
 .ol-zoom {
     left: unset;
-    top: 100px;
-    right: 15px;
+    top: 6em;
+    right: 1em;
 }
 
 .ol-zoomslider {
     left: unset;
-    top: 170px;
-    right: 15px;
+    top: 11em;
+    right: 1em;
 }
 
 .ol-touch .ol-zoomslider {
-    top: 190px;
+    top: 12em;
 }
 
 .ol-scale-line {
-    left: 15px;
-    bottom: 40px;
+    left: 1em;
+    bottom: 2.5em;
 }
 
 .ol-mouse-position {
     top: unset;
-    bottom: 40px;
-    right: 15px;
+    bottom: 2.5em;
+    right: 1em;
 }
 
 .vdp-datepicker__calendar .cell.selected,

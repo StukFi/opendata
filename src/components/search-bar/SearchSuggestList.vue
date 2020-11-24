@@ -63,8 +63,8 @@ export default {
 <style>
 .search-suggest-list {
     position: relative;
-    top: 55px;
-    max-height: 212px;
+    top: 4em;
+    max-height: 12em;
     overflow: scroll;
     overflow-x: unset;
     background-color: white;

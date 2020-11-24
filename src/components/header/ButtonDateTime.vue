@@ -36,18 +36,18 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 button {
     flex-basis: 25%;
     border: none;
     background-color: #1773B9;
     background-size: 1em;
-    font-size: 1rem;
+    font-size: $font-md;
     background-position: center;
     background-repeat: no-repeat;
     cursor: pointer;
+    z-index: $z-index-button-datetime;
     outline: none;
-    z-index: 1;
 }
 
 button:focus {
@@ -56,11 +56,5 @@ button:focus {
 
 button:disabled {
     cursor: auto;
-}
-
-@media only screen and (max-width: 500px) {
-    button {
-        display: none;
-    }
 }
 </style>

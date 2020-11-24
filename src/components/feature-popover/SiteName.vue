@@ -21,11 +21,11 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .site-name {
     text-align: center;
     font-weight: bold;
-    font-size: 1.15em;
+    font-size: $font-md;
     margin: 0;
 }
 </style>

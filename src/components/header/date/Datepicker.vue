@@ -108,7 +108,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .datepicker {
     flex-basis: 50%;
     flex-grow: 1;
@@ -116,8 +116,8 @@ export default {
 
 .vdp-datepicker input {
     width: 100%;
-    height: 60px;
-    font-size: 1.7rem;
+    height: 4em;
+    font-size: $font-md;
     text-align: center;
     border: none;
     outline: none;
@@ -139,21 +139,9 @@ export default {
 
 .vdp-datepicker__calendar {
     position: fixed !important;
-    top: 70px;
+    top: 5em;
     left: 50%;
     transform: translateX(-50%);
-    width: 300px;
-}
-
-@media only screen and (min-width: 768px) {
-    .vdp-datepicker input {
-        height: 75px;
-        line-height: 75px;
-        font-size: 2.3rem;
-    }
-
-    .vdp-datepicker__calendar {
-        top: 85px;
-    }
+    width: 19em;
 }
 </style>

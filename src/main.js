@@ -9,7 +9,7 @@ import store from "../src/store"
 import "bootstrap/dist/css/bootstrap.css"
 import "bootstrap-vue/dist/bootstrap-vue.css"
 import "ol/ol.css"
-import "../public/global.css"
+import "@/assets/styles/global.css"
 
 Vue.use(VueResource)
 Vue.use(BootstrapVue)

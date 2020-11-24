@@ -1,0 +1,27 @@
+$font-color: red;
+
+/* Breakpoints */
+$breakpoint-lg: 1200px;
+$breakpoint-md: 840px;
+$breakpoint-sm: 640px;
+$breakpoint-xs: 360px;
+
+/* Fonts */
+$font-xl: 1.5rem;
+$font-lg: 1.25rem;
+$font-md: 1rem;
+$font-sm: 0.875rem;
+$font-xs: 0.75rem;
+
+/* Z-indices */
+$z-index-settings-panel: 5;
+$z-index-settings-panel-backdrop: 4;
+$z-index-map-legend: 3;
+$z-index-timepicker: 3;
+$z-index-button-open-settings: 1;
+$z-index-search-bar: 1;
+$z-index-media-controller: 1;
+$z-index-header: 1;
+$z-index-button-datetime: 1;
+
+/* Colors */

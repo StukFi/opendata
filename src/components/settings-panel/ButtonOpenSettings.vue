@@ -14,15 +14,15 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .button-open-settings {
     position: absolute;
-    bottom: 40px;
-    left: 15px;
-    width: 45px;
-    height: 45px;
-    z-index: 1;
-    border-radius: 4px;
+    bottom: 2.5em;
+    left: 1em;
+    width: 3em;
+    height: 3em;
+    z-index: $z-index-button-open-settings;
+    border-radius: 0.25em;
     background-color: rgba(255, 255, 255, 0.4);
 }
 
@@ -37,7 +37,7 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    border-radius: 4px;
+    border-radius: 0.25em;
     background-image: url("~@/assets/icons/cog.svg");
     background-repeat: no-repeat;
     background-position: center;
@@ -48,12 +48,6 @@ export default {
 
 .button-open-settings__icon:hover {
     background-color: rgba(0, 50, 136, 0.7);
-}
-
-@media only screen and (min-width: 768px) {
-    .button-open-settings {
-        top: 100px;
-    }
 }
 </style>
 

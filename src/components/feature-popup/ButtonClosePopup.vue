@@ -12,14 +12,14 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .button-close-popup {
     text-decoration: none;
     position: absolute;
     top: 0;
-    right: 12px;
+    right: 0.75em;
     color: black;
-    font-size: 2em;
+    font-size: $font-lg;
 }
 
 .button-close-popup:hover {

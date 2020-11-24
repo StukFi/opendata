@@ -68,17 +68,18 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .settings-panel {
     position: fixed;
+    font-size: $font-md;
     transform: translate(-50%, -50%);
     left: 50%;
     top: 50%;
     height: auto;
     max-height: 70%;
-    z-index: 5;
+    z-index: $z-index-settings-panel;
     background-color: white;
-    border-radius: 4px;
+    border-radius: 0.25em;
     border: 1px solid rgba(0, 0, 0, 0.5);
     overflow-y: scroll;
 }

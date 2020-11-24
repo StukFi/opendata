@@ -18,6 +18,15 @@ module.exports = {
             })
         ]
     },
+    css: {
+        loaderOptions: {
+            sass: {
+                additionalData: `
+                    @import "@/assets/styles/variables.scss";
+                `
+            }
+        }
+    },
     pluginOptions: {
         i18n: {
             enableInSFC: true

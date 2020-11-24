@@ -77,17 +77,17 @@ export default {
 <style>
 .feature-popover {
     position: absolute;
-    width: 280px;
-    left: -140px;
-    bottom: 12px;
-    padding: 15px;
+    width: 17.5em;
+    left: -8.75em;
+    bottom: 0.75em;
+    padding: 1em;
     background-color: white;
     border: 1px solid #cccccc;
 }
 
 .feature-popover:after,
 .feature-popover:before {
-    left: 139px;
+    left: 8.75em;
     top: 100%;
     border: solid transparent;
     content: " ";
@@ -100,12 +100,12 @@ export default {
 .feature-popover:after {
     border-top-color: white;
     border-width: 10px;
-    margin-left: -10px;
+    margin-left: -0.625em;
 }
 
 .feature-popover:before {
     border-top-color: #cccccc;
     border-width: 11px;
-    margin-left: -11px;
+    margin-left: -0.625em;
 }
 </style>

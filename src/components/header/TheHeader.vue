@@ -18,19 +18,13 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .header {
     position: fixed;
     top: 0;
     display: flex;
     width: 100%;
-    height: 60px;
-    z-index: 1;
-}
-
-@media only screen and (min-width: 768px) {
-    .header {
-        height: 75px;
-    }
+    height: 4em;
+    z-index: $z-index-header;
 }
 </style>

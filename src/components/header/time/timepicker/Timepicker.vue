@@ -49,13 +49,13 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .timepicker {
     flex-basis: 50%;
     flex-grow: 1;
-    line-height: 60px;
-    z-index: 3;
-    font-size: 1.7rem;
+    line-height: 4em;
+    z-index: $z-index-timepicker;
+    font-size: $font-md;
     text-align: center;
     border: none;
     background-color: #0066b3;
@@ -73,13 +73,5 @@ export default {
     -webkit-appearance: none;
     -moz-appearance: none;
     background-color: transparent;
-}
-
-@media only screen and (min-width: 768px) {
-    .timepicker {
-        height: 75px;
-        line-height: 75px;
-        font-size: 2.3rem;
-    }
 }
 </style>

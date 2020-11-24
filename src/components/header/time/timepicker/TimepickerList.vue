@@ -43,30 +43,24 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .timepicker-list {
     position: fixed;
     left: 50%;
     transform: translate(-50%);
-    width: 300px;
-    height: 282px;
+    width: 19em;
+    height: 19em;
     overflow: scroll;
     overflow-x: unset;
-    top: 70px;
+    top: 4em;
     margin: 0;
     padding: 0;
     background-color: white;
     border: 1px solid #CCC;
-    font-size: 1rem;
+    font-size: $font-md;
 }
 
 .timepicker-list:hover {
     cursor: auto;
-}
-
-@media only screen and (min-width: 768px) {
-    .timepicker-list {
-        top: 85px;
-    }
 }
 </style>
