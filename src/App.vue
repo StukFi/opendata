@@ -20,6 +20,8 @@ export default {
 #app {
     height: 100%;
     width: 100%;
+    font-family: $font-medium;
+    color: $color-font-light;
 }
 
 :root {
@@ -28,7 +30,6 @@ export default {
 
 @media (min-width: $breakpoint-md) {
     :root {
-        color: red !important;
         font-size: 1em;
     }
 }

@@ -4,12 +4,12 @@ import BootstrapVue from "bootstrap-vue"
 import i18n from "./i18n"
 
 import App from "./App"
-import store from "../src/store"
+import store from "@/store"
 
-import "bootstrap/dist/css/bootstrap.css"
-import "bootstrap-vue/dist/bootstrap-vue.css"
+// import "bootstrap/dist/css/bootstrap.css"
+// import "bootstrap-vue/dist/bootstrap-vue.css"
 import "ol/ol.css"
-import "@/assets/styles/global.css"
+import "@/assets/styles/index.scss"
 
 Vue.use(VueResource)
 Vue.use(BootstrapVue)

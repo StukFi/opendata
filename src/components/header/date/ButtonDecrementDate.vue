@@ -26,3 +26,9 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+button {
+    background-color: $color-header-date;
+}
+</style>

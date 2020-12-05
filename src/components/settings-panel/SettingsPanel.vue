@@ -71,16 +71,19 @@ export default {
 <style lang="scss">
 .settings-panel {
     position: fixed;
-    font-size: $font-md;
     transform: translate(-50%, -50%);
     left: 50%;
     top: 50%;
     height: auto;
     max-height: 70%;
+    font-size: $font-lg;
+    font-family: $font-medium;
     z-index: $z-index-settings-panel;
+    color: $color-font-dark;
     background-color: white;
-    border-radius: 0.25em;
     border: 1px solid rgba(0, 0, 0, 0.5);
-    overflow-y: scroll;
+    border-radius: $border-radius-lg;
+    overflow-y: hidden;
+    padding: 1em;
 }
 </style>

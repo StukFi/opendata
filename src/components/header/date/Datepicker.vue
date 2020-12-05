@@ -117,12 +117,13 @@ export default {
 .vdp-datepicker input {
     width: 100%;
     height: 4em;
-    font-size: $font-md;
+    font-size: $font-lg;
+    font-family: $font-medium;
     text-align: center;
     border: none;
     outline: none;
     cursor: pointer;
-    background-color: #1773B9;
+    background-color: $color-header-date;
 
     /* Hide the input's caret. */
     color: transparent;

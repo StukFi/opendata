@@ -11,11 +11,6 @@ html, body, #app {
     margin: 0;
 }
 
-p, div, span, select, input {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
-                 Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-}
-
 .ol-zoom {
     left: unset;
     top: 6em;

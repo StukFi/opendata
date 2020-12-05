@@ -40,7 +40,6 @@ export default {
 button {
     flex-basis: 25%;
     border: none;
-    background-color: #1773B9;
     background-size: 1em;
     font-size: $font-md;
     background-position: center;

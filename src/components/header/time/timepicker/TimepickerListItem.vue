@@ -51,6 +51,7 @@ li {
     font-size: $font-md;
     color: black;
     list-style-type: none;
+    border-radius: $border-radius-sm;
 }
 
 li:hover {

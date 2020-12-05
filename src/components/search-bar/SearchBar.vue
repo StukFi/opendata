@@ -102,35 +102,37 @@ export default {
     position: absolute;
     height: 3em;
     width: 16em;
-    top: 5em;
+    top: 6.5em;
     left: 50%;
     transform: translateX(-50%);
     border-radius: 0.25em;
     z-index: $z-index-search-bar;
-    background-color: rgba(255, 255, 255, 0.4);
+    background-color: $color-map-control-bg;
 }
 
 .search-bar:hover {
-    background-color: rgba(255, 255, 255, 0.6);
+    background-color: $color-map-control-bg-hover;
 }
 
 .search-bar__input {
-    height: 2.5em;
-    width: 16em;
+    font-size: $font-md;
+    height: 2.75em;
+    width: 15.75em;
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
     line-height: 2.5em;
-    background-color: rgba(0, 50, 136, 0.5);
+    background-color: $color-map-control-fg;
     border-radius: 0.25em;
     text-align: center;
     color: white;
     border: none;
+    font-family: $font-medium;
 }
 
 .search-bar__input:hover {
-    background-color: rgba(0, 60, 136, 0.7);
+    background-color: $color-map-control-fg-hover;
 }
 
 .search-bar__input:focus {
@@ -145,7 +147,7 @@ export default {
     background-repeat: no-repeat;
     background-position: center;
     background-size: 35%;
-    z-index: 5;
+    z-index: $z-index-search-bar-icon;
 }
 
 .search-bar__icon:hover {

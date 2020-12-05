@@ -21,7 +21,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 .time-widget {
     display: flex;
     flex-basis: 50%;

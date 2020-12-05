@@ -45,7 +45,7 @@ export default {
     background-color: rgba(255, 255, 255, 0.4);
     z-index: $z-index-media-controller;
     padding: 0.25em;
-    border-radius: 0.25em;
+    border-radius: $border-radius-xs;
 }
 
 .media-controller:hover {

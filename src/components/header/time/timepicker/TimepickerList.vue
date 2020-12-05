@@ -3,12 +3,14 @@
         v-show="isEnabled"
         class="timepicker-list"
     >
-        <timepicker-list-item
-            v-for="(time, index) in availableTimesForSelectedDate.slice().reverse()"
-            :key="index"
-            :time="time"
-            @click="close()"
-        />
+        <div class="list-container">
+            <timepicker-list-item
+                v-for="(time, index) in availableTimesForSelectedDate.slice().reverse()"
+                :key="index"
+                :time="time"
+                @click="close()"
+            />
+        </div>
     </ul>
 </template>
 
@@ -49,18 +51,27 @@ export default {
     left: 50%;
     transform: translate(-50%);
     width: 19em;
-    height: 19em;
-    overflow: scroll;
-    overflow-x: unset;
-    top: 4em;
+    height: auto;
+    max-height: 20em;
+    overflow: hidden;
+    padding: 0.25em;
+    top: 6.5em;
     margin: 0;
-    padding: 0;
     background-color: white;
     border: 1px solid #CCC;
+    border-radius: $border-radius-md;
+    font-family: $font-medium;
     font-size: $font-md;
 }
 
 .timepicker-list:hover {
     cursor: auto;
+}
+
+.list-container {
+    overflow: auto;
+    height: auto;
+    max-height: 19em;
+    padding-right: 0.25em;
 }
 </style>

@@ -3,12 +3,14 @@
         v-show="isEnabled && suggestions.length > 0"
         class="search-suggest-list"
     >
-        <search-suggest-list-item
-            v-for="suggestion in suggestions"
-            :key="suggestion"
-            :suggestion="suggestion"
-            @click="$emit('select', suggestion)"
-        />
+        <div class="list-container">
+            <search-suggest-list-item
+                v-for="suggestion in suggestions"
+                :key="suggestion"
+                :suggestion="suggestion"
+                @click="$emit('select', suggestion)"
+            />
+        </div>
     </div>
 </template>
 
@@ -60,15 +62,25 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .search-suggest-list {
     position: relative;
-    top: 4em;
-    max-height: 12em;
-    overflow: scroll;
-    overflow-x: unset;
+    top: 3.25em;
+    height: auto;
+    max-height: 15em;
+    overflow: hidden;
+    padding: 0.25em;
     background-color: white;
     border: 1px solid #CCC;
+    border-radius: $border-radius-sm;
+    font-family: $font-medium;
+    color: $color-font-dark;
+}
+
+.list-container {
+    overflow: auto;
+    height: auto;
+    max-height: 14em;
 }
 
 .search-suggest-list:hover {

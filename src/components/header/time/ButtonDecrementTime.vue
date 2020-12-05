@@ -27,8 +27,8 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 button {
-    background-color: #0066b3;
+    background-color: $color-header-time;
 }
 </style>

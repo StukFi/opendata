@@ -1,31 +1,18 @@
 <template>
-    <b-form-group
-        :label="$t('timeFormat')"
-        class="mb-5"
-    >
-        <b-form-radio-group v-model="settings.timeFormat">
-            <b-form-radio value="24h">
-                {{ $t("timeFormatA") }}
-            </b-form-radio>
-            <b-form-radio value="12h">
-                {{ $t("timeFormatB") }}
-            </b-form-radio>
-        </b-form-radio-group>
-    </b-form-group>
+    <div>
+        <p>{{ $t("timeFormat")}}</p>
+        <fieldset v-model="settings.timeFormat">
+            <label>{{ $t("timeFormatA") }}</label>
+            <input type="radio" value="24h" v-model="settings.timeFormat">
+            <label>{{ $t("timeFormatB") }}</label>
+            <input type="radio" value="12h" v-model="settings.timeFormat">
+        </fieldset>
+    </div>
 </template>
 
 <script>
-import { BFormGroup } from "bootstrap-vue"
-import { BFormRadio } from "bootstrap-vue"
-import { BFormRadioGroup } from "bootstrap-vue"
-
 export default {
     name: "FieldTimeFormat",
-    components: {
-        BFormGroup,
-        BFormRadio,
-        BFormRadioGroup
-    },
     props: {
         settings: {
             type: Object,

@@ -3,7 +3,7 @@
         class="timepicker"
     >
         <div
-            class="timepicker-button"
+            class="timepicker-button opendata-row"
             @click="toggleTimeList"
         >
             {{ formattedTime }}
@@ -53,13 +53,11 @@ export default {
 .timepicker {
     flex-basis: 50%;
     flex-grow: 1;
-    line-height: 4em;
     z-index: $z-index-timepicker;
-    font-size: $font-md;
-    text-align: center;
     border: none;
-    background-color: #0066b3;
+    background-color: $color-header-time;
     color: white;
+    text-align: center;
 }
 
 .timepicker:hover,
@@ -68,6 +66,9 @@ export default {
 }
 
 .timepicker-button {
+    height: 100%;
+    font-size: $font-lg;
+    font-family: $font-medium;
     border: none;
     outline: none;
     -webkit-appearance: none;

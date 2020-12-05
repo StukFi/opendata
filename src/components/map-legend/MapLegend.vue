@@ -42,6 +42,7 @@ export default {
     background-color: rgba(204, 229, 236, 1);
     text-align: center;
     font-size: $font-md;
+    font-family: $font-medium;
 }
 
 .map-legend:hover {
