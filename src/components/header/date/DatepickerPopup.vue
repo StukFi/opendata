@@ -1,26 +1,35 @@
 <template>
-    <vue-datepicker
-        v-model="date"
-        :use-utc="true"
-        :monday-first="true"
-        :disabled-dates="disabledDates"
-        :format="formatDate"
-        :language="language"
-        class="datepicker"
-    />
+    <div v-show="isEnabled">
+        <base-backdrop @click="close" />
+        <vue-datepicker
+            v-model="date"
+            :use-utc="true"
+            :monday-first="true"
+            :disabled-dates="disabledDates"
+            :format="formatDate"
+            :language="language"
+            :inline="true"
+            class="datepicker"
+            calendar-class="calendar"
+            @selected="close"
+        />
+    </div>
 </template>
 
 <script>
 import VueDatepicker from "vuejs-datepicker"
+import BaseBackdrop from "@/components/base/BaseBackdrop"
 import { en, fi } from "vuejs-datepicker/dist/locale"
 
 export default {
-    name: "Datepicker",
+    name: "DatepickerPopup",
     components: {
-        VueDatepicker
+        VueDatepicker,
+        BaseBackdrop
     },
     data: function () {
         return {
+            isEnabled: false,
             en: en,
             fi: fi
         }
@@ -91,6 +100,9 @@ export default {
 
         },
     },
+    mounted () {
+        this.$root.$on("calendar-popup-open", this.open)
+    },
     methods: {
         formatDate (date) {
             switch (this.$store.state.settings.settings.dateFormat) {
@@ -103,6 +115,12 @@ export default {
                 return date.getFullYear() + "-" + (date.getMonth() + 1) +
                             "-" + date.getDate()
             }
+        },
+        open () {
+            this.isEnabled = true
+        },
+        close () {
+            this.isEnabled = false
         }
     }
 }
@@ -138,11 +156,23 @@ export default {
     background-color: transparent;
 }
 
-.vdp-datepicker__calendar {
+.vdp-datepicker__calendar.calendar {
     position: fixed !important;
-    top: 5em;
+    top: 6.5em;
     left: 50%;
-    transform: translateX(-50%);
-    width: 19em;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    height: auto;
+    border-radius: $border-radius-md;
+    font-family: $font-medium !important;
+    font-size: $font-lg !important;
+    padding: 1em;
+    z-index: $z-index-calendar-popup;
+
+    .cell {
+        height: 3em;
+        line-height: 3em;
+    }
 }
 </style>

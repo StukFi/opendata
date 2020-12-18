@@ -8,19 +8,14 @@
         >
             {{ formattedTime }}
         </div>
-        <timepicker-list ref="timepickerList" />
     </div>
 </template>
 
 <script>
-import TimepickerList from "./TimepickerList"
 import dateUtils from "@/utils/date"
 
 export default {
     name: "Timepicker",
-    components: {
-        TimepickerList
-    },
     computed: {
         formattedTime () {
             let time = this.$store.state.datetime.selectedTime
@@ -43,7 +38,7 @@ export default {
     },
     methods: {
         toggleTimeList () {
-            this.$refs.timepickerList.toggle()
+            this.$root.$emit("timepicker-list-toggle")
         }
     }
 }
@@ -74,5 +69,6 @@ export default {
     -webkit-appearance: none;
     -moz-appearance: none;
     background-color: transparent;
+    justify-content: center;
 }
 </style>

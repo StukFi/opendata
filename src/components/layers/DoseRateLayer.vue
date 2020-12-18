@@ -13,6 +13,7 @@ import Feature from "ol/Feature"
 import Point from "ol/geom/Point"
 import { transform } from "ol/proj"
 import api from "@/api/index"
+import { wait } from "@/utils/promise"
 
 export default {
     name: "DoseRateLayer",
@@ -77,19 +78,26 @@ export default {
     },
     watch: {
         datasetFilePath: async function () {
-            const dataset = await api.doseRate.getDataset(this.datasetFilePath)
-            const features = dataset.features.map(feature => {
-                return new Feature({
-                    geometry: new Point(transform(feature.geometry.coordinates, "EPSG:4326", "EPSG:3857")),
-                    id: feature.properties.id,
-                    site: feature.properties.site,
-                    doseRate: feature.properties.doseRate
+            try {
+                this.$root.$emit("fullscreen-spinner-enable", { message: "Loading Dataset" })
+                await wait(1000)
+                const dataset = await api.doseRate.getDataset(this.datasetFilePath)
+                const features = dataset.features.map(feature => {
+                    return new Feature({
+                        geometry: new Point(transform(feature.geometry.coordinates, "EPSG:4326", "EPSG:3857")),
+                        id: feature.properties.id,
+                        site: feature.properties.site,
+                        doseRate: feature.properties.doseRate
+                    })
                 })
-            })
 
-            this.vectorLayer.getSource().clear(true)
-            this.vectorLayer.getSource().addFeatures(features)
-            this.$root.$emit("doseRateLayerChanged", this.vectorLayer)
+                this.vectorLayer.getSource().clear(true)
+                this.vectorLayer.getSource().addFeatures(features)
+                this.$root.$emit("doseRateLayerChanged", this.vectorLayer)
+            }
+            finally {
+                this.$root.$emit("fullscreen-spinner-disable")
+            }
         },
         doseRateRanges: function () {
             this.redraw()

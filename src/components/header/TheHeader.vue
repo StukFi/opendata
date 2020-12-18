@@ -24,6 +24,7 @@ export default {
     top: 0;
     display: flex;
     width: 100%;
+    height: 5em;
     z-index: $z-index-header;
 }
 </style>

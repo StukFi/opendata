@@ -1,11 +1,11 @@
 import { mount } from "@vue/test-utils"
-import SettingsPanelBackdrop from "./SettingsPanelBackdrop"
+import BaseBackdrop from "./BaseBackdrop"
 
-describe("SettingsPanelBackdrop.vue", () => {
+describe("BaseBackdrop.vue", () => {
     let wrapper
 
     beforeEach(() => {
-        wrapper = mount(SettingsPanelBackdrop)
+        wrapper = mount(BaseBackdrop)
     })
 
     it("emits a click event when clicked", () => {

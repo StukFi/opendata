@@ -37,11 +37,11 @@ export default {
     bottom: 0;
     z-index: $z-index-map-legend;
     width: 100%;
-    height: 2.5em;
-    line-height: 2.5em;
+    height: 3em;
+    line-height: 3em;
     background-color: rgba(204, 229, 236, 1);
     text-align: center;
-    font-size: $font-md;
+    font-size: $font-sm;
     font-family: $font-medium;
 }
 

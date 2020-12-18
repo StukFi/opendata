@@ -1,24 +1,27 @@
 <template>
     <div v-show="isEnabled">
-        <settings-panel-backdrop @click="disable" />
-        <div class="settings-panel container pt-5 pl-5 pr-5 pb-2">
-            <field-language :settings="settings" />
-            <field-date-format :settings="settings" />
-            <field-time-format :settings="settings" />
-            <field-map-legend :settings="settings" />
-            <button-close-settings @click="disable" />
-            <app-version />
+        <base-backdrop @click="disable" />
+        <div class="settings-panel">
+            <settings-panel-header @close="disable" />
+            <div
+                ref="panelBody"
+                class="settings-panel-body"
+            >
+                <field-language :settings="settings" />
+                <field-date-format :settings="settings" />
+                <field-time-format :settings="settings" />
+                <app-version />
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+import SettingsPanelHeader from "./SettingsPanelHeader"
 import FieldLanguage from "./FieldLanguage"
 import FieldDateFormat from "./FieldDateFormat"
 import FieldTimeFormat from "./FieldTimeFormat"
-import FieldMapLegend from "./FieldMapLegend"
-import ButtonCloseSettings from "./ButtonCloseSettings"
-import SettingsPanelBackdrop from "./SettingsPanelBackdrop"
+import BaseBackdrop from "@/components/base/BaseBackdrop"
 import AppVersion from "./AppVersion"
 import Settings from "@/models/Settings"
 import cloneDeep from "lodash/cloneDeep"
@@ -26,12 +29,11 @@ import cloneDeep from "lodash/cloneDeep"
 export default {
     name: "SettingsPanel",
     components: {
+        SettingsPanelHeader,
         FieldLanguage,
         FieldDateFormat,
         FieldTimeFormat,
-        FieldMapLegend,
-        ButtonCloseSettings,
-        SettingsPanelBackdrop,
+        BaseBackdrop,
         AppVersion
     },
     data: function () {
@@ -55,6 +57,13 @@ export default {
         enable () {
             this.settings = cloneDeep(this.$store.state.settings.settings)
             this.isEnabled = true
+
+            // Reset scrollbar to top when the user opens the settings panel.
+            this.$nextTick(() => {
+                if (this.$refs.panelBody) {
+                    this.$refs.panelBody.scrollTop = 0
+                }
+            })
         },
         disable () {
             this.isEnabled = false
@@ -70,12 +79,14 @@ export default {
 
 <style lang="scss">
 .settings-panel {
+    width: 90%;
+    max-width: 30em;
+    height: auto;
+    max-height: 25em;
     position: fixed;
-    transform: translate(-50%, -50%);
     left: 50%;
     top: 50%;
-    height: auto;
-    max-height: 70%;
+    transform: translate(-50%, -50%);
     font-size: $font-lg;
     font-family: $font-medium;
     z-index: $z-index-settings-panel;
@@ -84,6 +95,15 @@ export default {
     border: 1px solid rgba(0, 0, 0, 0.5);
     border-radius: $border-radius-lg;
     overflow-y: hidden;
-    padding: 1em;
+    padding: 1.5em 1.5em;
+}
+
+.settings-panel-body {
+    height: 15em;
+    overflow: auto;
+}
+
+.settings-panel-body > *:not(:last-child) {
+    margin-bottom: 2em;
 }
 </style>

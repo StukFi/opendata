@@ -75,6 +75,7 @@ export default {
     border-radius: $border-radius-sm;
     font-family: $font-medium;
     color: $color-font-dark;
+    z-index: $z-index-search-suggestion-list;
 }
 
 .list-container {

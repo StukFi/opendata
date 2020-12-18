@@ -102,7 +102,7 @@ export default {
     position: absolute;
     height: 3em;
     width: 16em;
-    top: 6.5em;
+    top: 6em;
     left: 50%;
     transform: translateX(-50%);
     border-radius: 0.25em;

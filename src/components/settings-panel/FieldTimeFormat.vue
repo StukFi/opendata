@@ -1,18 +1,32 @@
 <template>
-    <div>
-        <p>{{ $t("timeFormat")}}</p>
-        <fieldset v-model="settings.timeFormat">
-            <label>{{ $t("timeFormatA") }}</label>
-            <input type="radio" value="24h" v-model="settings.timeFormat">
-            <label>{{ $t("timeFormatB") }}</label>
-            <input type="radio" value="12h" v-model="settings.timeFormat">
-        </fieldset>
-    </div>
+    <settings-panel-section :title="$t('timeFormat')">
+        <base-radio-button
+            key="24h"
+            v-model="settings.timeFormat"
+            :model-value="settings.timeFormat"
+            own-value="24h"
+            :label="$t('timeFormatA')"
+            class="radio-button"
+        />
+        <base-radio-button
+            key="12h"
+            v-model="settings.timeFormat"
+            :model-value="settings.timeFormat"
+            own-value="12h"
+            :label="$t('timeFormatB')"
+            class="radio-button"
+        />
+    </settings-panel-section>
 </template>
 
 <script>
+import SettingsPanelSection from "./SettingsPanelSection"
+
 export default {
     name: "FieldTimeFormat",
+    components: {
+        SettingsPanelSection
+    },
     props: {
         settings: {
             type: Object,
@@ -36,3 +50,9 @@ export default {
     }
 }
 </i18n>
+
+<style lang="scss" scoped>
+.radio-button:first-of-type {
+    margin-right: 0.5em;
+}
+</style>

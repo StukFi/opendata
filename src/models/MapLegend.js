@@ -54,7 +54,7 @@ class MapLegend {
 export class MapLegendBar {
     constructor (threshold, color) {
         this.nextBar = undefined
-        this.threshold = threshold < 10 ? threshold.toFixed(2) : threshold
+        this.threshold = threshold < 10 ? threshold.toFixed(1) : threshold
         this.color = color
         this.isEnabled = true
     }

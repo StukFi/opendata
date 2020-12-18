@@ -48,18 +48,21 @@ export default {
 li {
     height: 3em;
     line-height: 3em;
-    font-size: $font-md;
-    color: black;
+    font-size: $font-lg;
+    color: $color-font-dark;
     list-style-type: none;
     border-radius: $border-radius-sm;
+    text-align: center;
 }
 
 li:hover {
     cursor: pointer;
+    background-color: $color-header-time;
+    color: white;
 }
 
 li.selected {
-    background-color: #1773B9;
+    background-color: $color-header-time;
     color: white;
 }
 </style>

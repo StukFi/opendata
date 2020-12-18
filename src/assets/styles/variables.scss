@@ -20,8 +20,10 @@ $color-font-light: rgba(255, 255, 255, 0.8);
 $color-font-dark: rgba(0, 0, 0, 0.8);
 
 /* Colors */
-$color-header-date: #1773B9;
-$color-header-time: #0066b3;
+$blue-dark: #0066b3;
+$blue-light: #1773b9;
+$color-header-date: $blue-light;
+$color-header-time: $blue-dark;
 
 $color-map-control-bg: rgba(255, 255, 255, 0.4);
 $color-map-control-bg-hover: rgba(255, 255, 255, 0.6);
@@ -35,13 +37,17 @@ $border-radius-sm: 0.5em;
 $border-radius-xs: 0.25em;
 
 /* Z-indices */
-$z-index-settings-panel: 5;
-$z-index-settings-panel-backdrop: 4;
-$z-index-map-legend: 3;
-$z-index-timepicker: 3;
-$z-index-search-bar-icon: 2;
-$z-index-button-open-settings: 1;
-$z-index-search-bar: 1;
-$z-index-media-controller: 1;
-$z-index-header: 1;
-$z-index-button-datetime: 1;
+$z-index-full-screen-spinner: 10000;
+$z-index-settings-panel: 9000;
+$z-index-timepicker-list: 9000;
+$z-index-search-suggestion-list: 9000;
+$z-index-calendar-popup: 9000;
+$z-index-backdrop: 8000;
+$z-index-header: 7000;
+$z-index-map-legend: 5000;
+$z-index-timepicker: 5000;
+$z-index-search-bar-icon: 4000;
+$z-index-button-open-settings: 1000;
+$z-index-search-bar: 1000;
+$z-index-button-datetime: 1000;
+$z-index-media-controller: 100;

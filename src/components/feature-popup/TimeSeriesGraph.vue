@@ -36,7 +36,6 @@ export default {
                 yaxis: { range: [0, 0.4] }
             },
             plotlyConfig: {
-                responsive: true,
                 scrollZoom: true,
                 connectGaps: true,
                 displayModeBar: false,
@@ -94,6 +93,16 @@ export default {
             await this.timeSeriesGraph.loadTimespan(startDate, endDate)
         },
         updateSize () {
+            const breakpoint = 767
+            if (window.innerWidth > breakpoint) {
+                this.plotlyLayout.width = 400
+                this.plotlyLayout.height = 240
+            }
+            else {
+                this.plotlyLayout.width = 300
+                this.plotlyLayout.height = 200
+            }
+
             this.draw()
         },
         reset () {

@@ -3,9 +3,9 @@
         ref="featurePopup"
         class="feature-popup"
     >
-        <button-close-popup @click="close" />
+        <!-- <button-close-popup @click="close" />
         <site-name :feature="feature" />
-        <site-dose-rate :feature="feature" />
+        <site-dose-rate :feature="feature" /> -->
         <time-series-graph :feature="feature" />
     </div>
 </template>
@@ -74,10 +74,10 @@ export default {
 <style>
 .feature-popup {
     position: absolute;
-    left: -11em;
-    width: 22em;
-    bottom: 0.75em;
-    padding: 1em;
+    left: -175px;
+    width: 350px;
+    bottom: 12px;
+    padding: 15px;
     background-color: white;
     border: 1px solid #cccccc;
 
@@ -85,11 +85,11 @@ export default {
        When the popup is opened for the first time, the graph inside it has not been rendered.
        The element's height is thus less than with the graph.
        This causes the view to be incorrectly centered, because the popup's height is used in the calculation. */
-    min-height: 22em;
+    min-height: 345px;
 
     /* A CSS variable for dynamically positioning the popup's
        pseudo-elements based on the popup's size. */
-    --pseudo-left: 11em;
+    --pseudo-left: 174px;
 }
 
 .feature-popup:after, .feature-popup:before {
@@ -106,12 +106,21 @@ export default {
 .feature-popup:after {
     border-top-color: white;
     border-width: 10px;
-    margin-left: -0.75em;
+    margin-left: -10px;
 }
 
 .feature-popup:before {
     border-top-color: #cccccc;
     border-width: 11px;
-    margin-left: -0.75em;
+    margin-left: -11px;
+}
+
+@media only screen and (min-width: 768px) {
+    .feature-popup {
+        width: 450px;
+        min-height: 385px;
+        left: -225px;
+        --pseudo-left: 224px;
+    }
 }
 </style>

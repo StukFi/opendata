@@ -17,7 +17,7 @@ export default {
 <style lang="scss">
 .button-open-settings {
     position: absolute;
-    bottom: 3em;
+    top: 6em;
     left: 1em;
     width: 3em;
     height: 3em;

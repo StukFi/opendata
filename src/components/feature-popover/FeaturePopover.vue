@@ -74,15 +74,16 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .feature-popover {
     position: absolute;
-    width: 17.5em;
+    width: 17em;
     left: -8.75em;
     bottom: 0.75em;
     padding: 1em;
     background-color: white;
     border: 1px solid #cccccc;
+    font-family: $font-medium;
 }
 
 .feature-popover:after,

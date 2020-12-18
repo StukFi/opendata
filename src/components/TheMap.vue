@@ -9,8 +9,11 @@
         <search-bar />
         <button-open-settings />
         <settings-panel />
-        <media-controller />
+        <!-- <media-controller /> -->
         <the-header />
+        <timepicker-list />
+        <datepicker-popup />
+        <full-screen-spinner />
     </div>
 </template>
 
@@ -24,6 +27,9 @@ import SettingsPanel from "@/components/settings-panel/SettingsPanel"
 import MediaController from "@/components/media-controller/MediaController"
 import SearchBar from "@/components/search-bar/SearchBar"
 import TheHeader from "@/components/header/TheHeader"
+import TimepickerList from "@/components/header/time/timepicker/TimepickerList"
+import DatepickerPopup from "@/components/header/date/DatepickerPopup"
+import FullScreenSpinner from "@/components/common/FullScreenSpinner"
 
 import ControlZoom from "ol/control/Zoom"
 import ControlZoomSlider from "ol/control/ZoomSlider"
@@ -47,7 +53,10 @@ export default {
         ButtonOpenSettings,
         SettingsPanel,
         MediaController,
-        TheHeader
+        TheHeader,
+        TimepickerList,
+        DatepickerPopup,
+        FullScreenSpinner
     },
     data: function () {
         return {

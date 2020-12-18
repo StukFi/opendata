@@ -1,27 +1,31 @@
 <template>
-    <ul
-        v-show="isEnabled"
-        class="timepicker-list"
-    >
-        <div class="list-container">
-            <timepicker-list-item
-                v-for="(time, index) in availableTimesForSelectedDate.slice().reverse()"
-                :key="index"
-                :time="time"
-                @click="close()"
-            />
-        </div>
-    </ul>
+    <div v-show="isEnabled">
+        <base-backdrop @click="close" />
+        <ul
+            class="timepicker-list"
+        >
+            <div class="list-container">
+                <timepicker-list-item
+                    v-for="(time, index) in availableTimesForSelectedDate.slice().reverse()"
+                    :key="index"
+                    :time="time"
+                    @click="close()"
+                />
+            </div>
+        </ul>
+    </div>
 </template>
 
 <script>
 import TimepickerListItem from "./TimepickerListItem"
+import BaseBackdrop from "@/components/base/BaseBackdrop"
 import { mixin as clickaway } from "vue-clickaway"
 
 export default {
     name: "TimepickerList",
     components: {
-        TimepickerListItem
+        TimepickerListItem,
+        BaseBackdrop
     },
     mixins: [ clickaway ],
     data: function () {
@@ -33,6 +37,9 @@ export default {
         availableTimesForSelectedDate () {
             return this.$store.getters.availableTimesForSelectedDate
         }
+    },
+    mounted () {
+        this.$root.$on("timepicker-list-toggle", this.toggle)
     },
     methods: {
         close () {
@@ -49,19 +56,20 @@ export default {
 .timepicker-list {
     position: fixed;
     left: 50%;
-    transform: translate(-50%);
-    width: 19em;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
     height: auto;
     max-height: 20em;
     overflow: hidden;
     padding: 0.25em;
-    top: 6.5em;
     margin: 0;
     background-color: white;
     border: 1px solid #CCC;
     border-radius: $border-radius-md;
     font-family: $font-medium;
-    font-size: $font-md;
+    font-size: $font-lg;
+    z-index: $z-index-timepicker-list;
 }
 
 .timepicker-list:hover {
