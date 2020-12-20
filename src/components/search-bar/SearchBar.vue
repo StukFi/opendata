@@ -129,6 +129,7 @@ export default {
     color: white;
     border: none;
     font-family: $font-medium;
+    text-overflow: ellipsis;
 }
 
 .search-bar__input:hover {

@@ -126,7 +126,7 @@ export default {
 
             // Adjust the y-coordinate so that the view is centered towards
             // the middle of the popup and not on the clicked feature itself.
-            featurePixel[1] -= (this.$refs.featurePopup.$el.clientHeight * 0.6)
+            featurePixel[1] -= (this.$refs.featurePopup.$el.clientHeight * 0.65)
 
             var position = this.map.getCoordinateFromPixel(featurePixel)
 

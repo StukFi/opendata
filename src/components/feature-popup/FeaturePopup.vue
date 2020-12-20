@@ -3,16 +3,14 @@
         ref="featurePopup"
         class="feature-popup"
     >
-        <!-- <button-close-popup @click="close" />
-        <site-name :feature="feature" />
-        <site-dose-rate :feature="feature" /> -->
+        <site-name :feature="feature" @close="close" />
+        <site-dose-rate :feature="feature" />
         <time-series-graph :feature="feature" />
     </div>
 </template>
 
 <script>
 import Overlay from "ol/Overlay"
-import ButtonClosePopup from "./ButtonClosePopup"
 import SiteName from "@/components/feature-popover/SiteName"
 import SiteDoseRate from "@/components/feature-popover/SiteDoseRate"
 import TimeSeriesGraph from "./TimeSeriesGraph"
@@ -20,7 +18,6 @@ import TimeSeriesGraph from "./TimeSeriesGraph"
 export default {
     name: "FeaturePopup",
     components: {
-        ButtonClosePopup,
         SiteName,
         SiteDoseRate,
         TimeSeriesGraph
@@ -71,21 +68,23 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 .feature-popup {
     position: absolute;
     left: -175px;
     width: 350px;
-    bottom: 12px;
-    padding: 15px;
+    bottom: 19px;
+    padding: 30px 15px 15px 15px;
     background-color: white;
     border: 1px solid #cccccc;
+    border-radius: $border-radius-lg;
+    font-family: $font-medium;
 
     /* The minimum height ensures that the view is centered correctly on an opened popup.
        When the popup is opened for the first time, the graph inside it has not been rendered.
        The element's height is thus less than with the graph.
        This causes the view to be incorrectly centered, because the popup's height is used in the calculation. */
-    min-height: 345px;
+    min-height: 325px;
 
     /* A CSS variable for dynamically positioning the popup's
        pseudo-elements based on the popup's size. */
@@ -105,14 +104,14 @@ export default {
 
 .feature-popup:after {
     border-top-color: white;
-    border-width: 10px;
-    margin-left: -10px;
+    border-width: 19px;
+    margin-left: -19px;
 }
 
 .feature-popup:before {
     border-top-color: #cccccc;
-    border-width: 11px;
-    margin-left: -11px;
+    border-width: 20px;
+    margin-left: -20px;
 }
 
 @media only screen and (min-width: 768px) {

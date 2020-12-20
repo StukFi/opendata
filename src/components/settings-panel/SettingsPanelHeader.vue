@@ -14,7 +14,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .settings-panel-header {
     text-transform: uppercase;
     font-size: $font-xl;

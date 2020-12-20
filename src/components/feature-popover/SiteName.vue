@@ -1,7 +1,13 @@
 <template>
-    <p class="site-name">
-        {{ site }}
-    </p>
+    <div class="site-header opendata-row">
+        <span class="site-name">
+            {{ site }}
+        </span>
+        <span
+            class="close-button"
+            @click="$emit('close')"
+        >&times;</span>
+    </div>
 </template>
 
 <script>
@@ -21,11 +27,29 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.site-header {
+    text-align: center;
+    justify-content: center;
+}
+
 .site-name {
     text-align: center;
     font-weight: bold;
-    font-size: $font-md;
+    font-size: $font-lg;
     margin: 0;
+}
+
+.close-button {
+    position: absolute;
+    right: 1.5em;
+    font-size: $font-lg;
+    transform: scale(2);
+    height: 2em;
+    line-height: 2em;
+
+    &:hover {
+        cursor: pointer;
+    }
 }
 </style>
