@@ -33,7 +33,8 @@ export default {
                 height: 0,
                 dragmode: "pan",
                 margin: { t: 20, r: 0, b: 50, l: 50, pad: 15 },
-                yaxis: { range: [0, 0.4] }
+                yaxis: { range: [0, 0.4] },
+                font: { size: 12, family: "RedHatText-Medium" }
             },
             plotlyConfig: {
                 scrollZoom: true,
@@ -70,12 +71,16 @@ export default {
         },
     },
     mounted () {
-        this.updateSize()
+        this.updateSize(true)
         this.$refs.graphContainer.on("plotly_relayout", this.onPlotlyRelayout)
         window.onresize = this.updateSize
     },
     methods: {
         draw () {
+            // New font sizes don't apply for some reason unless this function
+            // is called before every draw of the graph. The font size does change when you
+            // resize the window on desktop but not when the app is opened normally.
+            this.updateSize()
             Plotly.react(
                 this.$refs.graphContainer,
                 this.timeSeriesGraph.dataPoints,
@@ -92,18 +97,31 @@ export default {
             const endDate = new Date(evt["xaxis.range[1]"].split(" ")[0])
             await this.timeSeriesGraph.loadTimespan(startDate, endDate)
         },
-        updateSize () {
-            const breakpoint = 767
-            if (window.innerWidth > breakpoint) {
-                this.plotlyLayout.width = 400
+        updateSize (redraw = false) {
+            // I was unable to get the Plotly.js graph to resize and render properly
+            // in a responsive container (the feature popup) using relative units. Because
+            // of this the sizing uses pixels and is done here instead of in CSS.
+            const breakpointMd = 768
+            const breakpointLg = 1024
+            if (window.innerWidth >= breakpointLg) {
+                this.plotlyLayout.width = 550
+                this.plotlyLayout.height = 420
+                this.plotlyLayout.font = { size: 16 }
+            }
+            else if (window.innerWidth >= breakpointMd) {
+                this.plotlyLayout.width = 375
                 this.plotlyLayout.height = 240
+                this.plotlyLayout.font = { size: 14 }
             }
             else {
                 this.plotlyLayout.width = 300
                 this.plotlyLayout.height = 200
+                this.plotlyLayout.font = { size: 12 }
             }
 
-            this.draw()
+            if (redraw) {
+                this.draw()
+            }
         },
         reset () {
             this.plotlyLayout = JSON.parse(JSON.stringify(this.defaultPlotlyLayout))

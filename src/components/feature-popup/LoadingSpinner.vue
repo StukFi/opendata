@@ -34,8 +34,8 @@ export default {
 .spinner,
 .spinner:after {
     border-radius: 50%;
-    width: 5em;
-    height: 5em;
+    width: 4em;
+    height: 4em;
 }
 
 .spinner {

@@ -77,10 +77,6 @@ export default {
                 new ControlZoom(),
                 new ControlZoomSlider(),
                 new ControlScaleLine(),
-                new ControlMousePosition({
-                    coordinateFormat: createStringXY(2),
-                    projection: "EPSG:4326"
-                })
             ],
             view: new View({
                 center: fromLonLat([25.75, 65.75]),

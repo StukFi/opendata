@@ -74,10 +74,10 @@ export default {
     left: -175px;
     width: 350px;
     bottom: 19px;
-    padding: 30px 15px 15px 15px;
+    padding: 30px 10px 10px 10px;
     background-color: white;
     border: 1px solid #cccccc;
-    border-radius: $border-radius-lg;
+    border-radius: $border-radius-md;
     font-family: $font-medium;
 
     /* The minimum height ensures that the view is centered correctly on an opened popup.
@@ -114,12 +114,21 @@ export default {
     margin-left: -20px;
 }
 
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: $breakpoint-md) {
     .feature-popup {
         width: 450px;
-        min-height: 385px;
         left: -225px;
         --pseudo-left: 224px;
+        padding: 40px 20px 20px 20px;
+    }
+}
+
+@media only screen and (min-width: $breakpoint-lg) {
+    .feature-popup {
+        width: 650px;
+        left: -325px;
+        --pseudo-left: 324px;
+        padding: 50px 45px 45px 45px;
     }
 }
 </style>

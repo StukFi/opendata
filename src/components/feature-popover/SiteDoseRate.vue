@@ -26,7 +26,7 @@ export default {
 <style lang="scss">
 .site-dose-rate {
     text-align: center;
-    font-size: $font-xl;
+    font-size: $font-lg;
     font-family: $font-regular;
     margin: 0.5em 0 0 0;
 }

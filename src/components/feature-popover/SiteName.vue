@@ -35,7 +35,6 @@ export default {
 
 .site-name {
     text-align: center;
-    font-weight: bold;
     font-size: $font-lg;
     margin: 0;
 }
@@ -44,7 +43,7 @@ export default {
     position: absolute;
     right: 1.5em;
     font-size: $font-lg;
-    transform: scale(2);
+    transform: scale(1.5);
     height: 2em;
     line-height: 2em;
 

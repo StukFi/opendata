@@ -163,6 +163,7 @@ export default {
     top: 50%;
     transform: translate(-50%, -50%);
     width: 90%;
+    max-width: 25em;
     height: auto;
     border-radius: $border-radius-md;
     font-family: $font-medium !important;

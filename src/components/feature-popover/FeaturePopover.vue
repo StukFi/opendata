@@ -84,6 +84,7 @@ export default {
     background-color: white;
     border: 1px solid #cccccc;
     font-family: $font-medium;
+    border-radius: $border-radius-md;
 }
 
 .feature-popover:after,
