@@ -6,10 +6,6 @@ For more information on STUK's and FMI's open data, see the following resources:
 - https://www.stuk.fi/avoin-data
 - https://en.ilmatieteenlaitos.fi/open-data
 
-### Overview
-
-The project consists of Python scripts for getting data and a Vue.js based responsive single-page application for viewing the data. The application shows only data that you get with the Python scripts, it does not directly interface with the FMI open data API.
-
 ### Building
 
 1. Install [Node.js](https://nodejs.org) which includes npm (node package manager).
@@ -26,8 +22,7 @@ To get data you need to:
 
 2. Create a copy of the file `settings.example.json` in the `scripts` directory and name it `settings.json`. In the file change the value of `data_directory` to the path of the directory where you want data to be stored. The name of the directory must be `data`. For example, `/var/www/html/opendata/data`. During development the data directory must be in the `public` directory.
 
-3. Run `python get_data.py` in the scripts directory. This gets the latest measurement data set. To download past or multiple data sets, use the `-s` option with a start and end time. Use the `--help` option for more details.
-
+3. Run `python get_data.py` in the scripts directory. This gets the latest measurement data set. To download past or multiple data sets, use the `-s` option with a start and an end time. Use the `--help` option for more details.
 
 The `get_data.py` script also generates time series files and a metadata file. To generate these files manually run the `time_series.py` and `metadata.py` scripts.
 
