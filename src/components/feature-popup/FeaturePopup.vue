@@ -54,18 +54,18 @@ export default {
         },
         update (layer) {
             var features = layer.getSource().getFeatures()
-            if (features.length == 0) {
+            if (features.length == 0 || !this.feature) {
                 return
             }
 
             for (var i = 0; i < features.length; ++i) {
-                if (!this.feature || features[i].get("id") == this.feature.get("id")) {
+                if (features[i].get("id") == this.feature.get("id")) {
                     this.feature = features[i]
                     return
                 }
             }
 
-            this.feature = undefined
+            this.feature.set("doseRate", "-")
         }
     }
 }
