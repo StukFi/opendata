@@ -45,4 +45,10 @@ export default {
         font-size: 2em;
     }
 }
+
+@media (min-width: $breakpoint-xl) {
+    :root {
+        font-size: 2.5em;
+    }
+}
 </style>

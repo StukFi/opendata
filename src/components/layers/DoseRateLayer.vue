@@ -13,7 +13,6 @@ import Feature from "ol/Feature"
 import Point from "ol/geom/Point"
 import { transform } from "ol/proj"
 import api from "@/api/index"
-import { wait } from "@/utils/promise"
 
 export default {
     name: "DoseRateLayer",
@@ -79,8 +78,7 @@ export default {
     watch: {
         datasetFilePath: async function () {
             try {
-                this.$root.$emit("fullscreen-spinner-enable", { message: "Loading Dataset" })
-                await wait(1000)
+                this.$Progress.start()
                 const dataset = await api.doseRate.getDataset(this.datasetFilePath)
                 const features = dataset.features.map(feature => {
                     return new Feature({
@@ -94,9 +92,10 @@ export default {
                 this.vectorLayer.getSource().clear(true)
                 this.vectorLayer.getSource().addFeatures(features)
                 this.$root.$emit("doseRateLayerChanged", this.vectorLayer)
+                this.$Progress.finish()
             }
-            finally {
-                this.$root.$emit("fullscreen-spinner-disable")
+            catch {
+                this.$Progress.fail()
             }
         },
         doseRateRanges: function () {

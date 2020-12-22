@@ -3,7 +3,10 @@
         ref="featurePopup"
         class="feature-popup"
     >
-        <site-name :feature="feature" @close="close" />
+        <site-name
+            :feature="feature"
+            @close="close"
+        />
         <site-dose-rate :feature="feature" />
         <time-series-graph :feature="feature" />
     </div>

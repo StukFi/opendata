@@ -40,7 +40,7 @@ export default {
     position: absolute;
     bottom: 3em;
     left: 50%;
-    display: flex;
+    display: none;
     transform: translateX(-50%);
     background-color: rgba(255, 255, 255, 0.4);
     z-index: $z-index-media-controller;
@@ -50,5 +50,11 @@ export default {
 
 .media-controller:hover {
     background-color: rgba(255, 255, 255, 0.6);
+}
+
+@media (min-width: $breakpoint-md) {
+    .media-controller {
+        display: flex;
+    }
 }
 </style>

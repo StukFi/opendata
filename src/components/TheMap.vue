@@ -9,11 +9,11 @@
         <search-bar />
         <button-open-settings />
         <settings-panel />
-        <!-- <media-controller /> -->
+        <media-controller />
         <the-header />
         <timepicker-list />
         <datepicker-popup />
-        <full-screen-spinner />
+        <vue-progress-bar />
     </div>
 </template>
 
@@ -29,13 +29,10 @@ import SearchBar from "@/components/search-bar/SearchBar"
 import TheHeader from "@/components/header/TheHeader"
 import TimepickerList from "@/components/header/time/timepicker/TimepickerList"
 import DatepickerPopup from "@/components/header/date/DatepickerPopup"
-import FullScreenSpinner from "@/components/common/FullScreenSpinner"
 
 import ControlZoom from "ol/control/Zoom"
 import ControlZoomSlider from "ol/control/ZoomSlider"
 import ControlScaleLine from "ol/control/ScaleLine"
-import ControlMousePosition from "ol/control/MousePosition"
-import { createStringXY } from "ol/coordinate"
 import { fromLonLat } from "ol/proj"
 import Map from "ol/Map"
 import OSMSource from "ol/source/OSM"
@@ -55,8 +52,7 @@ export default {
         MediaController,
         TheHeader,
         TimepickerList,
-        DatepickerPopup,
-        FullScreenSpinner
+        DatepickerPopup
     },
     data: function () {
         return {

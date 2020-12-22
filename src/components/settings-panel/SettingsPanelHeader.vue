@@ -4,7 +4,7 @@
         <span
             class="close-button"
             @click="$emit('close')"
-        >&times</span>
+        >&times;</span>
     </div>
 </template>
 
