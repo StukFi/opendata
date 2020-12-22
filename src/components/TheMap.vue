@@ -8,7 +8,9 @@
         <map-legend />
         <search-bar />
         <button-open-settings />
+        <button-open-info />
         <settings-panel />
+        <info-panel />
         <media-controller />
         <the-header />
         <timepicker-list />
@@ -23,7 +25,9 @@ import MapLegend from "@/components/map-legend/MapLegend"
 import FeaturePopover from "@/components/feature-popover/FeaturePopover"
 import FeaturePopup from "@/components/feature-popup/FeaturePopup"
 import ButtonOpenSettings from "@/components/settings-panel/ButtonOpenSettings"
+import ButtonOpenInfo from "@/components/info-panel/ButtonOpenInfo"
 import SettingsPanel from "@/components/settings-panel/SettingsPanel"
+import InfoPanel from "@/components/info-panel/InfoPanel"
 import MediaController from "@/components/media-controller/MediaController"
 import SearchBar from "@/components/search-bar/SearchBar"
 import TheHeader from "@/components/header/TheHeader"
@@ -48,7 +52,9 @@ export default {
         MapLegend,
         SearchBar,
         ButtonOpenSettings,
+        ButtonOpenInfo,
         SettingsPanel,
+        InfoPanel,
         MediaController,
         TheHeader,
         TimepickerList,
