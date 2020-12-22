@@ -14,7 +14,7 @@ For more information on STUK's and FMI's open data, see the following resources:
 
 3. Build the application: `npm run build` for production or `npm run serve` for development.
 
-### Data
+### Getting data
 
 To get data you need to:
 
