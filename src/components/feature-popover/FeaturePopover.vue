@@ -78,8 +78,8 @@ export default {
 .feature-popover {
     position: absolute;
     width: 17em;
-    left: -8.75em;
-    bottom: 0.75em;
+    left: -8.5em;
+    bottom: 0.5em;
     padding: 1em;
     background-color: white;
     border: 1px solid #cccccc;
