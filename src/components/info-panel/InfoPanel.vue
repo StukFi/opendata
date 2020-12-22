@@ -91,7 +91,7 @@ export default {
 <i18n>
 {
     "en": {
-        "p1": "Opendata is an open source application developed by STUK that enables viewing of external radiation results around Finland. The application gets its data from the Finnish Meteorological Institute's open data API.",
+        "p1": "Opendata is an open source application developed by STUK that enables viewing of external radiation results from around Finland. The application gets its data from the Finnish Meteorological Institute's open data API.",
         "p2": "To learn more visit the project on <a href='https://github.com/StukFi/opendata' target='_blank'>GitHub</a>."
     },
     "fi": {
