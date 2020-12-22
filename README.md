@@ -16,7 +16,7 @@ For more information on STUK's and FMI's open data, see the following resources:
 
 ### Getting data
 
-To get data you need to:
+To get data:
 
 1. Install Python 3.
 
