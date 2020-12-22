@@ -1,24 +1,24 @@
 <template>
     <div
-        class="button-open-settings"
+        class="button-open-info"
         :title="$t('title')"
-        @click="$root.$emit('settings-panel-open')"
+        @click="$root.$emit('info-panel-open')"
     >
-        <span class="button-open-settings__icon" />
+        <span class="button-open-info__icon" />
     </div>
 </template>
 
 <script>
 export default {
-    name: "ButtonOpenSettings"
+    name: "ButtonOpenInfo"
 }
 </script>
 
-<style lang="scss">
-.button-open-settings {
+<style lang="scss" scoped>
+.button-open-info {
     position: absolute;
     top: 6em;
-    left: 1em;
+    right: 1em;
     width: 3em;
     height: 3em;
     z-index: $z-index-button-open-settings;
@@ -26,11 +26,11 @@ export default {
     background-color: rgba(255, 255, 255, 0.4);
 }
 
-.button-open-settings:hover {
+.button-open-info:hover {
     background-color: rgba(255, 255, 255, 0.6);
 }
 
-.button-open-settings__icon {
+.button-open-info__icon {
     position: absolute;
     width: 90%;
     height: 90%;
@@ -38,7 +38,7 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
     border-radius: 0.25em;
-    background-image: url("~@/assets/icons/cog.svg");
+    background-image: url("~@/assets/icons/info.svg");
     background-repeat: no-repeat;
     background-position: center;
     background-color: rgba(0, 50, 136, 0.5);
@@ -46,14 +46,13 @@ export default {
     cursor: pointer;
 }
 
-.button-open-settings__icon:hover {
+.button-open-info__icon:hover {
     background-color: rgba(0, 50, 136, 0.7);
 }
 
 @media only screen and (min-width: $breakpoint-md) {
-    .button-open-settings {
+    .button-open-info {
         left: 1em;
-        top: 9.5em;
     }
 }
 </style>
@@ -61,10 +60,10 @@ export default {
 <i18n>
 {
     "en": {
-        "title": "Settings"
+        "title": "About"
     },
     "fi": {
-        "title": "Asetukset"
+        "title": "Tietoa"
     }
 }
 </i18n>
