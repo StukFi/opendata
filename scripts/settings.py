@@ -15,7 +15,6 @@ def load():
     settings["path_dose_rates"] = data_directory + "/dose_rates"
     settings["path_dose_rates_datasets"] = data_directory + "/dose_rates/datasets"
     settings["path_dose_rates_time_series"] = data_directory + "/dose_rates/time_series"
-    settings["path_samplers"] = data_directory + "/samplers"
 
 def get(setting):
     """

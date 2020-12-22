@@ -7,7 +7,6 @@ from fmi_utils import fmi_request_datetime_format
 from metadata import update_metadata
 from time_series import generate_time_series
 import dose_rates
-import samplers
 import settings
 
 def get_program_arguments():
@@ -17,8 +16,6 @@ def get_program_arguments():
     :return: program arguments
     """
     parser = argparse.ArgumentParser(description="Gets data from FMI's open data API.")
-    parser.add_argument("data_type", choices=["dose_rates", "samplers"],
-                        help="type of data to get")
     parser.add_argument("-s", "--timespan", nargs=2, metavar=('FROM', 'TO'),
                         help="define a timespan for which to get data, \
                               datetime format {}".format(fmi_request_datetime_format))
@@ -44,13 +41,9 @@ def get_data(args):
 
     :param args: program arguments
     """
-    if args.data_type == "dose_rates":
-        dose_rates.get_data(args)
-        update_metadata()
-        generate_time_series(args)
-
-    elif args.data_type == "samplers":
-        samplers.get_data(args)
+    dose_rates.get_data(args)
+    update_metadata()
+    generate_time_series(args)
 
 if __name__ == "__main__":
     args = get_program_arguments()
