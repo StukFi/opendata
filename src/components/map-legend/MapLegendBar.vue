@@ -21,7 +21,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .map-legend__bar {
     width: 20%;
     height: 100%;

@@ -3,24 +3,19 @@
         class="timepicker"
     >
         <div
-            class="timepicker-button"
+            class="timepicker-button opendata-row"
             @click="toggleTimeList"
         >
             {{ formattedTime }}
         </div>
-        <timepicker-list ref="timepickerList" />
     </div>
 </template>
 
 <script>
-import TimepickerList from "./TimepickerList"
 import dateUtils from "@/utils/date"
 
 export default {
     name: "Timepicker",
-    components: {
-        TimepickerList
-    },
     computed: {
         formattedTime () {
             let time = this.$store.state.datetime.selectedTime
@@ -43,23 +38,21 @@ export default {
     },
     methods: {
         toggleTimeList () {
-            this.$refs.timepickerList.toggle()
+            this.$root.$emit("timepicker-list-toggle")
         }
     }
 }
 </script>
 
-<style>
+<style lang="scss">
 .timepicker {
     flex-basis: 50%;
     flex-grow: 1;
-    line-height: 60px;
-    z-index: 3;
-    font-size: 1.7rem;
-    text-align: center;
+    z-index: $z-index-timepicker;
     border: none;
-    background-color: #0066b3;
+    background-color: $color-header-time;
     color: white;
+    text-align: center;
 }
 
 .timepicker:hover,
@@ -68,18 +61,14 @@ export default {
 }
 
 .timepicker-button {
+    height: 100%;
+    font-size: $font-lg;
+    font-family: $font-medium;
     border: none;
     outline: none;
     -webkit-appearance: none;
     -moz-appearance: none;
     background-color: transparent;
-}
-
-@media only screen and (min-width: 768px) {
-    .timepicker {
-        height: 75px;
-        line-height: 75px;
-        font-size: 2.3rem;
-    }
+    justify-content: center;
 }
 </style>

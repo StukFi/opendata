@@ -77,19 +77,26 @@ export default {
     },
     watch: {
         datasetFilePath: async function () {
-            const dataset = await api.doseRate.getDataset(this.datasetFilePath)
-            const features = dataset.features.map(feature => {
-                return new Feature({
-                    geometry: new Point(transform(feature.geometry.coordinates, "EPSG:4326", "EPSG:3857")),
-                    id: feature.properties.id,
-                    site: feature.properties.site,
-                    doseRate: feature.properties.doseRate
+            try {
+                this.$Progress.start()
+                const dataset = await api.doseRate.getDataset(this.datasetFilePath)
+                const features = dataset.features.map(feature => {
+                    return new Feature({
+                        geometry: new Point(transform(feature.geometry.coordinates, "EPSG:4326", "EPSG:3857")),
+                        id: feature.properties.id,
+                        site: feature.properties.site,
+                        doseRate: feature.properties.doseRate
+                    })
                 })
-            })
 
-            this.vectorLayer.getSource().clear(true)
-            this.vectorLayer.getSource().addFeatures(features)
-            this.$root.$emit("doseRateLayerChanged", this.vectorLayer)
+                this.vectorLayer.getSource().clear(true)
+                this.vectorLayer.getSource().addFeatures(features)
+                this.$root.$emit("doseRateLayerChanged", this.vectorLayer)
+                this.$Progress.finish()
+            }
+            catch {
+                this.$Progress.fail()
+            }
         },
         doseRateRanges: function () {
             this.redraw()

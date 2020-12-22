@@ -19,11 +19,15 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .search-suggest-list-item {
-    height: 40px;
-    line-height: 40px;
-    padding-left: 20px;
+    height: 2.5em;
+    line-height: 2.5em;
+    padding-left: 1.25em;
     margin: 0;
+    font-size: $font-md;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 </style>

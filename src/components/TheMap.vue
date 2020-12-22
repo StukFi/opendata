@@ -11,6 +11,9 @@
         <settings-panel />
         <media-controller />
         <the-header />
+        <timepicker-list />
+        <datepicker-popup />
+        <vue-progress-bar />
     </div>
 </template>
 
@@ -24,12 +27,12 @@ import SettingsPanel from "@/components/settings-panel/SettingsPanel"
 import MediaController from "@/components/media-controller/MediaController"
 import SearchBar from "@/components/search-bar/SearchBar"
 import TheHeader from "@/components/header/TheHeader"
+import TimepickerList from "@/components/header/time/timepicker/TimepickerList"
+import DatepickerPopup from "@/components/header/date/DatepickerPopup"
 
 import ControlZoom from "ol/control/Zoom"
 import ControlZoomSlider from "ol/control/ZoomSlider"
 import ControlScaleLine from "ol/control/ScaleLine"
-import ControlMousePosition from "ol/control/MousePosition"
-import { createStringXY } from "ol/coordinate"
 import { fromLonLat } from "ol/proj"
 import Map from "ol/Map"
 import OSMSource from "ol/source/OSM"
@@ -47,7 +50,9 @@ export default {
         ButtonOpenSettings,
         SettingsPanel,
         MediaController,
-        TheHeader
+        TheHeader,
+        TimepickerList,
+        DatepickerPopup
     },
     data: function () {
         return {
@@ -68,10 +73,6 @@ export default {
                 new ControlZoom(),
                 new ControlZoomSlider(),
                 new ControlScaleLine(),
-                new ControlMousePosition({
-                    coordinateFormat: createStringXY(2),
-                    projection: "EPSG:4326"
-                })
             ],
             view: new View({
                 center: fromLonLat([25.75, 65.75]),
@@ -117,7 +118,7 @@ export default {
 
             // Adjust the y-coordinate so that the view is centered towards
             // the middle of the popup and not on the clicked feature itself.
-            featurePixel[1] -= (this.$refs.featurePopup.$el.clientHeight * 0.6)
+            featurePixel[1] -= (this.$refs.featurePopup.$el.clientHeight * 0.65)
 
             var position = this.map.getCoordinateFromPixel(featurePixel)
 

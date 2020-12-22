@@ -28,6 +28,12 @@ export default {
 }
 </script>
 
+<style lang="scss" scoped>
+button {
+    font-size: $font-sm;
+}
+</style>
+
 <i18n>
 {
     "fi": {

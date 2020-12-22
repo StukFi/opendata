@@ -23,11 +23,12 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .site-dose-rate {
     text-align: center;
-    font-size: 2.15em;
-    margin: 0.5em 0;
+    font-size: $font-lg;
+    font-family: $font-regular;
+    margin: 0.5em 0 0 0;
 }
 
 .site-dose-rate__value {
@@ -36,9 +37,8 @@ export default {
 }
 
 .site-dose-rate__unit {
-    position: absolute;
     white-space: pre;
-    font-size: 40%;
+    font-size: $font-xs;
     bottom: 0;
 }
 </style>

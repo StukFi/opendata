@@ -30,29 +30,22 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .map-legend {
     display: flex;
     position: absolute;
     bottom: 0;
-    z-index: 3;
+    z-index: $z-index-map-legend;
     width: 100%;
-    height: 25px;
-    line-height: 25px;
+    height: 3em;
+    line-height: 3em;
     background-color: rgba(204, 229, 236, 1);
     text-align: center;
-    font-size: 0.65em;
+    font-size: $font-sm;
+    font-family: $font-medium;
 }
 
 .map-legend:hover {
     cursor: pointer;
-}
-
-@media only screen and (min-width: 768px) {
-    .map-legend {
-        height: 30px;
-        line-height: 30px;
-        font-size: 0.9em;
-    }
 }
 </style>

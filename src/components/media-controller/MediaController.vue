@@ -33,28 +33,28 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .media-controller {
-    width: 200px;
-    height: 40px;
+    width: 12em;
+    height: 3em;
     position: absolute;
-    bottom: 40px;
+    bottom: 3em;
     left: 50%;
-    display: flex;
+    display: none;
     transform: translateX(-50%);
     background-color: rgba(255, 255, 255, 0.4);
-    z-index: 1;
-    padding: 3px;
-    border-radius: 4px;
+    z-index: $z-index-media-controller;
+    padding: 0.25em;
+    border-radius: $border-radius-xs;
 }
 
 .media-controller:hover {
     background-color: rgba(255, 255, 255, 0.6);
 }
 
-@media only screen and (max-width: 500px) {
+@media (min-width: $breakpoint-md) {
     .media-controller {
-        display: none;
+        display: flex;
     }
 }
 </style>

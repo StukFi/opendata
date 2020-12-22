@@ -1,18 +1,21 @@
 import Vue from "vue"
 import VueResource from "vue-resource"
-import BootstrapVue from "bootstrap-vue"
+import VueProgressBar from "vue-progressbar"
 import i18n from "./i18n"
+import "@/components/base/index"
 
 import App from "./App"
-import store from "../src/store"
+import store from "@/store"
 
-import "bootstrap/dist/css/bootstrap.css"
-import "bootstrap-vue/dist/bootstrap-vue.css"
 import "ol/ol.css"
-import "../public/global.css"
+import "@/assets/styles/index.scss"
 
 Vue.use(VueResource)
-Vue.use(BootstrapVue)
+Vue.use(VueProgressBar, {
+    color: "white",
+    failedColor: "#e95024",
+    thickness: "0.25em"
+})
 
 Vue.config.productionTip = false
 

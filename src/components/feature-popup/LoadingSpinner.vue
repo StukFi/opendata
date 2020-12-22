@@ -19,7 +19,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .spinner-container {
     width: 100%;
     height: 100%;
@@ -34,13 +34,13 @@ export default {
 .spinner,
 .spinner:after {
     border-radius: 50%;
-    width: 5em;
-    height: 5em;
+    width: 4em;
+    height: 4em;
 }
 
 .spinner {
-    margin: 60px auto;
-    font-size: 0.625rem;
+    margin: 4em auto;
+    font-size: $font-xs;
     border-top: 0.5em solid rgba(23,115,185, 0.2);
     border-right: 0.5em solid rgba(23,115,185, 0.2);
     border-bottom: 0.5em solid rgba(23,115,185, 0.2);

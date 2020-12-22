@@ -1,30 +1,31 @@
 <template>
-    <b-form-group
-        :label="$t('language')"
-        class="mb-5"
-    >
-        <b-form-radio-group v-model="settings.locale">
-            <b-form-radio value="fi">
-                FI
-            </b-form-radio>
-            <b-form-radio value="en">
-                EN
-            </b-form-radio>
-        </b-form-radio-group>
-    </b-form-group>
+    <settings-panel-section :title="$t('language')">
+        <base-radio-button
+            key="fi"
+            v-model="settings.locale"
+            :model-value="settings.locale"
+            own-value="fi"
+            :label="$t('labelFinnish')"
+            class="radio-button"
+        />
+        <base-radio-button
+            key="en"
+            v-model="settings.locale"
+            :model-value="settings.locale"
+            own-value="en"
+            :label="$t('labelEnglish')"
+            class="radio-button"
+        />
+    </settings-panel-section>
 </template>
 
 <script>
-import { BFormGroup } from "bootstrap-vue"
-import { BFormRadio } from "bootstrap-vue"
-import { BFormRadioGroup } from "bootstrap-vue"
+import SettingsPanelSection from "./SettingsPanelSection"
 
 export default {
     name: "FieldLanguage",
     components: {
-        BFormGroup,
-        BFormRadio,
-        BFormRadioGroup
+        SettingsPanelSection
     },
     props: {
         settings: {
@@ -38,10 +39,20 @@ export default {
 <i18n>
 {
     "en": {
-        "language": "Language"
+        "language": "Language",
+        "labelFinnish": "Finnish",
+        "labelEnglish": "English"
     },
     "fi": {
-        "language": "Kieli"
+        "language": "Kieli",
+        "labelFinnish": "suomi",
+        "labelEnglish": "englanti"
     }
 }
 </i18n>
+
+<style lang="scss" scoped>
+.radio-button:first-of-type {
+    margin-right: 0.5em;
+}
+</style>

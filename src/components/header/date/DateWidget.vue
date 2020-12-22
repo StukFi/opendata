@@ -1,7 +1,7 @@
 <template>
     <div class="date-widget">
         <button-decrement-date />
-        <datepicker />
+        <button-datepicker />
         <button-increment-date />
     </div>
 </template>
@@ -9,14 +9,14 @@
 <script>
 import ButtonDecrementDate from "./ButtonDecrementDate"
 import ButtonIncrementDate from "./ButtonIncrementDate"
-import Datepicker from "./Datepicker"
+import ButtonDatepicker from "./ButtonDatepicker"
 
 export default {
     name: "DateWidget",
     components: {
         ButtonDecrementDate,
         ButtonIncrementDate,
-        Datepicker
+        ButtonDatepicker
     }
 }
 </script>

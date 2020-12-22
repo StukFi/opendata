@@ -1,26 +1,35 @@
 <template>
-    <vue-datepicker
-        v-model="date"
-        :use-utc="true"
-        :monday-first="true"
-        :disabled-dates="disabledDates"
-        :format="formatDate"
-        :language="language"
-        class="datepicker"
-    />
+    <div v-show="isEnabled">
+        <base-backdrop @click="close" />
+        <vue-datepicker
+            v-model="date"
+            :use-utc="true"
+            :monday-first="true"
+            :disabled-dates="disabledDates"
+            :format="formatDate"
+            :language="language"
+            :inline="true"
+            class="datepicker"
+            calendar-class="calendar"
+            @selected="close"
+        />
+    </div>
 </template>
 
 <script>
 import VueDatepicker from "vuejs-datepicker"
+import BaseBackdrop from "@/components/base/BaseBackdrop"
 import { en, fi } from "vuejs-datepicker/dist/locale"
 
 export default {
-    name: "Datepicker",
+    name: "DatepickerPopup",
     components: {
-        VueDatepicker
+        VueDatepicker,
+        BaseBackdrop
     },
     data: function () {
         return {
+            isEnabled: false,
             en: en,
             fi: fi
         }
@@ -91,6 +100,9 @@ export default {
 
         },
     },
+    mounted () {
+        this.$root.$on("calendar-popup-open", this.open)
+    },
     methods: {
         formatDate (date) {
             switch (this.$store.state.settings.settings.dateFormat) {
@@ -103,12 +115,18 @@ export default {
                 return date.getFullYear() + "-" + (date.getMonth() + 1) +
                             "-" + date.getDate()
             }
+        },
+        open () {
+            this.isEnabled = true
+        },
+        close () {
+            this.isEnabled = false
         }
     }
 }
 </script>
 
-<style>
+<style lang="scss">
 .datepicker {
     flex-basis: 50%;
     flex-grow: 1;
@@ -116,13 +134,14 @@ export default {
 
 .vdp-datepicker input {
     width: 100%;
-    height: 60px;
-    font-size: 1.7rem;
+    height: 4em;
+    font-size: $font-lg;
+    font-family: $font-medium;
     text-align: center;
     border: none;
     outline: none;
     cursor: pointer;
-    background-color: #1773B9;
+    background-color: $color-header-date;
 
     /* Hide the input's caret. */
     color: transparent;
@@ -137,23 +156,24 @@ export default {
     background-color: transparent;
 }
 
-.vdp-datepicker__calendar {
+.vdp-datepicker__calendar.calendar {
     position: fixed !important;
-    top: 70px;
+    top: 6.5em;
     left: 50%;
-    transform: translateX(-50%);
-    width: 300px;
-}
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 25em;
+    height: auto;
+    border-radius: $border-radius-md;
+    font-family: $font-medium !important;
+    font-size: $font-lg !important;
+    padding: 1em;
+    z-index: $z-index-calendar-popup;
 
-@media only screen and (min-width: 768px) {
-    .vdp-datepicker input {
-        height: 75px;
-        line-height: 75px;
-        font-size: 2.3rem;
-    }
-
-    .vdp-datepicker__calendar {
-        top: 85px;
+    .cell {
+        height: 3em;
+        line-height: 3em;
     }
 }
 </style>

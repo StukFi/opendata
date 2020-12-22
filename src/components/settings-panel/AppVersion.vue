@@ -1,6 +1,6 @@
 <template>
     <div class="row justify-content-center mt-3 app-version">
-        <p>{{ appVersion }}</p>
+        <span>{{ appVersion }}</span>
     </div>
 </template>
 
@@ -22,5 +22,6 @@ export default {
 <style>
 .app-version {
     color: lightgray;
+    text-align: center;
 }
 </style>

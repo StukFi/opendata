@@ -1,11 +1,11 @@
 import { mount } from "@vue/test-utils"
-import ButtonClosePopup from "./ButtonClosePopup.vue"
+import BaseBackdrop from "./BaseBackdrop"
 
-describe("ButtonClosePopup.vue", () => {
+describe("BaseBackdrop.vue", () => {
     let wrapper
 
     beforeEach(() => {
-        wrapper = mount(ButtonClosePopup)
+        wrapper = mount(BaseBackdrop)
     })
 
     it("emits a click event when clicked", () => {

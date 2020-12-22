@@ -1,25 +1,31 @@
 <template>
-    <ul
-        v-show="isEnabled"
-        class="timepicker-list"
-    >
-        <timepicker-list-item
-            v-for="(time, index) in availableTimesForSelectedDate.slice().reverse()"
-            :key="index"
-            :time="time"
-            @click="close()"
-        />
-    </ul>
+    <div v-show="isEnabled">
+        <base-backdrop @click="close" />
+        <ul
+            class="timepicker-list"
+        >
+            <div class="list-container">
+                <timepicker-list-item
+                    v-for="(time, index) in availableTimesForSelectedDate.slice().reverse()"
+                    :key="index"
+                    :time="time"
+                    @click="close()"
+                />
+            </div>
+        </ul>
+    </div>
 </template>
 
 <script>
 import TimepickerListItem from "./TimepickerListItem"
+import BaseBackdrop from "@/components/base/BaseBackdrop"
 import { mixin as clickaway } from "vue-clickaway"
 
 export default {
     name: "TimepickerList",
     components: {
-        TimepickerListItem
+        TimepickerListItem,
+        BaseBackdrop
     },
     mixins: [ clickaway ],
     data: function () {
@@ -32,6 +38,9 @@ export default {
             return this.$store.getters.availableTimesForSelectedDate
         }
     },
+    mounted () {
+        this.$root.$on("timepicker-list-toggle", this.toggle)
+    },
     methods: {
         close () {
             this.isEnabled = false
@@ -43,30 +52,35 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .timepicker-list {
     position: fixed;
     left: 50%;
-    transform: translate(-50%);
-    width: 300px;
-    height: 282px;
-    overflow: scroll;
-    overflow-x: unset;
-    top: 70px;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 25em;
+    height: auto;
+    max-height: 20em;
+    overflow: hidden;
+    padding: 0.25em;
     margin: 0;
-    padding: 0;
     background-color: white;
     border: 1px solid #CCC;
-    font-size: 1rem;
+    border-radius: $border-radius-md;
+    font-family: $font-medium;
+    font-size: $font-lg;
+    z-index: $z-index-timepicker-list;
 }
 
 .timepicker-list:hover {
     cursor: auto;
 }
 
-@media only screen and (min-width: 768px) {
-    .timepicker-list {
-        top: 85px;
-    }
+.list-container {
+    overflow: auto;
+    height: auto;
+    max-height: 19em;
+    padding-right: 0.25em;
 }
 </style>

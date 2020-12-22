@@ -1,30 +1,31 @@
 <template>
-    <b-form-group
-        :label="$t('timeFormat')"
-        class="mb-5"
-    >
-        <b-form-radio-group v-model="settings.timeFormat">
-            <b-form-radio value="24h">
-                {{ $t("timeFormatA") }}
-            </b-form-radio>
-            <b-form-radio value="12h">
-                {{ $t("timeFormatB") }}
-            </b-form-radio>
-        </b-form-radio-group>
-    </b-form-group>
+    <settings-panel-section :title="$t('timeFormat')">
+        <base-radio-button
+            key="24h"
+            v-model="settings.timeFormat"
+            :model-value="settings.timeFormat"
+            own-value="24h"
+            :label="$t('timeFormatA')"
+            class="radio-button"
+        />
+        <base-radio-button
+            key="12h"
+            v-model="settings.timeFormat"
+            :model-value="settings.timeFormat"
+            own-value="12h"
+            :label="$t('timeFormatB')"
+            class="radio-button"
+        />
+    </settings-panel-section>
 </template>
 
 <script>
-import { BFormGroup } from "bootstrap-vue"
-import { BFormRadio } from "bootstrap-vue"
-import { BFormRadioGroup } from "bootstrap-vue"
+import SettingsPanelSection from "./SettingsPanelSection"
 
 export default {
     name: "FieldTimeFormat",
     components: {
-        BFormGroup,
-        BFormRadio,
-        BFormRadioGroup
+        SettingsPanelSection
     },
     props: {
         settings: {
@@ -49,3 +50,9 @@ export default {
     }
 }
 </i18n>
+
+<style lang="scss" scoped>
+.radio-button:first-of-type {
+    margin-right: 0.5em;
+}
+</style>

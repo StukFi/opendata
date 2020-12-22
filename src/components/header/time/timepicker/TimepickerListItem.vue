@@ -44,21 +44,25 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 li {
-    height: 50px;
-    line-height: 50px;
-    font-size: 1.625rem;
-    color: black;
+    height: 3em;
+    line-height: 3em;
+    font-size: $font-lg;
+    color: $color-font-dark;
     list-style-type: none;
+    border-radius: $border-radius-sm;
+    text-align: center;
 }
 
 li:hover {
     cursor: pointer;
+    background-color: $color-header-time;
+    color: white;
 }
 
 li.selected {
-    background-color: #1773B9;
+    background-color: $color-header-time;
     color: white;
 }
 </style>

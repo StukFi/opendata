@@ -40,13 +40,14 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 button {
     width: 32%;
     height: 100%;
     margin: auto;
     background-repeat: no-repeat;
     background-position: center;
+    font-size: $font-md;
     background-size: 1em;
     color: white;
     font-weight: 700;
