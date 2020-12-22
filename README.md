@@ -10,8 +10,6 @@ For more information on STUK's and FMI's open data, see the following resources:
 
 The project consists of Python scripts for getting data and a Vue.js based responsive single-page application for viewing the data. The application shows only data that you get with the Python scripts, it does not directly interface with the FMI open data API.
 
-The application is usable on modern web browsers such as Google Chrome, Firefox, and Microsoft Edge.
-
 ### Building
 
 1. Install [Node.js](https://nodejs.org) which includes npm (node package manager).
@@ -31,15 +29,13 @@ To get data you need to:
 3. Run `python get_data.py` in the scripts directory. This gets the latest measurement data set. To download past or multiple data sets, use the `-s` option with a start and end time. Use the `--help` option for more details.
 
 
-The `get_data.py` script generates time series files and a metadata file. You can generate these files manually by running the `time_series.py` and `metadata.py` scripts.
+The `get_data.py` script also generates time series files and a metadata file. To generate these files manually run the `time_series.py` and `metadata.py` scripts.
 
 ### Hosting
 
 Build the application for production and point a web server to the `dist` directory.
 
-To keep the application up-to-date schedule the `get_data.py` script. The following crontab configuration runs the script every 10 minutes. The configuration changes directory to the scripts directory. This is due to relative paths in the scripts. Task Scheduler provides similar functionality on Windows.
-
-`*/10 * * * * cd /home/lma/opendata/scripts/; /bin/python3 /home/lma/opendata/scripts/get_data.py dose_rates`
+To keep the application up-to-date with data schedule the `get_data.py` script.
 
 ### Development tools
 
@@ -54,3 +50,7 @@ Recommended development tools:
     - Python
 
 2. Vue-devtools browser extension: https://github.com/vuejs/vue-devtools#vue-devtools
+
+### Browser support
+
+The application is usable on modern web browsers such as Google Chrome, Firefox, and Microsoft Edge.
