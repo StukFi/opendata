@@ -15,11 +15,7 @@ fmi_request_datetime_format = "YYYY-MM-DDThh:mm:ss"
 request_templates = {
     "dose_rates": ("https://opendata.fmi.fi/wfs/eng?"
                     "request=GetFeature&storedquery_id=stuk::observations::"
-                    "external-radiation::multipointcoverage&starttime={}&endtime={}"),
-    "samplers": ("https://opendata.fmi.fi/wfs/eng?"
-                    "request=GetFeature&storedquery_id=stuk::observations"
-                    "::air::radionuclide-activity-concentration::"
-                    "multipointcoverage&starttime={}&endtime={}")
+                    "external-radiation::multipointcoverage&starttime={}&endtime={}")
 }
 
 geojson_template = {
