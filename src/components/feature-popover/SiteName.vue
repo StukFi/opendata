@@ -4,6 +4,7 @@
             {{ site }}
         </span>
         <span
+            v-show="!disableCloseButton"
             class="close-button"
             @click="$emit('close')"
         >&times;</span>
@@ -17,6 +18,10 @@ export default {
         feature: {
             type: Object,
             default: undefined
+        },
+        disableCloseButton: {
+            type: Boolean,
+            default: false
         }
     },
     computed: {

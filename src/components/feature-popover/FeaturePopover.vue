@@ -3,7 +3,10 @@
         ref="featurePopover"
         class="feature-popover"
     >
-        <site-name :feature="feature" />
+        <site-name
+            :feature="feature"
+            disable-close-button
+        />
         <site-dose-rate :feature="feature" />
     </div>
 </template>
