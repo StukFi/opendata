@@ -28,7 +28,7 @@ export default {
     text-align: center;
     font-size: $font-lg;
     font-family: $font-regular;
-    margin: 0.5em 0 0 0;
+    margin: 0.5em 0;
 }
 
 .site-dose-rate__value {
