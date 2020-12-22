@@ -9,7 +9,7 @@
 
 <script>
 export default {
-    name: "FieldLanguage",
+    name: "SettingsPanelSection",
     props: {
         title: {
             type: String,
