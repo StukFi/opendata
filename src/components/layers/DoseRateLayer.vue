@@ -18,6 +18,7 @@ export default {
     name: "DoseRateLayer",
     data: function () {
         return {
+            featureRadius: 10,
             vectorLayer: new VectorLayer({
                 source: new VectorSource({
                     format: new GeoJSON({
@@ -49,7 +50,7 @@ export default {
 
                     var featureStyle = new Style({
                         image: new CircleStyle({
-                            radius: 10,
+                            radius: this.featureRadius,
                             fill: new FillStyle({
                                 color: featureColor
                             })
@@ -108,6 +109,14 @@ export default {
     methods: {
         redraw () {
             this.vectorLayer.changed()
+        },
+        updateFeatureRadius (zoom) {
+            const currentFeatureRadius = this.featureRadius
+            const newFeatureRadius = zoom * 2.5;
+            if (newFeatureRadius != currentFeatureRadius) {
+                this.featureRadius = newFeatureRadius
+                this.redraw()
+            }
         }
     }
 }

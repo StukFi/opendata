@@ -91,6 +91,7 @@ export default {
 
         this.map.on("click", this.onMapInteraction)
         this.map.on("pointermove", this.onMapInteraction)
+        this.map.on("moveend", this.onZoomChange)
         this.$root.$on("featurePopupOpened", this.centerViewOnFeaturePopup)
 
         this.map.addOverlay(this.$refs.featurePopover.overlay)
@@ -117,6 +118,10 @@ export default {
                     this.$root.$emit("emptyMapLocationHovered")
                 }
             }
+        },
+        onZoomChange () {
+            let zoom = this.map.getView().getZoom()
+            this.$refs.doseRateLayer.updateFeatureRadius(zoom)
         },
         centerViewOnFeaturePopup (feature) {
             var featureCoordinates = feature.getGeometry().getCoordinates()
