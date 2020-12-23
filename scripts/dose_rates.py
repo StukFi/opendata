@@ -84,7 +84,7 @@ def parse_data(data):
     if data is None:
         raise InvalidDatasetError
 
-    wfs_response = ElementTree.fromstring(data.read())
+    wfs_response = ElementTree.fromstring(data)
     gml_points = wfs_response.findall('.//{%s}Point' % fmi_utils.gml_namespace)
     geojson_string = deepcopy(fmi_utils.geojson_template)
 
@@ -114,7 +114,7 @@ def parse_data(data):
     for line in value_lines:
         value = float(line.strip().split()[0])
         values.append(value)
-    
+
     # check if all values are NaNs
     if all ( math.isnan(value) for value in values ):
         raise InvalidDatasetError("Dataset values are all NaN")

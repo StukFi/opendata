@@ -33,7 +33,7 @@ def wfs_request(start_time, end_time, results_type):
     :param start_time: start of the timespan for which to get data
     :param end_time: end of the timespan for which to get data
     :param results_type: type of data to get
-    :return: HTTPResponse object
+    :return: dataset as a string
     """
     timeFormat = "%Y-%m-%dT%H:%M:00Z"
     t0 = start_time.strftime(timeFormat)
@@ -42,7 +42,8 @@ def wfs_request(start_time, end_time, results_type):
     response = None
 
     try:
-        response = urlopen(url, timeout=3)
+        with urlopen(url, timeout=3) as connection:
+            response = connection.read()
     except (URLError, ConnectionError, socket.timeout):
         pass
 
