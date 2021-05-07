@@ -17,7 +17,7 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "ol": "^5.3.3",
     "plotly.js": "^1.58.4",
     "vue": "^2.6.12",
