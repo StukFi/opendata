@@ -37,7 +37,7 @@ export default {
      */
     async getTimeSeries (siteId, date) {
         const dateString = date.toISOString().split("T")[0]
-        const url = "/data/dose_rates/time_series/" + siteId + "/" + dateString + ".json"
+        const url = "data/dose_rates/time_series/" + siteId + "/" + dateString + ".json"
         const response = await http.get(url)
         return response.data.data
     }
