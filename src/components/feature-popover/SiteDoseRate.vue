@@ -1,7 +1,7 @@
 <template>
     <div class="site-dose-rate">
         <span class="site-dose-rate__value">
-            {{ doseRate }}<span class="site-dose-rate__unit"> &#181;sv/h</span>
+            {{ doseRate }}<span class="site-dose-rate__unit"> &#181;Sv/h</span>
         </span>
     </div>
 </template>
