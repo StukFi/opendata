@@ -13,6 +13,7 @@ import Feature from "ol/Feature"
 import Point from "ol/geom/Point"
 import { transform } from "ol/proj"
 import api from "@/api/index"
+import { mapState } from 'vuex'
 
 export default {
     name: "DoseRateLayer",
@@ -63,14 +64,20 @@ export default {
         }
     },
     computed: {
+        ...mapState({
+            selectedDate: state => state.selectedDate, //////////////////// !!!!!
+            selectedTime: state => state.selectedTime //////////////////// !!!!!
+        }),
         datasetFilePath () {
-            if (!this.$store.state.datetime.selectedDate) {
+            console.log(this.selectedDate) /// TOIMII this.$store.state.datetime.selectedDate sijaan this.selectedDate mapStatella!
+            console.log(this.selectedTime) /// TOIMII
+            if (!this.selectedDate) {
                 return ""
             }
 
             return "data/dose_rates/datasets/" +
-                this.$store.state.datetime.selectedDate.toISOString().split("T")[0] + "T" +
-                this.$store.state.datetime.selectedTime + ".json"
+                this.state.selectedDate.toISOString().split("T")[0] + "T" +
+                this.selectedTime + ".json"
         },
         doseRateRanges () {
             return this.$store.state.settings.settings.mapLegend.bars

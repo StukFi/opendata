@@ -27,10 +27,10 @@ export default {
         },
         title () {
             if (this.mediaController.playbackMode == PlaybackMode.Time) {
-                return this.$t("title.time")
+                return this.$t("playback.disabled.title.time")
             }
             else if (this.mediaController.playbackMode == PlaybackMode.Date) {
-                return this.$t("title.date")
+                return this.$t("playback.disabled.title.date")
             }
 
             return ""
@@ -38,20 +38,3 @@ export default {
     }
 }
 </script>
-
-<i18n>
-{
-    "fi": {
-        "title": {
-            "date": "Päivitä päivämäärää",
-            "time": "Päivitä kellonaikaa"
-        }
-    },
-    "en": {
-        "title": {
-            "date": "Update date",
-            "time": "Update time"
-        }
-    }
-}
-</i18n>

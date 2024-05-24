@@ -1,7 +1,7 @@
 <template>
     <media-controller-button
         :text="playbackSpeed"
-        :title="$t('title')"
+        :title="$t('playback.title.speed')"
         @click="mediaController.toggleSpeed()"
     />
 </template>
@@ -33,14 +33,3 @@ button {
     font-size: $font-sm;
 }
 </style>
-
-<i18n>
-{
-    "fi": {
-        "title": "Toistonopeus"
-    },
-    "en": {
-        "title": "Playback speed"
-    }
-}
-</i18n>

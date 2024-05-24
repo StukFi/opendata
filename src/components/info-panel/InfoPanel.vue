@@ -4,8 +4,8 @@
         <div class="info-panel">
             <info-panel-header @close="disable" />
             <div class="info-panel-body">
-                <p>{{ $t("p1") }}</p>
-                <p v-html="$t('p2')" />
+                <p>{{ $t("info.p1") }}</p>
+                <p v-html="$t('info.p2')" />
             </div>
         </div>
     </div>
@@ -87,16 +87,3 @@ export default {
     margin-bottom: 2em;
 }
 </style>
-
-<i18n>
-{
-    "en": {
-        "p1": "Opendata is an open source application developed by STUK that enables viewing of external radiation results from around Finland. The application gets its data from the Finnish Meteorological Institute's open data API.",
-        "p2": "To learn more visit the project on <a href='https://github.com/StukFi/opendata' target='_blank'>GitHub</a>."
-    },
-    "fi": {
-        "p1": "Opendata on STUKin kehittämä avoimen lähdekoodin applikaatio, jolla voit tarkastella Suomen ulkoisen säteilyn valvontaverkon mittaustuloksia. Applikaatio saa datansa Ilmatieteen laitoksen avoimen datan rajapinnasta.",
-        "p2": "Lue lisää projektin <a href='https://github.com/StukFi/opendata' target='_blank'>GitHub-sivuilta</a>."
-    }
-}
-</i18n>

@@ -20,8 +20,7 @@ class Settings {
      * Save the application's settings.
      */
     save () {
-        i18n.locale = this.locale
-
+        i18n.locale = this.locale // ongelma. Kieli ei vaihdu ilman että päivittää sivun uudelleen
         localStorage.setItem(keyLocale, this.locale)
         localStorage.setItem(keyDateFormat, this.dateFormat)
         localStorage.setItem(keyTimeFormat, this.timeFormat)

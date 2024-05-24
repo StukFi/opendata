@@ -1,11 +1,11 @@
 <template>
-    <settings-panel-section :title="$t('timeFormat')">
+    <settings-panel-section :title="$t('settings.timeFormat')">
         <base-radio-button
             key="24h"
             v-model="settings.timeFormat"
             :model-value="settings.timeFormat"
             own-value="24h"
-            :label="$t('timeFormatA')"
+            :label="$t('settings.timeFormatA')"
             class="radio-button"
         />
         <base-radio-button
@@ -13,7 +13,7 @@
             v-model="settings.timeFormat"
             :model-value="settings.timeFormat"
             own-value="12h"
-            :label="$t('timeFormatB')"
+            :label="$t('settings.timeFormatB')"
             class="radio-button"
         />
     </settings-panel-section>
@@ -36,20 +36,6 @@ export default {
 }
 </script>
 
-<i18n>
-{
-    "en": {
-        "timeFormat": "Time notation",
-        "timeFormatA": "24-hour clock",
-        "timeFormatB": "12-hour clock"
-    },
-    "fi": {
-        "timeFormat": "Ajan esitysmuoto",
-        "timeFormatA": "24 tunnin kello",
-        "timeFormatB": "12 tunnin kello"
-    }
-}
-</i18n>
 
 <style lang="scss" scoped>
 .radio-button:first-of-type {

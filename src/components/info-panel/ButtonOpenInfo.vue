@@ -1,7 +1,7 @@
 <template>
     <div
         class="button-open-info"
-        :title="$t('title')"
+        :title="$t('info.title')"
         @click="$root.$emit('info-panel-open')"
     >
         <span class="button-open-info__icon" />
@@ -56,14 +56,3 @@ export default {
     }
 }
 </style>
-
-<i18n>
-{
-    "en": {
-        "title": "About"
-    },
-    "fi": {
-        "title": "Tietoa"
-    }
-}
-</i18n>

@@ -10,6 +10,7 @@
 <script>
 import MediaControllerButton from "./MediaControllerButton"
 import { PlaybackMode } from "@/models/MediaController"
+import { useI18n } from "vue-i18n";
 
 export default {
     name: "ButtonPlaybackState",
@@ -32,48 +33,29 @@ export default {
         title () {
             if (this.disabled) {
                 if (this.mediaController.playbackMode == PlaybackMode.Time) {
-                    return this.$t("title.disabled.time")
+                    return this.$t("playback.title.disabled.time")
                 }
                 else if (this.mediaController.playbackMode == PlaybackMode.Date) {
-                    return this.$t("title.disabled.date")
+                    return this.$t("playback.title.disabled.date")
                 }
             }
             else {
                 if (this.mediaController.isPlaybackEnabled) {
-                    return this.$t("title.stop")
+                    return this.$t("playback.title.stop")
                 }
                 else {
-                    return this.$t("title.start")
+                    return this.$t("playback.title.start")
                 }
             }
 
             return ""
         }
+    },
+    setup() {
+        const { t } = useI18n();
+        return {
+            t,
+        }
     }
 }
 </script>
-
-<i18n>
-{
-    "fi": {
-        "title": {
-            "disabled": {
-                "date": "Valitse aikaisempi päivämäärä",
-                "time": "Valitse aikaisempi kellonaika"
-            },
-            "start": "Aloita toisto",
-            "stop": "Pysäytä toisto"
-        }
-    },
-    "en": {
-        "title": {
-            "disabled": {
-                "date": "Choose an earlier date to enable playback",
-                "time": "Choose an earlier time to enable playback"
-            },
-            "start": "Start playback",
-            "stop": "Stop playback"
-        }
-    }
-}
-</i18n>

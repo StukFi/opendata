@@ -1,11 +1,11 @@
 <template>
-    <settings-panel-section :title="$t('dateFormat')">
+    <settings-panel-section :title="$t('settings.dateFormat')">
         <base-radio-button
             key="fi"
             v-model="settings.dateFormat"
             :model-value="settings.dateFormat"
             own-value="fi"
-            :label="$t('dateFormatA')"
+            :label="$t('settings.dateFormatA')"
             class="radio-button"
         />
         <base-radio-button
@@ -13,7 +13,7 @@
             v-model="settings.dateFormat"
             :model-value="settings.dateFormat"
             own-value="iso"
-            :label="$t('dateFormatB')"
+            :label="$t('settings.dateFormatB')"
             class="radio-button"
         />
     </settings-panel-section>
@@ -35,23 +35,6 @@ export default {
     }
 }
 </script>
-
-<i18n>
-{
-    "en": {
-        "dateFormat": "Date format",
-        "dateFormatA": "DD.MM.YYYY",
-        "dateFormatB": "YYYY-MM-DD"
-    },
-    "fi": {
-        "dateFormat": "Päiväyksen muoto",
-        "dateFormatA": "PP.KK.VVVV",
-        "dateFormatB": "VVVV-KK-PP"
-    }
-}
-</i18n>
-
-
 <style lang="scss" scoped>
 .radio-button:first-of-type {
     margin-right: 0.5em;

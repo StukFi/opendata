@@ -17,17 +17,20 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "@vue/compat": "^3.4.27",
+    "@vue/compiler-sfc": "^3.4.27",
     "caniuse-lite": "^1.0.30001442",
+    "express": "^4.19.2",
     "lodash": "^4.17.21",
     "ol": "^5.3.3",
     "plotly.js": "^2.17.1",
-    "vue": "^2.7.14",
+    "vue": "^3.4.27",
     "vue-clickaway": "^2.2.2",
-    "vue-i18n": "^8.22.2",
+    "vue-i18n": "^10.0.0-alpha.5",
     "vue-progressbar": "^0.7.5",
     "vue-resource": "^1.5.3",
     "vuejs-datepicker": "^1.6.2",
-    "vuex": "^3.6.0"
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
