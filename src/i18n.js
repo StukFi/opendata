@@ -1,8 +1,10 @@
 import { createI18n } from 'vue-i18n'
 
-export default createI18n({
+var i18n = createI18n({
+  inheriteLocale: true,
   globalInjection: true,
-  locale: localStorage.getItem("locale") || 'en',
+  legacy: false,
+  locale: localStorage.getItem("locale"),
   fallbackLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE || 'fi',
   preserveDirectiveContent: false,
   messages: {
@@ -84,3 +86,5 @@ export default createI18n({
     },
   }
 })
+
+export default i18n

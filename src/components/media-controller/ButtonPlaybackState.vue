@@ -10,7 +10,6 @@
 <script>
 import MediaControllerButton from "./MediaControllerButton"
 import { PlaybackMode } from "@/models/MediaController"
-import { useI18n } from "vue-i18n";
 
 export default {
     name: "ButtonPlaybackState",
@@ -49,12 +48,6 @@ export default {
             }
 
             return ""
-        }
-    },
-    setup() {
-        const { t } = useI18n();
-        return {
-            t,
         }
     }
 }
