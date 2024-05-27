@@ -1,9 +1,12 @@
-import Vue from "vue"
+import axios from 'axios';
 
 export default {
-    async get (url) {
-        return await Vue.http.get(url)
-            .then((response) => Promise.resolve(response))
-            .catch((error) => Promise.reject(error))
+    async get(url) {
+        try {
+            const response = await axios.get(url);
+            return response;
+        } catch (error) {
+            throw error;
+        }
     }
 }

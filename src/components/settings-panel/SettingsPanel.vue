@@ -36,6 +36,7 @@ export default {
         BaseBackdrop,
         AppVersion
     },
+    compatConfig: { COMPONENT_V_MODEL: false },
     data: function () {
         return {
             isEnabled: false,

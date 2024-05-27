@@ -15,7 +15,8 @@ export default {
             type: String,
             required: true
         }
-    }
+    },
+    compatConfig: { COMPONENT_V_MODEL: false }
 }
 </script>
 

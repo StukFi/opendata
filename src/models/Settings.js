@@ -32,7 +32,7 @@ class Settings {
      */
     load () {
         this.locale = localStorage.getItem(keyLocale) || this.locale
-        //i18n.locale = this.locale
+        i18n.global.locale.value = this.locale
 
         this.dateFormat = localStorage.getItem(keyDateFormat) || this.dateFormat
         this.timeFormat = localStorage.getItem(keyTimeFormat) || this.timeFormat
