@@ -2,15 +2,23 @@
     <div
         class="button-open-settings"
         :title="$t('settings.title')"
-        @click="$root.$emit('settings-panel-open')"
+        @click="handleClick()"
     >
         <span class="button-open-settings__icon" />
     </div>
 </template>
 
 <script>
+import eventBus from '@/utils/eventBus'
+
 export default {
-    name: "ButtonOpenSettings"
+    name: "ButtonOpenSettings",
+    emits: ['settings-panel-open'],
+    methods: {
+        handleClick() {
+            eventBus.$emit('settings-panel-open')
+        }
+    }
 }
 </script>
 

@@ -8,8 +8,11 @@
 </template>
 
 <script>
+import eventBus from '@/utils/eventBus'
+
 export default {
     name: "ButtonDatepicker",
+    emits: ['calendar-popup-open'],
     computed: {
         selectedDate () {
             const date = this.$store.state.datetime.selectedDate
@@ -31,7 +34,7 @@ export default {
     },
     methods: {
         openCalendar () {
-            this.$root.$emit("calendar-popup-open")
+            eventBus.$emit("calendar-popup-open")
         }
     }
 }

@@ -10,6 +10,7 @@
 <script>
 export default {
     name: "SearchSuggestListItem",
+    emits: ['click'],
     props: {
         suggestion: {
             type: String,

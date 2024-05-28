@@ -1,5 +1,5 @@
 <template>
-    <div class="settings-panel-header opendata-row">
+    <div class="info-panel-header opendata-row">
         <span>{{ $t("info.title") }}</span>
         <span
             class="close-button"
@@ -10,12 +10,13 @@
 
 <script>
 export default {
-    name: "SettingsPanelHeader"
+    name: "InfoPanelHeader",
+    emits: ['close']
 }
 </script>
 
 <style lang="scss" scoped>
-.settings-panel-header {
+.info-panel-header {
     text-transform: uppercase;
     font-size: $font-xl;
     justify-content: left;

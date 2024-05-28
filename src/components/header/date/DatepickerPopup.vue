@@ -20,6 +20,7 @@
 import VueDatepicker from "vuejs-datepicker"
 import BaseBackdrop from "@/components/base/BaseBackdrop"
 import { en, fi } from "vuejs-datepicker/dist/locale"
+import eventBus from '@/utils/eventBus'
 
 export default {
     name: "DatepickerPopup",
@@ -101,7 +102,7 @@ export default {
         },
     },
     mounted () {
-        this.$root.$on("calendar-popup-open", this.open)
+        eventBus.$on("calendar-popup-open", this.open)
     },
     methods: {
         formatDate (date) {

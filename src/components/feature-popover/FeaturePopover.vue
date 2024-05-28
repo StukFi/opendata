@@ -15,6 +15,7 @@
 import SiteName from "./SiteName"
 import SiteDoseRate from "./SiteDoseRate"
 import Overlay from "ol/Overlay"
+import eventBus from '@/utils/eventBus'
 
 export default {
     name: "FeaturePopover",
@@ -30,11 +31,11 @@ export default {
         }
     },
     mounted: function () {
-        this.$root.$on("featureHovered", this.open)
-        this.$root.$on("emptyMapLocationHovered", this.close)
-        this.$root.$on("featurePopupOpened", this.disable)
-        this.$root.$on("featurePopupClosed", this.enable)
-        this.$root.$on("doseRateLayerChanged", this.update)
+        eventBus.$on("featureHovered", this.open)
+        eventBus.$on("emptyMapLocationHovered", this.close)
+        eventBus.$on("featurePopupOpened", this.disable)
+        eventBus.$on("featurePopupClosed", this.enable)
+        eventBus.$on("doseRateLayerChanged", this.update)
 
         this.overlay = new Overlay({
             element: this.$refs.featurePopover,

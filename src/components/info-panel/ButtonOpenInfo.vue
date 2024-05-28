@@ -2,15 +2,23 @@
     <div
         class="button-open-info"
         :title="$t('info.title')"
-        @click="$root.$emit('info-panel-open')"
+        @click="handleClick()"
     >
         <span class="button-open-info__icon" />
     </div>
 </template>
 
 <script>
+import eventBus from '../../utils/eventBus';
+
 export default {
-    name: "ButtonOpenInfo"
+    name: "ButtonOpenInfo",
+    emits: ['info-panel-open'],
+    methods: {
+        handleClick() {
+            eventBus.$emit('info-panel-open')
+        }
+    }
 }
 </script>
 

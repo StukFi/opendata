@@ -19,6 +19,7 @@ import SearchSuggestListItem from "./SearchSuggestListItem"
 
 export default {
     name: "SearchSuggestList",
+    emits: ['select'],
     components: {
         SearchSuggestListItem
     },

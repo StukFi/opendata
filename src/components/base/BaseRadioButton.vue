@@ -14,6 +14,7 @@
   <script>
   export default {
     name: "BaseRadioButton",
+    emits: ['update:modelValue'],
     props: {
       label: {
         type: String,

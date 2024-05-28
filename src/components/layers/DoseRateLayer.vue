@@ -13,13 +13,11 @@ import Feature from "ol/Feature";
 import Point from "ol/geom/Point";
 import { transform } from "ol/proj";
 import api from "@/api/index";
+import eventBus from '@/utils/eventBus'
 
 export default {
     name: "DoseRateLayer",
-    compatConfig: {
-    MODE: 3,
-    INSTANCE_EVENT_EMITTER: false
-  },
+    emits: ['doseRateLayerChanged'],
     data() {
         return {
             vectorLayer: new VectorLayer({
@@ -101,7 +99,7 @@ export default {
 
                 this.vectorLayer.getSource().clear(true);
                 this.vectorLayer.getSource().addFeatures(features);
-                this.$root.$emit("doseRateLayerChanged", this.vectorLayer);
+                eventBus.$emit("doseRateLayerChanged", this.vectorLayer);
                 this.$Progress.finish();
             } catch {
                 this.$Progress.fail();
@@ -112,7 +110,7 @@ export default {
         }
     },
     mounted() {
-        this.$root.$on("settingsChanged", this.redraw);
+        eventBus.$on("settingsChanged", this.redraw);
     },
     methods: {
         redraw() {

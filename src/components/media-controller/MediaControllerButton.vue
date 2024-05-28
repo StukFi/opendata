@@ -11,6 +11,7 @@
 <script>
 export default {
     name: "MediaControllerButton",
+    emits: ['click'],
     props: {
         icon: {
             type: String,

@@ -9,6 +9,7 @@
 <script>
 export default {
     name: "ButtonDateTime",
+    emits: ['click'],
     props: {
         icon: {
             type: String,

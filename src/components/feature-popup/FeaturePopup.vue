@@ -17,9 +17,11 @@ import Overlay from "ol/Overlay"
 import SiteName from "@/components/feature-popover/SiteName"
 import SiteDoseRate from "@/components/feature-popover/SiteDoseRate"
 import TimeSeriesGraph from "./TimeSeriesGraph"
+import eventBus from '@/utils/eventBus'
 
 export default {
     name: "FeaturePopup",
+    emits: ['featurepopupOpened', 'featurepopupClosed'],
     components: {
         SiteName,
         SiteDoseRate,
@@ -37,20 +39,20 @@ export default {
             position: undefined
         })
 
-        this.$root.$on("featureClicked", this.open)
-        this.$root.$on("featureSelectedViaSearch", this.open)
-        this.$root.$on("emptyMapLocationClicked", this.close)
-        this.$root.$on("doseRateLayerChanged", this.update)
+        eventBus.$on("featureClicked", this.open)
+        eventBus.$on("featureSelectedViaSearch", this.open)
+        eventBus.$on("emptyMapLocationClicked", this.close)
+        eventBus.$on("doseRateLayerChanged", this.update)
     },
     methods: {
         open (feature) {
             this.feature = feature
             this.overlay.setPosition(feature.getGeometry().getCoordinates())
-            this.$root.$emit("featurePopupOpened", feature)
+            eventBus.$emit("featurePopupOpened", feature)
         },
         close () {
             this.overlay.setPosition(undefined)
-            this.$root.$emit("featurePopupClosed")
+            eventBus.$emit("featurePopupClosed")
         },
         update (layer) {
             var features = layer.getSource().getFeatures()

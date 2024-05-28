@@ -14,6 +14,7 @@
 <script>
 import InfoPanelHeader from "./InfoPanelHeader"
 import BaseBackdrop from "@/components/base/BaseBackdrop"
+import eventBus from '@/utils/eventBus'
 
 export default {
     name: "InfoPanel",
@@ -27,7 +28,7 @@ export default {
         }
     },
     mounted () {
-        this.$root.$on("info-panel-open", this.enable)
+        eventBus.$on("info-panel-open", this.enable)
     },
     methods: {
         enable () {

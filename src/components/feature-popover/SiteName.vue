@@ -14,6 +14,7 @@
 <script>
 export default {
     name: "SiteName",
+    emits: ['close'],
     props: {
         feature: {
             type: Object,

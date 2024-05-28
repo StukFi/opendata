@@ -42,6 +42,7 @@ import Map from "ol/Map"
 import OSMSource from "ol/source/OSM"
 import TileLayer from "ol/layer/Tile"
 import View from "ol/View"
+import eventBus from '@/utils/eventBus'
 
 export default {
     name: "TheMap",
@@ -60,6 +61,7 @@ export default {
         TimepickerList,
         DatepickerPopup
     },
+    emits: ['featureClicked', 'featureHovered', 'emptyMapLocationClicked', 'emptyMapLocationHovered'],
     data: function () {
         return {
             map: {}
@@ -92,7 +94,7 @@ export default {
         this.map.on("click", this.onMapInteraction)
         this.map.on("pointermove", this.onMapInteraction)
         this.map.on("moveend", this.onZoomChange)
-        this.$root.$on("featurePopupOpened", this.centerViewOnFeaturePopup)
+        eventBus.$on("featurePopupOpened", this.centerViewOnFeaturePopup)
 
         this.map.addOverlay(this.$refs.featurePopover.overlay)
         this.map.addOverlay(this.$refs.featurePopup.overlay)
@@ -104,18 +106,18 @@ export default {
             var features = this.map.getFeaturesAtPixel(eventPixel)
             if (features) {
                 if (evt.type == "click") {
-                    this.$root.$emit("featureClicked", features[0])
+                    eventBus.$emit("featureClicked", features[0])
                 }
                 else if (evt.type == "pointermove") {
-                    this.$root.$emit("featureHovered", features[0])
+                    eventBus.$emit("featureHovered", features[0])
                 }
             }
             else {
                 if (evt.type == "click") {
-                    this.$root.$emit("emptyMapLocationClicked")
+                    eventBus.$emit("emptyMapLocationClicked")
                 }
                 else if (evt.type == "pointermove") {
-                    this.$root.$emit("emptyMapLocationHovered")
+                    eventBus.$emit("emptyMapLocationHovered")
                 }
             }
         },

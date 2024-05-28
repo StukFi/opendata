@@ -1,7 +1,7 @@
 <template>
     <div
-        v-on-clickaway="blur"
         class="search-bar"
+        v-click-away="blur"
     >
         <span
             class="search-bar__icon"
@@ -12,7 +12,7 @@
             :value="searchTerm"
             type="text"
             maxlength="28"
-            spellcheck="false"
+            :spellcheck=false
             class="search-bar__input"
             @input="searchTerm = $event.target.value"
             @click="showSuggestions()"
@@ -30,14 +30,16 @@
 
 <script>
 import SearchSuggestList from "./SearchSuggestList"
-import { mixin as clickaway } from "vue-clickaway"
+import VueClickAway from "vue3-click-away"
+import eventBus from '@/utils/eventBus'
 
 export default {
     name: "SearchBar",
+    emits: ['featureSelectedViaSearch'],
     components: {
         SearchSuggestList
     },
-    mixins: [ clickaway ],
+    mixins: [ VueClickAway ],
     data: function () {
         return {
             searchTerm: "",
@@ -58,7 +60,7 @@ export default {
         }
     },
     mounted () {
-        this.$root.$on("doseRateLayerChanged", this.onDoseRateLayerChanged)
+        eventBus.$on("doseRateLayerChanged", this.onDoseRateLayerChanged)
     },
     methods: {
         onDoseRateLayerChanged (layer) {
@@ -78,7 +80,7 @@ export default {
                 if (site.toLowerCase() == this.searchTerm.toLowerCase()) {
                     this.searchTerm = site
                     this.blur()
-                    this.$root.$emit("featureSelectedViaSearch", this.features[i])
+                    eventBus.$emit("featureSelectedViaSearch", this.features[i])
                     break
                 }
             }

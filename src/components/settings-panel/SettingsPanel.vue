@@ -25,9 +25,11 @@ import BaseBackdrop from "@/components/base/BaseBackdrop"
 import AppVersion from "./AppVersion"
 import Settings from "@/models/Settings"
 import cloneDeep from "lodash/cloneDeep"
+import eventBus from '@/utils/eventBus'
 
 export default {
     name: "SettingsPanel",
+    emits: ['settingsChanged'],
     components: {
         SettingsPanelHeader,
         FieldLanguage,
@@ -52,7 +54,7 @@ export default {
         }
     },
     mounted () {
-        this.$root.$on("settings-panel-open", this.enable)
+        eventBus.$on("settings-panel-open", this.enable)
     },
     methods: {
         enable () {
@@ -72,7 +74,7 @@ export default {
         },
         saveSettings () {
             this.$store.commit("setSettings", cloneDeep(this.settings))
-            this.$root.$emit("settingsChanged")
+            eventBus.$emit("settingsChanged")
         }
     }
 }
