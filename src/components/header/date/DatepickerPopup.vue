@@ -1,7 +1,7 @@
 <template>
     <div v-show="isEnabled">
         <base-backdrop @click="close" />
-        <vue-datepicker
+        <datepicker
             v-model="date"
             :use-utc="true"
             :monday-first="true"
@@ -17,22 +17,22 @@
 </template>
 
 <script>
-import VueDatepicker from "vuejs-datepicker"
+import Datepicker from "vuejs3-datepicker"
 import BaseBackdrop from "@/components/base/BaseBackdrop"
-import { en, fi } from "vuejs-datepicker/dist/locale"
+//import { en, fi } from "vuejs-datepicker/dist/locale"
 import eventBus from '@/utils/eventBus'
 
 export default {
     name: "DatepickerPopup",
     components: {
-        VueDatepicker,
+        Datepicker,
         BaseBackdrop
     },
     data: function () {
         return {
             isEnabled: false,
-            en: en,
-            fi: fi
+            //en: en,
+            //fi: fi
         }
     },
     computed: {
@@ -128,12 +128,8 @@ export default {
 </script>
 
 <style lang="scss">
-.datepicker {
-    flex-basis: 50%;
-    flex-grow: 1;
-}
 
-.vdp-datepicker input {
+.vuejs3-datepicker input {
     width: 100%;
     height: 4em;
     font-size: $font-lg;
@@ -149,15 +145,15 @@ export default {
     text-shadow: 0 0 0 white;
 }
 
-.vdp-datepicker input::selection {
+.vuejs3-datepicker input::selection {
     background-color: transparent;
 }
 
-.vdp-datepicker input::-moz-selection {
+.vuejs3-datepicker input::-moz-selection {
     background-color: transparent;
 }
 
-.vdp-datepicker__calendar.calendar {
+.vuejs3-datepicker__calendar.calendar {
     position: fixed !important;
     top: 6.5em;
     left: 50%;

@@ -13,7 +13,7 @@ import Feature from "ol/Feature";
 import Point from "ol/geom/Point";
 import { transform } from "ol/proj";
 import api from "@/api/index";
-import eventBus from '@/utils/eventBus'
+import eventBus from '@/utils/eventBus';
 
 export default {
     name: "DoseRateLayer",
@@ -105,8 +105,11 @@ export default {
                 this.$Progress.fail();
             }
         },
-        doseRateRanges: function () {
-            this.redraw();
+        doseRateRanges: {
+            handler: function () {
+                this.redraw();
+            },
+            deep: true
         }
     },
     mounted() {

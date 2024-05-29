@@ -1,5 +1,5 @@
 import i18n from "./i18n"
-import "@/components/base/index"
+import base from "./components/base/index"
 import { createApp } from "vue"
 import App from "./App.vue"
 import store from './store'
@@ -14,4 +14,10 @@ const options = {
     thickness: "0.25em"
 }
 
-createApp(App).use(store).use(i18n).use(VueProgressBar, options).use(VueClickAway).mount('#app')
+const app = createApp(App)
+app.use(store)
+app.use(i18n)
+app.use(VueProgressBar, options)
+app.use(VueClickAway)
+app.use(base)
+app.mount('#app')

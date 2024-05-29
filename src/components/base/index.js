@@ -1,4 +1,7 @@
-import Vue from "vue"
 import BaseRadioButton from "./BaseRadioButton"
 
-Vue.component("BaseRadioButton", BaseRadioButton)
+export default {
+    install(app) {
+      app.component('BaseRadioButton', BaseRadioButton);
+    },
+  };
