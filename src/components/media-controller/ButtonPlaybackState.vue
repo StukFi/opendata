@@ -3,13 +3,12 @@
         :icon="icon"
         :disabled="disabled"
         :title="title"
-        @click="mediaController.togglePlayback()"
+        @click="handleClick"
     />
 </template>
 
 <script>
 import MediaControllerButton from "./MediaControllerButton"
-import { PlaybackMode } from "@/models/MediaController"
 
 export default {
     name: "ButtonPlaybackState",
@@ -23,31 +22,32 @@ export default {
         }
     },
     computed: {
-        icon () {
-            return this.mediaController.isPlaybackEnabled ? "media-pause" : "media-play"
+        icon() {
+            return this.mediaController.state.isPlaybackEnabled ? "media-pause" : "media-play"
         },
-        disabled () {
+        disabled() {
             return this.mediaController.isPlaybackFinished()
         },
-        title () {
+        title() {
             if (this.disabled) {
-                if (this.mediaController.playbackMode == PlaybackMode.Time) {
+                if (this.mediaController.state.playbackMode === "time") {
                     return this.$t("playback.title.disabled.time")
-                }
-                else if (this.mediaController.playbackMode == PlaybackMode.Date) {
+                } else if (this.mediaController.state.playbackMode === "date") {
                     return this.$t("playback.title.disabled.date")
                 }
-            }
-            else {
-                if (this.mediaController.isPlaybackEnabled) {
+            } else {
+                if (this.mediaController.state.isPlaybackEnabled) {
                     return this.$t("playback.title.stop")
-                }
-                else {
+                } else {
                     return this.$t("playback.title.start")
                 }
             }
-
             return ""
+        }
+    },
+    methods: {
+        handleClick() {
+            this.mediaController.togglePlayback()
         }
     }
 }

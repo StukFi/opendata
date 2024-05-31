@@ -2,7 +2,7 @@
     <media-controller-button
         :text="playbackSpeed"
         :title="$t('playback.title.speed')"
-        @click="mediaController.toggleSpeed()"
+        @click="handleClick"
     />
 </template>
 
@@ -21,15 +21,14 @@ export default {
         }
     },
     computed: {
-        playbackSpeed () {
-            return this.mediaController.playbackSpeed / 1000.0 + " s"
+        playbackSpeed() {
+            return this.mediaController.state.playbackSpeed / 1000.0 + " s"
+        }
+    },
+    methods: {
+        handleClick() {
+            this.mediaController.toggleSpeed()
         }
     }
-}
+};
 </script>
-
-<style lang="scss" scoped>
-button {
-    font-size: $font-sm;
-}
-</style>

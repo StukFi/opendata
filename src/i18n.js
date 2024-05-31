@@ -34,13 +34,15 @@ var i18n = createI18n({
         },
         playback: { // media-controller
             title: {
+                date: "Päivitä päiväämäärää",
+                time: "Päivitä kellonaikaa",
                 disabled: {
                     date: "Valitse aikaisempi päivämäärä",
                     time: "Valitse aikaisempi kellonaika",
                 },
-            start: "Aloita toisto",
-            stop: "Pysäytä toisto",
-            speed: "Toistonopeus"
+                start: "Aloita toisto",
+                stop: "Pysäytä toisto",
+                speed: "Toistonopeus"
             }
         },
         dose: { // layers
@@ -72,13 +74,15 @@ var i18n = createI18n({
         },
         playback: { // media-controller
             title: {
+                date: "Update date",
+                time: "Update time",
                 disabled: {
-                    date: "Choose an earlier date to nable playback",
+                    date: "Choose an earlier date to enable playback",
                     time: "Choose an earlier time to enable playback",
                 },
-            start: "Start playback",
-            stop: "Stop playback",
-            speed: "Playback speed"
+                start: "Start playback",
+                stop: "Stop playback",
+                speed: "Playback speed"
             }
         },
         dose: { // layers

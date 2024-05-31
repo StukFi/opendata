@@ -1,14 +1,8 @@
 <template>
     <div class="media-controller">
-        <button-playback-mode
-            :media-controller="mediaController"
-        />
-        <button-playback-state
-            :media-controller="mediaController"
-        />
-        <button-playback-speed
-            :media-controller="mediaController"
-        />
+        <button-playback-mode :media-controller="mediaController" />
+        <button-playback-state :media-controller="mediaController" />
+        <button-playback-speed :media-controller="mediaController" />
     </div>
 </template>
 
@@ -16,7 +10,7 @@
 import ButtonPlaybackState from "./ButtonPlaybackState"
 import ButtonPlaybackMode from "./ButtonPlaybackMode"
 import ButtonPlaybackSpeed from "./ButtonPlaybackSpeed"
-import MediaController from "@/models/MediaController"
+import { createMediaController } from "@/models/MediaController"
 
 export default {
     name: "MediaController",
@@ -25,9 +19,11 @@ export default {
         ButtonPlaybackMode,
         ButtonPlaybackSpeed
     },
-    data: function () {
+    data() {
+        const mediaController = createMediaController()
+
         return {
-            mediaController: new MediaController()
+            mediaController
         }
     }
 }
