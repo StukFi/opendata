@@ -14,7 +14,7 @@
         <media-controller />
         <the-header />
         <timepicker-list />
-        <!--<datepicker-popup />-->
+        <datepicker-popup />
         <vue-progress-bar />
     </div>
 </template>
@@ -32,7 +32,7 @@ import MediaController from "@/components/media-controller/MediaController"
 import SearchBar from "@/components/search-bar/SearchBar"
 import TheHeader from "@/components/header/TheHeader"
 import TimepickerList from "@/components/header/time/timepicker/TimepickerList"
-//import DatepickerPopup from "@/components/header/date/DatepickerPopup"
+import DatepickerPopup from "@/components/header/date/DatepickerPopup"
 
 import ControlZoom from "ol/control/Zoom"
 import ControlZoomSlider from "ol/control/ZoomSlider"
@@ -59,7 +59,7 @@ export default {
         MediaController,
         TheHeader,
         TimepickerList,
-        //DatepickerPopup
+        DatepickerPopup
     },
     emits: ['featureClicked', 'featureHovered', 'emptyMapLocationClicked', 'emptyMapLocationHovered'],
     data: function () {

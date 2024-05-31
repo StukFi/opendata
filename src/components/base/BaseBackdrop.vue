@@ -20,5 +20,6 @@ export default {
     left: 0;
     z-index: $z-index-backdrop;
     background-color: rgba(0, 0, 0, 0.75);
+    display:block
 }
 </style>
