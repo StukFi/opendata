@@ -12,6 +12,7 @@
             calendar-class="calendar"
             @selected="close"
             @click="handleDateSelected"
+            @changed-month="handleDateSelected"
             />
     </div>
 </template>
