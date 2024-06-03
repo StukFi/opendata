@@ -36,19 +36,19 @@ export default {
 
 @media (min-width: $breakpoint-md) {
     :root {
-        font-size: 1.5em;
+        font-size: 1.2em;
     }
 }
 
 @media (min-width: $breakpoint-lg) {
     :root {
-        font-size: 2em;
+        font-size: 1.4em;
     }
 }
 
 @media (min-width: $breakpoint-xl) {
     :root {
-        font-size: 2.5em;
+        font-size: 1.6em;
     }
 }
 </style>
