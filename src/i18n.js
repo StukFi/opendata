@@ -25,7 +25,7 @@ var i18n = createI18n({
             time: "Päivitä kellonaikaa",
             dateFormat: "Päiväyksen muoto",
             dateFormatA: "PP.KK.VVVV",
-            dateFormatB: "VVV-KK-PP",
+            dateFormatB: "VVVV-KK-PP",
             labelFinnish: "Suomi",
             labelEnglish: "Englanti",
             timeFormat: "Ajan esitysmuoto",
