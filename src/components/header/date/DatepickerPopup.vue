@@ -2,24 +2,23 @@
     <div v-show="isEnabled">
         <base-backdrop @click="close" />
         <datepicker
+            ref="datepicker"
             v-model="date"
-            :use-utc="true"
             :monday-first="true"
             :disabled-dates="disabledDates"
             :format="formatDate"
-            :language="language"
             :inline="true"
             class="datepicker"
             calendar-class="calendar"
             @selected="close"
-        />
+            @click="handleDateSelected"
+            />
     </div>
 </template>
 
 <script>
 import Datepicker from "vuejs3-datepicker"
 import BaseBackdrop from "@/components/base/BaseBackdrop"
-//import { en, fi } from "vuejs-datepicker/dist/locale"
 import eventBus from '@/utils/eventBus'
 
 export default {
@@ -28,99 +27,142 @@ export default {
         Datepicker,
         BaseBackdrop
     },
-    data: function () {
+    data() {
         return {
             isEnabled: false,
-            //en: en,
-            //fi: fi
         }
     },
     computed: {
         date: {
-            get () {
+            get() {
                 return this.$store.state.datetime.selectedDate
             },
-            set (date) {
-                this.$store.dispatch("setDate", date)
+            set(date) {
+                    this.$store.dispatch("setDate", date);
             }
         },
-        language: {
-            get () {
-                switch (this.$store.state.settings.settings.locale) {
-                case "en":
-                default:
-                    return this.en
+        disabledDates() {
+            const availableDatasets = this.$store.state.datetime.availableDatasets;
+            const disabledDates = { to: null, from: null, dates: [] };
 
-                case "fi":
-                    return this.fi
+            if (availableDatasets.length === 0) {
+                return disabledDates;
+            }
+
+            // Get first and last valid dates
+            const firstValidDate = new Date(availableDatasets[0].date);
+            const lastValidDate = new Date(availableDatasets[availableDatasets.length - 1].date);
+
+            // Disable dates before the first valid date
+            disabledDates.to = new Date(firstValidDate.getTime() - 1);
+
+            // Disable dates after the last valid date
+            disabledDates.from = new Date(lastValidDate.getTime() + 1);
+
+            // Disable dates in between the valid dates
+            let currentDate = new Date(firstValidDate);
+            while (currentDate <= lastValidDate) {
+                if (!availableDatasets.some(dataset => new Date(dataset.date).toDateString() === currentDate.toDateString())) {
+                    disabledDates.dates.push(new Date(currentDate));
                 }
-            }
-        },
-        disabledDates () {
-            var availableDatasets = this.$store.state.datetime.availableDatasets
-            var disabledDates = {
-                ranges: [],
-                dates: []
+                currentDate.setDate(currentDate.getDate() + 1);
             }
 
-            if (availableDatasets.length == 0) {
-                return disabledDates
-            }
-
-            // Disable dates from the start of Unix time to the first valid date.
-            var firstValidDate = availableDatasets[0].date
-            var datesBeforeFirstValidDate = {
-                from: new Date(0),
-                to: new Date(firstValidDate)
-            }
-            disabledDates.ranges.push(datesBeforeFirstValidDate)
-
-            // Disable dates from the next ten years after the last valid date.
-            var lastValidDate = availableDatasets.slice(-1)[0].date
-            var datesAfterLastValidDate = {
-                from: lastValidDate,
-                to: new Date(lastValidDate.getFullYear() + 10, lastValidDate.getMonth(),
-                    lastValidDate.getDate())
-            }
-            disabledDates.ranges.push(datesAfterLastValidDate)
-
-            // Disable dates in between the valid dates.
-            var currentDate = new Date(firstValidDate)
-            function dateExists (datetime) {
-                return datetime.date.toDateString() == currentDate.toDateString()
-            }
-            while (currentDate < lastValidDate) {
-                if (!availableDatasets.some(dateExists)) {
-                    disabledDates.dates.push(new Date(currentDate))
-                }
-
-                currentDate.setDate(currentDate.getDate() + 1)
-            }
-
-            return disabledDates
-
+            return disabledDates;
         },
     },
-    mounted () {
+    watch: {
+        '$store.state.settings.settings.locale': function(newLocale) {
+            this.updateLocale(newLocale);
+        }
+    },
+    mounted() {
         eventBus.$on("calendar-popup-open", this.open)
+        this.updateLocale(this.$store.state.settings.settings.locale);
     },
     methods: {
-        formatDate (date) {
-            switch (this.$store.state.settings.settings.dateFormat) {
-            case "fi":
-            default:
-                return date.getDate() + "." + (date.getMonth() + 1) +
-                            "." + date.getFullYear()
-
-            case "iso":
-                return date.getFullYear() + "-" + (date.getMonth() + 1) +
-                            "-" + date.getDate()
+        handleDateSelected() {
+            this.updateLocale(this.$store.state.settings.settings.locale);
+        },
+        updateLocale(locale) {
+            if (locale === 'fi') {
+                const fiLocaleData = this.fiLocale();
+                this.updateDayHeaders(fiLocaleData.days);
+                this.updateMonthHeaders(fiLocaleData.months);
+                this.updateHeaderMonthYear(fiLocaleData.months);
+            } else {
+                this.resetDayHeaders();
+                this.resetMonthHeaders();
+                this.resetHeaderMonthYear();
             }
         },
-        open () {
-            this.isEnabled = true
+        fiLocale() {
+            return {
+                months: ['Tammikuu', 'Helmikuu', 'Maaliskuu', 'Huhtikuu', 'Toukokuu', 'Kesäkuu', 'Heinäkuu', 'Elokuu', 'Syyskuu', 'Lokakuu', 'Marraskuu', 'Joulukuu'],
+                days: ['Ma', 'Ti', 'Ke', 'To', 'Pe', 'La', 'Su']
+            };
         },
-        close () {
+        updateDayHeaders(days) {
+            this.$nextTick(() => {
+                const dayHeaders = this.$refs.datepicker.$el.querySelectorAll('.cell.day-header');
+                dayHeaders.forEach((header, index) => {
+                    header.textContent = days[index];
+                });
+            });
+        },
+        resetDayHeaders() {
+            const defaultDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+            this.updateDayHeaders(defaultDays);
+        },
+        updateMonthHeaders(months) {
+            this.$nextTick(() => {
+                const monthHeaders = this.$refs.datepicker.$el.querySelectorAll('.cell.month');
+                monthHeaders.forEach((header, index) => {
+                    header.textContent = months[index];
+                });
+            });
+        },
+        resetMonthHeaders() {
+            const defaultMonths = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            this.updateMonthHeaders(defaultMonths);
+        },
+        updateHeaderMonthYear(months) {
+            this.$nextTick(() => {
+                const headerMonthYear = this.$refs.datepicker.$el.querySelector('.day__month_btn.up');
+                if (headerMonthYear) {
+                    const date = new Date(this.date);
+                    const month = months[date.getMonth()];
+                    const year = date.getFullYear();
+                    headerMonthYear.textContent = `${month} ${year}`;
+                }
+            });
+        },
+        resetHeaderMonthYear() {
+            this.$nextTick(() => {
+                const headerMonthYear = this.$refs.datepicker.$el.querySelector('.day__month_btn.up');
+                if (headerMonthYear) {
+                    const date = new Date(this.date);
+                    const defaultMonths = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                    const month = defaultMonths[date.getMonth()];
+                    const year = date.getFullYear();
+                    headerMonthYear.textContent = `${month} ${year}`;
+                }
+            });
+        },
+        formatDate(date) {
+            switch (this.$store.state.settings.settings.dateFormat) {
+                case "fi":
+                default:
+                    return date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear()
+                case "iso":
+                    return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()
+            }
+        },
+        open() {
+            this.isEnabled = true;
+            this.updateLocale(this.$store.state.settings.settings.locale);
+        },
+        close() {
             this.isEnabled = false
         }
     }
@@ -128,7 +170,6 @@ export default {
 </script>
 
 <style lang="scss">
-
 .vuejs3-datepicker input {
     width: 100%;
     height: 4em;
@@ -140,7 +181,6 @@ export default {
     cursor: pointer;
     background-color: $color-header-date;
 
-    /* Hide the input's caret. */
     color: transparent;
     text-shadow: 0 0 0 white;
 }
@@ -153,7 +193,20 @@ export default {
     background-color: transparent;
 }
 
+.vuejs3-datepicker {
+    display: block;
+}
+
+.vuejs3-datepicker__calendar.header {
+    font-size: 1em;
+}
+
+.vuejs3-datepicker__calendar-topbar {
+    display: none;
+}
+
 .vuejs3-datepicker__calendar.calendar {
+    overflow-y: hidden;
     position: fixed !important;
     top: 6.5em;
     left: 50%;
@@ -164,15 +217,30 @@ export default {
     height: auto;
     border-radius: $border-radius-md;
     font-family: $font-medium !important;
-    font-size: $font-lg !important;
+    font-size: 1em;
     padding: 1em;
     z-index: $z-index-calendar-popup;
 
     .cell {
         height: 3em;
         line-height: 3em;
+        font-size: 0.8em;
+        text-align: center;
+    }
+
+    .cell.selected {
+        background-color: $color-header-date;
+    }
+
+    .cell:not(.blank):not(.disabled).day:hover,
+    .cell:not(.blank):not(.disabled).month:hover,
+    .cell:not(.blank):not(.disabled).year:hover {
+        border-color: $color-header-date;
+    }
+
+    .cell.month,
+    .cell.year {
+        padding: 0;
     }
 }
-
-
 </style>
