@@ -1,12 +1,6 @@
 <template>
-    <div
-        ref="featurePopover"
-        class="feature-popover"
-    >
-        <site-name
-            :feature="feature"
-            disable-close-button
-        />
+    <div ref="featurePopover" class="feature-popover">
+        <site-name :feature="feature" disable-close-button />
         <site-dose-rate :feature="feature" />
     </div>
 </template>
@@ -23,14 +17,14 @@ export default {
         SiteName,
         SiteDoseRate
     },
-    data: function () {
+    data() {
         return {
             isEnabled: true,
             overlay: undefined,
             feature: undefined
         }
     },
-    mounted: function () {
+    mounted() {
         eventBus.$on("featureHovered", this.open)
         eventBus.$on("emptyMapLocationHovered", this.close)
         eventBus.$on("featurePopupOpened", this.disable)
@@ -43,23 +37,23 @@ export default {
         })
     },
     methods: {
-        enable () {
+        enable() {
             this.isEnabled = true
         },
-        disable () {
+        disable() {
             this.isEnabled = false
             this.close()
         },
-        open (feature) {
+        open(feature) {
             if (this.isEnabled) {
                 this.feature = feature
                 this.overlay.setPosition(feature.getGeometry().getCoordinates())
             }
         },
-        close () {
+        close() {
             this.overlay.setPosition(undefined)
         },
-        update (layer) {
+        update(layer) {
             var features = layer.getSource().getFeatures()
             if (features.length == 0) {
                 return

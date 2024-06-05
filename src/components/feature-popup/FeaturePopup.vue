@@ -1,12 +1,6 @@
 <template>
-    <div
-        ref="featurePopup"
-        class="feature-popup"
-    >
-        <site-name
-            :feature="feature"
-            @close="close"
-        />
+    <div ref="featurePopup" class="feature-popup">
+        <site-name :feature="feature" @close="close" />
         <site-dose-rate :feature="feature" />
         <time-series-graph :feature="feature" />
     </div>
@@ -16,7 +10,7 @@
 import Overlay from "ol/Overlay"
 import SiteName from "@/components/feature-popover/SiteName"
 import SiteDoseRate from "@/components/feature-popover/SiteDoseRate"
-import TimeSeriesGraph from "./TimeSeriesGraph"
+import TimeSeriesGraph from "@/components/feature-popup/TimeSeriesGraph"
 import eventBus from '@/utils/eventBus'
 
 export default {
@@ -27,13 +21,16 @@ export default {
         SiteDoseRate,
         TimeSeriesGraph
     },
-    data: function () {
+    data() {
         return {
             overlay: undefined,
             feature: undefined
         }
     },
-    mounted: function () {
+    mounted() {
+        eventBus.$on("featureClicked", this.open)
+        eventBus.$on("emptyMapLocationClicked", this.close)
+
         this.overlay = new Overlay({
             element: this.$refs.featurePopup,
             position: undefined
@@ -45,12 +42,13 @@ export default {
         eventBus.$on("doseRateLayerChanged", this.update)
     },
     methods: {
-        open (feature) {
+        open(feature) {
             this.feature = feature
             this.overlay.setPosition(feature.getGeometry().getCoordinates())
             eventBus.$emit("featurePopupOpened", feature)
         },
-        close () {
+        close() {
+            this.feature = undefined
             this.overlay.setPosition(undefined)
             eventBus.$emit("featurePopupClosed")
         },

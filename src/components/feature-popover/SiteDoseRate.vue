@@ -16,7 +16,7 @@ export default {
         }
     },
     computed: {
-        doseRate () {
+        doseRate() {
             return this.feature ? this.feature.get("doseRate") : "-"
         }
     }

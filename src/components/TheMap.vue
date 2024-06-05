@@ -1,7 +1,5 @@
 <template>
-    <div
-        id="map"
-    >
+    <div id="map">
         <dose-rate-layer ref="doseRateLayer" />
         <feature-popover ref="featurePopover" />
         <feature-popup ref="featurePopup" />
@@ -34,14 +32,11 @@ import TheHeader from "@/components/header/TheHeader"
 import TimepickerList from "@/components/header/time/timepicker/TimepickerList"
 import DatepickerPopup from "@/components/header/date/DatepickerPopup"
 
-import ControlZoom from "ol/control/Zoom"
-import ControlZoomSlider from "ol/control/ZoomSlider"
-import ControlScaleLine from "ol/control/ScaleLine"
+import { Zoom, ZoomSlider, ScaleLine } from "ol/control"
 import { fromLonLat } from "ol/proj"
-import Map from "ol/Map"
-import OSMSource from "ol/source/OSM"
+import { Map, View } from "ol"
+import { OSM } from "ol/source"
 import TileLayer from "ol/layer/Tile"
-import View from "ol/View"
 import eventBus from '@/utils/eventBus'
 
 export default {
@@ -62,25 +57,25 @@ export default {
         DatepickerPopup
     },
     emits: ['featureClicked', 'featureHovered', 'emptyMapLocationClicked', 'emptyMapLocationHovered'],
-    data: function () {
+    data() {
         return {
             map: {}
         }
     },
-    mounted: function () {
+    mounted() {
         this.map = new Map({
             target: "map",
             layers: [
                 new TileLayer({
-                    source: new OSMSource({
+                    source: new OSM({
                         url: "https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     })
                 })
             ],
             controls: [
-                new ControlZoom(),
-                new ControlZoomSlider(),
-                new ControlScaleLine(),
+                new Zoom(),
+                new ZoomSlider(),
+                new ScaleLine(),
             ],
             view: new View({
                 center: fromLonLat([25.75, 65.75]),
@@ -101,31 +96,28 @@ export default {
         this.map.addLayer(this.$refs.doseRateLayer.vectorLayer)
     },
     methods: {
-        onMapInteraction (evt) {
+        onMapInteraction(evt) {
             var eventPixel = this.map.getEventPixel(evt.originalEvent)
             var features = this.map.getFeaturesAtPixel(eventPixel)
-            if (features) {
+            if (features[0]) {
                 if (evt.type == "click") {
                     eventBus.$emit("featureClicked", features[0])
-                }
-                else if (evt.type == "pointermove") {
+                } else if (evt.type == "pointermove") {
                     eventBus.$emit("featureHovered", features[0])
                 }
-            }
-            else {
+            } else {
                 if (evt.type == "click") {
                     eventBus.$emit("emptyMapLocationClicked")
-                }
-                else if (evt.type == "pointermove") {
+                } else if (evt.type == "pointermove") {
                     eventBus.$emit("emptyMapLocationHovered")
                 }
             }
         },
-        onZoomChange () {
+        onZoomChange() {
             let zoom = this.map.getView().getZoom()
             this.$refs.doseRateLayer.updateFeatureRadius(zoom)
         },
-        centerViewOnFeaturePopup (feature) {
+        centerViewOnFeaturePopup(feature) {
             var featureCoordinates = feature.getGeometry().getCoordinates()
             var featurePixel = this.map.getPixelFromCoordinate(featureCoordinates)
 
