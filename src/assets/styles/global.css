@@ -12,9 +12,36 @@ html, body, #app {
 }
 
 .ol-zoom {
-    left: unset;
-    top: 6em;
-    right: 1em;
+    left: unset !important;
+    top: 6em !important;
+    right: 1em !important;
+}
+
+.ol-control button {
+    display: block;
+    margin: 1px;
+    padding: 0;
+    color: #ffffffbb;
+    font-size: 1.14em;
+    font-weight: 700;
+    text-decoration: none;
+    text-align: center;
+    height: 1.375em;
+    width: 1.375em;
+    line-height: .1em;
+    background-color: rgba(0, 60, 136, .5);
+    border: none;
+    border-radius: 2px;
+}
+
+.ol-control button:hover, .ol-control button:focus {
+    outline: none;
+    color: white;
+    background-color: rgba(0, 50, 136, 0.7);
+}
+
+.ol-control {
+    background-color: rgba(255, 255, 255, 0.5);
 }
 
 .ol-zoomslider {
@@ -36,18 +63,6 @@ html, body, #app {
     top: unset;
     bottom: 2.5em;
     right: 1em;
-}
-
-.vdp-datepicker__calendar .cell.selected,
-.vdp-datepicker__calendar .cell.selected:hover {
-    background-color: #1773B9 !important;
-    color: white;
-}
-
-.vdp-datepicker__calendar .cell:not(.blank):not(.disabled).day:hover,
-.vdp-datepicker__calendar .cell:not(.blank):not(.disabled).month:hover,
-.vdp-datepicker__calendar .cell:not(.blank):not(.disabled).year:hover {
-    border: 1px solid #1773B9 !important;
 }
 
 @media only screen and (max-width: 767px) {
