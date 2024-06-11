@@ -65,15 +65,3 @@ export default {
     }
 }
 </style>
-
-<!--<i18n>
-{
-    "en": {
-        "title": "Settings"
-    },
-    "fi": {
-        "title": "Asetukset"
-    }
-}
-</i18n>
--->
