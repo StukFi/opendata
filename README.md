@@ -12,7 +12,7 @@ For more information on STUK's and FMI's open data, see the following resources:
 
 2. Run `npm install` in the project's root directory to install dependencies.
 
-3. Build the application: `npm run build` for production or `npm run serve` for development.
+3. Build the application: `npm run build` for production or `npm run serve` to preview a build, or `npm run dev` for development.
 
 ### Getting data
 
