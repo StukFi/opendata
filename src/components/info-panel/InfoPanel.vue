@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import InfoPanelHeader from "./InfoPanelHeader"
-import BaseBackdrop from "@/components/base/BaseBackdrop"
+import InfoPanelHeader from "@/components/info-panel/InfoPanelHeader.vue"
+import BaseBackdrop from "@/components/base/BaseBackdrop.vue"
 import eventBus from '@/utils/eventBus'
 
 export default {

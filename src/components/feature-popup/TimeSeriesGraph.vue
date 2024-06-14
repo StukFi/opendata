@@ -8,7 +8,7 @@
 
 <script>
 import TimeSeriesGraph from "@/models/TimeSeriesGraph"
-import LoadingSpinner from "./LoadingSpinner"
+import LoadingSpinner from "@/components/feature-popup/LoadingSpinner.vue"
 import Plotly from "plotly.js/lib/core"
 import localeFI from "plotly.js/lib/locales/fi"
 Plotly.register(localeFI)

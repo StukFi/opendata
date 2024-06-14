@@ -33,7 +33,7 @@ export default {
             }
             else {
                 return {
-                    backgroundImage: "url(" + require("@/assets/icons/" + this.icon + ".svg") + ")"
+                    backgroundImage: `url(src/assets/icons/${this.icon}.svg)`
                 }
             }
         }

@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import TheMap from "./components/TheMap"
+import TheMap from "@/components/TheMap.vue"
 
 export default {
     name: "App",
@@ -17,6 +17,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import "@/assets/styles/variables.scss";
+
 #app {
     height: 100%;
     width: 100%;

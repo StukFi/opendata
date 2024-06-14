@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import MediaControllerButton from "./MediaControllerButton"
+import MediaControllerButton from "@/components/media-controller/MediaControllerButton.vue"
 
 export default {
     name: "ButtonPlaybackState",

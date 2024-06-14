@@ -7,10 +7,10 @@
 </template>
 
 <script>
-import ButtonPlaybackState from "./ButtonPlaybackState"
-import ButtonPlaybackMode from "./ButtonPlaybackMode"
-import ButtonPlaybackSpeed from "./ButtonPlaybackSpeed"
-import { createMediaController } from "@/models/MediaController"
+import ButtonPlaybackState from "@/components/media-controller/ButtonPlaybackState.vue"
+import ButtonPlaybackMode from "@/components/media-controller/ButtonPlaybackMode.vue"
+import ButtonPlaybackSpeed from "@/components/media-controller/ButtonPlaybackSpeed.vue"
+import { createMediaController } from "@/models/MediaController.js"
 
 export default {
     name: "MediaController",

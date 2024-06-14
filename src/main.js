@@ -1,10 +1,11 @@
-import i18n from "./i18n"
-import base from "./components/base/index"
+import i18n from "@/i18n"
+import base from "@/components/base/index"
 import { createApp } from "vue"
-import App from "./App.vue"
-import store from './store'
+import App from "@/App.vue"
+import store from '@/store'
 import "ol/ol.css"
-import "@/assets/styles/index.scss"
+import "@/assets/styles/index.scss";
+
 import VueProgressBar from "@aacassandra/vue3-progressbar"
 import VueClickAway from "vue3-click-away";
 

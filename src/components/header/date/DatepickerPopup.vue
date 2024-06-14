@@ -17,7 +17,7 @@
 <script>
 import VueDatePicker from "@vuepic/vue-datepicker"
 import '@vuepic/vue-datepicker/dist/main.css'
-import BaseBackdrop from "@/components/base/BaseBackdrop"
+import BaseBackdrop from "@/components/base/BaseBackdrop.vue"
 import eventBus from '@/utils/eventBus'
 
 export default {

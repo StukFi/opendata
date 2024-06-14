@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import SiteName from "./SiteName"
-import SiteDoseRate from "./SiteDoseRate"
+import SiteName from "@/components/feature-popover/SiteName.vue"
+import SiteDoseRate from "@/components/feature-popover/SiteDoseRate.vue"
 import Overlay from "ol/Overlay"
 import eventBus from '@/utils/eventBus'
 

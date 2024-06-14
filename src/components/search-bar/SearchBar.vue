@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import SearchSuggestList from "./SearchSuggestList"
+import SearchSuggestList from "@/components/search-bar/SearchSuggestList.vue"
 import VueClickAway from "vue3-click-away"
 import eventBus from '@/utils/eventBus'
 

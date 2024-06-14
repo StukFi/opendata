@@ -19,8 +19,8 @@
 </template>
 
 <script>
-import TimepickerListItem from "./TimepickerListItem"
-import BaseBackdrop from "@/components/base/BaseBackdrop"
+import TimepickerListItem from "@/components/header/time/timepicker/TimepickerListItem.vue"
+import BaseBackdrop from "@/components/base/BaseBackdrop.vue"
 import eventBus from '@/utils/eventBus'
 
 export default {

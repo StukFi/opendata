@@ -1,4 +1,4 @@
-import BaseRadioButton from "./BaseRadioButton"
+import BaseRadioButton from "@/components/base/BaseRadioButton.vue"
 
 export default {
     install(app) {

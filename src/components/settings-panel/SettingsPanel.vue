@@ -17,12 +17,12 @@
 </template>
 
 <script>
-import SettingsPanelHeader from "./SettingsPanelHeader"
-import FieldLanguage from "./FieldLanguage"
-import FieldDateFormat from "./FieldDateFormat"
-import FieldTimeFormat from "./FieldTimeFormat"
-import BaseBackdrop from "@/components/base/BaseBackdrop"
-import AppVersion from "./AppVersion"
+import SettingsPanelHeader from "@/components/settings-panel/SettingsPanelHeader.vue"
+import FieldLanguage from "@/components/settings-panel/FieldLanguage.vue"
+import FieldDateFormat from "@/components/settings-panel/FieldDateFormat.vue"
+import FieldTimeFormat from "@/components/settings-panel/FieldTimeFormat.vue"
+import BaseBackdrop from "@/components/base/BaseBackdrop.vue"
+import AppVersion from "@/components/settings-panel/AppVersion.vue"
 import Settings from "@/models/Settings"
 import cloneDeep from "lodash/cloneDeep"
 import eventBus from '@/utils/eventBus'

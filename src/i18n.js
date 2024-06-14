@@ -5,7 +5,7 @@ var i18n = createI18n({
   globalInjection: true,
   legacy: false,
   locale: localStorage.getItem("locale"),
-  fallbackLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE || 'fi',
+  fallbackLocale: import.meta.env.VUE_APP_I18N_FALLBACK_LOCALE || 'fi',
   preserveDirectiveContent: false,
   warnHtmlMessage: false, // Disable console warning of HTML code in translations
   messages: {

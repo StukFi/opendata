@@ -8,9 +8,9 @@
 
 <script>
 import Overlay from "ol/Overlay"
-import SiteName from "@/components/feature-popover/SiteName"
-import SiteDoseRate from "@/components/feature-popover/SiteDoseRate"
-import TimeSeriesGraph from "@/components/feature-popup/TimeSeriesGraph"
+import SiteName from "@/components/feature-popover/SiteName.vue"
+import SiteDoseRate from "@/components/feature-popover/SiteDoseRate.vue"
+import TimeSeriesGraph from "@/components/feature-popup/TimeSeriesGraph.vue"
 import eventBus from '@/utils/eventBus'
 
 export default {

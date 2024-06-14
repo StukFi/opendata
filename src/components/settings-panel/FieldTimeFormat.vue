@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import SettingsPanelSection from "./SettingsPanelSection"
+import SettingsPanelSection from "@/components/settings-panel/SettingsPanelSection.vue"
 
 export default {
     name: "FieldTimeFormat",
