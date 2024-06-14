@@ -46,7 +46,7 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
     border-radius: 0.25em;
-    background-image: url("src/assets/icons/info.svg");
+    background-image: url("/icons/info.svg");
     background-repeat: no-repeat;
     background-position: center;
     background-color: rgba(0, 50, 136, 0.5);

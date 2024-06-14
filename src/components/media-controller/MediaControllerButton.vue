@@ -33,7 +33,7 @@ export default {
             }
             else {
                 return {
-                    backgroundImage: `url(src/assets/icons/${this.icon}.svg)`
+                    backgroundImage: `url(/icons/${this.icon}.svg)`
                 }
             }
         }

@@ -146,7 +146,7 @@ export default {
     position: absolute;
     width: 3em;
     height: 3em;
-    background-image: url("~@/assets/icons/magnifying-glass.svg");
+    background-image: url("/icons/magnifying-glass.svg");
     background-repeat: no-repeat;
     background-position: center;
     background-size: 35%;
