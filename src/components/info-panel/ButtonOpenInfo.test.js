@@ -1,13 +1,13 @@
 import { mount } from "@vue/test-utils"
-import ButtonOpenSettings from "./ButtonOpenSettings"
+import ButtonOpenInfo from "./ButtonOpenInfo"
 import eventBus from '@/utils/eventBus'
 import { describe, beforeEach, it, expect } from "vitest"
 
-describe("ButtonOpenSettings.vue", () => {
+describe("ButtonOpenInfo.vue", () => {
     let wrapper
 
     beforeEach(() => {
-        wrapper = mount(ButtonOpenSettings, {
+        wrapper = mount(ButtonOpenInfo, {
             global: {
                 mocks: {
                     $t: () => {}
@@ -16,15 +16,15 @@ describe("ButtonOpenSettings.vue", () => {
         })
     })
 
-    it("emits 'settings-panel-open' event when clicked", async () => {
+    it("emits 'info-panel-open' event when clicked", async () => {
         let emittedEvent = null
 
         eventBus.$emit = (eventName) => {
             emittedEvent = eventName
         }
 
-        await wrapper.find(".button-open-settings").trigger("click")
+        await wrapper.find(".button-open-info").trigger("click")
 
-        expect(emittedEvent).toBe('settings-panel-open')
+        expect(emittedEvent).toBe('info-panel-open')
     })
 })

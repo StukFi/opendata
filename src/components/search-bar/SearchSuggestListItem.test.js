@@ -1,4 +1,5 @@
 import { mount } from "@vue/test-utils"
+import { describe, it, beforeEach, expect } from "vitest"
 import SearchSuggestListItem from "./SearchSuggestListItem"
 
 describe("SearchSuggestListItem.vue", () => {
@@ -13,8 +14,8 @@ describe("SearchSuggestListItem.vue", () => {
     })
 
     it("renders a suggestion", async () => {
-        const suggestion ="Helsinki"
-        await wrapper.setProps({ suggestion: suggestion })
+        const suggestion = "Helsinki"
+        await wrapper.setProps({ suggestion })
         expect(wrapper.text()).toContain(suggestion)
     })
 

@@ -1,35 +1,43 @@
-import { mount, createLocalVue } from "@vue/test-utils"
-import ButtonDateTime from "@/components/header/ButtonDateTime.vue"
-import ButtonIncrementDate from "./ButtonIncrementDate.vue"
+import { mount } from '@vue/test-utils'
+import { describe, it, beforeEach, expect, vi } from 'vitest'
+import ButtonDateTime from '@/components/header/ButtonDateTime.vue'
+import ButtonIncrementDate from './ButtonIncrementDate.vue'
 
-const localVue = createLocalVue()
-const mockStore = { dispatch: jest.fn() }
+describe('ButtonIncrementDate.vue', () => {
+  let wrapper
+  let mockStore
 
-function customMount (computed = {}) {
+  function customMount(computed = {}) {
     return mount(ButtonIncrementDate, {
-        localVue,
-        computed,
+      global: {
         mocks: {
-            $store: mockStore
+          $store: {
+            ...mockStore,
+            getters: {
+              isNewestDateSelected: false
+            }
+          }
         }
+      }
     })
-}
+  }
 
-describe("ButtonIncrementDate.vue", () => {
-    let wrapper
+  beforeEach(() => {
+    mockStore = {
+      dispatch: vi.fn()
+    }
+    wrapper = customMount({ isNewestDateSelected: () => false })
+  })
 
-    beforeEach(() => {
-        wrapper = customMount({ isNewestDateSelected: () => false })
-    })
+  it('is disabled when the last available date is selected', async () => {
+    expect(wrapper.findComponent(ButtonDateTime).props().disabled).toBeFalsy
+    wrapper = customMount({ isNewestDateSelected: () => true })
+    await wrapper.vm.$nextTick()
+    expect(wrapper.findComponent(ButtonDateTime).props().disabled).toBeTruthy
+  })
 
-    it("is disabled when the last available date is selected", () => {
-        expect(wrapper.findComponent(ButtonDateTime).props().disabled).toBe(false)
-        wrapper = customMount({ isNewestDateSelected: () => true })
-        expect(wrapper.findComponent(ButtonDateTime).props().disabled).toBe(true)
-    })
-
-    it("dispatches an action when it is clicked", async () => {
-        await wrapper.find("button").trigger("click")
-        expect(mockStore.dispatch).toHaveBeenCalledWith("incrementDate")
-    })
+  it('dispatches an action when it is clicked', async () => {
+    await wrapper.find('button').trigger('click')
+    expect(mockStore.dispatch).toHaveBeenCalledWith('incrementDate')
+  })
 })

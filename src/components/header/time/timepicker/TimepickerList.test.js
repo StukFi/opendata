@@ -1,4 +1,5 @@
 import { shallowMount } from "@vue/test-utils"
+import { describe, it, beforeEach, expect } from "vitest"
 import TimepickerList from "./TimepickerList"
 import TimepickerListItem from "./TimepickerListItem"
 
@@ -22,8 +23,8 @@ describe("TimepickerList.vue", () => {
 
     it("is visible only when enabled", async () => {
         await wrapper.setData({ isEnabled: false })
-        expect(wrapper.element).not.toBeVisible()
+        expect(wrapper.attributes("style")).toContain("display: none;")
         await wrapper.setData({ isEnabled: true })
-        expect(wrapper.element).toBeVisible()
+        expect(wrapper.attributes("style")).not.toContain("display: none;")
     })
 })

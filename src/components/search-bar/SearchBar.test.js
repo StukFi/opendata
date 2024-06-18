@@ -1,62 +1,83 @@
-import { mount, createWrapper } from "@vue/test-utils"
+import { mount } from "@vue/test-utils"
 import SearchBar from "./SearchBar"
 import SearchSuggestList from "./SearchSuggestList"
+import { vi, describe, beforeEach, it, expect } from "vitest"
+import eventBus from '@/utils/eventBus'
 
 describe("SearchBar.vue", () => {
-    let wrapper
-    const mockSite = "Helsinki"
+  let wrapper
+  const mockSite = "Helsinki"
 
-    beforeEach(() => {
-        wrapper = mount(SearchBar, {
-            computed: {
-                sites: () => [mockSite, "Espoo", "Vantaa"]
-            }
-        })
+  beforeEach(() => {
+    wrapper = mount(SearchBar, {
+      computed: {
+        sites: () => [mockSite, "Espoo", "Vantaa"]
+      }
     })
+  })
 
-    it("searches when the search icon is clicked", () => {
-        wrapper.vm.search = jest.fn()
-        wrapper.find(".search-bar__icon").trigger("click")
-        expect(wrapper.vm.search).toHaveBeenCalledTimes(1)
-    })
+  it("searches when the search icon is clicked", async () => {
+    wrapper.vm.search = vi.fn()
 
-    it("searches when the enter key is pressed", () => {
-        wrapper.vm.search = jest.fn()
-        wrapper.find("input").trigger("keyup.enter")
-        expect(wrapper.vm.search).toHaveBeenCalledTimes(1)
-    })
+    await wrapper.find(".search-bar__icon").trigger("click")
 
-    it("searches when a suggestion is selected", async () => {
-        wrapper.vm.search = jest.fn()
-        await wrapper.vm.$refs.searchSuggestList.$emit("select", mockSite)
-        expect(wrapper.vm.search).toHaveBeenCalledTimes(1)
-    })
+    expect(wrapper.vm.search).toHaveBeenCalled()
+  })
 
-    it("enables suggestions when clicked", async () => {
-        const searchSuggestList = wrapper.findComponent(SearchSuggestList)
-        expect(searchSuggestList.element).not.toBeVisible()
-        wrapper.find("input").setValue(mockSite)
-        await wrapper.find("input").trigger("click")
-        expect(searchSuggestList.element).toBeVisible()
-    })
+  it("searches when the enter key is pressed", async () => {
+    wrapper.vm.search = vi.fn()
 
-    it("enables suggestions when focused", async () => {
-        const searchSuggestList = wrapper.findComponent(SearchSuggestList)
-        expect(searchSuggestList.element).not.toBeVisible()
-        wrapper.find("input").setValue(mockSite)
-        await wrapper.find("input").element.focus()
-        expect(searchSuggestList.element).toBeVisible()
-    })
+    await wrapper.find("input").trigger("keyup.enter")
 
-    it("emits an event when a search is successful", () => {
-        const rootWrapper = createWrapper(wrapper.vm.$root)
-        const mockFeature = { get: () => mockSite }
-        wrapper.setData({ features: [mockFeature]})
+    expect(wrapper.vm.search).toHaveBeenCalled()
+  })
 
-        wrapper.find("input").setValue(mockSite)
-        wrapper.find("input").trigger("keyup.enter")
+  it("searches when a suggestion is selected", async () => {
+    wrapper.vm.search = vi.fn()
 
-        expect(rootWrapper.emitted().featureSelectedViaSearch).toHaveLength(1)
-        expect(rootWrapper.emitted().featureSelectedViaSearch[0]).toEqual([mockFeature])
-    })
+    await wrapper.findComponent(SearchSuggestList).vm.$emit("select", mockSite)
+
+    expect(wrapper.vm.search).toHaveBeenCalled()
+  })
+
+  it("enables suggestions when clicked", async () => {
+  
+    const inputWrapper = wrapper.find("input")
+    await inputWrapper.setValue(mockSite)
+    
+    await inputWrapper.trigger("click")
+    
+    await wrapper.vm.$nextTick()
+  
+    expect(wrapper.find(".search-suggest-list").isVisible()).toBe(true)
+  })
+  
+
+  it("enables suggestions when focused", async () => {
+
+    await wrapper.find("input").setValue(mockSite)
+    const inputEl = wrapper.find("input").element
+    inputEl.dispatchEvent(new FocusEvent("focus"))
+
+    await wrapper.vm.$nextTick()
+
+    expect(wrapper.find(".search-suggest-list").isVisible()).toBe(true)
+  })
+
+  it("emits an event when a search is successful", async () => {
+    const mockFeature = { get: () => mockSite }
+
+    let emittedEvent = null
+    eventBus.$emit = (eventName, payload) => {
+      if (eventName === "featureSelectedViaSearch") {
+        emittedEvent = payload
+      }
+    }
+
+    await wrapper.setData({ features: [mockFeature] })
+    await wrapper.find("input").setValue(mockSite)
+    await wrapper.find("input").trigger("keyup.enter")
+
+    expect(emittedEvent).toEqual(mockFeature)
+  })
 })

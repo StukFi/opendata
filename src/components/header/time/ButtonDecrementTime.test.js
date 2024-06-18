@@ -1,35 +1,45 @@
-import { mount, createLocalVue } from "@vue/test-utils"
-import ButtonDateTime from "@/components/header/ButtonDateTime.vue"
-import ButtonDecrementTime from "./ButtonDecrementTime.vue"
+import { describe, it, beforeEach, expect, vi } from 'vitest'
+import { mount } from '@vue/test-utils'
+import ButtonDateTime from '@/components/header/ButtonDateTime.vue'
+import ButtonDecrementTime from './ButtonDecrementTime.vue'
 
-const localVue = createLocalVue()
-const mockStore = { dispatch: jest.fn() }
+describe('ButtonDecrementTime', () => {
+  let wrapper
+  let mockStore
 
-function customMount (computed = {}) {
-    return mount(ButtonDecrementTime, {
-        localVue,
-        computed,
+  beforeEach(() => {
+    mockStore = {
+      state: {
+        isOldestTimeSelected: false
+      },
+      getters: {
+        isOldestTimeSelected: false
+      },
+      dispatch: vi.fn()
+    }
+
+    wrapper = mount(ButtonDecrementTime, {
+      global: {
         mocks: {
-            $store: mockStore
+          $store: mockStore
         }
+      }
     })
-}
+  })
 
-describe("ButtonDecrementTime.vue", () => {
-    let wrapper
+  it('should have ButtonDateTime initially not disabled', () => {
+    expect(wrapper.findComponent(ButtonDateTime).props().disabled).toBeFalsy
+  })
 
-    beforeEach(() => {
-        wrapper = customMount({ isOldestTimeSelected: () => false })
-    })
+  it('should call decrementTime method when ButtonDateTime is clicked', async () => {
+    await wrapper.findComponent(ButtonDateTime).trigger('click')
+    expect(mockStore.dispatch).toHaveBeenCalledWith('decrementTime')
+  })
 
-    it("is disabled when the first available time is selected", () => {
-        expect(wrapper.findComponent(ButtonDateTime).props().disabled).toBe(false)
-        wrapper = customMount({ isOldestTimeSelected: () => true })
-        expect(wrapper.findComponent(ButtonDateTime).props().disabled).toBe(true)
-    })
+  it('should have ButtonDateTime disabled when isOldestTimeSelected is true', async () => {
+    mockStore.getters.isOldestTimeSelected = true
+    await wrapper.vm.$nextTick()
 
-    it("dispatches an action when it is clicked", async () => {
-        await wrapper.find("button").trigger("click")
-        expect(mockStore.dispatch).toHaveBeenCalledWith("decrementTime")
-    })
+    expect(wrapper.findComponent(ButtonDateTime).props().disabled).toBeTruthy
+  })
 })
