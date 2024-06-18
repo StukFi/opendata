@@ -33,10 +33,6 @@ export default {
             required: true
         }
     },
-    compatConfig: {
-    MODE: 3,
-    COMPONENT_V_MODEL: false
-  },
 }
 </script>
 

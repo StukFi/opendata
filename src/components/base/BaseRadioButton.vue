@@ -29,10 +29,6 @@
         required: true
       }
     },
-    compatConfig: {
-      MODE: 3,
-      COMPONENT_V_MODEL: false
-    },
     data() {
       return {
         id: String(Math.random())

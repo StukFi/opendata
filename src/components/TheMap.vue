@@ -69,7 +69,10 @@ export default {
                 new TileLayer({
                     source: new OSM({
                         url: "https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    })
+                    }),
+                    tileCacheSize: 1000,
+                    loadTilesWhileAnimating: true,
+                    loadTilesWhileInteracting: true,
                 })
             ],
             controls: [

@@ -121,7 +121,7 @@ export default {
         },
         updateFeatureRadius(zoom) {
             const currentFeatureRadius = this.featureRadius;
-            const newFeatureRadius = zoom * 2.5;
+            const newFeatureRadius = zoom * 2;
             if (newFeatureRadius !== currentFeatureRadius) {
                 this.featureRadius = newFeatureRadius;
                 this.redraw();
