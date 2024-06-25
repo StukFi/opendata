@@ -1,7 +1,6 @@
 import json
 import logging
 import os
-
 import settings
 
 def update_metadata():

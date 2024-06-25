@@ -1,13 +1,12 @@
-from datetime import date
 import argparse
 import logging
 import sys
-
+from datetime import datetime, timedelta
+import dose_rates
+import settings
 from fmi_utils import fmi_request_datetime_format
 from metadata import update_metadata
 from time_series import generate_time_series
-import dose_rates
-import settings
 
 def get_program_arguments():
     """
@@ -17,10 +16,8 @@ def get_program_arguments():
     """
     parser = argparse.ArgumentParser(description="Gets data from FMI's open data API.")
     parser.add_argument("-s", "--timespan", nargs=2, metavar=('FROM', 'TO'),
-                        help="define a timespan for which to get data, \
-                              datetime format {}".format(fmi_request_datetime_format))
-    parser.add_argument("-q", "--quiet", action="store_true",
-                        help="suppress console output")
+                        help="define a timespan for which to get data, datetime format {}".format(fmi_request_datetime_format))
+    parser.add_argument("-q", "--quiet", action="store_true", help="suppress console output")
     return parser.parse_args()
 
 def initialize_logging(args):

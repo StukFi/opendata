@@ -1,15 +1,12 @@
-from copy import deepcopy
-from datetime import datetime, timedelta
-from xml.etree import ElementTree
 import json
 import logging
-import math
 import os
 import sys
-import time
-
-import fmi_utils
+from datetime import datetime, timedelta
+from copy import deepcopy
+from site_mapping import get_site_info_by_coordinates
 import settings
+from fmi_utils import edr_request, geojson_template
 
 def get_data(args):
     """
@@ -20,26 +17,26 @@ def get_data(args):
     data = download_data(args)
 
     logging.info("Generating GeoJSON files")
-    invalidDatasets = 0
+    invalid_datasets = 0
     for dataset in data:
         try:
             parsed_data = parse_data(dataset)
         except InvalidDatasetError:
-            invalidDatasets += 1
+            invalid_datasets += 1
         else:
             write_data(parsed_data)
 
-    if invalidDatasets > 0:
-        logging.info("{0} invalid datasets were skipped".format(invalidDatasets))
+    if invalid_datasets > 0:
+        logging.info(f"{invalid_datasets} invalid datasets were skipped")
 
 def download_data(args):
     """
-    Performs a WFS request for dose rate data from the FMI open data API.
+    Performs an EDR request for dose rate data from the FMI open data API.
     If no timespan is provided when running the program, the function
     fetches the most recent measurements.
 
     :param args: program arguments
-    :return: array of HTTPResponse objects
+    :return: list of GeoJSON objects (as dictionaries)
     """
     data = []
 
@@ -52,7 +49,7 @@ def download_data(args):
         dataset_number = 1
         while t2 <= end_time:
             logging.info("Downloading dataset {0}/{1}".format(dataset_number, dataset_count))
-            dataset = fmi_utils.wfs_request(t1, t2, "dose_rates")
+            dataset = edr_request(t1, t2, "dose_rates")
             if dataset is not None:
                 data.append(dataset)
             else:
@@ -60,13 +57,13 @@ def download_data(args):
             t1 = t2
             t2 += measurement_interval
             dataset_number += 1
-
     else:
         end_time = datetime.utcnow() - timedelta(seconds=2400)
         start_time = end_time - timedelta(seconds=559)
         logging.info("Downloading dataset")
-        dataset = fmi_utils.wfs_request(start_time, end_time, "dose_rates")
-        if dataset is not None:
+        logging.info(f" from {start_time} to {end_time}")
+        dataset = edr_request(start_time, end_time, "dose_rates")
+        if dataset:
             data.append(dataset)
         else:
             logging.warning("Failed to download dataset")
@@ -81,93 +78,70 @@ def parse_data(data):
     :param data: raw dose rate data from the FMI open data API.
     :return: GeoJSON string of dose rate data
     """
-    if data is None:
-        raise InvalidDatasetError
+    if not data:
+        raise InvalidDatasetError("No data provided")
 
-    wfs_response = ElementTree.fromstring(data)
-    gml_points = wfs_response.findall('.//{%s}Point' % fmi_utils.gml_namespace)
-    geojson_string = deepcopy(fmi_utils.geojson_template)
+    features = data.get("features", [])
+    geojson_string = deepcopy(geojson_template)
 
-    # Read locations.
-    locations = {}
-    for n, point in enumerate(gml_points):
-        identifier = point.attrib['{%s}id' % fmi_utils.gml_namespace].split("-")[-1]
-        name = point.findall('{%s}name' % fmi_utils.gml_namespace)[0].text
-        position = point.findall('{%s}pos' % fmi_utils.gml_namespace)[0].text.strip()
-        longitude = float(position.split()[1])
-        latitude = float(position.split()[0])
-        locations[position] = {
-            "site": name,
-            "longitude": longitude,
-            "latitude": latitude,
-            "id": identifier
-        }
+    site_data = {}
 
-    # Read values.
-    values = []
-    try:
-        value_lines = wfs_response.findall('.//{%s}doubleOrNilReasonTupleList' \
-                                            % fmi_utils.gml_namespace)[0].text.split("\n")[1:-1]
-    except IndexError:
-        raise InvalidDatasetError("Dataset contains no features.")
+    for feature in features:
+        geometry = feature.get("geometry", {})
+        properties = feature.get("properties", {})
+        coordinates = geometry.get("coordinates", [])
+        timestamps = properties.get("time", [])
+        dose_rates = properties.get("dr_pt10m_avg", [])
 
-    for line in value_lines:
-        value = float(line.strip().split()[0])
-        values.append(value)
+        lat, lon = coordinates[1], coordinates[0]
+        site_key = (lat, lon)
 
-    # check if all values are NaNs
-    if all ( math.isnan(value) for value in values ):
-        raise InvalidDatasetError("Dataset values are all NaN")
+        if site_key not in site_data:
+            site_data[site_key] = []
 
-    # Construct features.
-    position_lines =  wfs_response.findall('.//{%s}positions' \
-                                            % fmi_utils.gmlcov_namespace)[0].text.split("\n")[1:-1]
+        for i, ts in enumerate(timestamps):
+            site_data[site_key].append((ts, dose_rates[i]))
 
     dataset_timestamp = None
-    for i, line in enumerate(position_lines):
-        if math.isnan(values[i]):
-            continue
+    for site_key, data_points in site_data.items():
+        lat, lon = site_key
+        site_info = get_site_info_by_coordinates(lon, lat)
 
-        line = line.split()
-        coords = line[0] + " " + line[1]
-        timestamp = datetime.utcfromtimestamp(int(line[2]))
+        feature_data = []
 
-        # Some datasets contain duplicate entries for sites where the timestamp
-        # of one of the entries differs by e.g. a minute.
-        # Entries that don't match the dataset's timestamp are skipped.
-        # The dataset's timestamp is set to the timestamp of the first entry.
-        if dataset_timestamp is None:
-            dataset_timestamp = timestamp
-        elif timestamp != dataset_timestamp:
-            continue
+        # Some sites update more frequently than 10min, so it ignores all other timestamps than each 10min
+        for ts, dose_rate in data_points:
+            current_timestamp = datetime.strptime(ts, "%Y-%m-%dT%H:%M:%SZ")
+            if current_timestamp.minute % 10 != 0:
+                continue
 
-        feature = {
-            "type": "Feature",
-            "properties": {},
-            "geometry": {"type": "Point"}
-        }
+            if dataset_timestamp is None:
+                dataset_timestamp = current_timestamp
 
-        feature["properties"] = {
-            "doseRate": values[i],
-            "id": locations[coords]["id"],
-            "site": locations[coords]["site"],
-            "timestamp": datetime.strftime(timestamp,
-                                           "%Y-%m-%dT%H:%M:%SZ")
-        }
+            feature_data.append({
+                "type": "Feature",
+                "properties": {
+                    "id": site_info["id"],
+                    "site": site_info["site"],
+                    "doseRate": dose_rate,
+                    "timestamp": ts
+                },
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [lon, lat]
+                }
+            })
 
-        feature["geometry"]["coordinates"] = [
-            locations[coords]["longitude"],
-            locations[coords]["latitude"]
-        ]
+        if feature_data:
+            geojson_string["features"].extend(feature_data)
 
-        geojson_string["features"].append(feature)
+    if not geojson_string["features"]:
+        raise InvalidDatasetError("Dataset contains no features")
 
-    result = {
+    return {
         "timestamp": dataset_timestamp,
         "geojson_string": geojson_string
     }
-
-    return result
 
 def write_data(data):
     """
@@ -176,8 +150,12 @@ def write_data(data):
     :param data: GeoJSON string of dose rate data and a timestamp
     """
     directory = settings.get("path_dose_rates_datasets")
-    filepath = (directory + "/" +
-        datetime.strftime(data["timestamp"], "%Y-%m-%dT%H%M%S") + ".json")
+    timestamp = data['timestamp']
+
+    if isinstance(timestamp, str):
+        timestamp = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ")
+
+    filepath = os.path.join(directory, f"{timestamp.strftime('%Y-%m-%dT%H%M%S')}.json")
 
     if not os.path.exists(directory):
         os.makedirs(directory, exist_ok=True)
@@ -192,13 +170,12 @@ def validate_timespan(timespan):
     :param timespan: array containing two datetime strings
     :return: array containing two datetime objects
     """
-    datetimeFormat = "%Y-%m-%dT%H:%M:%S"
+    datetime_format = "%Y-%m-%dT%H:%M:%S"
     try:
-        start_time = datetime.strptime(timespan[0], datetimeFormat)
-        end_time = datetime.strptime(timespan[1], datetimeFormat)
+        start_time = datetime.strptime(timespan[0], datetime_format)
+        end_time = datetime.strptime(timespan[1], datetime_format)
     except ValueError:
-        sys.exit("[Error] Invalid datetime format, should be {}.".format(
-            fmi_utils.fmi_request_datetime_format))
+        sys.exit("[Error] Invalid datetime format, should be {}.".format(datetime_format))
 
     if start_time >= end_time or end_time > datetime.utcnow():
         sys.exit("[Error] Invalid timespan.")
@@ -226,6 +203,6 @@ def get_dataset_count(start_time, end_time, measurement_interval):
 class InvalidDatasetError(Exception):
     """
     A custom exception type for when a dataset retrieved from
-    FMI's API is considered invalid (e.g. it contains no features).
+    FMI's API is considered invalid (e.g., it contains no features).
     """
     pass
