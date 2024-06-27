@@ -3,30 +3,32 @@
 </template>
 
 <script>
-import CircleStyle from "ol/style/Circle";
-import GeoJSON from "ol/format/GeoJSON";
-import FillStyle from "ol/style/Fill";
-import Style from "ol/style/Style";
-import VectorLayer from "ol/layer/Vector";
-import VectorSource from "ol/source/Vector";
-import Feature from "ol/Feature";
-import Point from "ol/geom/Point";
-import { transform } from "ol/proj";
-import api from "@/api/index";
-import eventBus from '@/utils/eventBus';
+import CircleStyle from "ol/style/Circle"
+import GeoJSON from "ol/format/GeoJSON"
+import FillStyle from "ol/style/Fill"
+import Style from "ol/style/Style"
+import VectorImage from "ol/layer/VectorImage"
+import VectorSource from "ol/source/Vector"
+import Feature from "ol/Feature"
+import Point from "ol/geom/Point"
+import { transform } from "ol/proj"
+import api from "@/api/index"
+import eventBus from '@/utils/eventBus'
 
 export default {
     name: "DoseRateLayer",
     emits: ['doseRateLayerChanged'],
     data() {
         return {
-            vectorLayer: new VectorLayer({
+            vectorLayer: new VectorImage({
                 source: new VectorSource({
                     format: new GeoJSON({
                         defaultDataProjection: "EPSG:4326"
                     })
                 }),
-                renderMode: "image",
+                renderMode: "vector",
+                preload: 20,
+                renderBuffer: 20,
                 renderOrder: function (featureA, featureB) {
                     // Draw features with a higher dose rate on top.
                     return featureA.get("doseRate") < featureB.get("doseRate") ? -1 : 1;

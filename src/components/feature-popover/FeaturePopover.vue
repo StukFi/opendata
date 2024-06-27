@@ -21,7 +21,8 @@ export default {
         return {
             isEnabled: true,
             overlay: undefined,
-            feature: undefined
+            feature: undefined,
+            previousFeature: undefined
         }
     },
     mounted() {
@@ -30,7 +31,7 @@ export default {
         eventBus.$on("featurePopupOpened", this.disable)
         eventBus.$on("featurePopupClosed", this.enable)
         eventBus.$on("doseRateLayerChanged", this.update)
-
+        
         this.overlay = new Overlay({
             element: this.$refs.featurePopover,
             position: undefined
@@ -45,13 +46,15 @@ export default {
             this.close()
         },
         open(feature) {
-            if (this.isEnabled) {
+            if (this.isEnabled && feature !== this.previousFeature) {
                 this.feature = feature
                 this.overlay.setPosition(feature.getGeometry().getCoordinates())
+                this.previousFeature = feature
             }
         },
         close() {
             this.overlay.setPosition(undefined)
+            this.previousFeature = undefined
         },
         update(layer) {
             var features = layer.getSource().getFeatures()
