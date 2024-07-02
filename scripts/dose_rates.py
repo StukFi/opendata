@@ -60,8 +60,7 @@ def download_data(args):
     else:
         end_time = datetime.utcnow() - timedelta(seconds=2400)
         start_time = end_time - timedelta(seconds=559)
-        logging.info("Downloading dataset")
-        logging.info(f" from {start_time} to {end_time}")
+        logging.info(f" Downloading latest dataset from {start_time} to {end_time}")
         dataset = edr_request(start_time, end_time, "dose_rates")
         if dataset:
             data.append(dataset)

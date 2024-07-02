@@ -10,7 +10,7 @@ fmi_request_datetime_format = "YYYY-MM-DDThh:mm:ss"
 
 # Request URLs
 request = {
-    "dose_rates": "https://opendata.fmi.fi/edr/collections/external_radiation/area?",
+    "dose_rates": "http://opendata.fmi.fi/edr/collections/external_radiation/area?",
 }
 
 # GeoJSON template
