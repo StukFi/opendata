@@ -10,7 +10,7 @@ fmi_request_datetime_format = "YYYY-MM-DDThh:mm:ss"
 
 # Request URLs
 request = {
-    "dose_rates": "http://opendata.fmi.fi/edr/collections/external_radiation/area?",
+    "dose_rates": "https://opendata.fmi.fi/edr/collections/external_radiation/area?",
 }
 
 # GeoJSON template
@@ -49,7 +49,6 @@ def edr_request(start_time, end_time, results_type):
         with urlopen(url, timeout=10) as connection:
             response = connection.read().decode('utf-8')
             response = json.loads(response)
-            logging.info(response)
     except (URLError, ConnectionError, socket.timeout) as e:
         print(f"Error occurred: {e}")
         response = None
