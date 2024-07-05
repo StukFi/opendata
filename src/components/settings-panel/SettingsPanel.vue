@@ -10,6 +10,7 @@
                 <field-language :settings="settings" />
                 <field-date-format :settings="settings" />
                 <field-time-format :settings="settings" />
+                <field-background-map :settings="settings" />
                 <app-version />
             </div>
         </div>
@@ -21,6 +22,7 @@ import SettingsPanelHeader from "@/components/settings-panel/SettingsPanelHeader
 import FieldLanguage from "@/components/settings-panel/FieldLanguage.vue"
 import FieldDateFormat from "@/components/settings-panel/FieldDateFormat.vue"
 import FieldTimeFormat from "@/components/settings-panel/FieldTimeFormat.vue"
+import FieldBackgroundMap from "@/components/settings-panel/FieldBackgroundMap.vue"
 import BaseBackdrop from "@/components/base/BaseBackdrop.vue"
 import AppVersion from "@/components/settings-panel/AppVersion.vue"
 import Settings from "@/models/Settings"
@@ -35,6 +37,7 @@ export default {
         FieldLanguage,
         FieldDateFormat,
         FieldTimeFormat,
+        FieldBackgroundMap,
         BaseBackdrop,
         AppVersion
     },

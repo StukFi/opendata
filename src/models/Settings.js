@@ -6,6 +6,7 @@ const keyLocale = "locale"
 const keyDateFormat = "dateFormat"
 const keyTimeFormat = "timeFormat"
 const keyMapLegend = "mapLegend"
+const keyBackgroundMap = "backgroundMap"
 
 /** Class representing the application's settings. */
 class Settings {
@@ -14,6 +15,7 @@ class Settings {
         this.dateFormat = "fi",
         this.timeFormat = "24h",
         this.mapLegend = new MapLegend()
+        this.backgroundMap = "default"
     }
 
     /**
@@ -25,6 +27,7 @@ class Settings {
         localStorage.setItem(keyDateFormat, this.dateFormat)
         localStorage.setItem(keyTimeFormat, this.timeFormat)
         localStorage.setItem(keyMapLegend, this.mapLegend)
+        localStorage.setItem(keyBackgroundMap, this.backgroundMap)
     }
 
     /**
@@ -36,6 +39,8 @@ class Settings {
 
         this.dateFormat = localStorage.getItem(keyDateFormat) || this.dateFormat
         this.timeFormat = localStorage.getItem(keyTimeFormat) || this.timeFormat
+        
+        this.backgroundMap = localStorage.getItem(keyBackgroundMap) || this.backgroundMap
 
         let savedMapLegend = localStorage.getItem(keyMapLegend)
         if (savedMapLegend) {

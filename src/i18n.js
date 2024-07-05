@@ -31,6 +31,9 @@ var i18n = createI18n({
             timeFormat: "Ajan esitysmuoto",
             timeFormatA: "24 tunnin kello",
             timeFormatB: "12 tunnin kello",
+            backgroundMap: "Kartta",
+            backgroundMapDefault: "Oletus (OSM)",
+            backgroundMapCustom: "Mukautettu",
         },
         playback: { // media-controller
             title: {
@@ -71,6 +74,9 @@ var i18n = createI18n({
             timeFormat: "Time notation",
             timeFormatA: "24-hour clock",
             timeFormatB: "12-hour clock",
+            backgroundMap: "Map",
+            backgroundMapDefault: "Default (OSM)",
+            backgroundMapCustom: "Custom",
         },
         playback: { // media-controller
             title: {

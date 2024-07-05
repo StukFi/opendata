@@ -35,9 +35,12 @@ import DatepickerPopup from "@/components/header/date/DatepickerPopup.vue"
 import { Zoom, ZoomSlider, ScaleLine } from "ol/control"
 import { fromLonLat } from "ol/proj"
 import { Map, View } from "ol"
-import { OSM } from "ol/source"
+import { OSM, VectorTile } from "ol/source"
 import TileLayer from "ol/layer/Tile"
-import eventBus from '@/utils/eventBus'
+import VectorTileLayer from "ol/layer/VectorTile"
+import MVT from "ol/format/MVT"
+import eventBus from "@/utils/eventBus"
+import { defaultLayer, customLayer, applyCustomStyle } from "@/utils/mapSettings"
 
 export default {
     name: "TheMap",
@@ -59,22 +62,32 @@ export default {
     emits: ['featureClicked', 'featureHovered', 'emptyMapLocationClicked', 'emptyMapLocationHovered'],
     data() {
         return {
-            map: {}
+            map: null,
+            baseLayer: null,
+            default: defaultLayer,
+            custom: customLayer,
+            customStyle: applyCustomStyle
+        }
+    },
+    computed: {
+        selectedBaseLayer() {
+            return this.getBaseLayer()
+        }
+    },
+    watch: {
+        selectedBaseLayer(newLayer) {
+            if (this.map) {
+                const layers = this.map.getLayers()
+                layers.setAt(0, newLayer)
+            }
         }
     },
     mounted() {
+        this.baseLayer = this.selectedBaseLayer
+
         this.map = new Map({
             target: "map",
-            layers: [
-                new TileLayer({
-                    source: new OSM({
-                        url: "https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    }),
-                    tileCacheSize: 1000,
-                    loadTilesWhileAnimating: true,
-                    loadTilesWhileInteracting: true,
-                })
-            ],
+            layers: [this.baseLayer],
             controls: [
                 new Zoom(),
                 new ZoomSlider(),
@@ -84,10 +97,19 @@ export default {
                 center: fromLonLat([25.75, 65.75]),
                 enableRotation: false,
                 minZoom: 4,
-                maxZoom: 10,
-                zoom: 5
+                maxZoom: 16,
+                zoom: 5,
             })
         })
+
+        // Make const customLayer default layer, if no customLayer defined in mapSettings.js
+        // Only apply style if a style is defined
+        if (this.custom === undefined) {
+            this.custom = this.default
+        }
+        else if (this.customStyle !== undefined) {
+            this.customStyle(this.custom)
+        }
 
         this.map.on("click", this.onMapInteraction)
         this.map.on("pointermove", this.onMapInteraction)
@@ -99,10 +121,22 @@ export default {
         this.map.addLayer(this.$refs.doseRateLayer.vectorLayer)
     },
     methods: {
+        getBaseLayer() {
+            switch (this.$store.state.settings.settings.backgroundMap) {
+                case "custom":
+                    return this.custom
+                case "default":
+                    return this.default
+                default:
+                    return this.default
+            }
+        },
         onMapInteraction(evt) {
             var eventPixel = this.map.getEventPixel(evt.originalEvent)
-            var features = this.map.getFeaturesAtPixel(eventPixel)
-            if (features[0]) {
+            var features = this.map.getFeaturesAtPixel(eventPixel, {
+                layerFilter: (layer) => layer !== this.custom
+            })
+            if (features.length > 0) {
                 if (evt.type == "click") {
                     eventBus.$emit("featureClicked", features[0])
                 } else if (evt.type == "pointermove") {
@@ -117,18 +151,18 @@ export default {
             }
         },
         onZoomChange() {
-            let zoom = this.map.getView().getZoom()
+            const zoom = this.map.getView().getZoom()
             this.$refs.doseRateLayer.updateFeatureRadius(zoom)
         },
         centerViewOnFeaturePopup(feature) {
-            var featureCoordinates = feature.getGeometry().getCoordinates()
-            var featurePixel = this.map.getPixelFromCoordinate(featureCoordinates)
+            const featureCoordinates = feature.getGeometry().getCoordinates()
+            const featurePixel = this.map.getPixelFromCoordinate(featureCoordinates)
 
             // Adjust the y-coordinate so that the view is centered towards
             // the middle of the popup and not on the clicked feature itself.
             featurePixel[1] -= (this.$refs.featurePopup.$el.clientHeight * 0.65)
 
-            var position = this.map.getCoordinateFromPixel(featurePixel)
+            const position = this.map.getCoordinateFromPixel(featurePixel)
 
             this.map.getView().animate({
                 center: position,
