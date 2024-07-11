@@ -16,6 +16,10 @@ def load():
     settings["path_dose_rates_datasets"] = data_directory + "/dose_rates/datasets"
     settings["path_dose_rates_time_series"] = data_directory + "/dose_rates/time_series"
 
+    settings["path_air_radionuclides"] = data_directory + "/air_radionuclides"
+    settings["path_air_radionuclides_datasets"] = data_directory + "/air_radionuclides/datasets"
+    settings["path_air_radionuclides_time_series"] = data_directory + "/air_radionuclides/time_series"
+
 def get(setting):
     """
     Returns the value of the argument setting.

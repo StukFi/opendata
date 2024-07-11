@@ -15,12 +15,21 @@ fmi_request_datetime_format = "YYYY-MM-DDThh:mm:ss"
 request_templates = {
     "dose_rates": ("https://opendata.fmi.fi/wfs/eng?"
                     "request=GetFeature&storedquery_id=stuk::observations::"
-                    "external-radiation::multipointcoverage&starttime={}&endtime={}")
+                    "external-radiation::multipointcoverage&starttime={}&endtime={}"),
+    "air_radionuclides": ("https://opendata.fmi.fi/wfs?&request=getFeature&storedquery_id=stuk::observations::"
+                          "air::radionuclide-activity-concentration::multipointcoverage&starttime={}&endtime={}")
 }
 
-geojson_template = {
+geojson_template_dose_rates = {
     "type": "FeatureCollection",
     "name": "stuk_open_data_dose_rates",
+    "crs": { "type": "name", "properties":
+            { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+    "features": []
+}
+geojson_template_air_radionuclides = {
+    "type": "FeatureCollection",
+    "name": "stuk_open_data_air_radionuclides",
     "crs": { "type": "name", "properties":
             { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
     "features": []

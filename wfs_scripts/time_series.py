@@ -1,9 +1,9 @@
-import calendar
+import os
 import json
 import logging
-import os
-import sys
 from datetime import datetime, timedelta
+import calendar
+from collections import defaultdict
 
 import settings
 
@@ -14,10 +14,10 @@ def generate_time_series(args, regenerate_all=False):
     :param args: program arguments
     :param regenerate_all: indicates whether to regenerate all time series files
     """
-    logging.info("Generating time series files")
+    logging.info(f"[{args.type}] Generating time series files")
 
-    source_dir = settings.get("path_dose_rates_datasets")
-    target_dir = settings.get("path_dose_rates_time_series")
+    source_dir = settings.get("path_" + args.type + "_datasets")
+    target_dir = settings.get("path_" + args.type + "_time_series")
 
     source_files = os.listdir(source_dir)
     source_files.sort()
@@ -26,9 +26,15 @@ def generate_time_series(args, regenerate_all=False):
         target_dates = get_target_dates(args)
         source_files = filter_source_files(source_files, target_dates)
 
+    if args.type == "dose_rates":
+        generate_dose_rates_time_series(source_dir, target_dir, source_files)
+    elif args.type == "air_radionuclides":
+        generate_air_radionuclides_time_series(source_dir, target_dir, source_files)
+
+def generate_dose_rates_time_series(source_dir, target_dir, source_files):
     measurements = []
     for json_file in source_files:
-        results = json.loads(open(source_dir + "/" + json_file, encoding="utf-8").read())
+        results = json.loads(open(os.path.join(source_dir, json_file), encoding="utf-8").read())
         features = results["features"]
         file_timestamp = datetime.strptime(json_file.split(".")[0], "%Y-%m-%dT%H%M%S")
 
@@ -44,14 +50,13 @@ def generate_time_series(args, regenerate_all=False):
                 "r": feature["properties"]["doseRate"]
             })
 
-    # Reformat measurements to match JSON structure.
     result = {}
     for measurement in measurements:
-        if not measurement["station"] in result.keys():
+        if measurement["station"] not in result:
             result[measurement["station"]] = {}
 
         date_string = measurement["timestamp"].strftime("%Y-%m-%d")
-        if not date_string in result[measurement["station"]].keys():
+        if date_string not in result[measurement["station"]]:
             result[measurement["station"]][date_string] = []
 
         result[measurement["station"]][date_string].append({
@@ -60,15 +65,70 @@ def generate_time_series(args, regenerate_all=False):
             "r": measurement["r"]
         })
 
-    for station in result.keys():
-        path = target_dir + "/" + station
+    for station in result:
+        path = os.path.join(target_dir, station)
         if not os.path.isdir(path):
             os.makedirs(path)
-        for date in result[station].keys():
+        for date in result[station]:
             data = {"data": result[station][date]}
-            f = open(path + "/" + date + ".json", "w")
-            f.write(json.dumps(data, separators=(",", ":")))
-            f.close()
+            with open(os.path.join(path, date + ".json"), "w") as f:
+                json.dump(data, f, separators=(",", ":"))
+
+def generate_air_radionuclides_time_series(source_dir, target_dir, source_files):
+    measurements = defaultdict(list)
+    for json_file in source_files:
+        with open(os.path.join(source_dir, json_file), encoding="utf-8") as f:
+            results = json.load(f)
+
+        features = results["features"]
+        for feature in features:
+            properties = feature["properties"]
+            file_timestamp = datetime.strptime(properties["from_timestamp"], "%Y-%m-%dT%H:%M:%SZ")
+            to_timestamp = datetime.strptime(properties["to_timestamp"], "%Y-%m-%dT%H:%M:%SZ")
+
+            for nuclide in ["Be-7", "Cs-137", "Pb-210"]: # ADD HERE OTHER NUCLIDES IF NEEDED
+                if f"concentration_{nuclide}" in properties:
+                    start = int(calendar.timegm(file_timestamp.utctimetuple())) * 1000
+                    end = int(calendar.timegm(to_timestamp.utctimetuple())) * 1000
+                    measurements[nuclide].append({
+                        "s": start,
+                        "e": end,
+                        "timestamp": file_timestamp,
+                        "station": properties["id"],
+                        "r": properties[f"concentration_{nuclide}"],
+                        "u": properties[f"uncertainty_{nuclide}-uncertainty"],
+                        "nuclide": nuclide
+                    })
+
+    result = {}
+    for nuclide, data in measurements.items():
+        result[nuclide] = defaultdict(lambda: defaultdict(list))
+        for measurement in data:
+            station = measurement["station"]
+            date_string = measurement["timestamp"].strftime("%Y-%m-%d")
+            result[nuclide][station][date_string].append({
+                "s": measurement["s"],
+                "e": measurement["e"],
+                "r": measurement["r"],
+                "u": measurement["u"],
+                "nuclide": measurement["nuclide"]
+            })
+
+    for nuclide, stations in result.items():
+        for station, dates in stations.items():
+            station_path = os.path.join(target_dir, station)
+            if not os.path.exists(station_path):
+                os.makedirs(station_path)
+            nuclide_path = os.path.join(station_path, nuclide)
+            if not os.path.exists(nuclide_path):
+                os.makedirs(nuclide_path)
+            for date, data in dates.items():
+                # Check if file exists and if data is already written
+                file_path = os.path.join(nuclide_path, date + ".json")
+                if not os.path.exists(file_path):
+                    data = {"data": data}
+                    with open(file_path, "w") as f:
+                        json.dump(data, f, separators=(",", ":"))
 
 def get_target_dates(args):
     """
