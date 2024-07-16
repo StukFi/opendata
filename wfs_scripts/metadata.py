@@ -4,6 +4,7 @@ import os
 
 import settings
 
+    # Metadata is only generated for dose rates
 def update_metadata():
     """
     Generates a JSON-based file containing the dates and times for which a server-side

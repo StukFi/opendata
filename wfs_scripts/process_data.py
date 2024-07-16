@@ -13,7 +13,7 @@ import settings
 
 def get_data(args):
     """
-    Downloads, parses, and writes dose rate data.
+    Downloads, parses, and writes dose rate and air radionuclide data.
 
     :param args: program arguments
     """
@@ -26,7 +26,7 @@ def get_data(args):
             if args.type == "dose_rates":
                 parsed_data = parse_dose_rates_data(dataset)
             if args.type == "air_radionuclides":
-                parsed_data = parse_air_radionuclides_data(dataset, args)
+                parsed_data = parse_air_radionuclides_data(dataset)
         except InvalidDatasetError:
             invalidDatasets += 1
         else:
@@ -37,7 +37,7 @@ def get_data(args):
 
 def download_data(args):
     """
-    Performs a WFS request for dose rate data from the FMI open data API.
+    Performs a WFS request for dose rate or air radionuclide data from the FMI open data API.
     If no timespan is provided when running the program, the function
     fetches the most recent measurements.
 
@@ -64,18 +64,34 @@ def download_data(args):
                 t1 = t2
                 t2 += measurement_interval
                 dataset_number += 1
-        if args.type == "air_radionuclides":
-                dataset = fmi_utils.wfs_request(start_time, end_time, args.type)
+
+        elif args.type == "air_radionuclides":
+            measurement_interval = timedelta(days=8)
+            dataset_count = get_dataset_count(start_time, end_time, measurement_interval)
+            t1 = start_time
+            t2 = t1 + measurement_interval
+            dataset_number = 1
+            while t2 <= end_time:
+                logging.info(f"[{args.type}] Downloading dataset {dataset_number}/{dataset_count}")
+                dataset = fmi_utils.wfs_request(t1, t2, args.type)
                 if dataset is not None:
                     data.append(dataset)
-                    logging.info(f"[{args.type}] Downloading dataset")
                 else:
-                    logging.warning(f"[{args.type}] Failed to download dataset)")
+                    logging.warning(f"[{args.type}] Failed to download dataset {dataset_number}/{dataset_count} ({t1})")
+                t1 = t2
+                t2 += measurement_interval
+                dataset_number += 1
 
 
     else:
-        end_time = datetime.utcnow() - timedelta(seconds=2400)
-        start_time = end_time - timedelta(seconds=559)
+        if args.type == "dose_rates":
+            end_time = datetime.utcnow() - timedelta(seconds=2400)
+            start_time = end_time - timedelta(seconds=559)
+        elif args.type == "air_radionuclides":
+            end_time = datetime.utcnow()
+            start_time = end_time - timedelta(days=8)  # if no timespan provided, collect data from 8 days to now. 
+                                                        # Air radionuclide data updates about every 7days
+
         logging.info(f"[{args.type}] Downloading dataset")
         dataset = fmi_utils.wfs_request(start_time, end_time, args.type)
         if dataset is not None:
@@ -181,12 +197,12 @@ def parse_dose_rates_data(data):
 
     return result
 
-def parse_air_radionuclides_data(data, args):
+def parse_air_radionuclides_data(data):
     """
-    Parses the argument dose rate data into a GeoJSON string.
+    Parses the argument air radionuclide data into a GeoJSON string.
 
-    :param data: raw dose rate data from the FMI open data API.
-    :return: GeoJSON string of dose rate data
+    :param data: raw air radionuclide data from the FMI open data API.
+    :return: GeoJSON string of air radionuclide data
     """
     if data is None:
         raise InvalidDatasetError("Data is None")
@@ -210,16 +226,21 @@ def parse_air_radionuclides_data(data, args):
 
     # Read time periods and results
     features = []
+    first_from_timestamp = None
     for member in wfs_response.findall('.//{http://www.opengis.net/wfs/2.0}member'):
         # Extract time periods
         start_time_elem = member.find('.//{%s}beginPosition' % fmi_utils.gml_namespace)
         end_time_elem = member.find('.//{%s}endPosition' % fmi_utils.gml_namespace)
 
         if start_time_elem is not None and end_time_elem is not None:
-            from_timestamp = datetime.strptime(start_time_elem.text.strip(), "%Y-%m-%dT%H:%M:%SZ").isoformat() + "Z"
-            to_timestamp = datetime.strptime(end_time_elem.text.strip(), "%Y-%m-%dT%H:%M:%SZ").isoformat() + "Z"
+            from_timestamp = datetime.strptime(start_time_elem.text.strip(), "%Y-%m-%dT%H:%M:%SZ")
+            to_timestamp = datetime.strptime(end_time_elem.text.strip(), "%Y-%m-%dT%H:%M:%SZ")
         else:
             raise InvalidDatasetError("Invalid or missing time period.")
+
+        # Capture the first from_timestamp
+        if first_from_timestamp is None:
+            first_from_timestamp = from_timestamp
 
         # Extract location info
         location_elem = member.find('.//{%s}Point' % fmi_utils.gml_namespace)
@@ -254,8 +275,8 @@ def parse_air_radionuclides_data(data, args):
             "properties": {
                 "site": location["site"],
                 "id": location["id"],
-                "from_timestamp": from_timestamp,
-                "to_timestamp": to_timestamp
+                "from_timestamp": from_timestamp.isoformat() + "Z",
+                "to_timestamp": to_timestamp.isoformat() + "Z"
             }
         }
 
@@ -270,20 +291,14 @@ def parse_air_radionuclides_data(data, args):
 
         features.append(feature)
 
+    # Check if data contains features
+    if not features:
+        raise InvalidDatasetError
+    
     geojson_string["features"] = features
 
-    # Save the geojson file with a name that is date from - date to
-    input_datetime_format = "%Y-%m-%dT%H:%M:%S"
-    output_datetime_format = "%Y-%m-%dT%H%M%S"
-
-    start_timestamp = datetime.strptime(args.timespan[0], input_datetime_format)
-    end_timestamp = datetime.strptime(args.timespan[1], input_datetime_format)
-
-    formatted_start_timestamp = start_timestamp.strftime(output_datetime_format)
-    formatted_end_timestamp = end_timestamp.strftime(output_datetime_format)
-
     result = {
-        "timestamp": f"{formatted_start_timestamp}-{formatted_end_timestamp}",
+        "timestamp": first_from_timestamp,
         "geojson_string": geojson_string
     }
 
@@ -292,16 +307,14 @@ def parse_air_radionuclides_data(data, args):
 
 def write_data(args, data):
     """
-    Writes the argument GeoJSON dose rate data into a file.
+    Writes the argument GeoJSON dose rate or air radionuclide data into a file.
 
-    :param data: GeoJSON string of dose rate data and a timestamp
+    :param data: GeoJSON string of dose rate or air radionuclide data and a timestamp
+    :param args: program arguments
     """
     directory = settings.get("path_"+args.type+"_datasets")
-    if args.type == "dose_rates":
-        filepath = (directory + "/" +
-            datetime.strftime(data["timestamp"], "%Y-%m-%dT%H%M%S") + ".json")
-    if args.type == "air_radionuclides":
-            filepath = (directory + "/" +data["timestamp"] + ".json")
+    if args.type == "dose_rates" or args.type == "air_radionuclides":
+        filepath = (directory + "/" + data["timestamp"].strftime("%Y-%m-%dT%H%M%S") + ".json")
 
     if not os.path.exists(directory):
         os.makedirs(directory, exist_ok=True)

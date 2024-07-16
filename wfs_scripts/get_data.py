@@ -46,17 +46,22 @@ def get_data(args):
     """
     if args.type == "dose_rates":
         process_data.get_data(args)
+        generate_time_series(args)
         update_metadata()
-    if args.type == "air_radionuclides":
+        
+    elif args.type == "air_radionuclides":
         process_data.get_data(args)
-    if args.type == "both":
+        generate_time_series(args)
+
+    elif args.type == "both":
         args.type = "dose_rates"
         process_data.get_data(args)
+        generate_time_series(args)
         update_metadata()
         args.type = "air_radionuclides"
         process_data.get_data(args)
+        generate_time_series(args)
 
-    generate_time_series(args)
 
 if __name__ == "__main__":
     args = get_program_arguments()
