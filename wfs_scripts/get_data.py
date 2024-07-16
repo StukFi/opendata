@@ -22,7 +22,7 @@ def get_program_arguments():
     parser.add_argument("-q", "--quiet", action="store_true",
                         help="suppress console output")
     parser.add_argument("-t", "--type", choices=['dose_rates', 'air_radionuclides', 'both'], 
-                        default='air_radionuclides', help="Specify the type of data to fetch")
+                        default='dose_rates', help="Specify the type of data to fetch")
     return parser.parse_args()
 
 def initialize_logging(args):
