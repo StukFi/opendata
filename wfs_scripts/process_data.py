@@ -88,9 +88,8 @@ def download_data(args):
             end_time = datetime.utcnow() - timedelta(seconds=2400)
             start_time = end_time - timedelta(seconds=559)
         elif args.type == "air_radionuclides":
-            end_time = datetime.utcnow()
-            start_time = end_time - timedelta(days=8)  # if no timespan provided, collect data from 8 days to now. 
-                                                        # Air radionuclide data updates about every 7days
+            end_time = datetime.utcnow().date()
+            start_time = (end_time - timedelta(days=10))
 
         logging.info(f"[{args.type}] Downloading dataset")
         dataset = fmi_utils.wfs_request(start_time, end_time, args.type)
