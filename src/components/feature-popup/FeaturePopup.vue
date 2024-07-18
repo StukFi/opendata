@@ -123,12 +123,25 @@ export default {
   --pseudo-left: 174px;
 }
   
-.feature-popup:after {
-  display: none
+.feature-popup:after, .feature-popup:before {
+    left: var(--pseudo-left);
+    top: 100%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
 }
-  
+.feature-popup:after {
+    border-top-color: white;
+    border-width: 19px;
+    margin-left: -19px;
+}
 .feature-popup:before {
-  display: none
+    border-top-color: #cccccc;
+    border-width: 20px;
+    margin-left: -20px;
 }
   
 @media only screen and (min-width: $breakpoint-md) {
