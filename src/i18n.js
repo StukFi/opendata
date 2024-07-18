@@ -35,6 +35,9 @@ var i18n = createI18n({
             backgroundMapDefault: "Oletus (OSM)",
             backgroundMapCustom: "Mukautettu",
         },
+        changeMode: { // change-mode
+            title: "Vaihda näkymää (annosnopeudet/ilman radioaktiivisuus)",
+        },
         playback: { // media-controller
             title: {
                 date: "Päivitä päiväämäärää",
@@ -50,6 +53,12 @@ var i18n = createI18n({
         },
         dose: { // layers
             doseRateTresholds: "Annosnopeusrajat",
+        },
+        radionuclideMode: { // RadionuclideTables
+            date: "Päivämäärä",
+            concentration: "Aktiivisuuspitoisuus",
+            uncertainty: "Epävarmuus",
+            noData: "Tällä päivämäärällä ei löytynyt dataa"
         }
     },
     // English translations
@@ -78,6 +87,9 @@ var i18n = createI18n({
             backgroundMapDefault: "Default (OSM)",
             backgroundMapCustom: "Custom",
         },
+        changeMode: { // change-mode
+            title: "Change mode (dose rates/air radionuclides)",
+        },
         playback: { // media-controller
             title: {
                 date: "Update date",
@@ -93,6 +105,12 @@ var i18n = createI18n({
         },
         dose: { // layers
             doseRateTresholds: "Dose rate thresholds",
+        },
+        radionuclideMode: { // RadionuclideTables
+            date: "Date",
+            concentration: "Concentration",
+            uncertainty: "Uncertainty",
+            noData: "No data found with this date"
         }
     },
   }

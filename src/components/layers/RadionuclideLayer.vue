@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import CircleStyle from "ol/style/Circle"
+import RegularShape from "ol/style/RegularShape"
 import GeoJSON from "ol/format/GeoJSON"
 import FillStyle from "ol/style/Fill"
 import Style from "ol/style/Style"
@@ -13,11 +13,11 @@ import Feature from "ol/Feature"
 import Point from "ol/geom/Point"
 import { transform } from "ol/proj"
 import api from "@/api/index"
-import eventBus from '@/utils/eventBus'
+import eventBus from "@/utils/eventBus"
 
 export default {
-    name: "DoseRateLayer",
-    emits: ['doseRateLayerChanged'],
+    name: "RadionuclideLayer",
+    emits: ['radionuclideLayerChanged'],
     data() {
         return {
             vectorLayer: new VectorImage({
@@ -29,34 +29,16 @@ export default {
                 renderMode: "vector",
                 preload: 20,
                 renderBuffer: 20,
-                renderOrder: function (featureA, featureB) {
-                    // Draw features with a higher dose rate on top.
-                    return featureA.get("doseRate") < featureB.get("doseRate") ? -1 : 1
-                },
-                style: (feature) => {
-                    let featureColor = "#0000"
-                    const doseRate = feature.get("doseRate")
-
-                    const doseRateRanges = this.$store.state.settings.settings.mapLegend.bars
-                    for (let i = 0; i < doseRateRanges.length; ++i) {
-                        const minValue = doseRateRanges[i].threshold
-                        const maxValue = doseRateRanges[i + 1] ? doseRateRanges[i + 1].threshold : 1000000000
-                        if (doseRate >= minValue && doseRate < maxValue) {
-                            if (doseRateRanges[i].isEnabled) {
-                                featureColor = doseRateRanges[i].color
-                                break
-                            } else {
-                                return undefined
-                            }
-                        }
-                    }
+                style: () => {
+                    const featureColor = "#f7c028"
 
                     const featureStyle = new Style({
-                        image: new CircleStyle({
-                            radius: this.featureRadius,
+                        image: new RegularShape({
                             fill: new FillStyle({
                                 color: featureColor
-                            })
+                            }),
+                            points: 3,
+                            radius: this.featureRadius,
                         })
                     })
 
@@ -69,32 +51,23 @@ export default {
         mode() {
             return this.$store.state.settings.settings.mode
         },
-        isDoseRateMode() {
-            return this.mode === "dose_rates"
+        isAirRadionuclidesMode() {
+            return this.mode === "air_radionuclides"
         },
         datasetFilePath() {
-            if (!this.isDoseRateMode || !this.$store.state.datetime.selectedDate) {
+            if (!this.isAirRadionuclidesMode || !this.$store.state.datetime.selectedDate) {
                 return ""
             }
-            return (
-                "data/dose_rates/datasets/" +
-                this.$store.state.datetime.selectedDate.toISOString().split("T")[0] +
-                "T" +
-                this.$store.state.datetime.selectedTime +
-                ".json"
-            )
+            return "data/air_radionuclides/datasets/2024-03-11T084200.json"
         },
-        doseRateRanges() {
-            return this.$store.state.settings.settings.mapLegend.bars
-        }
     },
     watch: {
         datasetFilePath: async function () {
-            if (!this.isDoseRateMode) return // Do nothing if not in dose_rates mode
+            if (!this.isAirRadionuclidesMode) return // Do nothing if not in air_radionuclides mode
 
             try {
                 this.$Progress.start()
-                const dataset = await api.doseRate.getDataset(this.datasetFilePath)
+                const dataset = await api.airRadionuclide.getDataset(this.datasetFilePath)
                 const features = dataset.features.map((feature) => {
                     return new Feature({
                         geometry: new Point(
@@ -108,36 +81,28 @@ export default {
 
                 this.vectorLayer.getSource().clear(true)
                 this.vectorLayer.getSource().addFeatures(features)
-                eventBus.$emit("doseRateLayerChanged", this.vectorLayer)
+                eventBus.$emit("radionuclideLayerChanged", this.vectorLayer)
                 this.$Progress.finish()
             } catch {
                 this.$Progress.fail()
             }
-        },
-        doseRateRanges: {
-            handler: function () {
-                if (this.isDoseRateMode) {
-                    this.redraw()
-                }
-            },
-            deep: true
         }
     },
     mounted() {
-        if (this.isDoseRateMode) {
+        if (this.isAirRadionuclidesMode) {
             eventBus.$on("settingsChanged", this.redraw)
         }
     },
     methods: {
         redraw() {
-            if (this.isDoseRateMode) {
+            if (this.isAirRadionuclidesMode) {
                 this.vectorLayer.changed()
             }
         },
         updateFeatureRadius(zoom) {
-            if (this.isDoseRateMode) {
+            if (this.isAirRadionuclidesMode) {
                 const currentFeatureRadius = this.featureRadius
-                const newFeatureRadius = zoom * 2
+                const newFeatureRadius = zoom * 3
                 if (newFeatureRadius !== currentFeatureRadius) {
                     this.featureRadius = newFeatureRadius
                     this.redraw()

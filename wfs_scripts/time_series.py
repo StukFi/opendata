@@ -89,15 +89,24 @@ def generate_dose_rates_time_series(source_dir, target_dir, source_files):
             with open(os.path.join(path, date + ".json"), "w") as f:
                 json.dump(data, f, separators=(",", ":"))
 
+import os
+import json
+import calendar
+from datetime import datetime
+from collections import defaultdict
+
 def generate_air_radionuclides_time_series(source_dir, target_dir, source_files):
     """
-    Generates time series file for air radionuclide data
+    Generates time series file for air radionuclide data and writes available radionuclides and filenames to separate files.
 
     :param source_dir: source directory path
     :param target_dir: target directory path
     :param source_files: source file path
     """
     measurements = defaultdict(list)
+    radionuclides = defaultdict(set)
+    filenames_per_nuclide = defaultdict(lambda: defaultdict(list))
+
     for json_file in source_files:
         with open(os.path.join(source_dir, json_file), encoding="utf-8") as f:
             results = json.load(f)
@@ -105,52 +114,73 @@ def generate_air_radionuclides_time_series(source_dir, target_dir, source_files)
         features = results["features"]
         for feature in features:
             properties = feature["properties"]
-            from_timestamp = datetime.strptime(properties["from_timestamp"], "%Y-%m-%dT%H:%M:%SZ")
-            to_timestamp = datetime.strptime(properties["to_timestamp"], "%Y-%m-%dT%H:%M:%SZ")
+            for key, value in properties.items():
+                if key.startswith("concentration_"):
+                    nuclide = key.split("_")[1]
+                    station_id = properties["id"]
+                    radionuclides[station_id].add(nuclide)
 
-                           # Here are all the nuclides that will get a timeserie generated
-            for nuclide in ["Be-7", "Na-22", "Cs-137", "Pb-210", "Co-60", "Cs-134", "Mn-54", "Nb-95", "Ru-103", "Ce-141", "Co-58", "Fe-59", "Sc-46", "Zr-95"]:
-                if f"concentration_{nuclide}" in properties:
+                    from_timestamp = datetime.strptime(properties["from_timestamp"], "%Y-%m-%dT%H:%M:%SZ")
+                    to_timestamp = datetime.strptime(properties["to_timestamp"], "%Y-%m-%dT%H:%M:%SZ")
+
                     start = int(calendar.timegm(from_timestamp.utctimetuple())) * 1000
                     end = int(calendar.timegm(to_timestamp.utctimetuple())) * 1000
-                    measurements[nuclide].append({
+                    measurements[(station_id, nuclide)].append({
                         "s": start,
                         "e": end,
-                        "timestamp": from_timestamp,
-                        "station": properties["id"],
-                        "c": properties[f"concentration_{nuclide}"],
-                        "u": properties[f"uncertainty_{nuclide}-uncertainty"],
+                        "from_timestamp": from_timestamp,
+                        "to_timestamp": to_timestamp,
+                        "station": station_id,
+                        "c": value,
+                        "u": properties.get(f"uncertainty_{nuclide}-uncertainty", None),
                         "nuclide": nuclide
                     })
 
-    result = {}
-    for nuclide, data in measurements.items():
-        result[nuclide] = defaultdict(lambda: defaultdict(list))
-        for measurement in data:
-            station = measurement["station"]
-            from_date_string = measurement["timestamp"].strftime("%Y-%m-%dT%H%M%S")
-            result[nuclide][station][from_date_string].append({
-                "s": measurement["s"],
-                "e": measurement["e"],
-                "c": measurement["c"],
-                "u": measurement["u"],
-                "nuclide": measurement["nuclide"]
-            })
+    # Write available radionuclides to a JSON file for each station
+    for station_id, nuclides in radionuclides.items():
+        station_path = os.path.join(target_dir, station_id)
+        if not os.path.exists(station_path):
+            os.makedirs(station_path)
 
-    for nuclide, stations in result.items():
-        for station, dates in stations.items():
-            station_path = os.path.join(target_dir, station)
-            if not os.path.exists(station_path):
-                os.makedirs(station_path)
-            nuclide_path = os.path.join(station_path, nuclide)
+        with open(os.path.join(station_path, "available_radionuclides.json"), "w") as radionuclides_file:
+            json.dump(list(nuclides), radionuclides_file, separators=(",", ":"))
+
+        # Write time series data for each radionuclide found at the station
+        for nuclide in nuclides:
+            data = measurements[(station_id, nuclide)]
+            result = defaultdict(lambda: defaultdict(list))
+            for measurement in data:
+                from_date_string = measurement["from_timestamp"].strftime("%Y-%m-%d")+"TO"+measurement["to_timestamp"].strftime("%Y-%m-%d")
+                result[station_id][from_date_string].append({
+                    "s": measurement["s"],
+                    "e": measurement["e"],
+                    "c": measurement["c"],
+                    "u": measurement["u"],
+                    "nuclide": measurement["nuclide"]
+                })
+
+            for date_string, measurements_data in result[station_id].items():
+                file_path = os.path.join(station_path, nuclide, date_string + ".json")
+                if not os.path.exists(os.path.dirname(file_path)):
+                    os.makedirs(os.path.dirname(file_path))
+
+                data_to_write = {"data": measurements_data}
+                with open(file_path, "w") as f:
+                    json.dump(data_to_write, f, separators=(",", ":"))
+
+                # Track the filenames for each nuclide
+                filenames_per_nuclide[station_id][nuclide].append(date_string + ".json")
+
+    # Write available filenames to a JSON file for each radionuclide
+    for station_id, nuclides in filenames_per_nuclide.items():
+        for nuclide, filenames in nuclides.items():
+            nuclide_path = os.path.join(target_dir, station_id, nuclide)
             if not os.path.exists(nuclide_path):
                 os.makedirs(nuclide_path)
-            for from_date_string, data in dates.items():
-                file_path = os.path.join(nuclide_path, from_date_string + ".json")
-                if not os.path.exists(file_path):
-                    data = {"data": data}
-                    with open(file_path, "w") as f:
-                        json.dump(data, f, separators=(",", ":"))
+                
+            with open(os.path.join(nuclide_path, "available_filenames.json"), "w") as filenames_file:
+                json.dump(filenames, filenames_file, separators=(",", ":"))
+
 
 def get_target_dates(args):
     """

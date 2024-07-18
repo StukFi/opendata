@@ -1,7 +1,7 @@
 <template>
     <div ref="featurePopover" class="feature-popover">
         <site-name :feature="feature" disable-close-button />
-        <site-dose-rate :feature="feature" />
+        <site-dose-rate :feature="feature" v-show="isDoseRatesMode"/>
     </div>
 </template>
 
@@ -25,12 +25,24 @@ export default {
             previousFeature: undefined
         }
     },
+    computed: {
+        mode() {
+            return this.$store.state.settings.settings.mode
+        },
+        isDoseRatesMode() {
+            return this.mode === "dose_rates"
+        },
+        isRadionuclideMode() {
+            return this.mode === "air_radionuclides"
+        },
+    },
     mounted() {
         eventBus.$on("featureHovered", this.open)
         eventBus.$on("emptyMapLocationHovered", this.close)
         eventBus.$on("featurePopupOpened", this.disable)
         eventBus.$on("featurePopupClosed", this.enable)
         eventBus.$on("doseRateLayerChanged", this.update)
+        eventBus.$on("radioNuclideLayerChanged", this.update)
         
         this.overlay = new Overlay({
             element: this.$refs.featurePopover,

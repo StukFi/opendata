@@ -1,16 +1,18 @@
 <template>
     <div id="map">
         <dose-rate-layer ref="doseRateLayer" />
+        <radionuclide-layer ref="radionuclideLayer" />
         <feature-popover ref="featurePopover" />
         <feature-popup ref="featurePopup" />
-        <map-legend />
+        <map-legend v-if="isDoseRatesMode"/>
         <search-bar />
         <button-open-settings />
         <button-open-info />
+        <button-change-mode />
         <settings-panel />
         <info-panel />
-        <media-controller />
-        <the-header />
+        <media-controller v-if="isDoseRatesMode"/>
+        <the-header  v-if="isDoseRatesMode"/>
         <timepicker-list />
         <datepicker-popup />
         <vue-progress-bar />
@@ -19,11 +21,13 @@
 
 <script>
 import DoseRateLayer from "@/components/layers/DoseRateLayer.vue"
+import RadionuclideLayer from "@/components/layers/RadionuclideLayer.vue"
 import MapLegend from "@/components/map-legend/MapLegend.vue"
 import FeaturePopover from "@/components/feature-popover/FeaturePopover.vue"
 import FeaturePopup from "@/components/feature-popup/FeaturePopup.vue"
 import ButtonOpenSettings from "@/components/settings-panel/ButtonOpenSettings.vue"
 import ButtonOpenInfo from "@/components/info-panel/ButtonOpenInfo.vue"
+import ButtonChangeMode from "@/components/change-mode/ButtonChangeMode.vue"
 import SettingsPanel from "@/components/settings-panel/SettingsPanel.vue"
 import InfoPanel from "@/components/info-panel/InfoPanel.vue"
 import MediaController from "@/components/media-controller/MediaController.vue"
@@ -35,10 +39,6 @@ import DatepickerPopup from "@/components/header/date/DatepickerPopup.vue"
 import { Zoom, ZoomSlider, ScaleLine } from "ol/control"
 import { fromLonLat } from "ol/proj"
 import { Map, View } from "ol"
-import { OSM, VectorTile } from "ol/source"
-import TileLayer from "ol/layer/Tile"
-import VectorTileLayer from "ol/layer/VectorTile"
-import MVT from "ol/format/MVT"
 import eventBus from "@/utils/eventBus"
 import { defaultLayer, customLayer, applyCustomStyle } from "@/utils/mapSettings"
 
@@ -46,12 +46,14 @@ export default {
     name: "TheMap",
     components: {
         DoseRateLayer,
+        RadionuclideLayer,
         FeaturePopover,
         FeaturePopup,
         MapLegend,
         SearchBar,
         ButtonOpenSettings,
         ButtonOpenInfo,
+        ButtonChangeMode,
         SettingsPanel,
         InfoPanel,
         MediaController,
@@ -70,6 +72,12 @@ export default {
         }
     },
     computed: {
+        mode() {
+            return this.$store.state.settings.settings.mode
+        },
+        isDoseRatesMode() {
+            return this.mode === "dose_rates"
+        },
         selectedBaseLayer() {
             return this.getBaseLayer()
         }
@@ -80,6 +88,9 @@ export default {
                 const layers = this.map.getLayers()
                 layers.setAt(0, newLayer)
             }
+        },
+        mode(newMode) {
+            this.switchLayers(newMode === "dose_rates")
         }
     },
     mounted() {
@@ -116,9 +127,13 @@ export default {
         this.map.on("moveend", this.onZoomChange)
         eventBus.$on("featurePopupOpened", this.centerViewOnFeaturePopup)
 
-        this.map.addOverlay(this.$refs.featurePopover.overlay)
-        this.map.addOverlay(this.$refs.featurePopup.overlay)
-        this.map.addLayer(this.$refs.doseRateLayer.vectorLayer)
+        if (this.$refs.featurePopover && this.$refs.featurePopover.overlay) {
+            this.map.addOverlay(this.$refs.featurePopover.overlay)
+        }
+        if (this.$refs.featurePopup && this.$refs.featurePopup.overlay) {
+            this.map.addOverlay(this.$refs.featurePopup.overlay)
+        }
+        this.switchLayers(this.mode === "dose_rates")
     },
     methods: {
         getBaseLayer() {
@@ -129,6 +144,30 @@ export default {
                     return this.default
                 default:
                     return this.default
+            }
+        },
+        switchLayers(isDoseRatesMode) {
+            if (this.map) {
+                const doseRateLayer = this.$refs.doseRateLayer ? this.$refs.doseRateLayer.vectorLayer : null
+                const radionuclideLayer = this.$refs.radionuclideLayer ? this.$refs.radionuclideLayer.vectorLayer : null
+
+                if (isDoseRatesMode) {
+                    if (radionuclideLayer) {
+                        this.map.removeLayer(radionuclideLayer)
+                    }
+                    if (doseRateLayer) {
+                        this.map.addLayer(doseRateLayer)
+                        this.onZoomChange()
+                    }
+                } else {
+                    if (doseRateLayer) {
+                        this.map.removeLayer(doseRateLayer)
+                    }
+                    if (radionuclideLayer) {
+                        this.map.addLayer(radionuclideLayer)
+                        this.onZoomChange()
+                    }
+                }
             }
         },
         onMapInteraction(evt) {
@@ -153,21 +192,22 @@ export default {
         onZoomChange() {
             const zoom = this.map.getView().getZoom()
             this.$refs.doseRateLayer.updateFeatureRadius(zoom)
+            this.$refs.radionuclideLayer.updateFeatureRadius(zoom)
         },
         centerViewOnFeaturePopup(feature) {
-            const featureCoordinates = feature.getGeometry().getCoordinates()
-            const featurePixel = this.map.getPixelFromCoordinate(featureCoordinates)
+            if (this.map && this.$refs.featurePopup && this.$refs.featurePopup.$el) {
+                const featureCoordinates = feature.getGeometry().getCoordinates()
+                const featurePixel = this.map.getPixelFromCoordinate(featureCoordinates)
 
-            // Adjust the y-coordinate so that the view is centered towards
-            // the middle of the popup and not on the clicked feature itself.
-            featurePixel[1] -= (this.$refs.featurePopup.$el.clientHeight * 0.65)
+                featurePixel[1] -= (this.$refs.featurePopup.$el.clientHeight * 0.65)
 
-            const position = this.map.getCoordinateFromPixel(featurePixel)
+                const position = this.map.getCoordinateFromPixel(featurePixel)
 
-            this.map.getView().animate({
-                center: position,
-                duration: 750
-            })
+                this.map.getView().animate({
+                    center: position,
+                    duration: 750
+                })
+            }
         }
     }
 }

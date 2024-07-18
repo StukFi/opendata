@@ -57,6 +57,7 @@ export default {
     },
     mounted () {
         eventBus.$on("settings-panel-open", this.enable)
+        eventBus.$on("mode-changed", this.modeChange)
     },
     methods: {
         enable () {
@@ -77,6 +78,11 @@ export default {
         saveSettings () {
             this.$store.commit("setSettings", cloneDeep(this.settings))
             eventBus.$emit("settingsChanged")
+        },
+        modeChange (mode) {
+            this.settings = cloneDeep(this.$store.state.settings.settings)
+            this.settings.mode = mode
+            this.$store.commit("setSettings", cloneDeep(this.settings))
         }
     }
 }

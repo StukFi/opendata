@@ -1,6 +1,6 @@
 <template>
     <div
-        class="search-bar"
+        :class="['search-bar', { 'dose-rate-mode': isDoseRateMode, 'air-radionuclides-mode': isAirRadionuclidesMode }]"
         v-click-away="blur"
     >
         <span
@@ -40,14 +40,23 @@ export default {
         SearchSuggestList
     },
     mixins: [ VueClickAway ],
-    data: function () {
+    data() {
         return {
             searchTerm: "",
             features: []
         }
     },
     computed: {
-        sites () {
+        mode() {
+            return this.$store.state.settings.settings.mode
+        },
+        isDoseRateMode() {
+            return this.mode === "dose_rates"
+        },
+        isAirRadionuclidesMode() {
+            return this.mode === "air_radionuclides"
+        },
+        sites() {
             let sites = []
             for (let i = 0; i < this.features.length; ++i) {
                 const site = this.features[i].get("site")
@@ -55,45 +64,67 @@ export default {
                     sites.push(site)
                 }
             }
-
             return sites
         }
     },
-    mounted () {
-        eventBus.$on("doseRateLayerChanged", this.onDoseRateLayerChanged)
+    watch: {
+        mode(newMode) {
+            if (newMode === "dose_rates" || newMode === "air_radionuclides") {
+                this.updateFeatures()
+            }
+        }
+    },
+    mounted() {
+        if (this.isDoseRateMode) {
+            eventBus.$on("doseRateLayerChanged", this.onDoseRateLayerChanged)
+        } else if (this.isAirRadionuclidesMode) {
+            eventBus.$on("radionuclideLayerChanged", this.onRadionuclideLayerChanged)
+        }
     },
     methods: {
-        onDoseRateLayerChanged (layer) {
+        updateFeatures() {
+            this.features = []
+            if (this.isDoseRateMode) {
+                eventBus.$off("radionuclideLayerChanged", this.onRadionuclideLayerChanged)
+                eventBus.$on("doseRateLayerChanged", this.onDoseRateLayerChanged)
+            } else if (this.isAirRadionuclidesMode) {
+                eventBus.$off("doseRateLayerChanged", this.onDoseRateLayerChanged)
+                eventBus.$on("radionuclideLayerChanged", this.onRadionuclideLayerChanged)
+            }
+        },
+        onDoseRateLayerChanged(layer) {
             this.features = layer.getSource().getFeatures()
         },
-        onSuggestionSelected (suggestion) {
+        onRadionuclideLayerChanged(layer) {
+            this.features = layer.getSource().getFeatures()
+        },
+        onSuggestionSelected(suggestion) {
             this.searchTerm = suggestion
             this.search()
         },
         search() {
-            if (this.searchTerm.length == 0) {
-                return
-            }
-
-            for (let i = 0; i < this.features.length; ++i) {
-                const site = this.features[i].get("site")
-                if (site.toLowerCase() == this.searchTerm.toLowerCase()) {
-                    this.searchTerm = site
-                    this.blur()
-                    eventBus.$emit("featureSelectedViaSearch", this.features[i])
-                    break
+            if (this.searchTerm.length > 0) {
+                const mode = this.isDoseRateMode ? "dose_rates" : "air_radionuclides"
+                for (let i = 0; i < this.features.length; ++i) {
+                    const site = this.features[i].get("site")
+                    if (site.toLowerCase() === this.searchTerm.toLowerCase()) {
+                        this.searchTerm = site
+                        this.blur()
+                        eventBus.$emit("featureSelectedViaSearch", this.features[i], mode)
+                        break
+                    }
                 }
             }
         },
-        showSuggestions () {
-            this.$refs.searchSuggestList.show()
+        showSuggestions() {
+                this.$refs.searchSuggestList.show()
         },
-        hideSuggestions () {
-            this.$refs.searchSuggestList.hide()
+        hideSuggestions() {
+                this.$refs.searchSuggestList.hide()
         },
-        blur () {
-            this.$refs.searchBarInput.blur()
-            this.hideSuggestions()
+        blur() {
+                this.$refs.searchBarInput.blur()
+                this.hideSuggestions()
         },
     }
 }
@@ -104,12 +135,20 @@ export default {
     position: absolute;
     height: 3em;
     width: 16em;
-    top: 6em;
     left: 50%;
     transform: translateX(-50%);
     border-radius: 0.25em;
     z-index: $z-index-search-bar;
     background-color: $color-map-control-bg;
+    top: 6em; // Default top value
+}
+
+.dose-rate-mode {
+    top: 6em;
+}
+
+.air-radionuclides-mode {
+    top: 2em;
 }
 
 .search-bar:hover {
