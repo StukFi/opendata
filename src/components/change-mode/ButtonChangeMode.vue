@@ -5,6 +5,7 @@
         @click="handleClick"
     >
         <span class="button-change-mode__icon" />
+        <h3>{{$t("modes")}}</h3>
     </div>
 </template>
 
@@ -38,6 +39,15 @@ export default {
     z-index: $z-index-button-change-mode;
     border-radius: 0.25em;
     background-color: rgba(255, 255, 255, 0.4);
+}
+
+h3 {
+    color: rgba(0, 50, 136, 0.5);
+    position: relative;
+    left: 5em;
+    bottom: 0.2em;
+    width: 9em;
+    font-size: 0.7em;
 }
 
 .button-change-mode:hover {

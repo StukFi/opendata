@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import RegularShape from "ol/style/RegularShape"
+import CircleStyle from "ol/style/Circle"
 import GeoJSON from "ol/format/GeoJSON"
 import FillStyle from "ol/style/Fill"
 import Style from "ol/style/Style"
@@ -30,15 +30,14 @@ export default {
                 preload: 20,
                 renderBuffer: 20,
                 style: () => {
-                    const featureColor = "#f7c028"
+                    const featureColor = "#1d66af"
 
                     const featureStyle = new Style({
-                        image: new RegularShape({
+                        image: new CircleStyle({
+                            radius: this.featureRadius,
                             fill: new FillStyle({
                                 color: featureColor
-                            }),
-                            points: 3,
-                            radius: this.featureRadius,
+                            })
                         })
                     })
 
@@ -55,7 +54,7 @@ export default {
             return this.mode === "air_radionuclides"
         },
         datasetFilePath() {
-            if (!this.isAirRadionuclidesMode || !this.$store.state.datetime.selectedDate) {
+            if (!this.isAirRadionuclidesMode) {
                 return ""
             }
             return "data/air_radionuclides/datasets/2024-03-11T084200.json"
@@ -102,7 +101,7 @@ export default {
         updateFeatureRadius(zoom) {
             if (this.isAirRadionuclidesMode) {
                 const currentFeatureRadius = this.featureRadius
-                const newFeatureRadius = zoom * 3
+                const newFeatureRadius = zoom * 2
                 if (newFeatureRadius !== currentFeatureRadius) {
                     this.featureRadius = newFeatureRadius
                     this.redraw()

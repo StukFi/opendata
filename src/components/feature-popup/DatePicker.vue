@@ -1,9 +1,10 @@
 <template>
   <div class="date-picker">
     <div class="controls">
-      <button @click="prevMonth">&lt;</button>
+      <h3>{{ pastDate }} -</h3>
+      <button @click="prevDay">&lt;</button>
       <input v-model="formattedDate" type="date" @change="handleDateChange">
-      <button @click="nextMonth">&gt;</button>
+      <button @click="nextDay">&gt;</button>
     </div>
   </div>
 </template>
@@ -25,6 +26,11 @@ export default {
   computed: {
     formattedDate() {
       return this.selectedDate ? this.selectedDate.toISOString().substr(0, 10) : ''
+    },
+    pastDate() {
+      const past = new Date(this.selectedDate)
+      past.setDate(past.getDate() - 30)
+      return past.toISOString().substr(0, 10)
     }
   },
   watch: {
@@ -38,18 +44,18 @@ export default {
       this.selectedDate = newDate
       this.$emit("dateChanged", newDate)
     },
-    prevMonth() {
-      const currentMonth = new Date(this.selectedDate)
-      currentMonth.setMonth(currentMonth.getMonth() - 1)
-      this.selectedDate = currentMonth
-      this.$emit("dateChanged", currentMonth)
+    prevDay() {
+      const currentDay = new Date(this.selectedDate)
+      currentDay.setDate(currentDay.getDate() - 1)
+      this.selectedDate = currentDay
+      this.$emit("dateChanged", currentDay)
     },
-    nextMonth() {
-      const currentMonth = new Date(this.selectedDate)
-      currentMonth.setMonth(currentMonth.getMonth() + 1)
-      this.selectedDate = currentMonth
-      this.$emit("dateChanged", currentMonth)
-    }
+    nextDay() {
+      const currentDay = new Date(this.selectedDate)
+      currentDay.setDate(currentDay.getDate() + 1)
+      this.selectedDate = currentDay
+      this.$emit("dateChanged", currentDay)
+    },
   }
 }
 </script>
@@ -62,6 +68,8 @@ export default {
 .controls {
   display: flex;
   align-items: center;
+  justify-content: center;
+  margin: 5px 0;
 }
 
 .controls button {
@@ -76,6 +84,15 @@ export default {
   font-size: 1em;
   padding: 0.5em;
   text-align: center;
-  width: 130px;
+  width: 180px;
+}
+
+.past-date {
+  margin-top: 1em;
+  font-size: 1em;
+}
+
+h3 {
+  color: black;
 }
 </style>

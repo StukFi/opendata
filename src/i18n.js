@@ -55,11 +55,12 @@ var i18n = createI18n({
             doseRateTresholds: "Annosnopeusrajat",
         },
         radionuclideMode: { // RadionuclideTables
-            date: "Päivämäärä",
+            date: "Keräysjakso",
             concentration: "Aktiivisuuspitoisuus",
             uncertainty: "Epävarmuus",
             noData: "Tällä päivämäärällä ei löytynyt dataa"
-        }
+        },
+        modes: "Annosnopeudet / Ilman Radionuklidit"
     },
     // English translations
     en: {
@@ -107,11 +108,12 @@ var i18n = createI18n({
             doseRateTresholds: "Dose rate thresholds",
         },
         radionuclideMode: { // RadionuclideTables
-            date: "Date",
+            date: "Collection Period",
             concentration: "Concentration",
             uncertainty: "Uncertainty",
             noData: "No data found with this date"
-        }
+        },
+        modes: "Dose Rates / Air Radionuclides"
     },
   }
 })

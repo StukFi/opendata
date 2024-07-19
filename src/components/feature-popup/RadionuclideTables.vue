@@ -74,7 +74,13 @@
       },
       hasData() {
         return this.tablesData.some(data => data.entries.length > 0)
-      }
+      },
+      mode() {
+        return this.$store.state.settings.settings.mode
+      },
+      isAirRadionuclidesMode() {
+        return this.mode === "air_radionuclides"
+      },
     },
     methods: {
       async fetchData() {
@@ -87,6 +93,7 @@
           return
         }
   
+        if (!this.isAirRadionuclidesMode) return
         try {
           this.isLoading = true // Set loading state to true
   
@@ -148,7 +155,7 @@
   
   <style scoped>
   .table-container {
-    margin-bottom: 20px;
+    margin-right: 0.5em;
   }
   table {
     width: 100%;
