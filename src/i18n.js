@@ -58,7 +58,7 @@ var i18n = createI18n({
             date: "Keräysjakso",
             concentration: "Aktiivisuuspitoisuus",
             uncertainty: "Epävarmuus",
-            noData: "Tällä päivämäärällä ei löytynyt dataa"
+            noData: "Tälle aikajaksolle ei ole saatavilla dataa"
         },
         modes: "Annosnopeudet / Ilman Radionuklidit"
     },
@@ -111,7 +111,7 @@ var i18n = createI18n({
             date: "Collection Period",
             concentration: "Concentration",
             uncertainty: "Uncertainty",
-            noData: "No data found with this date"
+            noData: "No data available for this time period"
         },
         modes: "Dose Rates / Air Radionuclides"
     },

@@ -3,8 +3,8 @@
     <site-name :feature="feature" @close="close" />
     <site-dose-rate :feature="feature" v-show="isDoseRatesMode" />
     <time-series-graph :feature="feature" v-show="isDoseRatesMode" />
-    <date-picker v-if="isRadionuclideMode" :initialDate="selectedDate" @monthChanged="handleMonthChange" />
-    <radionuclide-tables :feature="feature" :selectedMonth="selectedMonth" v-show="isRadionuclideMode" />
+    <date-picker v-show="isRadionuclideMode" />
+    <radionuclide-tables :feature="feature" v-show="isRadionuclideMode" />
   </div>
 </template>
 
@@ -31,7 +31,6 @@ export default {
     return {
       overlay: undefined,
       feature: undefined,
-      selectedMonth: new Date(),
     }
   },
   computed: {
@@ -44,9 +43,11 @@ export default {
     isRadionuclideMode() {
       return this.mode === "air_radionuclides"
     },
-    selectedDate() {
-      return this.selectedMonth
-    },
+  },
+  watch: {
+    isDoseRatesMode() {
+      this.close()
+    }
   },
   mounted() {
     eventBus.$on("featureClicked", this.open)
@@ -92,9 +93,6 @@ export default {
       }
 
       this.feature.set("doseRate", "-")
-    },
-    handleMonthChange(month) {
-      this.selectedMonth = month
     },
   },
 }

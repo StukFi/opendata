@@ -16,11 +16,11 @@ export default {
      * @param {String} radionuclide
      * @param {Date} date
      */
-    async getTimeSeries(siteId, radionuclide) {
+    async getTimeSeries(siteId, radionuclide, date) {
         const results = []
-        const today = new Date()
+        const selectedDate = new Date(date)
         const msInADay = 24 * 60 * 60 * 1000
-        const startDate = new Date(today.getTime() - 30 * msInADay)
+        const startDate = new Date(selectedDate.getTime() - 30 * msInADay)
     
         // Get the available files
         const availableFilesUrl = `data/air_radionuclides/time_series/${siteId}/${radionuclide}/available_filenames.json`
@@ -37,9 +37,9 @@ export default {
                     const fileEndDate = new Date(dateRange[1])
     
                     // Check if the date range of the file overlaps with the last 30 days
-                    if ((fileStartDate <= today && fileStartDate >= startDate) || 
-                        (fileEndDate <= today && fileEndDate >= startDate) || 
-                        (fileStartDate <= startDate && fileEndDate >= today)) {
+                    if ((fileStartDate <= selectedDate && fileStartDate >= startDate) || 
+                        (fileEndDate <= selectedDate && fileEndDate >= startDate) || 
+                        (fileStartDate <= startDate && fileEndDate >= selectedDate)) {
     
                         const fileUrl = `data/air_radionuclides/time_series/${siteId}/${radionuclide}/${filename}`
     
