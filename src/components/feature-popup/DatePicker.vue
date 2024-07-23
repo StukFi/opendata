@@ -139,7 +139,6 @@ export default {
   width: 8em;
   font-family: "RedHatText-Medium";
   font-size: 0.9em;
-  margin-top: 0.105em;
 }
 
 .dp__input, .dp__input_reg {
