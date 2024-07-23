@@ -23,7 +23,6 @@ export default {
         handleClick() {
             const newMode = this.mode === 'dose_rates' ? 'air_radionuclides' : 'dose_rates'
             eventBus.$emit('mode-changed', newMode)
-            console.log("Mode changed to "+newMode)
         }
     }
 }

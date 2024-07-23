@@ -56,8 +56,8 @@ export default {
         datasetFilePath() {
             if (!this.isAirRadionuclidesMode) {
                 return ""
-            }
-            return "data/air_radionuclides/datasets/2024-03-11T084200.json"
+            } // Gets available sites and their coordinates
+            return "data/air_radionuclides/time_series/sites.json"
         },
     },
     watch: {
@@ -67,14 +67,13 @@ export default {
             try {
                 this.$Progress.start()
                 const dataset = await api.airRadionuclide.getDataset(this.datasetFilePath)
-                const features = dataset.features.map((feature) => {
+                const features = dataset.map((feature) => {
                     return new Feature({
                         geometry: new Point(
-                            transform(feature.geometry.coordinates, "EPSG:4326", "EPSG:3857")
+                            transform(feature.coordinates, "EPSG:4326", "EPSG:3857")
                         ),
-                        id: feature.properties.id,
-                        site: feature.properties.site,
-                        doseRate: feature.properties.doseRate
+                        id: feature.id,
+                        site: feature.site,
                     })
                 })
 
