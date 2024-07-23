@@ -102,12 +102,12 @@ export default {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        max-width: 25em;
         font-family: "RedHatText-Medium" !important;
         font-size: 1.25rem !important;
         border-radius: .75em;
         padding: 1em;
         z-index: $z-index-calendar-popup;
+        width: 17em;
 
     .dp__button {
         display: none;
