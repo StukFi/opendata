@@ -79,4 +79,10 @@ h3 {
         top: 13em;
     }
 }
+@media only screen and (min-width: $breakpoint-sm) {
+    .button-change-mode {
+        left: 1em;
+        top: 13em;
+    }
+}
 </style>

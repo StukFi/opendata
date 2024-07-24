@@ -102,7 +102,7 @@ export default {
 
 .feature-popover:after,
 .feature-popover:before {
-    left: 8.75em;
+    left: 8.5em;
     top: 100%;
     border: solid transparent;
     content: " ";

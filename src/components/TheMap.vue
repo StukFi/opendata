@@ -199,7 +199,7 @@ export default {
                 const featureCoordinates = feature.getGeometry().getCoordinates()
                 const featurePixel = this.map.getPixelFromCoordinate(featureCoordinates)
 
-                featurePixel[1] -= (this.$refs.featurePopup.$el.clientHeight * 0.65)
+                featurePixel[1] -= (this.$refs.featurePopup.$el.clientHeight * 0.58)
 
                 const position = this.map.getCoordinateFromPixel(featurePixel)
 

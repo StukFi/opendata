@@ -144,18 +144,18 @@ export default {
   
 @media only screen and (min-width: $breakpoint-md) {
   .feature-popup {
-    width: 450px;
-    left: -225px;
-    --pseudo-left: 224px;
+    width: 400px;
+    left: -200px;
+    --pseudo-left: 200px;
     padding: 40px 20px 20px 20px;
   }
 }
   
 @media only screen and (min-width: $breakpoint-lg) {
   .feature-popup {
-    width: 650px;
-    left: -325px;
-    --pseudo-left: 324px;
+    width: 600px;
+    left: -300px;
+    --pseudo-left: 300px;
     padding: 50px 45px 45px 45px;
   }
 }

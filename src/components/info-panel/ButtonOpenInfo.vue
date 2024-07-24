@@ -63,4 +63,10 @@ export default {
         left: 1em;
     }
 }
+@media only screen and (min-width: $breakpoint-sm) {
+    .button-open-info {
+        left: 1em;
+        top: 6em;
+    }
+}
 </style>

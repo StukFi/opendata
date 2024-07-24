@@ -68,8 +68,6 @@ export default {
     font-family: $font-medium;
     border: none;
     outline: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
     background-color: transparent;
     justify-content: center;
 }

@@ -104,19 +104,19 @@ export default {
             const breakpointMd = 768
             const breakpointLg = 1024
             if (window.innerWidth >= breakpointLg) {
-                this.plotlyLayout.width = 550
-                this.plotlyLayout.height = 420
-                this.plotlyLayout.font = { size: 16 }
+                this.plotlyLayout.width = 475
+                this.plotlyLayout.height = 400
+                this.plotlyLayout.font = { size: 14 }
             }
             else if (window.innerWidth >= breakpointMd) {
-                this.plotlyLayout.width = 375
-                this.plotlyLayout.height = 240
-                this.plotlyLayout.font = { size: 14 }
+                this.plotlyLayout.width = 300
+                this.plotlyLayout.height = 220
+                this.plotlyLayout.font = { size: 12 }
             }
             else {
                 this.plotlyLayout.width = 300
-                this.plotlyLayout.height = 200
-                this.plotlyLayout.font = { size: 12 }
+                this.plotlyLayout.height = 180
+                this.plotlyLayout.font = { size: 10 }
             }
 
             if (redraw) {

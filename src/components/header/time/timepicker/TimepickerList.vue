@@ -70,7 +70,7 @@ export default {
     border: 1px solid #CCC;
     border-radius: $border-radius-md;
     font-family: $font-medium;
-    font-size: $font-lg;
+    font-size: $font-md;
     z-index: $z-index-timepicker-list;
 }
 
