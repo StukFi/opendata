@@ -90,7 +90,9 @@ export default {
     },
     watch: {
         datasetFilePath: async function () {
-            if (!this.isDoseRateMode) return // Do nothing if not in dose_rates mode
+            if (!this.isDoseRateMode) {
+                return "" // Do nothing if not in dose_rates mode
+            }
 
             try {
                 this.$Progress.start()

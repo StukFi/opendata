@@ -27,6 +27,7 @@
       </div>
       <div v-if="!hasData">
         <p>{{ $t('radionuclideMode.noData') }}</p>
+        <p v-if="helsinkiVantaa">{{ $t('radionuclideMode.info') }}</p>
       </div>
     </div>
   </div>
@@ -52,7 +53,8 @@ export default {
   data() {
     return {
       tablesData: [],
-      isLoading: false
+      isLoading: false,
+      helsinkiVantaa: false
     }
   },
   watch: {
@@ -110,6 +112,11 @@ export default {
       const siteId = this.feature.get("id")
       if (!siteId) {
         return
+      }
+
+      // Display info message about moved measurement point if siteid is Helsinki
+      if (siteId == 103428) {
+        this.helsinkiVantaa = true
       }
 
       if (!this.isAirRadionuclidesMode) return

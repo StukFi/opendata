@@ -58,7 +58,8 @@ var i18n = createI18n({
             date: "Keräysjakso",
             concentration: "Aktiivisuuspitoisuus",
             uncertainty: "Epävarmuus",
-            noData: "Tälle aikajaksolle ei ole saatavilla dataa"
+            noData: "Tälle aikajaksolle ei ole saatavilla dataa",
+            info: "Pääkaupunkiseudun mittauspiste on muuttanut vuoden 2022 toukokuun alusta Helsingistä Vantaalle. Vuoden 2022 huhtikuun loppuun saakka mittaustuloksia voi hakea Helsingistä. Toukokuusta 2022 alkaen tulokset löytyvät Vantaalta."
         },
         modes: "Annosnopeudet / Ilman Radionuklidit"
     },
@@ -111,11 +112,12 @@ var i18n = createI18n({
             date: "Collection Period",
             concentration: "Concentration",
             uncertainty: "Uncertainty",
-            noData: "No data available for this time period"
+            noData: "No data available for this time period",
+            info: "The measurement point for the capital region has moved from Helsinki to Vantaa at the beginning of May 2022. Until the end of April 2022, you can view measurement results from Helsinki. From may 2022, the results can be found from Vantaa."
         },
         modes: "Dose Rates / Air Radionuclides"
     },
-  }
+    }
 })
 
 export default i18n
