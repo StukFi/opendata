@@ -193,7 +193,7 @@ th, td {
   padding: 8px;
   text-align: center;
   color: black;
-  width: auto;
+  width: max-content;
 }
 
 th {
