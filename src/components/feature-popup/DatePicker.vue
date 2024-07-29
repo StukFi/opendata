@@ -165,7 +165,7 @@ export default {
 }
 
 .controls p {
-  width: max-content;
+  width: 6.4em;
   text-align: center;
   color: black;
 }
