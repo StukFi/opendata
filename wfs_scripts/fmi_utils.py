@@ -1,12 +1,10 @@
 from urllib.error import URLError
 from urllib.request import urlopen
 import socket
-import time
-
-import settings
+import xml.etree.ElementTree as ET
 
 gml_namespace = "http://www.opengis.net/gml/3.2"
-gmlcov_namespace ="http://www.opengis.net/gmlcov/1.0"
+gmlcov_namespace = "http://www.opengis.net/gmlcov/1.0"
 swe_ns = "http://www.opengis.net/swe/2.0"
 wfs_ns = "http://www.opengis.net/wfs/2.0"
 
@@ -14,8 +12,8 @@ fmi_request_datetime_format = "YYYY-MM-DDThh:mm:ss"
 
 request_templates = {
     "dose_rates": ("https://opendata.fmi.fi/wfs/eng?"
-                    "request=GetFeature&storedquery_id=stuk::observations::"
-                    "external-radiation::multipointcoverage&starttime={}&endtime={}"),
+                   "request=GetFeature&storedquery_id=stuk::observations::"
+                   "external-radiation::multipointcoverage&starttime={}&endtime={}"),
     "air_radionuclides": ("https://opendata.fmi.fi/wfs?&request=getFeature&storedquery_id=stuk::observations::"
                           "air::radionuclide-activity-concentration::multipointcoverage&starttime={}&endtime={}")
 }
@@ -35,6 +33,14 @@ geojson_template_air_radionuclides = {
     "features": []
 }
 
+def fetch_data(url):
+    try:
+        with urlopen(url, timeout=3) as connection:
+            return connection.read()
+    except (URLError, ConnectionError, socket.timeout) as e:
+        print(f"Error fetching data: {e}")
+        return None
+
 def wfs_request(start_time, end_time, results_type):
     """
     Performs a WFS request to the FMI open data API.
@@ -47,13 +53,26 @@ def wfs_request(start_time, end_time, results_type):
     timeFormat = "%Y-%m-%dT%H:%M:00Z"
     t0 = start_time.strftime(timeFormat)
     t1 = end_time.strftime(timeFormat)
-    url = request_templates[results_type].format(t0, t1)
-    response = None
+    base_url = request_templates[results_type].format(t0, t1)
+    general_url = base_url
+    vantaa_url = base_url + "&place=Vantaa" # Make a separate request with vantaa parameter, as vantaa data is not returned from the normal request..
+    
+    general_response = fetch_data(general_url)
+    vantaa_response = fetch_data(vantaa_url)
+    
+    if general_response and vantaa_response:
+        merged_response = merge_responses(general_response, vantaa_response)
+        return merged_response
+    return general_response
 
-    try:
-        with urlopen(url, timeout=3) as connection:
-            response = connection.read()
-    except (URLError, ConnectionError, socket.timeout):
-        pass
-
-    return response
+def merge_responses(general_response, vantaa_response):
+    # Merge the general response with the Vantaa response
+    general_root = ET.fromstring(general_response)
+    vantaa_root = ET.fromstring(vantaa_response)
+    
+    vantaa_features = vantaa_root.findall(".//{%s}member" % wfs_ns)
+    
+    for vantaa_feature in vantaa_features:
+        general_root.append(vantaa_feature)
+    
+    return ET.tostring(general_root)
