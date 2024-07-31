@@ -56,7 +56,13 @@ export default {
         },
         featureId () {
             return this.feature ? this.feature.get("id") : undefined
-        }
+        },
+        mode() {
+            return this.$store.state.settings.settings.mode
+        },
+        isAirRadionuclidesMode() {
+            return this.mode === "air_radionuclides"
+        },
     },
     watch: {
         featureId: function () {
@@ -77,6 +83,7 @@ export default {
     },
     methods: {
         draw () {
+            if (!this.isAirRadionuclidesMode) {
             // New font sizes don't apply for some reason unless this function
             // is called before every draw of the graph. The font size does change when you
             // resize the window on desktop but not when the app is opened normally.
@@ -87,8 +94,10 @@ export default {
                 this.plotlyLayout,
                 this.plotlyConfig
             )
+            }
         },
         async onPlotlyRelayout (evt) {
+            if (!this.isAirRadionuclidesMode) {
             if (!evt || !evt["xaxis.range[0]"] || !evt["xaxis.range[1]"]) {
                 return
             }
@@ -96,8 +105,10 @@ export default {
             const startDate = new Date(evt["xaxis.range[0]"].split(" ")[0])
             const endDate = new Date(evt["xaxis.range[1]"].split(" ")[0])
             await this.timeSeriesGraph.loadTimespan(startDate, endDate)
+        }
         },
         updateSize (redraw = false) {
+            if (!this.isAirRadionuclidesMode) {
             // I was unable to get the Plotly.js graph to resize and render properly
             // in a responsive container (the feature popup) using relative units. Because
             // of this the sizing uses pixels and is done here instead of in CSS.
@@ -122,12 +133,15 @@ export default {
             if (redraw) {
                 this.draw()
             }
+        }
         },
         reset () {
+            if (!this.isAirRadionuclidesMode) {
             this.plotlyLayout = JSON.parse(JSON.stringify(this.defaultPlotlyLayout))
             this.timeSeriesGraph = new TimeSeriesGraph(this.featureId)
-            this.timeSeriesGraph.onUpdate = this.draw.bind(this)
+            this.timeSeriesGraph.onUpdate = this.draw.bind(this) 
             this.timeSeriesGraph.loadTimespan(this.selectedDate, this.selectedDate)
+            }
         }
     }
 }

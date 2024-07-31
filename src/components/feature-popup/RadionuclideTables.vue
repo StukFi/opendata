@@ -114,12 +114,13 @@ export default {
         return
       }
 
-      // Display info message about moved measurement point if siteid is Helsinki
-      if (siteId == 103428) {
+      // Display info message about moved measurement point if siteid is Helsinki or Vantaa
+      if (siteId == 103428 || siteId == 107554) {
         this.helsinkiVantaa = true
       }
+      else this.helsinkiVantaa = false
 
-      if (!this.isAirRadionuclidesMode) return
+      if (this.isAirRadionuclidesMode) {
       try {
         this.isLoading = true // Set loading state to true
 
@@ -158,7 +159,7 @@ export default {
       } finally {
         this.isLoading = false // Set loading state to false after data fetching is done
       }
-    },
+    }},
     removeDuplicates(entries) {
       const seen = new Set()
       return entries.filter(entry => {
