@@ -8,7 +8,24 @@ describe('FeaturePopover.vue', () => {
     let wrapper
 
     beforeEach(() => {
-        wrapper = shallowMount(FeaturePopover);
+        wrapper = shallowMount(FeaturePopover, {
+            global: {
+                mocks: {
+                    $t: () => {},
+                    $store: {
+                        state: {
+                            settings: {
+                                settings: {
+                                    mode: "dose_rates"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
+        // Mock the overlay instance
         wrapper.vm.overlay = new Overlay({
             element: document.createElement('div'),
             position: undefined
@@ -17,12 +34,14 @@ describe('FeaturePopover.vue', () => {
 
     it('opens when a map feature is hovered', () => {
         wrapper.vm.overlay.setPosition(undefined)
-        eventBus.$emit('featureHovered', {
+        const mockFeature = {
             getGeometry: vi.fn().mockReturnValue({
                 getCoordinates: vi.fn().mockReturnValue([0, 0])
             })
-        })
+        }
+        eventBus.$emit('featureHovered', mockFeature)
         expect(wrapper.vm.overlay.getPosition()).not.toEqual(undefined)
+        expect(wrapper.vm.overlay.getPosition()).toEqual([0, 0])
     })
 
     it('closes when an empty map location is hovered', () => {
