@@ -5,7 +5,7 @@
             <info-panel-header @close="disable" />
             <div class="info-panel-body">
                 <p>{{ $t("info.p1") }}</p>
-                <p v-html="$t('info.p2')" />
+                <p> {{ $t("info.p2") }} <a href='https://github.com/StukFi/opendata' target='_blank'>{{ $t("info.p3") }}</a>. </p>
             </div>
         </div>
     </div>

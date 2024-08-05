@@ -14,8 +14,9 @@ var i18n = createI18n({
         info: { // info-panel
             header: "Tietoa",
             title: "Tietoa",
-            p1:"Opendata on STUKin kehittämä avoimen lähdekoodin applikaatio, jolla voit tarkastella Suomen ulkoisen säteilyn valvontaverkon mittaustuloksia. Applikaatio saa datansa Ilmatieteen laitoksen avoimen datan rajapinnasta.",
-            p2:"Lue lisää projektin <a href='https://github.com/StukFi/opendata' target='_blank'>GitHub-sivuilta</a>.",
+            p1: "Opendata on STUKin kehittämä avoimen lähdekoodin applikaatio, jolla voit tarkastella Suomen ulkoisen säteilyn valvontaverkon mittaustuloksia. Applikaatio saa datansa Ilmatieteen laitoksen avoimen datan rajapinnasta.",
+            p2: "Lue lisää projektin ",
+            p3: "GitHub-sivuilta",
         },
         settings: { // settingspanel
             title: "Asetukset",
@@ -68,8 +69,9 @@ var i18n = createI18n({
         info: { // info-panel
             header: "About",
             title: "About",
-            p1:"Opendata is an open source application developed by STUK that enables viewing of external radiation results from around Finland. The application gets its data from the Finnish Meteorological Institute's open data API.",
-            p2:"To learn more visit the project on <a href='https://github.com/StukFi/opendata' target='_blank'>GitHub</a>.",
+            p1: "Opendata is an open source application developed by STUK that enables viewing of external radiation results from around Finland. The application gets its data from the Finnish Meteorological Institute's open data API.",
+            p2: "To learn more visit the project on ",
+            p3: "GitHub",
         },
         settings: { // settingspanel
             title: "Settings",
