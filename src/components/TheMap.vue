@@ -36,7 +36,7 @@ import TheHeader from "@/components/header/TheHeader.vue"
 import TimepickerList from "@/components/header/time/timepicker/TimepickerList.vue"
 import DatepickerPopup from "@/components/header/date/DatepickerPopup.vue"
 
-import { Zoom, ZoomSlider, ScaleLine } from "ol/control"
+import { Zoom, ZoomSlider, ScaleLine, Attribution } from "ol/control"
 import { fromLonLat } from "ol/proj"
 import { Map, View } from "ol"
 import eventBus from "@/utils/eventBus"
@@ -103,6 +103,7 @@ export default {
                 new Zoom(),
                 new ZoomSlider(),
                 new ScaleLine(),
+                new Attribution()
             ],
             view: new View({
                 center: fromLonLat([25.75, 65.75]),
