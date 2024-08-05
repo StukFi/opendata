@@ -253,6 +253,7 @@ def parse_air_radionuclides_data(data):
         # Extract radionuclide names and uncertainties
         fields = member.findall('.//{%s}field' % "http://www.opengis.net/swe/2.0")
         radionuclide_names = [field.attrib['name'] for field in fields]
+        radionuclide_names.remove("air-volume") # Remove air-volume, we do not need it
 
         # Create a dictionary to hold concentration and uncertainty values
         concentration_values = {}
