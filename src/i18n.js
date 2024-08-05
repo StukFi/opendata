@@ -7,7 +7,6 @@ var i18n = createI18n({
   locale: localStorage.getItem("locale"),
   fallbackLocale: import.meta.env.VUE_APP_I18N_FALLBACK_LOCALE || 'fi',
   preserveDirectiveContent: false,
-  warnHtmlMessage: false, // Disable console warning of HTML code in translations
   messages: {
     // Finnish translations
     fi: {
