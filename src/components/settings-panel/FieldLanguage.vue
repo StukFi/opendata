@@ -2,16 +2,14 @@
     <settings-panel-section :title="$t('settings.language')">
         <base-radio-button
             key="fi"
-            v-model="settings.locale"
-            :model-value="settings.locale"
+            v-model="localLocale"
             own-value="fi"
             :label="$t('settings.labelFinnish')"
             class="radio-button"
         />
         <base-radio-button
             key="en"
-            v-model="settings.locale"
-            :model-value="settings.locale"
+            v-model="localLocale"
             own-value="en"
             :label="$t('settings.labelEnglish')"
             class="radio-button"
@@ -33,9 +31,18 @@ export default {
             required: true
         }
     },
+    data() {
+        return {
+            localLocale: this.settings.locale
+        }
+    },
+    watch: {
+        localLocale(newValue) {
+            this.$emit('update-locale', newValue)
+        }
+    }
 }
 </script>
-
 
 <style lang="scss" scoped>
 .radio-button:first-of-type {

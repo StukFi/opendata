@@ -7,7 +7,7 @@ describe('ButtonIncrementDate.vue', () => {
   let wrapper
   let mockStore
 
-  function customMount(computed = {}) {
+  function customMount() {
     return mount(ButtonIncrementDate, {
       global: {
         mocks: {

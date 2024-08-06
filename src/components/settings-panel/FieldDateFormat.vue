@@ -2,16 +2,14 @@
     <settings-panel-section :title="$t('settings.dateFormat')">
         <base-radio-button
             key="fi"
-            v-model="settings.dateFormat"
-            :model-value="settings.dateFormat"
+            v-model="localDateFormat"
             own-value="fi"
             :label="$t('settings.dateFormatA')"
             class="radio-button"
         />
         <base-radio-button
             key="iso"
-            v-model="settings.dateFormat"
-            :model-value="settings.dateFormat"
+            v-model="localDateFormat"
             own-value="iso"
             :label="$t('settings.dateFormatB')"
             class="radio-button"
@@ -32,9 +30,20 @@ export default {
             type: Object,
             required: true
         }
+    },
+    data() {
+        return {
+            localDateFormat: this.settings.dateFormat
+        }
+    },
+    watch: {
+        localDateFormat(newValue) {
+            this.$emit('update-date-format', newValue)
+        }
     }
 }
 </script>
+
 <style lang="scss" scoped>
 .radio-button:first-of-type {
     margin-right: 0.5em;

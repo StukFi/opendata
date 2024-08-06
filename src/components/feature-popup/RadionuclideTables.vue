@@ -60,7 +60,7 @@ export default {
   watch: {
   feature: {
     immediate: true,
-    handler(newFeature) {
+    handler() {
       this.fetchData(new Date())
     }
   }

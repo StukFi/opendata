@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import InfoPanel from '@/components/info-panel/InfoPanel.vue'
 import eventBus from '@/utils/eventBus'
 

@@ -2,16 +2,14 @@
     <settings-panel-section :title="$t('settings.timeFormat')">
         <base-radio-button
             key="24h"
-            v-model="settings.timeFormat"
-            :model-value="settings.timeFormat"
+            v-model="localTimeFormat"
             own-value="24h"
             :label="$t('settings.timeFormatA')"
             class="radio-button"
         />
         <base-radio-button
             key="12h"
-            v-model="settings.timeFormat"
-            :model-value="settings.timeFormat"
+            v-model="localTimeFormat"
             own-value="12h"
             :label="$t('settings.timeFormatB')"
             class="radio-button"
@@ -32,10 +30,19 @@ export default {
             type: Object,
             required: true
         }
+    },
+    data() {
+        return {
+            localTimeFormat: this.settings.timeFormat
+        }
+    },
+    watch: {
+        localTimeFormat(newValue) {
+            this.$emit('update-time-format', newValue)
+        }
     }
 }
 </script>
-
 
 <style lang="scss" scoped>
 .radio-button:first-of-type {
