@@ -5,7 +5,10 @@
         @click="handleClick"
     >
         <span class="button-change-mode__icon" />
-        <h3>{{$t("modes")}}</h3>
+        <h3>
+            <span :class="{ selected: isDoseRate, notSelected: !isDoseRate}">{{$t("doseRate")}}</span> / 
+            <span :class="{ selected: isAirRadionuclides, notSelected: !isAirRadionuclides }">{{$t("airRadionuclides")}}</span>
+        </h3>
     </div>
 </template>
 
@@ -17,6 +20,12 @@ export default {
     computed: {
         mode() {
             return this.$store.state.settings.settings.mode
+        },
+        isDoseRate() {
+            return this.mode === 'dose_rates'
+        },
+        isAirRadionuclides() {
+            return this.mode === 'air_radionuclides'
         }
     },
     methods: {
@@ -44,9 +53,19 @@ h3 {
     color: rgba(0, 50, 136, 0.5);
     position: relative;
     left: 5em;
-    bottom: 0.2em;
-    width: 9em;
+    bottom: 0.3em;
+    width: 10.5em;
     font-size: 0.7em;
+}
+
+.selected {
+    font-weight: 1000;
+    font-size: 1.15em;
+    color: rgba(0, 50, 136, 0.6);
+}
+
+.notSelected {
+    font-weight: 700;
 }
 
 .button-change-mode:hover {

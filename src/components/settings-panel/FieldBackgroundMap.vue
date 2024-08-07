@@ -2,14 +2,16 @@
     <settings-panel-section :title="$t('settings.backgroundMap')">
         <base-radio-button
             key="default"
-            v-model="localBackgroundMap"
+            v-model="settings.backgroundMap"
+            :model-value="settings.backgroundMap"
             own-value="default"
             :label="$t('settings.backgroundMapDefault')"
             class="radio-button"
         />
         <base-radio-button
             key="custom"
-            v-model="localBackgroundMap"
+            v-model="settings.backgroundMap"
+            :model-value="settings.backgroundMap"
             own-value="custom"
             :label="$t('settings.backgroundMapCustom')"
             v-if="customMapsEnabled"
@@ -35,13 +37,7 @@ export default {
     },
     data() {
         return {
-            localBackgroundMap: this.settings.backgroundMap,
             customMapsEnabled
-        }
-    },
-    watch: {
-        localBackgroundMap(newValue) {
-            this.$emit('update-background-map', newValue)
         }
     }
 }
