@@ -54,16 +54,23 @@ def wfs_request(start_time, end_time, results_type):
     t0 = start_time.strftime(timeFormat)
     t1 = end_time.strftime(timeFormat)
     base_url = request_templates[results_type].format(t0, t1)
-    general_url = base_url
-    vantaa_url = base_url + "&place=Vantaa" # Make a separate request with vantaa parameter, as vantaa data is not returned from the normal request..
     
-    general_response = fetch_data(general_url)
-    vantaa_response = fetch_data(vantaa_url)
-    
-    if general_response and vantaa_response:
-        merged_response = merge_responses(general_response, vantaa_response)
-        return merged_response
-    return general_response
+    if results_type == "air_radionuclides":
+        general_url = base_url
+        vantaa_url = base_url + "&place=Vantaa" # Make a separate request with vantaa parameter, as vantaa data is not returned from the normal request.
+
+        general_response = fetch_data(general_url)
+        vantaa_response = fetch_data(vantaa_url)
+
+        if general_response and vantaa_response:
+            merged_response = merge_responses(general_response, vantaa_response)
+            return merged_response
+        return general_response
+
+    else:  # For dose_rates, only make the general request
+        general_response = fetch_data(base_url)
+        print(base_url)
+        return general_response
 
 def merge_responses(general_response, vantaa_response):
     # Merge the general response with the Vantaa response
@@ -74,5 +81,4 @@ def merge_responses(general_response, vantaa_response):
     
     for vantaa_feature in vantaa_features:
         general_root.append(vantaa_feature)
-    
     return ET.tostring(general_root)

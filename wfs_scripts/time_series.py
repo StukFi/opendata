@@ -83,7 +83,7 @@ def generate_dose_rates_time_series(source_dir, target_dir, source_files):
     for station in result:
         path = os.path.join(target_dir, station)
         if not os.path.isdir(path):
-            os.makedirs(path)
+            os.makedirs(path, exist_ok=True)
         for date in result[station]:
             data = {"data": result[station][date]}
             with open(os.path.join(path, date + ".json"), "w") as f:
@@ -104,6 +104,9 @@ def generate_air_radionuclides_time_series(source_dir, target_dir, source_files)
 
     sites_file_path = os.path.join(target_dir, "sites.json")
     
+    # Ensure the directory for sites.json exists
+    os.makedirs(os.path.dirname(sites_file_path), exist_ok=True)
+
     # Load existing sites if sites.json already exists
     if os.path.exists(sites_file_path):
         with open(sites_file_path, "r") as sites_file:
@@ -211,8 +214,15 @@ def get_target_dates(args):
         start_time = datetime.strptime(args.timespan[0], datetimeFormat)
         end_time = datetime.strptime(args.timespan[1], datetimeFormat)
     else:
-        end_time = datetime.utcnow()
-        start_time = end_time - timedelta(days=1)
+        if args.type == "dose_rates":
+            end_time = datetime.utcnow()
+            start_time = end_time - timedelta(days=1)
+        elif args.type == "air_radionuclides":
+            end_time = datetime.utcnow()
+            # Look for dataset files from 20 days to this date,
+            # won't otherwise generate a timeseries for datasets that
+            # haven't been downloaded using timespan arg.
+            start_time = end_time - timedelta(days=20)
 
     dates = []
     dateFormat = "%Y-%m-%d"

@@ -67,6 +67,11 @@ def download_data(args):
 
         elif args.type == "air_radionuclides":
             measurement_interval = timedelta(days=8)
+
+            # Check if the time gap is under 8 days
+            if end_time - start_time < measurement_interval:
+                measurement_interval = timedelta(days=1)
+
             dataset_count = get_dataset_count(start_time, end_time, measurement_interval)
             t1 = start_time
             t2 = t1 + measurement_interval
@@ -253,7 +258,6 @@ def parse_air_radionuclides_data(data):
         # Extract radionuclide names and uncertainties
         fields = member.findall('.//{%s}field' % "http://www.opengis.net/swe/2.0")
         radionuclide_names = [field.attrib['name'] for field in fields]
-        radionuclide_names.remove("air-volume") # Remove air-volume, we do not need it
 
         # Create a dictionary to hold concentration and uncertainty values
         concentration_values = {}
@@ -264,6 +268,12 @@ def parse_air_radionuclides_data(data):
                 uncertainty_values[radionuclide] = values[i]
             else:
                 concentration_values[radionuclide] = values[i]
+
+        # Remove air-volume, we do not need it
+        if "air-volume" in concentration_values:
+            del concentration_values["air-volume"]
+        if "air-volume" in uncertainty_values:
+            del uncertainty_values["air-volume"]
 
         # Create a feature for this location
         feature = {
@@ -312,6 +322,7 @@ def write_data(args, data):
     :param data: GeoJSON string of dose rate or air radionuclide data and a timestamp
     :param args: program arguments
     """
+    
     directory = settings.get("path_"+args.type+"_datasets")
     if args.type == "dose_rates" or args.type == "air_radionuclides":
         filepath = (directory + "/" + data["timestamp"].strftime("%Y-%m-%dT%H%M%S") + ".json")
