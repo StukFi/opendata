@@ -34,4 +34,4 @@ jobs:
         run: npm ci
 
       - name: Lint code
-        run: npm run lint
+        run: eslint --config eslint.config.js
