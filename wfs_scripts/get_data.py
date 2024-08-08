@@ -21,7 +21,7 @@ def get_program_arguments():
                               datetime format {}".format(fmi_request_datetime_format))
     parser.add_argument("-q", "--quiet", action="store_true",
                         help="suppress console output")
-    parser.add_argument("-t", "--type", choices=['dose_rates', 'air_radionuclides'], 
+    parser.add_argument("-t", "--type", choices=['dose_rates', 'air_radionuclides', 'both'], 
                         default='dose_rates', help="Specify the type of data to fetch")
     return parser.parse_args()
 
@@ -50,6 +50,15 @@ def get_data(args):
         update_metadata()
         
     elif args.type == "air_radionuclides":
+        process_data.get_data(args)
+        generate_time_series(args)
+
+    elif args.type == "both":
+        args.type = "dose_rates"
+        process_data.get_data(args)
+        generate_time_series(args)
+        update_metadata()
+        args.type = "air_radionuclides"
         process_data.get_data(args)
         generate_time_series(args)
 

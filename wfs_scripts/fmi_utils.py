@@ -69,7 +69,6 @@ def wfs_request(start_time, end_time, results_type):
 
     else:  # For dose_rates, only make the general request
         general_response = fetch_data(base_url)
-        print(base_url)
         return general_response
 
 def merge_responses(general_response, vantaa_response):

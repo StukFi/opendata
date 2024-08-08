@@ -14,20 +14,22 @@ def generate_time_series(args=None, regenerate=None):
     :param args: program arguments
     :param regenerate: indicates whether to regenerate all time series files
     """
+
     if args is not None:
         logging.info(f"[{args.type}] Generating time series files")
         source_dir = settings.get("path_" + args.type + "_datasets")
         target_dir = settings.get("path_" + args.type + "_time_series")
-        target_dates = get_target_dates(args)
         source_files = os.listdir(source_dir)
+        source_files.sort()
+        target_dates = get_target_dates(args)
         source_files = filter_source_files(source_files, target_dates)
 
         if args.type == "dose_rates":
             generate_dose_rates_time_series(source_dir, target_dir, source_files)
         elif args.type == "air_radionuclides":
             generate_air_radionuclides_time_series(source_dir, target_dir, source_files)
-
-    if regenerate:
+            
+    elif regenerate:
         print(f"[{regenerate}] Regenerating time series files")
         source_dir = settings.get("path_" + regenerate + "_datasets")
         target_dir = settings.get("path_" + regenerate + "_time_series")
@@ -213,6 +215,12 @@ def get_target_dates(args):
         datetimeFormat = "%Y-%m-%dT%H:%M:%S"
         start_time = datetime.strptime(args.timespan[0], datetimeFormat)
         end_time = datetime.strptime(args.timespan[1], datetimeFormat)
+
+        # Subtract 10 days from air radionuclide start time, as the timestamps in the file names
+        # are the start period of the measurement, and the provided timespan may differ from
+        # the measurements start date
+        if args.type == "air_radionuclides":
+            start_time = end_time - timedelta(days=10)
     else:
         if args.type == "dose_rates":
             end_time = datetime.utcnow()
