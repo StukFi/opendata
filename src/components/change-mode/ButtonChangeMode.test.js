@@ -44,7 +44,18 @@ describe("ButtonChangeMode.vue", () => {
     })
 
     it("emits 'mode-changed' event with 'dose_rates' when the mode is 'air_radionuclides'", async () => {
+        // Update the mode state before mounting the component
         storeMock.state.settings.settings.mode = "air_radionuclides"
+
+        // Remount the component to reflect the updated state
+        wrapper = mount(ButtonChangeMode, {
+            global: {
+                mocks: {
+                    $t: () => {},
+                    $store: storeMock
+                }
+            }
+        })
 
         let emittedEvent = null
         let emittedPayload = null
