@@ -1,6 +1,6 @@
-import { mount } from "@vue/test-utils"          
+import { mount } from "@vue/test-utils"
 import ButtonChangeMode from "./ButtonChangeMode"
-import eventBus from '@/utils/eventBus'
+import eventBus from "@/utils/eventBus"
 import { describe, beforeEach, it, expect } from "vitest"
 
 describe("ButtonChangeMode.vue", () => {

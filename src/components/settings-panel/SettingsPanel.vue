@@ -27,11 +27,10 @@ import BaseBackdrop from "@/components/base/BaseBackdrop.vue"
 import AppVersion from "@/components/settings-panel/AppVersion.vue"
 import Settings from "@/models/Settings"
 import cloneDeep from "lodash/cloneDeep"
-import eventBus from '@/utils/eventBus'
+import eventBus from "@/utils/eventBus"
 
 export default {
     name: "SettingsPanel",
-    emits: ['settingsChanged'],
     components: {
         SettingsPanelHeader,
         FieldLanguage,
@@ -41,6 +40,7 @@ export default {
         BaseBackdrop,
         AppVersion
     },
+    emits: ["settingsChanged"],
     data: function () {
         return {
             isEnabled: false,

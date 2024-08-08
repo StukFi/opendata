@@ -6,14 +6,14 @@
     >
         <span class="button-change-mode__icon" />
         <h3>
-            <span :class="{ selected: isDoseRate, notSelected: !isDoseRate}">{{$t("doseRate")}}</span> / 
-            <span :class="{ selected: isAirRadionuclides, notSelected: !isAirRadionuclides }">{{$t("airRadionuclides")}}</span>
+            <span :class="{ selected: isDoseRate, notSelected: !isDoseRate}">{{ $t("doseRate") }}</span> /
+            <span :class="{ selected: isAirRadionuclides, notSelected: !isAirRadionuclides }">{{ $t("airRadionuclides") }}</span>
         </h3>
     </div>
 </template>
 
 <script>
-import eventBus from '../../utils/eventBus'
+import eventBus from "../../utils/eventBus"
 
 export default {
     name: "ButtonChangeMode",
@@ -22,16 +22,16 @@ export default {
             return this.$store.state.settings.settings.mode
         },
         isDoseRate() {
-            return this.mode === 'dose_rates'
+            return this.mode === "dose_rates"
         },
         isAirRadionuclides() {
-            return this.mode === 'air_radionuclides'
+            return this.mode === "air_radionuclides"
         }
     },
     methods: {
         handleClick() {
-            const newMode = this.mode === 'dose_rates' ? 'air_radionuclides' : 'dose_rates'
-            eventBus.$emit('mode-changed', newMode)
+            const newMode = this.mode === "dose_rates" ? "air_radionuclides" : "dose_rates"
+            eventBus.$emit("mode-changed", newMode)
         }
     }
 }

@@ -1,11 +1,26 @@
 <template>
-  <div ref="featurePopup" class="feature-popup">
-    <site-name :feature="feature" @close="close" />
-    <site-dose-rate :feature="feature" v-show="isDoseRatesMode" />
-    <time-series-graph :feature="feature" v-show="isDoseRatesMode" />
-    <date-picker v-show="isRadionuclideMode" />
-    <radionuclide-tables :feature="feature" v-show="isRadionuclideMode" />
-  </div>
+    <div
+        ref="featurePopup"
+        class="feature-popup"
+    >
+        <site-name
+            :feature="feature"
+            @close="close"
+        />
+        <site-dose-rate
+            v-show="isDoseRatesMode"
+            :feature="feature"
+        />
+        <time-series-graph
+            v-show="isDoseRatesMode"
+            :feature="feature"
+        />
+        <date-picker v-show="isRadionuclideMode" />
+        <radionuclide-tables
+            v-show="isRadionuclideMode"
+            :feature="feature"
+        />
+    </div>
 </template>
 
 <script>
@@ -18,86 +33,86 @@ import DatePicker from "@/components/feature-popup/DatePicker.vue"
 import eventBus from "@/utils/eventBus"
 
 export default {
-  name: "FeaturePopup",
-  emits: ["featurepopupOpened", "featurepopupClosed"],
-  components: {
-    SiteName,
-    SiteDoseRate,
-    TimeSeriesGraph,
-    RadionuclideTables,
-    DatePicker,
-  },
-  data() {
-    return {
-      overlay: undefined,
-      feature: undefined,
-    }
-  },
-  computed: {
-    mode() {
-      return this.$store.state.settings.settings.mode
+    name: "FeaturePopup",
+    components: {
+        SiteName,
+        SiteDoseRate,
+        TimeSeriesGraph,
+        RadionuclideTables,
+        DatePicker,
     },
-    isDoseRatesMode() {
-      return this.mode === "dose_rates"
-    },
-    isRadionuclideMode() {
-      return this.mode === "air_radionuclides"
-    },
-  },
-  watch: {
-    isDoseRatesMode() {
-      this.close()
-    }
-  },
-  mounted() {
-    eventBus.$on("featureClicked", this.open)
-    eventBus.$on("emptyMapLocationClicked", this.close)
-
-    this.overlay = new Overlay({
-      element: this.$refs.featurePopup,
-      position: undefined,
-    })
-
-    eventBus.$on("featureClicked", this.open)
-    eventBus.$on("featureSelectedViaSearch", this.open)
-    eventBus.$on("emptyMapLocationClicked", this.close)
-    eventBus.$on("doseRateLayerChanged", this.update)
-  },
-  methods: {
-    open(feature) {
-      this.feature = feature
-      this.overlay.setPosition(feature.getGeometry().getCoordinates())
-      eventBus.$emit("featurePopupOpened", feature)
-      this.$nextTick(() => {
-        if (this.$refs.panelBody) {
-          this.$refs.panelBody.scrollTop = 0
+    emits: ["featurepopupOpened", "featurepopupClosed"],
+    data() {
+        return {
+            overlay: undefined,
+            feature: undefined,
         }
-      })
     },
-    close() {
-      this.feature = undefined
-      this.overlay.setPosition(undefined)
-      eventBus.$emit("featurePopupClosed")
+    computed: {
+        mode() {
+            return this.$store.state.settings.settings.mode
+        },
+        isDoseRatesMode() {
+            return this.mode === "dose_rates"
+        },
+        isRadionuclideMode() {
+            return this.mode === "air_radionuclides"
+        },
     },
-    update(layer) {
-      var features = layer.getSource().getFeatures()
-      if (features.length == 0 || !this.feature) {
-        return
-      }
-
-      for (var i = 0; i < features.length; ++i) {
-        if (features[i].get("id") == this.feature.get("id")) {
-          this.feature = features[i]
-          return
+    watch: {
+        isDoseRatesMode() {
+            this.close()
         }
-      }
-
-      this.feature.set("doseRate", "-")
     },
-  },
+    mounted() {
+        eventBus.$on("featureClicked", this.open)
+        eventBus.$on("emptyMapLocationClicked", this.close)
+
+        this.overlay = new Overlay({
+            element: this.$refs.featurePopup,
+            position: undefined,
+        })
+
+        eventBus.$on("featureClicked", this.open)
+        eventBus.$on("featureSelectedViaSearch", this.open)
+        eventBus.$on("emptyMapLocationClicked", this.close)
+        eventBus.$on("doseRateLayerChanged", this.update)
+    },
+    methods: {
+        open(feature) {
+            this.feature = feature
+            this.overlay.setPosition(feature.getGeometry().getCoordinates())
+            eventBus.$emit("featurePopupOpened", feature)
+            this.$nextTick(() => {
+                if (this.$refs.panelBody) {
+                    this.$refs.panelBody.scrollTop = 0
+                }
+            })
+        },
+        close() {
+            this.feature = undefined
+            this.overlay.setPosition(undefined)
+            eventBus.$emit("featurePopupClosed")
+        },
+        update(layer) {
+            var features = layer.getSource().getFeatures()
+            if (features.length == 0 || !this.feature) {
+                return
+            }
+
+            for (var i = 0; i < features.length; ++i) {
+                if (features[i].get("id") == this.feature.get("id")) {
+                    this.feature = features[i]
+                    return
+                }
+            }
+
+            this.feature.set("doseRate", "-")
+        },
+    },
 }
 </script>
-  
+
 <style lang="scss" scoped>
 .feature-popup {
   position: absolute;
@@ -120,7 +135,7 @@ export default {
        pseudo-elements based on the popup's size. */
   --pseudo-left: 174px;
 }
-  
+
 .feature-popup:after, .feature-popup:before {
     left: var(--pseudo-left);
     top: 100%;
@@ -141,7 +156,7 @@ export default {
     border-width: 20px;
     margin-left: -20px;
 }
-  
+
 @media only screen and (min-width: $breakpoint-md) {
   .feature-popup {
     width: 400px;
@@ -150,7 +165,7 @@ export default {
     padding: 40px 20px 20px 20px;
   }
 }
-  
+
 @media only screen and (min-width: $breakpoint-lg) {
   .feature-popup {
     width: 600px;
@@ -159,4 +174,4 @@ export default {
     padding: 50px 45px 45px 45px;
   }
 }
-</style>  
+</style>

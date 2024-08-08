@@ -42,7 +42,7 @@ class Settings {
 
         this.dateFormat = localStorage.getItem(keyDateFormat) || this.dateFormat
         this.timeFormat = localStorage.getItem(keyTimeFormat) || this.timeFormat
-        
+
         this.backgroundMap = localStorage.getItem(keyBackgroundMap) || this.backgroundMap
 
         this.mode = localStorage.getItem(keyMode) || this.mode

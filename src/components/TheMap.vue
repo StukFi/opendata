@@ -4,15 +4,15 @@
         <radionuclide-layer ref="radionuclideLayer" />
         <feature-popover ref="featurePopover" />
         <feature-popup ref="featurePopup" />
-        <map-legend v-if="isDoseRatesMode"/>
+        <map-legend v-if="isDoseRatesMode" />
         <search-bar />
         <button-open-settings />
         <button-open-info />
         <button-change-mode />
         <settings-panel />
         <info-panel />
-        <media-controller v-if="isDoseRatesMode"/>
-        <the-header  v-if="isDoseRatesMode"/>
+        <media-controller v-if="isDoseRatesMode" />
+        <the-header v-if="isDoseRatesMode" />
         <timepicker-list />
         <datepicker-popup />
         <vue-progress-bar />
@@ -61,7 +61,7 @@ export default {
         TimepickerList,
         DatepickerPopup
     },
-    emits: ['featureClicked', 'featureHovered', 'emptyMapLocationClicked', 'emptyMapLocationHovered'],
+    emits: ["featureClicked", "featureHovered", "emptyMapLocationClicked", "emptyMapLocationHovered"],
     data() {
         return {
             map: null,
@@ -139,12 +139,12 @@ export default {
     methods: {
         getBaseLayer() {
             switch (this.$store.state.settings.settings.backgroundMap) {
-                case "custom":
-                    return this.custom
-                case "default":
-                    return this.default
-                default:
-                    return this.default
+            case "custom":
+                return this.custom
+            case "default":
+                return this.default
+            default:
+                return this.default
             }
         },
         switchLayers(isDoseRatesMode) {

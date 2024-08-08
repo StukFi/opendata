@@ -12,8 +12,8 @@ describe("MediaController.vue", () => {
         wrapper = mount(MediaController, {
             global: {
                 mocks: {
-                $t: () => {}
-            }
+                    $t: () => {}
+                }
             }
 
         })

@@ -14,7 +14,6 @@
 <script>
 export default {
     name: "SiteName",
-    emits: ['close'],
     props: {
         feature: {
             type: Object,
@@ -25,6 +24,7 @@ export default {
             default: false
         }
     },
+    emits: ["close"],
     computed: {
         site () {
             return this.feature ? this.feature.get("site") : "-"

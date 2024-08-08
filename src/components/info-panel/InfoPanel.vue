@@ -5,7 +5,12 @@
             <info-panel-header @close="disable" />
             <div class="info-panel-body">
                 <p>{{ $t("info.p1") }}</p>
-                <p> {{ $t("info.p2") }} <a href='https://github.com/StukFi/opendata' target='_blank'>{{ $t("info.p3") }}</a>. </p>
+                <p>
+                    {{ $t("info.p2") }} <a
+                        href="https://github.com/StukFi/opendata"
+                        target="_blank"
+                    >{{ $t("info.p3") }}</a>.
+                </p>
             </div>
         </div>
     </div>
@@ -14,7 +19,7 @@
 <script>
 import InfoPanelHeader from "@/components/info-panel/InfoPanelHeader.vue"
 import BaseBackdrop from "@/components/base/BaseBackdrop.vue"
-import eventBus from '@/utils/eventBus'
+import eventBus from "@/utils/eventBus"
 
 export default {
     name: "InfoPanel",

@@ -1,62 +1,62 @@
 <template>
-  <button
-    :style="iconStyle"
-    :disabled="disabled"
-    @click="$emit('click')"
-  />
+    <button
+        :style="iconStyle"
+        :disabled="disabled"
+        @click="$emit('click')"
+    />
 </template>
 
 <script>
 export default {
-  name: "ButtonDateTime",
-  emits: ['click'],
-  props: {
-    icon: {
-      type: String,
-      required: true
+    name: "ButtonDateTime",
+    props: {
+        icon: {
+            type: String,
+            required: true
+        },
+        disabled: {
+            type: Boolean,
+            default: false
+        }
     },
-    disabled: {
-      type: Boolean,
-      default: false
-    }
-  },
-  data() {
-    return {
-      iconStyle: {
-        backgroundImage: 'none'
-      }
-    }
-  },
-  watch: {
-    icon: 'updateStyle',
-    disabled: 'updateStyle'
-  },
-  mounted() {
-    this.updateStyle()
-  },
-  methods: {
-    async updateStyle() {
-      if (this.disabled) {
-        this.iconStyle = {
-          backgroundImage: 'none'
-        }
-      } else {
-        try {
-          const iconPath = `/icons/${this.icon}.svg`;
-          // Check again if button became disabled while loading icon, ignoring icon update
-          if (!this.disabled) {
-            this.iconStyle = {
-              backgroundImage: `url(${iconPath})`
+    emits: ["click"],
+    data() {
+        return {
+            iconStyle: {
+                backgroundImage: "none"
             }
-          }
-        } catch (error) {
-          this.iconStyle = {
-            backgroundImage: 'none'
-          };
         }
-      }
+    },
+    watch: {
+        icon: "updateStyle",
+        disabled: "updateStyle"
+    },
+    mounted() {
+        this.updateStyle()
+    },
+    methods: {
+        async updateStyle() {
+            if (this.disabled) {
+                this.iconStyle = {
+                    backgroundImage: "none"
+                }
+            } else {
+                try {
+                    const iconPath = `/icons/${this.icon}.svg`
+                    // Check again if button became disabled while loading icon, ignoring icon update
+                    if (!this.disabled) {
+                        this.iconStyle = {
+                            backgroundImage: `url(${iconPath})`
+                        }
+                    }
+                } catch {
+                    this.iconStyle = {
+                        backgroundImage: "none"
+                    }
+                }
+            }
+        }
     }
-  }
 }
 </script>
 

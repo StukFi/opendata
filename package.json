@@ -15,7 +15,8 @@
     "build": "vite build",
     "serve": "vite preview",
     "test": "vitest",
-    "lint": "eslint --ext .js,.vue src"
+    "lint": "eslint ./src",
+    "lint:fix": "eslint ./src --fix"
   },
   "dependencies": {
     "@aacassandra/vue3-progressbar": "^1.0.3",

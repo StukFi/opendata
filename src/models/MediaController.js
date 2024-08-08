@@ -1,4 +1,4 @@
-import { reactive } from 'vue'
+import { reactive } from "vue"
 import store from "@/store/index"
 
 class MediaController {

@@ -11,7 +11,7 @@
 <script>
 export default {
     name: "InfoPanelHeader",
-    emits: ['close']
+    emits: ["close"]
 }
 </script>
 

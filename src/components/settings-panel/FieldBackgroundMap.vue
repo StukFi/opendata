@@ -9,12 +9,12 @@
             class="radio-button"
         />
         <base-radio-button
+            v-if="customMapsEnabled"
             key="custom"
             v-model="settings.backgroundMap"
             :model-value="settings.backgroundMap"
             own-value="custom"
             :label="$t('settings.backgroundMapCustom')"
-            v-if="customMapsEnabled"
             class="radio-button"
         />
     </settings-panel-section>

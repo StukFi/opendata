@@ -11,7 +11,7 @@
 <script>
 export default {
     name: "SettingsPanelHeader",
-    emits: ['close']
+    emits: ["close"]
 }
 </script>
 

@@ -1,8 +1,8 @@
 <template>
     <div
-    v-show="isEnabled"
+        v-show="isEnabled"
     >
-        <base-backdrop @click="close"/>
+        <base-backdrop @click="close" />
         <ul
             class="timepicker-list"
         >
@@ -21,7 +21,7 @@
 <script>
 import TimepickerListItem from "@/components/header/time/timepicker/TimepickerListItem.vue"
 import BaseBackdrop from "@/components/base/BaseBackdrop.vue"
-import eventBus from '@/utils/eventBus'
+import eventBus from "@/utils/eventBus"
 
 export default {
     name: "TimepickerList",

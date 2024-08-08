@@ -6,7 +6,6 @@ tiles
 public/data
 
 # scripts/
-scripts/settings.json
 edr_scripts/settings.json
 wfs_scripts/settings.json
 

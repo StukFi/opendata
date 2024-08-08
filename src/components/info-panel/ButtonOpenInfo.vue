@@ -9,14 +9,14 @@
 </template>
 
 <script>
-import eventBus from '../../utils/eventBus';
+import eventBus from "../../utils/eventBus"
 
 export default {
     name: "ButtonOpenInfo",
-    emits: ['info-panel-open'],
+    emits: ["info-panel-open"],
     methods: {
         handleClick() {
-            eventBus.$emit('info-panel-open')
+            eventBus.$emit("info-panel-open")
         }
     }
 }

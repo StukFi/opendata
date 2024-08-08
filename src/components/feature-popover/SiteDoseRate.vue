@@ -17,7 +17,7 @@ export default {
     },
     computed: {
         doseRate() {
-            return this.feature && this.feature.get("doseRate") !== null ? this.feature.get("doseRate") : "-";
+            return this.feature && this.feature.get("doseRate") !== null ? this.feature.get("doseRate") : "-"
         }
     }
 }

@@ -35,5 +35,5 @@ export default {
             this.mediaController.toggleMode()
         }
     }
-};
+}
 </script>

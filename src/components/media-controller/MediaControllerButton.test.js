@@ -11,7 +11,7 @@ describe("MediaControllerButton.vue", () => {
 
     it("renders an icon prop", async () => {
         await wrapper.setProps({ icon: "cog" })
-        expect(wrapper.element.style.backgroundImage).toBe('url(/icons/cog.svg)')
+        expect(wrapper.element.style.backgroundImage).toBe("url(/icons/cog.svg)")
     })
 
     it("renders a text prop", async () => {

@@ -22,7 +22,7 @@ const VITE_MML_API_KEY = import.meta.env.VITE_MML_API_KEY
 //////////////////////////////////////////////////////////////////////////
 ///                           DEFAULT OPENSTREETMAP                    ///
 //////////////////////////////////////////////////////////////////////////
-// This section configures the default OpenStreetMap layer, which is 
+// This section configures the default OpenStreetMap layer, which is
 // a tile layer using the OpenStreetMap tile source.
 
 const defaultLayer = new TileLayer({
@@ -36,7 +36,7 @@ const defaultLayer = new TileLayer({
 ///                           CUSTOM MAP SETTINGS                      ///
 //////////////////////////////////////////////////////////////////////////
 // Enable custom maps by setting the flag below to true or false.
-// After enabling, you can switch between the default and a custom 
+// After enabling, you can switch between the default and a custom
 // map in the settings panel.
 
 const customMapsEnabled = false // true
@@ -44,9 +44,9 @@ const customMapsEnabled = false // true
 //////////////////////////////////////////////////////////////////////////
 ///                    EXAMPLE CUSTOM WMTS VECTORTILE MAP              ///
 //////////////////////////////////////////////////////////////////////////
-// This section configures a custom WMTS vector tile map layer using 
+// This section configures a custom WMTS vector tile map layer using
 // data from the Finnish National Land Survey (Maanmittauslaitos).
-// The vector tile format used is MVT, and the data is fetched using 
+// The vector tile format used is MVT, and the data is fetched using
 // the provided API key.
 
 /* customLayer = new VectorTileLayer({
@@ -61,7 +61,7 @@ const customMapsEnabled = false // true
 //////////////////////////////////////////////////////////////////////////
 ///                EXAMPLE STYLE FOR WMTS VECTORTILE MAP               ///
 //////////////////////////////////////////////////////////////////////////
-// This function applies a custom style to the WMTS vector tile map layer 
+// This function applies a custom style to the WMTS vector tile map layer
 // by fetching a style JSON file from the Maanmittauslaitos server.
 
 /* applyCustomStyle = (layer) => {

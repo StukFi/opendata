@@ -1,64 +1,70 @@
 <template>
-    <div :key="label" class="container">
-      <input
-        :id="id"
-        type="radio"
-        class="radio-button-input"
-        :checked="isChecked"
-        @change="onChange"
-      >
-      <label class="label" :for="id">{{ label }}</label>
+    <div
+        :key="label"
+        class="container"
+    >
+        <input
+            :id="id"
+            type="radio"
+            class="radio-button-input"
+            :checked="isChecked"
+            @change="onChange"
+        >
+        <label
+            class="label"
+            :for="id"
+        >{{ label }}</label>
     </div>
-  </template>
-  
-  <script>
-  export default {
+</template>
+
+<script>
+export default {
     name: "BaseRadioButton",
-    emits: ['update:modelValue'],
     props: {
-      label: {
-        type: String,
-        required: true
-      },
-      ownValue: {
-        type: String,
-        required: true
-      },
-      modelValue: {
-        type: String,
-        required: true
-      }
+        label: {
+            type: String,
+            required: true
+        },
+        ownValue: {
+            type: String,
+            required: true
+        },
+        modelValue: {
+            type: String,
+            required: true
+        }
     },
+    emits: ["update:modelValue"],
     data() {
-      return {
-        id: String(Math.random())
-      };
+        return {
+            id: String(Math.random())
+        }
     },
     computed: {
-      isChecked() {
-        return this.ownValue === this.modelValue;
-      }
+        isChecked() {
+            return this.ownValue === this.modelValue
+        }
     },
     methods: {
-      onChange() {
-        this.$emit("update:modelValue", this.ownValue);
-      }
+        onChange() {
+            this.$emit("update:modelValue", this.ownValue)
+        }
     }
-  };
-  </script>
-  
+}
+</script>
+
   <style lang="scss" scoped>
   @import "@/assets/styles/variables.scss";
-  
+
   .container {
     display: inline-block;
   }
-  
+
   .radio-button-input {
     opacity: 0;
     position: fixed;
     width: 0;
-  
+
     &:checked + label {
       color: black;
       background-color: white;
@@ -66,7 +72,7 @@
       opacity: 1;
     }
   }
-  
+
   .label {
     display: inline-block;
     background-color: #ddd;
@@ -77,10 +83,9 @@
     border: 2px solid #444;
     opacity: 0.75;
     border-radius: 4px;
-  
+
     &:hover {
       cursor: pointer;
     }
   }
   </style>
-  

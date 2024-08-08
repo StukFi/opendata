@@ -11,7 +11,6 @@
 <script>
 export default {
     name: "MediaControllerButton",
-    emits: ['click'],
     props: {
         icon: {
             type: String,
@@ -26,6 +25,7 @@ export default {
             default: false
         }
     },
+    emits: ["click"],
     computed: {
         style () {
             if (!this.icon) {

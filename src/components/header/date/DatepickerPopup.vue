@@ -2,23 +2,23 @@
     <div v-show="isEnabled">
         <base-backdrop @click="close" />
         <VueDatePicker
-        v-model="date"
-        :inline=true
-        menu-class-name="dp-custom-menu"
-        :locale="language"
-        auto-apply
-        hide-offset-dates
-        :allowed-dates="allowedDates"
-        @date-update="close"
+            v-model="date"
+            :inline="true"
+            menu-class-name="dp-custom-menu"
+            :locale="language"
+            auto-apply
+            hide-offset-dates
+            :allowed-dates="allowedDates"
+            @date-update="close"
         />
     </div>
 </template>
 
 <script>
 import VueDatePicker from "@vuepic/vue-datepicker"
-import '@vuepic/vue-datepicker/dist/main.css'
+import "@vuepic/vue-datepicker/dist/main.css"
 import BaseBackdrop from "@/components/base/BaseBackdrop.vue"
-import eventBus from '@/utils/eventBus'
+import eventBus from "@/utils/eventBus"
 
 export default {
     name: "DatepickerPopup",
@@ -55,20 +55,20 @@ export default {
             }
         },
         allowedDates() {
-        var availableDatasets = this.$store.state.datetime.availableDatasets;
-        var allowedDates = [];
+            var availableDatasets = this.$store.state.datetime.availableDatasets
+            var allowedDates = []
 
-        if (availableDatasets.length === 0) {
-            return allowedDates;
+            if (availableDatasets.length === 0) {
+                return allowedDates
+            }
+
+            // Add all dates from available datasets to allowedDates array
+            availableDatasets.forEach(dataset => {
+                allowedDates.push(new Date(dataset.date))
+            })
+
+            return allowedDates
         }
-
-        // Add all dates from available datasets to allowedDates array
-        availableDatasets.forEach(dataset => {
-            allowedDates.push(new Date(dataset.date));
-        });
-
-        return allowedDates;
-    }
     },
     mounted() {
         eventBus.$on("calendar-popup-open", this.open)
@@ -76,13 +76,13 @@ export default {
     methods: {
         formatDate(date) {
             switch (this.$store.state.settings.settings.dateFormat) {
-                case "fi":
-                default:
-                    return date.getDate() + "." + (date.getMonth() + 1) +
+            case "fi":
+            default:
+                return date.getDate() + "." + (date.getMonth() + 1) +
                         "." + date.getFullYear()
 
-                case "iso":
-                    return date.getFullYear() + "-" + (date.getMonth() + 1) +
+            case "iso":
+                return date.getFullYear() + "-" + (date.getMonth() + 1) +
                         "-" + date.getDate()
             }
         },

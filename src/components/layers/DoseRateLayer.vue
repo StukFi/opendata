@@ -1,5 +1,5 @@
 <template>
-    <div></div>
+    <div />
 </template>
 
 <script>
@@ -13,11 +13,11 @@ import Feature from "ol/Feature"
 import Point from "ol/geom/Point"
 import { transform } from "ol/proj"
 import api from "@/api/index"
-import eventBus from '@/utils/eventBus'
+import eventBus from "@/utils/eventBus"
 
 export default {
     name: "DoseRateLayer",
-    emits: ['doseRateLayerChanged'],
+    emits: ["doseRateLayerChanged"],
     data() {
         return {
             vectorLayer: new VectorImage({

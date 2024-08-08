@@ -30,5 +30,5 @@ export default {
             this.mediaController.toggleSpeed()
         }
     }
-};
+}
 </script>

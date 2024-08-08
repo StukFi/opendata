@@ -1,7 +1,7 @@
 <template>
     <div
-        :class="['search-bar', { 'dose-rate-mode': isDoseRateMode, 'air-radionuclides-mode': isAirRadionuclidesMode }]"
         v-click-away="blur"
+        :class="['search-bar', { 'dose-rate-mode': isDoseRateMode, 'air-radionuclides-mode': isAirRadionuclidesMode }]"
     >
         <span
             class="search-bar__icon"
@@ -12,7 +12,7 @@
             :value="searchTerm"
             type="text"
             maxlength="28"
-            :spellcheck=false
+            :spellcheck="false"
             class="search-bar__input"
             @input="searchTerm = $event.target.value"
             @click="showSuggestions()"
@@ -31,15 +31,15 @@
 <script>
 import SearchSuggestList from "@/components/search-bar/SearchSuggestList.vue"
 import VueClickAway from "vue3-click-away"
-import eventBus from '@/utils/eventBus'
+import eventBus from "@/utils/eventBus"
 
 export default {
     name: "SearchBar",
-    emits: ['featureSelectedViaSearch'],
     components: {
         SearchSuggestList
     },
     mixins: [ VueClickAway ],
+    emits: ["featureSelectedViaSearch"],
     data() {
         return {
             searchTerm: "",
@@ -117,14 +117,14 @@ export default {
             }
         },
         showSuggestions() {
-                this.$refs.searchSuggestList.show()
+            this.$refs.searchSuggestList.show()
         },
         hideSuggestions() {
-                this.$refs.searchSuggestList.hide()
+            this.$refs.searchSuggestList.hide()
         },
         blur() {
-                this.$refs.searchBarInput.blur()
-                this.hideSuggestions()
+            this.$refs.searchBarInput.blur()
+            this.hideSuggestions()
         },
     }
 }

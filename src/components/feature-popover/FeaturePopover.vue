@@ -1,7 +1,16 @@
 <template>
-    <div ref="featurePopover" class="feature-popover">
-        <site-name :feature="feature" disable-close-button />
-        <site-dose-rate :feature="feature" v-show="isDoseRatesMode"/>
+    <div
+        ref="featurePopover"
+        class="feature-popover"
+    >
+        <site-name
+            :feature="feature"
+            disable-close-button
+        />
+        <site-dose-rate
+            v-show="isDoseRatesMode"
+            :feature="feature"
+        />
     </div>
 </template>
 
@@ -9,7 +18,7 @@
 import SiteName from "@/components/feature-popover/SiteName.vue"
 import SiteDoseRate from "@/components/feature-popover/SiteDoseRate.vue"
 import Overlay from "ol/Overlay"
-import eventBus from '@/utils/eventBus'
+import eventBus from "@/utils/eventBus"
 
 export default {
     name: "FeaturePopover",
@@ -43,7 +52,7 @@ export default {
         eventBus.$on("featurePopupClosed", this.enable)
         eventBus.$on("doseRateLayerChanged", this.update)
         eventBus.$on("radioNuclideLayerChanged", this.update)
-        
+
         this.overlay = new Overlay({
             element: this.$refs.featurePopover,
             position: undefined

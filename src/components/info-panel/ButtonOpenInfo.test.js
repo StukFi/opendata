@@ -1,6 +1,6 @@
 import { mount } from "@vue/test-utils"
 import ButtonOpenInfo from "./ButtonOpenInfo"
-import eventBus from '@/utils/eventBus'
+import eventBus from "@/utils/eventBus"
 import { describe, beforeEach, it, expect } from "vitest"
 
 describe("ButtonOpenInfo.vue", () => {
@@ -25,6 +25,6 @@ describe("ButtonOpenInfo.vue", () => {
 
         await wrapper.find(".button-open-info").trigger("click")
 
-        expect(emittedEvent).toBe('info-panel-open')
+        expect(emittedEvent).toBe("info-panel-open")
     })
 })

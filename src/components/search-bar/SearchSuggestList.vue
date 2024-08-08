@@ -19,7 +19,6 @@ import SearchSuggestListItem from "@/components/search-bar/SearchSuggestListItem
 
 export default {
     name: "SearchSuggestList",
-    emits: ['select'],
     components: {
         SearchSuggestListItem
     },
@@ -33,6 +32,7 @@ export default {
             required: true
         }
     },
+    emits: ["select"],
     data: function () {
         return {
             isEnabled: false

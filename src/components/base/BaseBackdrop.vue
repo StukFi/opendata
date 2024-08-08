@@ -8,7 +8,7 @@
 <script>
 export default {
     name: "BaseBackdrop",
-    emits: ['click']
+    emits: ["click"]
 }
 </script>
 

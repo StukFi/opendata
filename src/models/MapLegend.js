@@ -28,9 +28,9 @@ class MapLegend {
      * @param {Number} index
      */
     toggleBar(index) {
-        const bar = this.bars[index];
-        bar.toggleState();
-        this.bars[index] = bar;
+        const bar = this.bars[index]
+        bar.toggleState()
+        this.bars[index] = bar
     }
 
     /**

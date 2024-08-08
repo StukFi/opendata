@@ -12,13 +12,13 @@ import dateUtils from "@/utils/date"
 
 export default {
     name: "TimepickerListItem",
-    emits: ['click'],
     props: {
         time: {
             type: String,
             default: ""
         }
     },
+    emits: ["click"],
     computed: {
         selectedTime () {
             return this.$store.state.datetime.selectedTime
