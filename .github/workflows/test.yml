@@ -1,4 +1,4 @@
-name: Build
+name: Test
 
 on:
   push:
@@ -9,8 +9,8 @@ on:
       - master
 
 jobs:
-  build:
-    name: Build Project
+  test:
+    name: Run Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -33,5 +33,5 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build the project
-        run: npm run build
+      - name: Run tests
+        run: npm run test
