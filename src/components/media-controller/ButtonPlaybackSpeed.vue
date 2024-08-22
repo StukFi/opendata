@@ -1,13 +1,13 @@
 <template>
     <media-controller-button
         :text="playbackSpeed"
-        :title="$t('title')"
-        @click="mediaController.toggleSpeed()"
+        :title="$t('playback.title.speed')"
+        @click="handleClick"
     />
 </template>
 
 <script>
-import MediaControllerButton from "./MediaControllerButton"
+import MediaControllerButton from "@/components/media-controller/MediaControllerButton.vue"
 
 export default {
     name: "ButtonPlaybackSpeed",
@@ -21,26 +21,14 @@ export default {
         }
     },
     computed: {
-        playbackSpeed () {
-            return this.mediaController.playbackSpeed / 1000.0 + " s"
+        playbackSpeed() {
+            return this.mediaController.state.playbackSpeed / 1000.0 + " s"
+        }
+    },
+    methods: {
+        handleClick() {
+            this.mediaController.toggleSpeed()
         }
     }
 }
 </script>
-
-<style lang="scss" scoped>
-button {
-    font-size: $font-sm;
-}
-</style>
-
-<i18n>
-{
-    "fi": {
-        "title": "Toistonopeus"
-    },
-    "en": {
-        "title": "Playback speed"
-    }
-}
-</i18n>

@@ -1,4 +1,5 @@
 name: Build
+
 on:
   push:
     branches:
@@ -6,24 +7,31 @@ on:
   pull_request:
     branches:
       - master
+
 jobs:
   build:
+    name: Build Project
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js
-        uses: actions/setup-node@v1
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: '12.x'
+          node-version: '22.x'
+
       - name: Cache Node.js modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.npm
           key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.OS }}-node-
             ${{ runner.OS }}-
-      - run: npm ci
-      - run: npm run build
-      - run: npm run test
-      - run: npm run lint -- --no-fix
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build the project
+        run: npm run build

@@ -1,48 +1,39 @@
 <template>
     <div v-show="isEnabled">
         <base-backdrop @click="close" />
-        <vue-datepicker
+        <VueDatePicker
             v-model="date"
-            :use-utc="true"
-            :monday-first="true"
-            :disabled-dates="disabledDates"
-            :format="formatDate"
-            :language="language"
             :inline="true"
-            class="datepicker"
-            calendar-class="calendar"
-            @selected="close"
+            menu-class-name="dp-custom-menu"
+            :locale="language"
+            auto-apply
+            hide-offset-dates
+            :allowed-dates="allowedDates"
+            @date-update="close"
         />
     </div>
 </template>
 
 <script>
-import VueDatepicker from "vuejs-datepicker"
-import BaseBackdrop from "@/components/base/BaseBackdrop"
-import { en, fi } from "vuejs-datepicker/dist/locale"
+import VueDatePicker from "@vuepic/vue-datepicker"
+import "@vuepic/vue-datepicker/dist/main.css"
+import BaseBackdrop from "@/components/base/BaseBackdrop.vue"
+import eventBus from "@/utils/eventBus"
 
 export default {
     name: "DatepickerPopup",
     components: {
-        VueDatepicker,
+        VueDatePicker,
         BaseBackdrop
     },
     data: function () {
         return {
             isEnabled: false,
-            en: en,
-            fi: fi
+            fi: "fi",
+            en: "en"
         }
     },
     computed: {
-        date: {
-            get () {
-                return this.$store.state.datetime.selectedDate
-            },
-            set (date) {
-                this.$store.dispatch("setDate", date)
-            }
-        },
         language: {
             get () {
                 switch (this.$store.state.settings.settings.locale) {
@@ -55,71 +46,50 @@ export default {
                 }
             }
         },
-        disabledDates () {
-            var availableDatasets = this.$store.state.datetime.availableDatasets
-            var disabledDates = {
-                ranges: [],
-                dates: []
+        date: {
+            get() {
+                return this.$store.state.datetime.selectedDate
+            },
+            set(date) {
+                this.$store.dispatch("setDate", date)
             }
-
-            if (availableDatasets.length == 0) {
-                return disabledDates
-            }
-
-            // Disable dates from the start of Unix time to the first valid date.
-            var firstValidDate = availableDatasets[0].date
-            var datesBeforeFirstValidDate = {
-                from: new Date(0),
-                to: new Date(firstValidDate)
-            }
-            disabledDates.ranges.push(datesBeforeFirstValidDate)
-
-            // Disable dates from the next ten years after the last valid date.
-            var lastValidDate = availableDatasets.slice(-1)[0].date
-            var datesAfterLastValidDate = {
-                from: lastValidDate,
-                to: new Date(lastValidDate.getFullYear() + 10, lastValidDate.getMonth(),
-                    lastValidDate.getDate())
-            }
-            disabledDates.ranges.push(datesAfterLastValidDate)
-
-            // Disable dates in between the valid dates.
-            var currentDate = new Date(firstValidDate)
-            function dateExists (datetime) {
-                return datetime.date.toDateString() == currentDate.toDateString()
-            }
-            while (currentDate < lastValidDate) {
-                if (!availableDatasets.some(dateExists)) {
-                    disabledDates.dates.push(new Date(currentDate))
-                }
-
-                currentDate.setDate(currentDate.getDate() + 1)
-            }
-
-            return disabledDates
-
         },
+        allowedDates() {
+            var availableDatasets = this.$store.state.datetime.availableDatasets
+            var allowedDates = []
+
+            if (availableDatasets.length === 0) {
+                return allowedDates
+            }
+
+            // Add all dates from available datasets to allowedDates array
+            availableDatasets.forEach(dataset => {
+                allowedDates.push(new Date(dataset.date))
+            })
+
+            return allowedDates
+        }
     },
-    mounted () {
-        this.$root.$on("calendar-popup-open", this.open)
+    mounted() {
+        eventBus.$on("calendar-popup-open", this.open)
     },
     methods: {
-        formatDate (date) {
+        formatDate(date) {
             switch (this.$store.state.settings.settings.dateFormat) {
             case "fi":
             default:
                 return date.getDate() + "." + (date.getMonth() + 1) +
-                            "." + date.getFullYear()
+                        "." + date.getFullYear()
 
             case "iso":
                 return date.getFullYear() + "-" + (date.getMonth() + 1) +
-                            "-" + date.getDate()
+                        "-" + date.getDate()
             }
         },
-        open () {
+        open() {
             this.isEnabled = true
         },
-        close () {
+        close() {
             this.isEnabled = false
         }
     }
@@ -127,53 +97,46 @@ export default {
 </script>
 
 <style lang="scss">
-.datepicker {
-    flex-basis: 50%;
-    flex-grow: 1;
-}
+    .dp-custom-menu {
+        position: fixed !important;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: "RedHatText-Medium" !important;
+        font-size: 1.25rem !important;
+        border-radius: .75em;
+        padding: 1em;
+        z-index: $z-index-calendar-popup;
+        width: 17em;
 
-.vdp-datepicker input {
-    width: 100%;
-    height: 4em;
-    font-size: $font-lg;
-    font-family: $font-medium;
-    text-align: center;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    background-color: $color-header-date;
-
-    /* Hide the input's caret. */
-    color: transparent;
-    text-shadow: 0 0 0 white;
-}
-
-.vdp-datepicker input::selection {
-    background-color: transparent;
-}
-
-.vdp-datepicker input::-moz-selection {
-    background-color: transparent;
-}
-
-.vdp-datepicker__calendar.calendar {
-    position: fixed !important;
-    top: 6.5em;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-    max-width: 25em;
-    height: auto;
-    border-radius: $border-radius-md;
-    font-family: $font-medium !important;
-    font-size: $font-lg !important;
-    padding: 1em;
-    z-index: $z-index-calendar-popup;
-
-    .cell {
-        height: 3em;
-        line-height: 3em;
+    .dp__button {
+        display: none;
     }
+
+    .dp__action_row {
+        display: none;
+    }
+
+    .dp__overlay {
+        background: white;
+    }
+
+    .dp__cell_inner {
+        padding: 1em;
+    }
+
+    .dp--header-wrap {
+        padding-bottom: 1em;
+    }
+
+    .dp__calendar_header {
+        font-weight: normal;
+    }
+
+    .dp__calendar_header_item {
+        height: 2em;
+        padding: var(--dp-cell-padding);
+    }
+
 }
 </style>

@@ -25,6 +25,7 @@ export default {
             default: false
         }
     },
+    emits: ["click"],
     computed: {
         style () {
             if (!this.icon) {
@@ -32,7 +33,7 @@ export default {
             }
             else {
                 return {
-                    backgroundImage: "url(" + require("@/assets/icons/" + this.icon + ".svg") + ")"
+                    backgroundImage: `url(/icons/${this.icon}.svg)`
                 }
             }
         }

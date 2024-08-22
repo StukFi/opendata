@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import DateWidget from "@/components/header/date/DateWidget"
-import TimeWidget from "@/components/header/time/TimeWidget"
+import DateWidget from "@/components/header/date/DateWidget.vue"
+import TimeWidget from "@/components/header/time/TimeWidget.vue"
 
 export default {
     name: "TheHeader",

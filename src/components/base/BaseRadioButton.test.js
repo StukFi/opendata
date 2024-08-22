@@ -1,29 +1,33 @@
+import { describe, it, beforeEach, expect } from "vitest"
 import { mount } from "@vue/test-utils"
-import BaseRadioButton from "./BaseRadioButton"
+import BaseRadioButton from "./BaseRadioButton.vue"
 
 describe("BaseRadioButton.vue", () => {
     let wrapper
 
     beforeEach(() => {
         wrapper = mount(BaseRadioButton, {
-            propsData: {
-                label: "",
-                ownValue: "",
+            props: {
+                label: "Option 1",
+                ownValue: "option1",
                 modelValue: ""
             }
         })
     })
 
     it("renders a label prop", async () => {
-        const label = "this is a test"
-        await wrapper.setProps({ label: label })
-        expect(wrapper.text()).toContain(label)
+        const label = "Option 2"
+        await wrapper.setProps({ label })
+        expect(wrapper.find(".label").text()).toContain(label)
     })
 
-    it("emits an input event when its state changes", async () => {
-        const radio = wrapper.find("input[type='radio']")
-        radio.element.selected = true
-        radio.trigger("change")
-        expect(wrapper.emitted().input).toHaveLength(1)
+    it("emits an update:modelValue event when its state changes", async () => {
+        const radio = wrapper.find("input[type=\"radio\"]")
+
+        radio.element.checked = true
+        await radio.trigger("change")
+
+        expect(wrapper.emitted("update:modelValue")).toBeTruthy()
+        expect(wrapper.emitted("update:modelValue")[0]).toEqual(["option1"])
     })
 })

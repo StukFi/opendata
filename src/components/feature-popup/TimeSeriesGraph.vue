@@ -8,7 +8,7 @@
 
 <script>
 import TimeSeriesGraph from "@/models/TimeSeriesGraph"
-import LoadingSpinner from "./LoadingSpinner"
+import LoadingSpinner from "@/components/feature-popup/LoadingSpinner.vue"
 import Plotly from "plotly.js/lib/core"
 import localeFI from "plotly.js/lib/locales/fi"
 Plotly.register(localeFI)
@@ -56,7 +56,13 @@ export default {
         },
         featureId () {
             return this.feature ? this.feature.get("id") : undefined
-        }
+        },
+        mode() {
+            return this.$store.state.settings.settings.mode
+        },
+        isAirRadionuclidesMode() {
+            return this.mode === "air_radionuclides"
+        },
     },
     watch: {
         featureId: function () {
@@ -77,57 +83,65 @@ export default {
     },
     methods: {
         draw () {
+            if (!this.isAirRadionuclidesMode) {
             // New font sizes don't apply for some reason unless this function
             // is called before every draw of the graph. The font size does change when you
             // resize the window on desktop but not when the app is opened normally.
-            this.updateSize()
-            Plotly.react(
-                this.$refs.graphContainer,
-                this.timeSeriesGraph.dataPoints,
-                this.plotlyLayout,
-                this.plotlyConfig
-            )
+                this.updateSize()
+                Plotly.react(
+                    this.$refs.graphContainer,
+                    this.timeSeriesGraph.dataPoints,
+                    this.plotlyLayout,
+                    this.plotlyConfig
+                )
+            }
         },
         async onPlotlyRelayout (evt) {
-            if (!evt || !evt["xaxis.range[0]"] || !evt["xaxis.range[1]"]) {
-                return
-            }
+            if (!this.isAirRadionuclidesMode) {
+                if (!evt || !evt["xaxis.range[0]"] || !evt["xaxis.range[1]"]) {
+                    return
+                }
 
-            const startDate = new Date(evt["xaxis.range[0]"].split(" ")[0])
-            const endDate = new Date(evt["xaxis.range[1]"].split(" ")[0])
-            await this.timeSeriesGraph.loadTimespan(startDate, endDate)
+                const startDate = new Date(evt["xaxis.range[0]"].split(" ")[0])
+                const endDate = new Date(evt["xaxis.range[1]"].split(" ")[0])
+                await this.timeSeriesGraph.loadTimespan(startDate, endDate)
+            }
         },
         updateSize (redraw = false) {
+            if (!this.isAirRadionuclidesMode) {
             // I was unable to get the Plotly.js graph to resize and render properly
             // in a responsive container (the feature popup) using relative units. Because
             // of this the sizing uses pixels and is done here instead of in CSS.
-            const breakpointMd = 768
-            const breakpointLg = 1024
-            if (window.innerWidth >= breakpointLg) {
-                this.plotlyLayout.width = 550
-                this.plotlyLayout.height = 420
-                this.plotlyLayout.font = { size: 16 }
-            }
-            else if (window.innerWidth >= breakpointMd) {
-                this.plotlyLayout.width = 375
-                this.plotlyLayout.height = 240
-                this.plotlyLayout.font = { size: 14 }
-            }
-            else {
-                this.plotlyLayout.width = 300
-                this.plotlyLayout.height = 200
-                this.plotlyLayout.font = { size: 12 }
-            }
+                const breakpointMd = 768
+                const breakpointLg = 1024
+                if (window.innerWidth >= breakpointLg) {
+                    this.plotlyLayout.width = 475
+                    this.plotlyLayout.height = 400
+                    this.plotlyLayout.font = { size: 14 }
+                }
+                else if (window.innerWidth >= breakpointMd) {
+                    this.plotlyLayout.width = 300
+                    this.plotlyLayout.height = 220
+                    this.plotlyLayout.font = { size: 12 }
+                }
+                else {
+                    this.plotlyLayout.width = 300
+                    this.plotlyLayout.height = 180
+                    this.plotlyLayout.font = { size: 10 }
+                }
 
-            if (redraw) {
-                this.draw()
+                if (redraw) {
+                    this.draw()
+                }
             }
         },
         reset () {
-            this.plotlyLayout = JSON.parse(JSON.stringify(this.defaultPlotlyLayout))
-            this.timeSeriesGraph = new TimeSeriesGraph(this.featureId)
-            this.timeSeriesGraph.onUpdate = this.draw.bind(this)
-            this.timeSeriesGraph.loadTimespan(this.selectedDate, this.selectedDate)
+            if (!this.isAirRadionuclidesMode) {
+                this.plotlyLayout = JSON.parse(JSON.stringify(this.defaultPlotlyLayout))
+                this.timeSeriesGraph = new TimeSeriesGraph(this.featureId)
+                this.timeSeriesGraph.onUpdate = this.draw.bind(this)
+                this.timeSeriesGraph.loadTimespan(this.selectedDate, this.selectedDate)
+            }
         }
     }
 }

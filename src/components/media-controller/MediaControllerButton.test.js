@@ -1,6 +1,6 @@
 import { mount } from "@vue/test-utils"
 import MediaControllerButton from "./MediaControllerButton"
-
+import { describe, beforeEach, it, expect } from "vitest"
 
 describe("MediaControllerButton.vue", () => {
     let wrapper
@@ -10,26 +10,26 @@ describe("MediaControllerButton.vue", () => {
     })
 
     it("renders an icon prop", async () => {
-        // The icon file must exist for the test to pass.
         await wrapper.setProps({ icon: "cog" })
-        expect(wrapper.element).toHaveStyle("background-image: url()")
+        expect(wrapper.element.style.backgroundImage).toBe("url(/icons/cog.svg)")
     })
 
     it("renders a text prop", async () => {
         const text = "test"
-        await wrapper.setProps({ text: text })
+        await wrapper.setProps({ text })
         expect(wrapper.text()).toBe(text)
     })
 
     it("is disabled with a disabled prop", async () => {
         await wrapper.setProps({ disabled: false })
-        expect(wrapper.attributes().disabled).toBeUndefined()
+        expect(wrapper.props("disabled")).toBe(false)
+
         await wrapper.setProps({ disabled: true })
-        expect(wrapper.attributes().disabled).toBe("disabled")
+        expect(wrapper.props("disabled")).toBe(true)
     })
 
     it("emits a click event when clicked", async () => {
-        wrapper.find("button").trigger("click")
-        expect(wrapper.emitted().click).toHaveLength(1)
+        await wrapper.trigger("click")
+        expect(wrapper.emitted("click")).toHaveLength(1)
     })
 })

@@ -1,31 +1,35 @@
-import { mount, createLocalVue } from "@vue/test-utils"
+import { mount } from "@vue/test-utils"
+import { describe, it, beforeEach, expect, vi } from "vitest"
 import ButtonDateTime from "@/components/header/ButtonDateTime.vue"
 import ButtonDecrementDate from "./ButtonDecrementDate.vue"
 
-const localVue = createLocalVue()
-const mockStore = { dispatch: jest.fn() }
-
-function customMount (computed = {}) {
-    return mount(ButtonDecrementDate, {
-        localVue,
-        computed,
-        mocks: {
-            $store: mockStore
-        }
-    })
-}
-
 describe("ButtonDecrementDate.vue", () => {
     let wrapper
+    let mockStore
 
     beforeEach(() => {
-        wrapper = customMount({ isOldestDateSelected: () => false })
+        mockStore = {
+            dispatch: vi.fn(),
+            getters: {
+                isOldestDateSelected: false
+            }
+        }
+
+        wrapper = mount(ButtonDecrementDate, {
+            global: {
+                mocks: {
+                    $store: mockStore
+                }
+            }
+        })
     })
 
-    it("is disabled when the first available date is selected", () => {
-        expect(wrapper.findComponent(ButtonDateTime).props().disabled).toBe(false)
-        wrapper = customMount({ isOldestDateSelected: () => true })
-        expect(wrapper.findComponent(ButtonDateTime).props().disabled).toBe(true)
+    it("is disabled when the first available date is selected", async () => {
+        expect(wrapper.findComponent(ButtonDateTime).props().disabled).toBeFalsy
+
+        mockStore.getters.isOldestDateSelected = true
+        await wrapper.vm.$nextTick()
+        expect(wrapper.findComponent(ButtonDateTime).props().disabled).toBeTruthy
     })
 
     it("dispatches an action when it is clicked", async () => {

@@ -13,9 +13,11 @@
 
 <script>
 import dateUtils from "@/utils/date"
+import eventBus from "@/utils/eventBus"
 
 export default {
     name: "Timepicker",
+    emits: ["timepicker-list-toggle"],
     computed: {
         formattedTime () {
             let time = this.$store.state.datetime.selectedTime
@@ -38,7 +40,7 @@ export default {
     },
     methods: {
         toggleTimeList () {
-            this.$root.$emit("timepicker-list-toggle")
+            eventBus.$emit("timepicker-list-toggle")
         }
     }
 }
@@ -66,8 +68,6 @@ export default {
     font-family: $font-medium;
     border: none;
     outline: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
     background-color: transparent;
     justify-content: center;
 }

@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import ButtonDecrementTime from "@/components/header/time/ButtonDecrementTime"
-import ButtonIncrementTime from "@/components/header/time/ButtonIncrementTime"
-import Timepicker from "@/components/header/time/timepicker/Timepicker"
+import ButtonDecrementTime from "@/components/header/time/ButtonDecrementTime.vue"
+import ButtonIncrementTime from "@/components/header/time/ButtonIncrementTime.vue"
+import Timepicker from "@/components/header/time/timepicker/Timepicker.vue"
 
 export default {
     name: "TimeWidget",

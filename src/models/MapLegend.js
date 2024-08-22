@@ -1,5 +1,3 @@
-import Vue from "vue"
-
 /** Class repsenting the map legend. */
 class MapLegend {
     constructor () {
@@ -29,10 +27,10 @@ class MapLegend {
      * Toggle the state of a bar.
      * @param {Number} index
      */
-    toggleBar (index) {
-        var bar = this.bars[index]
+    toggleBar(index) {
+        const bar = this.bars[index]
         bar.toggleState()
-        Vue.set(this.bars, index, bar)
+        this.bars[index] = bar
     }
 
     /**

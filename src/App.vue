@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import TheMap from "./components/TheMap"
+import TheMap from "@/components/TheMap.vue"
 
 export default {
     name: "App",
@@ -17,6 +17,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import "@/assets/styles/variables.scss";
+
 #app {
     height: 100%;
     width: 100%;
@@ -30,25 +32,25 @@ export default {
 
 @media (min-width: $breakpoint-sm) {
     :root {
-        font-size: 1em;
+        font-size: $font-sm;
     }
 }
 
 @media (min-width: $breakpoint-md) {
     :root {
-        font-size: 1.5em;
+        font-size: $font-md;
     }
 }
 
 @media (min-width: $breakpoint-lg) {
     :root {
-        font-size: 2em;
+        font-size: $font-lg;
     }
 }
 
 @media (min-width: $breakpoint-xl) {
     :root {
-        font-size: 2.5em;
+        font-size: $font-xl;
     }
 }
 </style>

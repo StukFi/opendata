@@ -8,7 +8,7 @@ export default {
      */
     async queryAvailableDatasets () {
         const response = await http.get("data/dose_rates/metadata.json")
-        let availableDatasets = response.body.available_data
+        let availableDatasets = response.data.available_data
 
         availableDatasets.forEach(element => {
             element.date = new Date(element.date)

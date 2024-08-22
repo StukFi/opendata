@@ -3,15 +3,19 @@ import MediaController from "./MediaController"
 import ButtonPlaybackMode from "./ButtonPlaybackMode"
 import ButtonPlaybackSpeed from "./ButtonPlaybackSpeed"
 import ButtonPlaybackState from "./ButtonPlaybackState"
+import { describe, beforeEach, it, expect } from "vitest"
 
 describe("MediaController.vue", () => {
     let wrapper
 
     beforeEach(() => {
         wrapper = mount(MediaController, {
-            mocks: {
-                $t: () => {}
+            global: {
+                mocks: {
+                    $t: () => {}
+                }
             }
+
         })
     })
 

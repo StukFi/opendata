@@ -16,8 +16,8 @@ export default {
         }
     },
     computed: {
-        doseRate () {
-            return this.feature ? this.feature.get("doseRate") : "-"
+        doseRate() {
+            return this.feature && this.feature.get("doseRate") !== null ? this.feature.get("doseRate") : "-"
         }
     }
 }
@@ -29,16 +29,19 @@ export default {
     font-size: $font-lg;
     font-family: $font-regular;
     margin: 0.5em 0;
+    color: black;
 }
 
 .site-dose-rate__value {
     position: relative;
     line-height: 100%;
+    color: black;
 }
 
 .site-dose-rate__unit {
     white-space: pre;
     font-size: $font-xs;
     bottom: 0;
+    color: black;
 }
 </style>

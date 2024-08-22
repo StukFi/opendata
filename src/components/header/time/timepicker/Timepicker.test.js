@@ -1,4 +1,5 @@
 import { shallowMount } from "@vue/test-utils"
+import { describe, it, beforeEach, expect } from "vitest"
 import Timepicker from "./Timepicker"
 
 describe("Timepicker.vue", () => {
@@ -13,7 +14,7 @@ describe("Timepicker.vue", () => {
         })
     })
 
-    it("renders the currently selected time", async () => {
+    it("renders the currently selected time", () => {
         expect(wrapper.text()).toContain(selectedTime)
     })
 })

@@ -1,11 +1,11 @@
 <template>
-    <settings-panel-section :title="$t('language')">
+    <settings-panel-section :title="$t('settings.language')">
         <base-radio-button
             key="fi"
             v-model="settings.locale"
             :model-value="settings.locale"
             own-value="fi"
-            :label="$t('labelFinnish')"
+            :label="$t('settings.labelFinnish')"
             class="radio-button"
         />
         <base-radio-button
@@ -13,14 +13,14 @@
             v-model="settings.locale"
             :model-value="settings.locale"
             own-value="en"
-            :label="$t('labelEnglish')"
+            :label="$t('settings.labelEnglish')"
             class="radio-button"
         />
     </settings-panel-section>
 </template>
 
 <script>
-import SettingsPanelSection from "./SettingsPanelSection"
+import SettingsPanelSection from "@/components/settings-panel/SettingsPanelSection.vue"
 
 export default {
     name: "FieldLanguage",
@@ -32,24 +32,10 @@ export default {
             type: Object,
             required: true
         }
-    }
+    },
 }
 </script>
 
-<i18n>
-{
-    "en": {
-        "language": "Language",
-        "labelFinnish": "Finnish",
-        "labelEnglish": "English"
-    },
-    "fi": {
-        "language": "Kieli",
-        "labelFinnish": "suomi",
-        "labelEnglish": "englanti"
-    }
-}
-</i18n>
 
 <style lang="scss" scoped>
 .radio-button:first-of-type {

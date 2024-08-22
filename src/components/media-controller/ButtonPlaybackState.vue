@@ -3,13 +3,12 @@
         :icon="icon"
         :disabled="disabled"
         :title="title"
-        @click="mediaController.togglePlayback()"
+        @click="handleClick"
     />
 </template>
 
 <script>
-import MediaControllerButton from "./MediaControllerButton"
-import { PlaybackMode } from "@/models/MediaController"
+import MediaControllerButton from "@/components/media-controller/MediaControllerButton.vue"
 
 export default {
     name: "ButtonPlaybackState",
@@ -23,57 +22,33 @@ export default {
         }
     },
     computed: {
-        icon () {
-            return this.mediaController.isPlaybackEnabled ? "media-pause" : "media-play"
+        icon() {
+            return this.mediaController.state.isPlaybackEnabled ? "media-pause" : "media-play"
         },
-        disabled () {
+        disabled() {
             return this.mediaController.isPlaybackFinished()
         },
-        title () {
+        title() {
             if (this.disabled) {
-                if (this.mediaController.playbackMode == PlaybackMode.Time) {
-                    return this.$t("title.disabled.time")
+                if (this.mediaController.state.playbackMode === "time") {
+                    return this.$t("playback.title.disabled.time")
+                } else if (this.mediaController.state.playbackMode === "date") {
+                    return this.$t("playback.title.disabled.date")
                 }
-                else if (this.mediaController.playbackMode == PlaybackMode.Date) {
-                    return this.$t("title.disabled.date")
-                }
-            }
-            else {
-                if (this.mediaController.isPlaybackEnabled) {
-                    return this.$t("title.stop")
-                }
-                else {
-                    return this.$t("title.start")
+            } else {
+                if (this.mediaController.state.isPlaybackEnabled) {
+                    return this.$t("playback.title.stop")
+                } else {
+                    return this.$t("playback.title.start")
                 }
             }
-
             return ""
+        }
+    },
+    methods: {
+        handleClick() {
+            this.mediaController.togglePlayback()
         }
     }
 }
 </script>
-
-<i18n>
-{
-    "fi": {
-        "title": {
-            "disabled": {
-                "date": "Valitse aikaisempi päivämäärä",
-                "time": "Valitse aikaisempi kellonaika"
-            },
-            "start": "Aloita toisto",
-            "stop": "Pysäytä toisto"
-        }
-    },
-    "en": {
-        "title": {
-            "disabled": {
-                "date": "Choose an earlier date to enable playback",
-                "time": "Choose an earlier time to enable playback"
-            },
-            "start": "Start playback",
-            "stop": "Stop playback"
-        }
-    }
-}
-</i18n>

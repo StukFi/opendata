@@ -1,6 +1,6 @@
 <template>
     <b-form-group
-        :label="$t('doseRateThresholds')"
+        :label="$t('settings.doseRateThresholds')"
         class="mb-5"
     >
         <b-input-group>
@@ -47,20 +47,4 @@ input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-
-input[type=number] {
-    -moz-appearance:textfield;
-}
-
 </style>
-
-<i18n>
-{
-    "en": {
-        "doseRateThresholds": "Dose rate thresholds"
-    },
-    "fi": {
-        "doseRateThresholds": "Annosnopeusrajat"
-    }
-}
-</i18n>

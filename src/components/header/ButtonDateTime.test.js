@@ -1,37 +1,41 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils"
+import { describe, it, beforeEach, expect } from "vitest"
+import { shallowMount } from "@vue/test-utils"
 import ButtonDateTime from "./ButtonDateTime.vue"
-
-const localVue = createLocalVue()
 
 describe("ButtonDateTime.vue", () => {
     let wrapper
 
     beforeEach(() => {
         wrapper = shallowMount(ButtonDateTime, {
-            localVue,
-            propsData: {
-                // The icon file must exist for the tests to pass.
+            props: {
                 icon: "caret-left"
             }
         })
     })
 
-    it("emits a click event when clicked", () => {
-        wrapper.find("button").trigger("click")
+    it("emits a click event when clicked", async () => {
+        await wrapper.find("button").trigger("click")
+        expect(wrapper.emitted().click).toBeTruthy()
         expect(wrapper.emitted().click).toHaveLength(1)
     })
 
     it("is disabled with a disabled prop", async () => {
-        await wrapper.setProps({ disabled: false })
-        expect(wrapper.attributes().disabled).toBeUndefined()
+        expect(wrapper.props("disabled")).toBe(false)
         await wrapper.setProps({ disabled: true })
-        expect(wrapper.attributes().disabled).toBe("disabled")
+        expect(wrapper.props("disabled")).toBe(true)
+        await wrapper.setProps({ disabled: false })
+        expect(wrapper.props("disabled")).toBe(false)
     })
 
     it("hides its icon when disabled", async () => {
-        await wrapper.setProps({ disabled: false })
-        expect(wrapper.element).toHaveStyle("background-image: url()")
+        expect(wrapper.find("button").element.style.backgroundImage).toContain(
+            "caret-left.svg"
+        )
         await wrapper.setProps({ disabled: true })
-        expect(wrapper.element).toHaveStyle("background-image: none")
+        expect(wrapper.find("button").element.style.backgroundImage).toBe("none")
+        await wrapper.setProps({ disabled: false })
+        expect(wrapper.find("button").element.style.backgroundImage).toContain(
+            "caret-left.svg"
+        )
     })
 })

@@ -1,16 +1,24 @@
 <template>
     <div
         class="button-open-info"
-        :title="$t('title')"
-        @click="$root.$emit('info-panel-open')"
+        :title="$t('info.title')"
+        @click="handleClick()"
     >
         <span class="button-open-info__icon" />
     </div>
 </template>
 
 <script>
+import eventBus from "../../utils/eventBus"
+
 export default {
-    name: "ButtonOpenInfo"
+    name: "ButtonOpenInfo",
+    emits: ["info-panel-open"],
+    methods: {
+        handleClick() {
+            eventBus.$emit("info-panel-open")
+        }
+    }
 }
 </script>
 
@@ -38,7 +46,7 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
     border-radius: 0.25em;
-    background-image: url("~@/assets/icons/info.svg");
+    background-image: url("/icons/info.svg");
     background-repeat: no-repeat;
     background-position: center;
     background-color: rgba(0, 50, 136, 0.5);
@@ -55,15 +63,10 @@ export default {
         left: 1em;
     }
 }
-</style>
-
-<i18n>
-{
-    "en": {
-        "title": "About"
-    },
-    "fi": {
-        "title": "Tietoa"
+@media only screen and (min-width: $breakpoint-sm) {
+    .button-open-info {
+        left: 1em;
+        top: 6em;
     }
 }
-</i18n>
+</style>

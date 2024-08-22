@@ -10,6 +10,7 @@
                 <field-language :settings="settings" />
                 <field-date-format :settings="settings" />
                 <field-time-format :settings="settings" />
+                <field-background-map :settings="settings" />
                 <app-version />
             </div>
         </div>
@@ -17,14 +18,16 @@
 </template>
 
 <script>
-import SettingsPanelHeader from "./SettingsPanelHeader"
-import FieldLanguage from "./FieldLanguage"
-import FieldDateFormat from "./FieldDateFormat"
-import FieldTimeFormat from "./FieldTimeFormat"
-import BaseBackdrop from "@/components/base/BaseBackdrop"
-import AppVersion from "./AppVersion"
+import SettingsPanelHeader from "@/components/settings-panel/SettingsPanelHeader.vue"
+import FieldLanguage from "@/components/settings-panel/FieldLanguage.vue"
+import FieldDateFormat from "@/components/settings-panel/FieldDateFormat.vue"
+import FieldTimeFormat from "@/components/settings-panel/FieldTimeFormat.vue"
+import FieldBackgroundMap from "@/components/settings-panel/FieldBackgroundMap.vue"
+import BaseBackdrop from "@/components/base/BaseBackdrop.vue"
+import AppVersion from "@/components/settings-panel/AppVersion.vue"
 import Settings from "@/models/Settings"
 import cloneDeep from "lodash/cloneDeep"
+import eventBus from "@/utils/eventBus"
 
 export default {
     name: "SettingsPanel",
@@ -33,9 +36,11 @@ export default {
         FieldLanguage,
         FieldDateFormat,
         FieldTimeFormat,
+        FieldBackgroundMap,
         BaseBackdrop,
         AppVersion
     },
+    emits: ["settingsChanged"],
     data: function () {
         return {
             isEnabled: false,
@@ -51,7 +56,8 @@ export default {
         }
     },
     mounted () {
-        this.$root.$on("settings-panel-open", this.enable)
+        eventBus.$on("settings-panel-open", this.enable)
+        eventBus.$on("mode-changed", this.modeChange)
     },
     methods: {
         enable () {
@@ -71,7 +77,12 @@ export default {
         },
         saveSettings () {
             this.$store.commit("setSettings", cloneDeep(this.settings))
-            this.$root.$emit("settingsChanged")
+            eventBus.$emit("settingsChanged")
+        },
+        modeChange (mode) {
+            this.settings = cloneDeep(this.$store.state.settings.settings)
+            this.settings.mode = mode
+            this.$store.commit("setSettings", cloneDeep(this.settings))
         }
     }
 }

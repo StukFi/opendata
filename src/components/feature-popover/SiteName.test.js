@@ -1,5 +1,6 @@
+import { describe, it, beforeEach, expect } from "vitest"
 import { mount } from "@vue/test-utils"
-import SiteName from "./SiteName"
+import SiteName from "./SiteName.vue"
 
 describe("SiteName.vue", () => {
     let wrapper

@@ -6,7 +6,8 @@ tiles
 public/data
 
 # scripts/
-scripts/settings.json
+edr_scripts/settings.json
+wfs_scripts/settings.json
 
 # npm
 node_modules
@@ -20,3 +21,6 @@ node_modules
 
 # vim
 *.swp
+
+# env
+.env

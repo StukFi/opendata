@@ -1,6 +1,6 @@
 <template>
     <div class="settings-panel-header opendata-row">
-        <span>{{ $t("header") }}</span>
+        <span>{{ $t("settings.header") }}</span>
         <span
             class="close-button"
             @click="$emit('close')"
@@ -10,7 +10,8 @@
 
 <script>
 export default {
-    name: "SettingsPanelHeader"
+    name: "SettingsPanelHeader",
+    emits: ["close"]
 }
 </script>
 
@@ -34,14 +35,3 @@ export default {
     }
 }
 </style>
-
-<i18n>
-{
-    "en": {
-        "header": "settings"
-    },
-    "fi": {
-        "header": "asetukset"
-    }
-}
-</i18n>

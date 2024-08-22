@@ -1,4 +1,5 @@
 import { mount } from "@vue/test-utils"
+import { describe, beforeEach, it, expect } from "vitest"
 import SearchSuggestList from "./SearchSuggestList"
 import SearchSuggestListItem from "./SearchSuggestListItem"
 
@@ -24,12 +25,12 @@ describe("SearchSuggestList.vue", () => {
 
     it("is visible when enabled and suggestions exist", async () => {
         await wrapper.setData({ isEnabled: true })
-        expect(wrapper.element).toBeVisible()
+        expect(wrapper.find(".search-suggest-list").isVisible()).toBe(true)
     })
 
     it("is invisible when disabled", async () => {
         await wrapper.setData({ isEnabled: false })
-        expect(wrapper.element).not.toBeVisible()
+        expect(wrapper.find(".search-suggest-list").isVisible()).toBe(false)
     })
 
     it("emits an event when a suggestion is clicked", async () => {

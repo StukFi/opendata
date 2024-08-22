@@ -1,44 +1,34 @@
+import { reactive } from "vue"
 import store from "@/store/index"
 
-/** Enum representing media controller playback modes. */
-export class PlaybackMode {
-    constructor (name) {
-        this.name = name
-    }
-
-    static Date = new PlaybackMode("date")
-    static Time = new PlaybackMode("time")
-}
-
-/** Class representing a media controller for playback of datasets. */
 class MediaController {
-    constructor () {
-        this.isPlaybackEnabled = false
-        this.playbackMode = PlaybackMode.Time
-        this.playbackSpeed = 1000
-        this.playbackSpeeds = [500, 1000, 2000]
-        this.playbackTimeoutId = undefined
+    constructor() {
+        // Reactive state object
+        this.state = reactive({
+            isPlaybackEnabled: false,
+            playbackMode: "time",
+            playbackSpeed: 1000,
+            playbackSpeeds: [500, 1000, 2000],
+            playbackTimeoutId: undefined
+        })
     }
 
-    /** Start playback. */
-    play () {
-        if (this.isPlaybackEnabled) {
+    play() {
+        if (this.state.isPlaybackEnabled) {
             return
         }
 
-        this.isPlaybackEnabled = true
+        this.state.isPlaybackEnabled = true
         this.tick()
     }
 
-    /** Stop playback. */
-    stop () {
-        this.isPlaybackEnabled = false
-        clearTimeout(this.playbackTimeoutId)
+    stop() {
+        this.state.isPlaybackEnabled = false
+        clearTimeout(this.state.playbackTimeoutId)
     }
 
-    /** Internal function for handling playback. */
-    async tick () {
-        if (!this.isPlaybackEnabled) {
+    async tick() {
+        if (!this.state.isPlaybackEnabled) {
             return
         }
 
@@ -47,42 +37,37 @@ class MediaController {
             return
         }
 
-        if (this.playbackMode == PlaybackMode.Date) {
+        if (this.state.playbackMode === "date") {
             await store.dispatch("incrementDate")
-        }
-        else if (this.playbackMode == PlaybackMode.Time) {
+        } else if (this.state.playbackMode === "time") {
             await store.dispatch("incrementTime")
         }
 
-        this.playbackTimeoutId = setTimeout(() => this.tick(), this.playbackSpeed)
+        this.state.playbackTimeoutId = setTimeout(() => this.tick(), this.state.playbackSpeed)
     }
 
-    /** Toggle playback state. */
-    togglePlayback () {
-        this.isPlaybackEnabled ? this.stop() : this.play()
+    togglePlayback() {
+        this.state.isPlaybackEnabled ? this.stop() : this.play()
     }
 
-    /** Toggle playback mode. */
-    toggleMode () {
-        this.playbackMode = (this.playbackMode == PlaybackMode.Date) ? PlaybackMode.Time : PlaybackMode.Date
+    toggleMode() {
+        this.state.playbackMode = (this.state.playbackMode === "date") ? "time" : "date"
     }
 
-    /** Toggle playback speed. */
-    toggleSpeed () {
-        var index = this.playbackSpeeds.indexOf(this.playbackSpeed)
-        if (index >= this.playbackSpeeds.length - 1) {
-            this.playbackSpeed = this.playbackSpeeds[0]
-        }
-        else {
-            this.playbackSpeed = this.playbackSpeeds[++index]
-        }
+    toggleSpeed() {
+        const index = this.state.playbackSpeeds.indexOf(this.state.playbackSpeed)
+        this.state.playbackSpeed = (index >= this.state.playbackSpeeds.length - 1) ? this.state.playbackSpeeds[0] : this.state.playbackSpeeds[index + 1]
     }
 
-    /** Indicates whether playback has reached the end of available datasets. */
-    isPlaybackFinished () {
-        return (this.playbackMode == PlaybackMode.Time && store.getters.isNewestTimeSelected) ||
-            (this.playbackMode == PlaybackMode.Date && store.getters.isNewestDateSelected)
+    isPlaybackFinished() {
+        return (this.state.playbackMode === "time" && store.getters.isNewestTimeSelected) ||
+               (this.state.playbackMode === "date" && store.getters.isNewestDateSelected)
     }
+}
+
+// Function to create a reactive media controller instance
+export function createMediaController() {
+    return new MediaController()
 }
 
 export default MediaController

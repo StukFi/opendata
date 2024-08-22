@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import MapLegendBar from "./MapLegendBar"
+import MapLegendBar from "@/components/map-legend/MapLegendBar.vue"
 
 export default {
     name: "MapLegend",

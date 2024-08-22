@@ -6,7 +6,7 @@ import sys
 from fmi_utils import fmi_request_datetime_format
 from metadata import update_metadata
 from time_series import generate_time_series
-import dose_rates
+import process_data
 import settings
 
 def get_program_arguments():
@@ -21,10 +21,13 @@ def get_program_arguments():
                               datetime format {}".format(fmi_request_datetime_format))
     parser.add_argument("-q", "--quiet", action="store_true",
                         help="suppress console output")
+    parser.add_argument("-t", "--type", choices=['dose_rates', 'air_radionuclides', 'both'], 
+                        default='dose_rates', help="Specify the type of data to fetch")
     return parser.parse_args()
 
 def initialize_logging(args):
     """
+    
     Initializes logging facilities.
 
     :param args: program arguments
@@ -41,9 +44,23 @@ def get_data(args):
 
     :param args: program arguments
     """
-    dose_rates.get_data(args)
-    update_metadata()
-    generate_time_series(args)
+    if args.type == "dose_rates":
+        process_data.get_data(args)
+        generate_time_series(args)
+        update_metadata()
+        
+    elif args.type == "air_radionuclides":
+        process_data.get_data(args)
+        generate_time_series(args)
+
+    elif args.type == "both":
+        args.type = "dose_rates"
+        process_data.get_data(args)
+        generate_time_series(args)
+        update_metadata()
+        args.type = "air_radionuclides"
+        process_data.get_data(args)
+        generate_time_series(args)
 
 if __name__ == "__main__":
     args = get_program_arguments()

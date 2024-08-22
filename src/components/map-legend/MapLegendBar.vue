@@ -17,7 +17,8 @@ export default {
             type: Object,
             required: true
         }
-    }
+    },
+    emits: ["click"]
 }
 </script>
 

@@ -1,5 +1,6 @@
+import { describe, it, beforeEach, expect } from "vitest"
 import { mount } from "@vue/test-utils"
-import SiteDoseRate from "./SiteDoseRate"
+import SiteDoseRate from "./SiteDoseRate.vue"
 
 describe("SiteDoseRate.vue", () => {
     let wrapper
@@ -10,7 +11,7 @@ describe("SiteDoseRate.vue", () => {
 
     it("renders a site's dose rate", async () => {
         const doseRate = "1.15"
-        await wrapper.setProps({ feature: { get: () => doseRate }})
+        await wrapper.setProps({ feature: { get: () => doseRate } })
         expect(wrapper.text()).toContain(doseRate)
     })
 

@@ -1,5 +1,7 @@
 <template>
-    <div v-show="isEnabled">
+    <div
+        v-show="isEnabled"
+    >
         <base-backdrop @click="close" />
         <ul
             class="timepicker-list"
@@ -17,9 +19,9 @@
 </template>
 
 <script>
-import TimepickerListItem from "./TimepickerListItem"
-import BaseBackdrop from "@/components/base/BaseBackdrop"
-import { mixin as clickaway } from "vue-clickaway"
+import TimepickerListItem from "@/components/header/time/timepicker/TimepickerListItem.vue"
+import BaseBackdrop from "@/components/base/BaseBackdrop.vue"
+import eventBus from "@/utils/eventBus"
 
 export default {
     name: "TimepickerList",
@@ -27,7 +29,6 @@ export default {
         TimepickerListItem,
         BaseBackdrop
     },
-    mixins: [ clickaway ],
     data: function () {
         return {
             isEnabled: false
@@ -39,7 +40,7 @@ export default {
         }
     },
     mounted () {
-        this.$root.$on("timepicker-list-toggle", this.toggle)
+        eventBus.$on("timepicker-list-toggle", this.toggle)
     },
     methods: {
         close () {
@@ -69,7 +70,7 @@ export default {
     border: 1px solid #CCC;
     border-radius: $border-radius-md;
     font-family: $font-medium;
-    font-size: $font-lg;
+    font-size: $font-md;
     z-index: $z-index-timepicker-list;
 }
 

@@ -1,6 +1,6 @@
 <template>
     <button
-        :style="style"
+        :style="iconStyle"
         :disabled="disabled"
         @click="$emit('click')"
     />
@@ -19,16 +19,40 @@ export default {
             default: false
         }
     },
-    computed: {
-        style () {
+    emits: ["click"],
+    data() {
+        return {
+            iconStyle: {
+                backgroundImage: "none"
+            }
+        }
+    },
+    watch: {
+        icon: "updateStyle",
+        disabled: "updateStyle"
+    },
+    mounted() {
+        this.updateStyle()
+    },
+    methods: {
+        async updateStyle() {
             if (this.disabled) {
-                return {
+                this.iconStyle = {
                     backgroundImage: "none"
                 }
-            }
-            else {
-                return {
-                    backgroundImage: "url(" + require("@/assets/icons/" + this.icon + ".svg") + ")"
+            } else {
+                try {
+                    const iconPath = `/icons/${this.icon}.svg`
+                    // Check again if button became disabled while loading icon, ignoring icon update
+                    if (!this.disabled) {
+                        this.iconStyle = {
+                            backgroundImage: `url(${iconPath})`
+                        }
+                    }
+                } catch {
+                    this.iconStyle = {
+                        backgroundImage: "none"
+                    }
                 }
             }
         }
@@ -38,22 +62,22 @@ export default {
 
 <style lang="scss" scoped>
 button {
-    flex-basis: 25%;
-    border: none;
-    background-size: 1em;
-    font-size: $font-md;
-    background-position: center;
-    background-repeat: no-repeat;
-    cursor: pointer;
-    z-index: $z-index-button-datetime;
-    outline: none;
+  flex-basis: 25%;
+  border: none;
+  background-size: 1em;
+  font-size: $font-md;
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  z-index: $z-index-button-datetime;
+  outline: none;
 }
 
 button:focus {
-    outline: none;
+  outline: none;
 }
 
 button:disabled {
-    cursor: auto;
+  cursor: auto;
 }
 </style>

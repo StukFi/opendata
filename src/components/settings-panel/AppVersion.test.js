@@ -1,3 +1,4 @@
+import { describe, it, beforeEach, expect } from "vitest"
 import { mount } from "@vue/test-utils"
 import AppVersion from "./AppVersion"
 

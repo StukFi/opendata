@@ -8,7 +8,7 @@
             type="radio"
             class="radio-button-input"
             :checked="isChecked"
-            @change="onChange()"
+            @change="onChange"
         >
         <label
             class="label"
@@ -34,43 +34,46 @@ export default {
             required: true
         }
     },
-    data: function () {
+    emits: ["update:modelValue"],
+    data() {
         return {
             id: String(Math.random())
         }
     },
     computed: {
-        isChecked () {
-            return this.ownValue == this.modelValue
+        isChecked() {
+            return this.ownValue === this.modelValue
         }
     },
     methods: {
-        onChange () {
-            this.$emit("input", this.ownValue)
+        onChange() {
+            this.$emit("update:modelValue", this.ownValue)
         }
     }
 }
 </script>
 
-<style lang="scss" scoped>
-.container {
-    display: inline-block;
-}
+  <style lang="scss" scoped>
+  @import "@/assets/styles/variables.scss";
 
-.radio-button-input {
+  .container {
+    display: inline-block;
+  }
+
+  .radio-button-input {
     opacity: 0;
     position: fixed;
     width: 0;
 
     &:checked + label {
-        color: black;
-        background-color: white;
-        border-color: black;
-        opacity: 1;
+      color: black;
+      background-color: white;
+      border-color: black;
+      opacity: 1;
     }
-}
+  }
 
-.label {
+  .label {
     display: inline-block;
     background-color: #ddd;
     color: rgba(0, 0, 0, 0.5);
@@ -82,7 +85,7 @@ export default {
     border-radius: 4px;
 
     &:hover {
-        cursor: pointer;
+      cursor: pointer;
     }
-}
-</style>
+  }
+  </style>

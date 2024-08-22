@@ -2,13 +2,12 @@
     <media-controller-button
         :icon="icon"
         :title="title"
-        @click="mediaController.toggleMode()"
+        @click="handleClick"
     />
 </template>
 
 <script>
-import MediaControllerButton from "./MediaControllerButton"
-import { PlaybackMode } from "@/models/MediaController"
+import MediaControllerButton from "@/components/media-controller/MediaControllerButton.vue"
 
 export default {
     name: "ButtonPlaybackMode",
@@ -22,36 +21,19 @@ export default {
         }
     },
     computed: {
-        icon () {
-            return this.mediaController.playbackMode == PlaybackMode.Time ? "clock" : "calendar"
+        icon() {
+            return this.mediaController.state.playbackMode === "time" ? "clock" : "calendar"
         },
-        title () {
-            if (this.mediaController.playbackMode == PlaybackMode.Time) {
-                return this.$t("title.time")
-            }
-            else if (this.mediaController.playbackMode == PlaybackMode.Date) {
-                return this.$t("title.date")
-            }
-
-            return ""
+        title() {
+            return this.mediaController.state.playbackMode === "time"
+                ? this.$t("playback.title.time")
+                : this.$t("playback.title.date")
+        }
+    },
+    methods: {
+        handleClick() {
+            this.mediaController.toggleMode()
         }
     }
 }
 </script>
-
-<i18n>
-{
-    "fi": {
-        "title": {
-            "date": "Päivitä päivämäärää",
-            "time": "Päivitä kellonaikaa"
-        }
-    },
-    "en": {
-        "title": {
-            "date": "Update date",
-            "time": "Update time"
-        }
-    }
-}
-</i18n>

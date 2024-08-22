@@ -24,6 +24,7 @@ export default {
             default: false
         }
     },
+    emits: ["close"],
     computed: {
         site () {
             return this.feature ? this.feature.get("site") : "-"
@@ -36,12 +37,14 @@ export default {
 .site-header {
     text-align: center;
     justify-content: center;
+    color: black;
 }
 
 .site-name {
     text-align: center;
     font-size: $font-lg;
     margin: 0;
+    color: black;
 }
 
 .close-button {
@@ -51,6 +54,7 @@ export default {
     transform: scale(1.5);
     height: 2em;
     line-height: 2em;
+    color: black;
 
     &:hover {
         cursor: pointer;

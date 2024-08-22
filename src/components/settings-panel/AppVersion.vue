@@ -8,9 +8,9 @@
 export default {
     name: "AppVersion",
     computed: {
-        appVersion () {
-            let version = "v" + process.env.APP_VERSION
-            if (process.env.NODE_ENV == "development") {
+        appVersion() {
+            let version = "v" + import.meta.env.APP_VERSION
+            if (import.meta.env.NODE_ENV === "development") {
                 version += " (dev)"
             }
             return version
@@ -21,7 +21,7 @@ export default {
 
 <style>
 .app-version {
-    color: lightgray;
-    text-align: center;
+  color: lightgray;
+  text-align: center;
 }
 </style>

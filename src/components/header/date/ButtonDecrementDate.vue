@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import ButtonDateTime from "@/components/header/ButtonDateTime"
+import ButtonDateTime from "@/components/header/ButtonDateTime.vue"
 
 export default {
     name: "ButtonDecrementDate",

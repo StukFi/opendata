@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import ButtonDecrementDate from "./ButtonDecrementDate"
-import ButtonIncrementDate from "./ButtonIncrementDate"
-import ButtonDatepicker from "./ButtonDatepicker"
+import ButtonDecrementDate from "@/components/header/date/ButtonDecrementDate.vue"
+import ButtonIncrementDate from "@/components/header/date/ButtonIncrementDate.vue"
+import ButtonDatepicker from "@/components/header/date/ButtonDatepicker.vue"
 
 export default {
     name: "DateWidget",

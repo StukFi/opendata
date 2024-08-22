@@ -4,16 +4,22 @@
         <div class="info-panel">
             <info-panel-header @close="disable" />
             <div class="info-panel-body">
-                <p>{{ $t("p1") }}</p>
-                <p v-html="$t('p2')" />
+                <p>{{ $t("info.p1") }}</p>
+                <p>
+                    {{ $t("info.p2") }} <a
+                        href="https://github.com/StukFi/opendata"
+                        target="_blank"
+                    >{{ $t("info.p3") }}</a>.
+                </p>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import InfoPanelHeader from "./InfoPanelHeader"
-import BaseBackdrop from "@/components/base/BaseBackdrop"
+import InfoPanelHeader from "@/components/info-panel/InfoPanelHeader.vue"
+import BaseBackdrop from "@/components/base/BaseBackdrop.vue"
+import eventBus from "@/utils/eventBus"
 
 export default {
     name: "InfoPanel",
@@ -27,7 +33,7 @@ export default {
         }
     },
     mounted () {
-        this.$root.$on("info-panel-open", this.enable)
+        eventBus.$on("info-panel-open", this.enable)
     },
     methods: {
         enable () {
@@ -87,16 +93,3 @@ export default {
     margin-bottom: 2em;
 }
 </style>
-
-<i18n>
-{
-    "en": {
-        "p1": "Opendata is an open source application developed by STUK that enables viewing of external radiation results from around Finland. The application gets its data from the Finnish Meteorological Institute's open data API.",
-        "p2": "To learn more visit the project on <a href='https://github.com/StukFi/opendata' target='_blank'>GitHub</a>."
-    },
-    "fi": {
-        "p1": "Opendata on STUKin kehittämä avoimen lähdekoodin applikaatio, jolla voit tarkastella Suomen ulkoisen säteilyn valvontaverkon mittaustuloksia. Applikaatio saa datansa Ilmatieteen laitoksen avoimen datan rajapinnasta.",
-        "p2": "Lue lisää projektin <a href='https://github.com/StukFi/opendata' target='_blank'>GitHub-sivuilta</a>."
-    }
-}
-</i18n>

@@ -1,16 +1,24 @@
 <template>
     <div
         class="button-open-settings"
-        :title="$t('title')"
-        @click="$root.$emit('settings-panel-open')"
+        :title="$t('settings.title')"
+        @click="handleClick()"
     >
         <span class="button-open-settings__icon" />
     </div>
 </template>
 
 <script>
+import eventBus from "@/utils/eventBus"
+
 export default {
-    name: "ButtonOpenSettings"
+    name: "ButtonOpenSettings",
+    emits: ["settings-panel-open"],
+    methods: {
+        handleClick() {
+            eventBus.$emit("settings-panel-open")
+        }
+    }
 }
 </script>
 
@@ -38,7 +46,7 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
     border-radius: 0.25em;
-    background-image: url("~@/assets/icons/cog.svg");
+    background-image: url("/icons/cog.svg");
     background-repeat: no-repeat;
     background-position: center;
     background-color: rgba(0, 50, 136, 0.5);
@@ -56,15 +64,10 @@ export default {
         top: 9.5em;
     }
 }
-</style>
-
-<i18n>
-{
-    "en": {
-        "title": "Settings"
-    },
-    "fi": {
-        "title": "Asetukset"
+@media only screen and (min-width: $breakpoint-sm) {
+    .button-open-settings {
+        left: 1em;
+        top: 9.5em;
     }
 }
-</i18n>
+</style>

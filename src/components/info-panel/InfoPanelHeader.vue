@@ -1,6 +1,6 @@
 <template>
-    <div class="settings-panel-header opendata-row">
-        <span>{{ $t("header") }}</span>
+    <div class="info-panel-header opendata-row">
+        <span>{{ $t("info.title") }}</span>
         <span
             class="close-button"
             @click="$emit('close')"
@@ -10,12 +10,13 @@
 
 <script>
 export default {
-    name: "SettingsPanelHeader"
+    name: "InfoPanelHeader",
+    emits: ["close"]
 }
 </script>
 
 <style lang="scss" scoped>
-.settings-panel-header {
+.info-panel-header {
     text-transform: uppercase;
     font-size: $font-xl;
     justify-content: left;
@@ -34,14 +35,3 @@ export default {
     }
 }
 </style>
-
-<i18n>
-{
-    "en": {
-        "header": "About"
-    },
-    "fi": {
-        "header": "Tietoa"
-    }
-}
-</i18n>

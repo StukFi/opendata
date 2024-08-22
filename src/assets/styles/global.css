@@ -12,15 +12,44 @@ html, body, #app {
 }
 
 .ol-zoom {
-    left: unset;
-    top: 6em;
-    right: 1em;
+    left: unset !important;
+    top: 6em !important;
+    right: 1em !important;
+    font-size: 1.2em;
+}
+
+.ol-control button {
+    display: block;
+    margin: 1px;
+    padding: 0;
+    color: #ffffffbb;
+    font-size: 1.14em;
+    font-weight: 700;
+    text-decoration: none;
+    text-align: center;
+    height: 1.375em;
+    width: 1.375em;
+    line-height: .1em;
+    background-color: rgba(0, 60, 136, .5);
+    border: none;
+    border-radius: 2px;
+}
+
+.ol-control button:hover, .ol-control button:focus {
+    outline: none;
+    color: white;
+    background-color: rgba(0, 50, 136, 0.7);
+}
+
+.ol-control {
+    background-color: rgba(255, 255, 255, 0.5);
 }
 
 .ol-zoomslider {
     left: unset;
     top: 11em;
     right: 1em;
+    font-size: 1.2em;
 }
 
 .ol-touch .ol-zoomslider {
@@ -38,16 +67,23 @@ html, body, #app {
     right: 1em;
 }
 
-.vdp-datepicker__calendar .cell.selected,
-.vdp-datepicker__calendar .cell.selected:hover {
-    background-color: #1773B9 !important;
-    color: white;
-}
-
-.vdp-datepicker__calendar .cell:not(.blank):not(.disabled).day:hover,
-.vdp-datepicker__calendar .cell:not(.blank):not(.disabled).month:hover,
-.vdp-datepicker__calendar .cell:not(.blank):not(.disabled).year:hover {
-    border: 1px solid #1773B9 !important;
+.ol-attribution.ol-unselectable.ol-control.ol-uncollapsible {
+    position: absolute;
+    bottom: 2.5em;
+    right: 1em;
+    height: 1.5em;
+    border-radius: 4px;
+    a {
+        text-decoration: underline;
+        color: rgba(0, 50, 136, 0.7)
+    }
+    li {
+        font-size: 1em;
+    }
+    li:hover, li:focus {
+        background-color: transparent;
+        color: rgba(0, 0, 0, 0.8);
+    }
 }
 
 @media only screen and (max-width: 767px) {
@@ -57,4 +93,11 @@ html, body, #app {
     .ol-scale-line {
         display: none;
     }
+    .ol-attribution.ol-unselectable.ol-control.ol-uncollapsible {
+        right: 0em;
+    }
+    li {
+        font-size: 0.7em!important;
+    }
+    
 }

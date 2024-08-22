@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import SearchSuggestListItem from "./SearchSuggestListItem"
+import SearchSuggestListItem from "@/components/search-bar/SearchSuggestListItem.vue"
 
 export default {
     name: "SearchSuggestList",
@@ -32,6 +32,7 @@ export default {
             required: true
         }
     },
+    emits: ["select"],
     data: function () {
         return {
             isEnabled: false

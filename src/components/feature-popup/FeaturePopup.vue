@@ -7,52 +7,94 @@
             :feature="feature"
             @close="close"
         />
-        <site-dose-rate :feature="feature" />
-        <time-series-graph :feature="feature" />
+        <site-dose-rate
+            v-show="isDoseRatesMode"
+            :feature="feature"
+        />
+        <time-series-graph
+            v-show="isDoseRatesMode"
+            :feature="feature"
+        />
+        <date-picker v-show="isRadionuclideMode" />
+        <radionuclide-tables
+            v-show="isRadionuclideMode"
+            :feature="feature"
+        />
     </div>
 </template>
 
 <script>
 import Overlay from "ol/Overlay"
-import SiteName from "@/components/feature-popover/SiteName"
-import SiteDoseRate from "@/components/feature-popover/SiteDoseRate"
-import TimeSeriesGraph from "./TimeSeriesGraph"
+import SiteName from "@/components/feature-popover/SiteName.vue"
+import SiteDoseRate from "@/components/feature-popover/SiteDoseRate.vue"
+import TimeSeriesGraph from "@/components/feature-popup/TimeSeriesGraph.vue"
+import RadionuclideTables from "@/components/feature-popup/RadionuclideTables.vue"
+import DatePicker from "@/components/feature-popup/DatePicker.vue"
+import eventBus from "@/utils/eventBus"
 
 export default {
     name: "FeaturePopup",
     components: {
         SiteName,
         SiteDoseRate,
-        TimeSeriesGraph
+        TimeSeriesGraph,
+        RadionuclideTables,
+        DatePicker,
     },
-    data: function () {
+    emits: ["featurepopupOpened", "featurepopupClosed"],
+    data() {
         return {
             overlay: undefined,
-            feature: undefined
+            feature: undefined,
         }
     },
-    mounted: function () {
+    computed: {
+        mode() {
+            return this.$store.state.settings.settings.mode
+        },
+        isDoseRatesMode() {
+            return this.mode === "dose_rates"
+        },
+        isRadionuclideMode() {
+            return this.mode === "air_radionuclides"
+        },
+    },
+    watch: {
+        isDoseRatesMode() {
+            this.close()
+        }
+    },
+    mounted() {
+        eventBus.$on("featureClicked", this.open)
+        eventBus.$on("emptyMapLocationClicked", this.close)
+
         this.overlay = new Overlay({
             element: this.$refs.featurePopup,
-            position: undefined
+            position: undefined,
         })
 
-        this.$root.$on("featureClicked", this.open)
-        this.$root.$on("featureSelectedViaSearch", this.open)
-        this.$root.$on("emptyMapLocationClicked", this.close)
-        this.$root.$on("doseRateLayerChanged", this.update)
+        eventBus.$on("featureClicked", this.open)
+        eventBus.$on("featureSelectedViaSearch", this.open)
+        eventBus.$on("emptyMapLocationClicked", this.close)
+        eventBus.$on("doseRateLayerChanged", this.update)
     },
     methods: {
-        open (feature) {
+        open(feature) {
             this.feature = feature
             this.overlay.setPosition(feature.getGeometry().getCoordinates())
-            this.$root.$emit("featurePopupOpened", feature)
+            eventBus.$emit("featurePopupOpened", feature)
+            this.$nextTick(() => {
+                if (this.$refs.panelBody) {
+                    this.$refs.panelBody.scrollTop = 0
+                }
+            })
         },
-        close () {
+        close() {
+            this.feature = undefined
             this.overlay.setPosition(undefined)
-            this.$root.$emit("featurePopupClosed")
+            eventBus.$emit("featurePopupClosed")
         },
-        update (layer) {
+        update(layer) {
             var features = layer.getSource().getFeatures()
             if (features.length == 0 || !this.feature) {
                 return
@@ -66,32 +108,32 @@ export default {
             }
 
             this.feature.set("doseRate", "-")
-        }
-    }
+        },
+    },
 }
 </script>
 
 <style lang="scss" scoped>
 .feature-popup {
-    position: absolute;
-    left: -175px;
-    width: 350px;
-    bottom: 19px;
-    padding: 30px 10px 10px 10px;
-    background-color: white;
-    border: 1px solid #cccccc;
-    border-radius: $border-radius-md;
-    font-family: $font-medium;
+  position: absolute;
+  left: -175px;
+  width: 350px;
+  bottom: 19px;
+  padding: 30px 10px 10px 10px;
+  background-color: white;
+  border: 1px solid #cccccc;
+  border-radius: $border-radius-md;
+  font-family: $font-medium;
 
-    /* The minimum height ensures that the view is centered correctly on an opened popup.
+  /* The minimum height ensures that the view is centered correctly on an opened popup.
        When the popup is opened for the first time, the graph inside it has not been rendered.
        The element's height is thus less than with the graph.
        This causes the view to be incorrectly centered, because the popup's height is used in the calculation. */
-    min-height: 325px;
+  min-height: 325px;
 
-    /* A CSS variable for dynamically positioning the popup's
+  /* A CSS variable for dynamically positioning the popup's
        pseudo-elements based on the popup's size. */
-    --pseudo-left: 174px;
+  --pseudo-left: 174px;
 }
 
 .feature-popup:after, .feature-popup:before {
@@ -104,13 +146,11 @@ export default {
     position: absolute;
     pointer-events: none;
 }
-
 .feature-popup:after {
     border-top-color: white;
     border-width: 19px;
     margin-left: -19px;
 }
-
 .feature-popup:before {
     border-top-color: #cccccc;
     border-width: 20px;
@@ -118,20 +158,20 @@ export default {
 }
 
 @media only screen and (min-width: $breakpoint-md) {
-    .feature-popup {
-        width: 450px;
-        left: -225px;
-        --pseudo-left: 224px;
-        padding: 40px 20px 20px 20px;
-    }
+  .feature-popup {
+    width: 400px;
+    left: -200px;
+    --pseudo-left: 200px;
+    padding: 40px 20px 20px 20px;
+  }
 }
 
 @media only screen and (min-width: $breakpoint-lg) {
-    .feature-popup {
-        width: 650px;
-        left: -325px;
-        --pseudo-left: 324px;
-        padding: 50px 45px 45px 45px;
-    }
+  .feature-popup {
+    width: 600px;
+    left: -300px;
+    --pseudo-left: 300px;
+    padding: 50px 45px 45px 45px;
+  }
 }
 </style>

@@ -18,6 +18,7 @@ export default {
             default: ""
         }
     },
+    emits: ["click"],
     computed: {
         selectedTime () {
             return this.$store.state.datetime.selectedTime

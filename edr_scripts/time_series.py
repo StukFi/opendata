@@ -30,28 +30,33 @@ def generate_time_series(args, regenerate_all=False):
     for json_file in source_files:
         results = json.loads(open(source_dir + "/" + json_file, encoding="utf-8").read())
         features = results["features"]
-        file_timestamp = datetime.strptime(json_file.split(".")[0], "%Y-%m-%dT%H%M%S")
 
         for feature in features:
-            start = file_timestamp - timedelta(seconds=600)
-            start = int(calendar.timegm(start.utctimetuple())) * 1000
-            end = int(calendar.timegm(file_timestamp.utctimetuple())) * 1000
-            measurements.append({
-                "s": start,
-                "e": end,
-                "timestamp": file_timestamp,
-                "station": feature["properties"]["id"],
-                "r": feature["properties"]["doseRate"]
-            })
+            if "timestamp" in feature["properties"] and "doseRate" in feature["properties"]:
+                timestamp = feature["properties"]["timestamp"]
+                dose_rate = feature["properties"]["doseRate"]
+
+                if dose_rate is not None:
+                    start_time = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ") - timedelta(seconds=600)
+                    end_time = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ")
+                    start = int(calendar.timegm(start_time.utctimetuple())) * 1000
+                    end = int(calendar.timegm(end_time.utctimetuple())) * 1000
+                    measurements.append({
+                        "s": start,
+                        "e": end,
+                        "timestamp": end_time,
+                        "station": feature["properties"]["id"],
+                        "r": dose_rate
+                    })
 
     # Reformat measurements to match JSON structure.
     result = {}
     for measurement in measurements:
-        if not measurement["station"] in result.keys():
+        if measurement["station"] not in result:
             result[measurement["station"]] = {}
 
         date_string = measurement["timestamp"].strftime("%Y-%m-%d")
-        if not date_string in result[measurement["station"]].keys():
+        if date_string not in result[measurement["station"]]:
             result[measurement["station"]][date_string] = []
 
         result[measurement["station"]][date_string].append({
@@ -79,20 +84,20 @@ def get_target_dates(args):
     :return: list of dates for which datasets were fetched
     """
     if args.timespan:
-        datetimeFormat = "%Y-%m-%dT%H:%M:%S"
-        start_time = datetime.strptime(args.timespan[0], datetimeFormat)
-        end_time = datetime.strptime(args.timespan[1], datetimeFormat)
+        datetime_format = "%Y-%m-%dT%H:%M:%S"
+        start_time = datetime.strptime(args.timespan[0], datetime_format)
+        end_time = datetime.strptime(args.timespan[1], datetime_format)
     else:
         end_time = datetime.utcnow()
         start_time = end_time - timedelta(days=1)
 
     dates = []
-    dateFormat = "%Y-%m-%d"
+    date_format = "%Y-%m-%d"
     while start_time <= end_time:
-        dates.append(start_time.strftime(dateFormat))
+        dates.append(start_time.strftime(date_format))
         start_time += timedelta(days=1)
 
-    dates.append(end_time.strftime(dateFormat))
+    dates.append(end_time.strftime(date_format))
 
     return dates
 
