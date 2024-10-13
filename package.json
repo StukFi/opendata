@@ -23,7 +23,7 @@
     "@vitejs/plugin-vue": "^5.0.5",
     "@vuepic/vue-datepicker": "^8.7.0",
     "axios": "^1.7.4",
-    "express": "^4.21.0",
+    "express": "^4.21.1",
     "lodash": "^4.17.21",
     "ol": "^9.2.4",
     "ol-mapbox-style": "^8.0.0",
