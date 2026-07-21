@@ -18,7 +18,7 @@ const options = {
 const app = createApp(App)
 app.use(store)
 app.use(i18n)
-app.use(VueProgressBar, options)
+app.use(VueProgressBar.default || VueProgressBar, options)
 app.use(VueClickAway)
 app.use(base)
 app.mount("#app")

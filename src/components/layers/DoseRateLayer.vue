@@ -95,7 +95,7 @@ export default {
             }
 
             try {
-                this.$Progress.start()
+                this.$Progress?.start()
                 const dataset = await api.doseRate.getDataset(this.datasetFilePath)
                 const features = dataset.features.map((feature) => {
                     return new Feature({
@@ -111,9 +111,9 @@ export default {
                 this.vectorLayer.getSource().clear(true)
                 this.vectorLayer.getSource().addFeatures(features)
                 eventBus.$emit("doseRateLayerChanged", this.vectorLayer)
-                this.$Progress.finish()
+                this.$Progress?.finish()
             } catch {
-                this.$Progress.fail()
+                this.$Progress?.fail()
             }
         },
         doseRateRanges: {
