@@ -14,7 +14,7 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "test": "vitest",
+    "test": "vitest run",
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix"
   },
