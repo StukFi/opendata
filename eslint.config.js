@@ -1,9 +1,15 @@
 import js from "@eslint/js"
 import eslintPluginVue from "eslint-plugin-vue"
+import globals from "globals"
 
 export default [
   js.configs.recommended,
   {
+    languageOptions: {
+      globals: {
+        ...globals.browser
+      }
+    },
     rules: {
       "no-unused-vars": "warn",
       "indent": ["error", 4],
