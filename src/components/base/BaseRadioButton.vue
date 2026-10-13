@@ -54,7 +54,7 @@ export default {
 </script>
 
   <style lang="scss" scoped>
-  @import "@/assets/styles/variables.scss";
+  @use "@/assets/styles/variables.scss" as *;
 
   .container {
     display: inline-block;

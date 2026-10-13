@@ -17,6 +17,7 @@ export default defineConfig({
     alias: {
       vue: 'vue/dist/vue.esm-bundler.js',
       '@': path.resolve(pathSegments, './src'),
+      'ol-mapbox-style': path.resolve(pathSegments, './node_modules/ol-mapbox-style/dist/index.js'),
     },
     extensions: ['.mjs', '.js', '.json', '.vue'],
   },
@@ -24,8 +25,9 @@ export default defineConfig({
     preprocessorOptions: {
       scss: {
         additionalData: `
-          @import "@/assets/styles/variables.scss";
+          @use "@/assets/styles/variables.scss" as *;
         `,
+        silenceDeprecations: ['import'],
       },
     },
   },
