@@ -45,7 +45,7 @@
     "eslint-plugin-vue": "^10.11.1",
     "globals": "^17.13.0",
     "jsdom": "^24.1.0",
-    "postcss": "^8.4.38",
+    "postcss": "^8.5.26",
     "sass": "^1.77.5",
     "vitest": "^4.1.11"
   }
