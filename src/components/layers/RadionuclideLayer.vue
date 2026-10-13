@@ -57,7 +57,7 @@ export default {
             if (!this.isAirRadionuclidesMode) {
                 return ""
             } // Gets available sites and their coordinates
-            return "data/air_radionuclides/time_series/sites.json"
+            return `${import.meta.env.BASE_URL}data/air_radionuclides/time_series/sites.json`
         },
     },
     watch: {

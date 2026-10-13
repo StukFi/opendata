@@ -42,7 +42,7 @@ export default {
                 }
             } else {
                 try {
-                    const iconPath = `/icons/${this.icon}.svg`
+                    const iconPath = `${import.meta.env.BASE_URL}icons/${this.icon}.svg`
                     // Check again if button became disabled while loading icon, ignoring icon update
                     if (!this.disabled) {
                         this.iconStyle = {

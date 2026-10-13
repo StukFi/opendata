@@ -77,7 +77,7 @@ export default {
                 return ""
             }
             return (
-                "data/dose_rates/datasets/" +
+                `${import.meta.env.BASE_URL}data/dose_rates/datasets/` +
                 this.$store.state.datetime.selectedDate.toISOString().split("T")[0] +
                 "T" +
                 this.$store.state.datetime.selectedTime +

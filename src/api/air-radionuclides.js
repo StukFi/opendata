@@ -23,7 +23,7 @@ export default {
         const startDate = new Date(selectedDate.getTime() - 30 * msInADay)
 
         // Get the available files
-        const availableFilesUrl = `data/air_radionuclides/time_series/${siteId}/${radionuclide}/available_filenames.json`
+        const availableFilesUrl = `${import.meta.env.BASE_URL}data/air_radionuclides/time_series/${siteId}/${radionuclide}/available_filenames.json`
 
         try {
             const response = await http.get(availableFilesUrl)
@@ -41,7 +41,7 @@ export default {
                         (fileEndDate <= selectedDate && fileEndDate >= startDate) ||
                         (fileStartDate <= startDate && fileEndDate >= selectedDate)) {
 
-                        const fileUrl = `data/air_radionuclides/time_series/${siteId}/${radionuclide}/${filename}`
+                        const fileUrl = `${import.meta.env.BASE_URL}data/air_radionuclides/time_series/${siteId}/${radionuclide}/${filename}`
 
                         try {
                             const fileResponse = await http.get(fileUrl)
@@ -65,7 +65,7 @@ export default {
      * Get the list of available radionuclides for a given site by listing directories.
      */
     async getAvailableRadionuclides(siteId) {
-        const url = `/data/air_radionuclides/time_series/${siteId}/available_radionuclides.json`
+        const url = `${import.meta.env.BASE_URL}data/air_radionuclides/time_series/${siteId}/available_radionuclides.json`
         try {
             const response = await http.get(url)
             if (response && response.data && Array.isArray(response.data)) {

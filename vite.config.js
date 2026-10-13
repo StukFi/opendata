@@ -12,6 +12,7 @@ const filename = fileURLToPath(import.meta.url)
 const pathSegments = path.dirname(filename)
 
 export default defineConfig({
+  base: process.env.BASE_URL || './',
   plugins: [vue()],
   resolve: {
     alias: {

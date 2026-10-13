@@ -7,7 +7,7 @@ export default {
      * @return {Array}
      */
     async queryAvailableDatasets () {
-        const response = await http.get("data/dose_rates/metadata.json")
+        const response = await http.get(`${import.meta.env.BASE_URL}data/dose_rates/metadata.json`)
         let availableDatasets = response.data.available_data
 
         availableDatasets.forEach(element => {
@@ -37,7 +37,7 @@ export default {
      */
     async getTimeSeries (siteId, date) {
         const dateString = date.toISOString().split("T")[0]
-        const url = "data/dose_rates/time_series/" + siteId + "/" + dateString + ".json"
+        const url = `${import.meta.env.BASE_URL}data/dose_rates/time_series/${siteId}/${dateString}.json`
         const response = await http.get(url)
         return response.data.data
     }

@@ -33,7 +33,7 @@ export default {
             }
             else {
                 return {
-                    backgroundImage: `url(/icons/${this.icon}.svg)`
+                    backgroundImage: `url(${import.meta.env.BASE_URL}icons/${this.icon}.svg)`
                 }
             }
         }
